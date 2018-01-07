@@ -10,7 +10,7 @@
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@types/events/-/events-1.1.0.tgz#93b1be91f63c184450385272c47b6496fd028e02"
 
-"@types/fs-extra@^5.0.0":
+"@types/fs-extra@5.0.0":
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/@types/fs-extra/-/fs-extra-5.0.0.tgz#d3e225b35eb5c6d3a5a782c28219df365c781413"
   dependencies:
@@ -24,7 +24,7 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
-"@types/handlebars@^4.0.36":
+"@types/handlebars@4.0.36":
   version "4.0.36"
   resolved "https://registry.yarnpkg.com/@types/handlebars/-/handlebars-4.0.36.tgz#ff57c77fa1ab6713bb446534ddc4d979707a3a79"
 
@@ -40,7 +40,7 @@
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
 
-"@types/moment-timezone@^0.5.3":
+"@types/moment-timezone@0.5.3":
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/@types/moment-timezone/-/moment-timezone-0.5.3.tgz#66aecb4e8291c2bcf4fad9bfd51367c1edbd80c6"
   dependencies:
@@ -54,11 +54,11 @@
   version "7.0.7"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.7.tgz#92637c6c4844bfc9a0a686323e38f3e9319118c2"
 
-"@types/semver@^5.4.0":
+"@types/semver@5.4.0":
   version "5.4.0"
   resolved "https://registry.yarnpkg.com/@types/semver/-/semver-5.4.0.tgz#f3658535af7f1f502acd6da7daf405ffeb1f7ee4"
 
-"@types/shelljs@^0.7.7":
+"@types/shelljs@0.7.7":
   version "0.7.7"
   resolved "https://registry.yarnpkg.com/@types/shelljs/-/shelljs-0.7.7.tgz#1f7bfa28947661afea06365db9b1135bbc903ec4"
   dependencies:
@@ -737,7 +737,7 @@ del@2.2.0:
     pinkie-promise "^2.0.0"
     rimraf "^2.2.8"
 
-del@^3.0.0:
+del@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/del/-/del-3.0.0.tgz#53ecf699ffcbcb39637691ab13baf160819766e5"
   dependencies:
@@ -1063,7 +1063,7 @@ from2@^2.1.0:
     inherits "^2.0.1"
     readable-stream "^2.0.0"
 
-fs-extra@^5.0.0:
+fs-extra@5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-5.0.0.tgz#414d0110cdd06705734d055652c5411260c31abd"
   dependencies:
@@ -1311,7 +1311,7 @@ graceful-fs@~1.2.0:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-1.2.3.tgz#15a4806a57547cb2d2dbf27f42e89a8c3451b364"
 
-gulp-clean-compiled-typescript@^1.2.0:
+gulp-clean-compiled-typescript@1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/gulp-clean-compiled-typescript/-/gulp-clean-compiled-typescript-1.2.0.tgz#b7a191004085cb69e35e53af544b7719a8417a8f"
   dependencies:
@@ -1341,7 +1341,7 @@ gulp-util@^3.0.0:
     through2 "^2.0.0"
     vinyl "^0.5.0"
 
-gulp@^3.9.1:
+gulp@3.9.1:
   version "3.9.1"
   resolved "https://registry.yarnpkg.com/gulp/-/gulp-3.9.1.tgz#571ce45928dd40af6514fc4011866016c13845b4"
   dependencies:
@@ -1365,7 +1365,7 @@ gulplog@^1.0.0:
   dependencies:
     glogg "^1.0.0"
 
-handlebars@^4.0.11:
+handlebars@4.0.11:
   version "4.0.11"
   resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.0.11.tgz#630a35dfe0294bc281edae6ffc5d329fc7982dcc"
   dependencies:
@@ -2225,13 +2225,13 @@ mixin-deep@^1.2.0:
   dependencies:
     minimist "0.0.8"
 
-moment-timezone@^0.5.14:
+moment-timezone@0.5.14:
   version "0.5.14"
   resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.14.tgz#4eb38ff9538b80108ba467a458f3ed4268ccfcb1"
   dependencies:
     moment ">= 2.9.0"
 
-"moment@>= 2.9.0", moment@>=2.14.0, moment@^2.20.1:
+moment@2.20.1, "moment@>= 2.9.0", moment@>=2.14.0:
   version "2.20.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.20.1.tgz#d6eb1a46cbcc14a2b2f9434112c1ff8907f313fd"
 
@@ -2432,7 +2432,7 @@ npm-user-validate@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/npm-user-validate/-/npm-user-validate-1.0.0.tgz#8ceca0f5cea04d4e93519ef72d0557a75122e951"
 
-npm@^5.6.0:
+npm@5.6.0:
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/npm/-/npm-5.6.0.tgz#b11e72cd5167df48b06c43474e9331fe848cb05e"
   dependencies:
@@ -3135,7 +3135,7 @@ run-queue@^1.0.0, run-queue@^1.0.3:
   dependencies:
     aproba "^1.1.1"
 
-run-sequence@^2.2.1:
+run-sequence@2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/run-sequence/-/run-sequence-2.2.1.tgz#1ce643da36fd8c7ea7e1a9329da33fc2b8898495"
   dependencies:
@@ -3153,7 +3153,7 @@ semver-diff@^2.0.0:
   dependencies:
     semver "^5.0.3"
 
-"semver@2 >=2.2.1 || 3.x || 4 || 5", "semver@2 || 3 || 4 || 5", "semver@2.x || 3.x || 4 || 5", "semver@^2.3.0 || 3.x || 4 || 5", semver@^5.0.3, semver@^5.1.0, semver@^5.3.0, semver@^5.4.1, semver@~5.4.1:
+"semver@2 >=2.2.1 || 3.x || 4 || 5", "semver@2 || 3 || 4 || 5", "semver@2.x || 3.x || 4 || 5", semver@5.4.1, "semver@^2.3.0 || 3.x || 4 || 5", semver@^5.0.3, semver@^5.1.0, semver@^5.3.0, semver@^5.4.1, semver@~5.4.1:
   version "5.4.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.4.1.tgz#e059c09d8571f0540823733433505d3a2f00b18e"
 
@@ -3580,7 +3580,7 @@ tslib@^1.7.1, tslib@^1.8.1:
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.8.1.tgz#6946af2d1d651a7b1863b531d6e5afa41aa44eac"
 
-tslint@^5.8.0:
+tslint@5.8.0:
   version "5.8.0"
   resolved "https://registry.yarnpkg.com/tslint/-/tslint-5.8.0.tgz#1f49ad5b2e77c76c3af4ddcae552ae4e3612eb13"
   dependencies:

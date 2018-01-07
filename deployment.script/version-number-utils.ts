@@ -3,6 +3,7 @@ import * as semver from "semver";
 import * as handlebars from "handlebars";
 import * as moment from "moment-timezone";
 import * as fs from "fs-extra";
+import * as jsyaml from "js-yaml";
 
 import { fetchAndThrowOnError, runNpmCommand, stripSpaces } from "./util";
 
@@ -89,24 +90,20 @@ export function generateDeploymentYamlText(partialContext: {
     travisBuildNumber: string,
     travisBuildId: string,
     npmPublishTag: string,
-    branchName: string,
-    commitHash: string,
-    commitMessage: string
+    historyInfo: {}
 }): string {
     const context = {
         ...partialContext,
         deployedAt: `${moment().utc().format('YYYY-MM-DD h:mm a')} UTC  (${moment().tz("America/Los_Angeles").format('YYYY-MM-DD h:mm a')} Pacific Time)`,
-        isOfficialBuild: partialContext.npmPublishTag !== "private"
+        isOfficialBuild: partialContext.npmPublishTag !== "private",
+        historyBlockString: jsyaml.safeDump(partialContext.historyInfo, { indent: 4 })
     };
 
     const template = stripSpaces(`
         version: {{{version}}}
         deployedAt: {{{deployedAt}}}
 
-        history:
-            privateBranchName: {{{branchName}}}
-            basedOnDistFolderFromCommitHash: {{{commitHash}}}
-            commitMessage: {{{commitMessage}}}
+        {{{historyBlockString}}}
 
         unpkgUrls: |-
         {{#if isOfficialBuild}}

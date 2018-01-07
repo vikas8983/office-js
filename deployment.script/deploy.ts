@@ -17,6 +17,7 @@ declare var process: {
 const TRAVIS_AUTO_COMMIT_TEXT = "[TRAVIS CI AUTO-COMMIT]";
 const TOKENIZED_GITHUB_PUSH_URL = `https://<<<token>>>@github.com/OfficeDev/office-js.git`;
 const DEPLOYMENT_YAML_FILENAME = "NPM.DEPLOYMENT.INFO.yaml";
+const DEPLOY_REQUEST_FILENAME = "DEPLOY_REQUEST.yaml";
 
 const REQUIRED_ADDITIONAL_FIELDS: Array<keyof IEnvironmentVariables> = ['GH_TOKEN'];
 
@@ -178,9 +179,7 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
         version,
         travisBuildId: process.env.TRAVIS_BUILD_ID,
         travisBuildNumber: process.env.TRAVIS_BUILD_NUMBER,
-        branchName: process.env.TRAVIS_BRANCH,
-        commitHash: process.env.TRAVIS_COMMIT,
-        commitMessage: process.env.TRAVIS_COMMIT_MESSAGE,
+        historyInfo: getHistoryInfoFromSubmittedRepoState()
     });
 
     const repoLocalFolderPath = process.env.TRAVIS_BUILD_DIR + "/" + "office-js/";
@@ -276,6 +275,11 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
     banner('SUCCESS, DEPLOYMENT COMPLETE!', releaseNotesWithNbsp.replace(/&nbsp;/g, " "), chalk.green.bold);
 }
 
+function getHistoryInfoFromSubmittedRepoState(): { [key: string]: any } {
+    const contents = fs.readFileSync(process.env.TRAVIS_BUILD_DIR + "/" + DEPLOYMENT_YAML_FILENAME).toString();
+    return jsyaml.safeLoad(contents)["history"];
+}
+
 async function getPrivateBranchDeploymentParams(): Promise<IDeploymentParams> {
     const npmPublishTag = "private";
     const version = await VersionUtils.getNextVersionNumberForNonReleaseTag(npmPublishTag);
@@ -287,9 +291,9 @@ async function getPrivateBranchDeploymentParams(): Promise<IDeploymentParams> {
 }
 
 async function doOfficialDeployment(): Promise<void> {
-    console.log(`First off: is there a request for a "targetBranch" and "from" in the DEPLOY_REQUEST.yaml file?`);
+    console.log(`First off: is there a request for a "targetBranch" and "from" in the ${DEPLOY_REQUEST_FILENAME} file?`);
     let currentYaml: IOfficialBranchDeployRequest = jsyaml.safeLoad(
-        fs.readFileSync(process.env.TRAVIS_BUILD_DIR + "/DEPLOY_REQUEST.yaml").toString());
+        fs.readFileSync(process.env.TRAVIS_BUILD_DIR + "/" + DEPLOY_REQUEST_FILENAME).toString());
 
     if (isNil(currentYaml.targetBranch) || isNil(currentYaml.from)) {
         banner('SKIPPING DEPLOYMENT', `Nothing to deploy: missing "targetBranch" and/or "from" parameters.`, chalk.yellow.bold);
