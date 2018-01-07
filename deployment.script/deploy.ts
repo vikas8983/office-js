@@ -1,9 +1,10 @@
 #!/usr/bin/env node --harmony
 
-import { isString } from "lodash";
+import { isString, isNil } from "lodash";
 import * as chalk from 'chalk';
 import * as shell from 'shelljs';
 import * as fs from "fs-extra";
+import * as jsyaml from 'js-yaml';
 
 import { banner, stripSpaces, execCommand } from "./util";
 import * as VersionUtils from "./version-number-utils";
@@ -47,6 +48,12 @@ interface IEnvironmentVariables {
 const OFFICIAL_BRANCHES = ["release", "release-next", "beta", "beta-next"];
 const DEPLOYMENT_QUEUE_BRANCH = "deployment-queue";
 
+interface IOfficialBranchDeployRequest {
+    targetBranch: string;
+    from: string;
+    deletePrivateBranchOnSuccessfulDeployment: boolean;
+}
+
 interface IDeploymentParams {
     npmPublishTag: string;
     version: string;
@@ -58,44 +65,10 @@ interface IDeploymentParams {
 
 (async () => {
     try {
-        printBuildStartInfo();
-
-        precheckOrExit();
-
-        if (process.env.TRAVIS_BRANCH.startsWith("__private")) {
-            await doDeployment(await getPrivateBranchDeploymentParams());
-            process.exit(0);
-            return;
-
-        } else if (process.env.TRAVIS_BRANCH === DEPLOYMENT_QUEUE_BRANCH) {
-            await doOfficialDeployment();
-            process.exit(0);
-            return;
-
-        } else if (OFFICIAL_BRANCHES.indexOf(process.env.TRAVIS_BRANCH) >= 0) {
-            const message = stripSpaces(`
-                Deployment to one of the official branches must happen through the
-                "${DEPLOYMENT_QUEUE_BRANCH}" branch. Please see
-                https://github.com/OfficeDev/office-js/blob/deployment-queue/README.md
-                for more info.
-            `);
-            banner('SKIPPING DEPLOYMENT', message, chalk.yellow.bold);
-            process.exit(0);
-            return;
-
-        } else {
-            const message = stripSpaces(`
-                Branch "${process.env.TRAVIS_BRANCH}" neither starts with "__private" or "__travis-queue",
-                    nor matches any of the following: [${
-                OFFICIAL_BRANCHES.map(item => `"${item}"`).join(", ")
-                }].
-            `);
-            banner('UNKNOWN BRANCH, SKIPPING DEPLOYMENT', message, chalk.yellow.bold);
-            process.exit(0);
-            return;
-        }
-
-    } catch (error) {
+        await attemptDeployScript();
+        process.exit(0);
+    }
+    catch (error) {
         banner('AN ERROR OCCURRED', error.message || error, chalk.bold.red);
         console.error(error);
 
@@ -103,6 +76,42 @@ interface IDeploymentParams {
         process.exit(1);
     }
 })();
+
+async function attemptDeployScript() {
+    printBuildStartInfo();
+
+    precheckOrExit();
+
+    if (process.env.TRAVIS_BRANCH.startsWith("__private")) {
+        await doDeployment(await getPrivateBranchDeploymentParams());
+        return;
+
+    } else if (process.env.TRAVIS_BRANCH === DEPLOYMENT_QUEUE_BRANCH) {
+        await doOfficialDeployment();
+        return;
+
+    } else if (OFFICIAL_BRANCHES.indexOf(process.env.TRAVIS_BRANCH) >= 0) {
+        const message = stripSpaces(`
+                Deployment to one of the official branches must happen through the
+                "${DEPLOYMENT_QUEUE_BRANCH}" branch. Please see
+                https://github.com/OfficeDev/office-js/blob/deployment-queue/README.md
+                for more info.
+            `);
+        banner('SKIPPING DEPLOYMENT', message, chalk.yellow.bold);
+        return;
+
+    } else {
+        const message = stripSpaces(`
+                UNKNOWN BRANCH:
+                Branch "${process.env.TRAVIS_BRANCH}" neither starts with "__private" or "__travis-queue",
+                    nor matches any of the following: [${
+            OFFICIAL_BRANCHES.map(item => `"${item}"`).join(", ")
+            }].
+            `);
+        banner('SKIPPING DEPLOYMENT', message, chalk.yellow.bold);
+        return;
+    }
+}
 
 function printBuildStartInfo() {
     const fieldsToPrint: (keyof IEnvironmentVariables)[] = [
@@ -278,9 +287,23 @@ async function getPrivateBranchDeploymentParams(): Promise<IDeploymentParams> {
 }
 
 async function doOfficialDeployment(): Promise<void> {
-    //let thisYaml = //https://raw.githubusercontent.com/OfficeDev/office-js/deployment-queue/DEPLOY_REQUEST.yaml
-    banner('NOT READY TO DO OFFICIAL DEPLOYMENTS YET');
+    console.log(`First off: is there a request for a "targetBranch" and "from" in the DEPLOY_REQUEST.yaml file?`);
+    let currentYaml: IOfficialBranchDeployRequest = jsyaml.safeLoad(
+        fs.readFileSync(process.env.TRAVIS_BUILD_DIR + "/DEPLOY_REQUEST.yaml").toString());
 
+    if (isNil(currentYaml.targetBranch) || isNil(currentYaml.from)) {
+        banner('SKIPPING DEPLOYMENT', `Nothing to deploy: missing "targetBranch" and/or "from" parameters.`, chalk.yellow.bold);
+        return;
+    }
+
+    banner("DEPLOYMENT REQUEST DETECTED", stripSpaces(`
+        Acknowledging request to deploy to
+            "${currentYaml.targetBranch}"
+        from
+            ${currentYaml.from}
+    `));
+
+    banner('NOT READY TO DO OFFICIAL DEPLOYMENTS YET');
 }
 
 // async function getTravisQueueBranchDeploymentParams(): Promise<IDeploymentParams> {
