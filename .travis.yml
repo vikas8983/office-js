@@ -11,7 +11,6 @@ node_js:
 - 6.9.4
 
 script:
-- cd deployment.script
-- npm install
-- npm run build
-- npm run deploy
+- cd deployment.script && npm install
+- cd deployment.script && npm run build
+- cd deployment.script && npm run deploy
