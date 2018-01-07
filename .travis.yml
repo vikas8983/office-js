@@ -1,16 +1,19 @@
 language: node_js
 
-cache:
-  directories:
-  - node_modules
-
 git:
   depth: 3
 
 node_js:
 - 6.9.4
 
+before_install:
+- cd deployment.script
+
+install:
+- npm install
+
+before_script:
+- npm run build
+
 script:
-- cd deployment.script && npm install
-- cd deployment.script && npm run build
-- cd deployment.script && npm run deploy
+- npm run deploy

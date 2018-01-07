@@ -62,13 +62,13 @@ interface IDeploymentParams {
 
         precheckOrExit();
 
-        let deploymentParams: IDeploymentParams;
-
         if (process.env.TRAVIS_BRANCH.startsWith("__private")) {
-            deploymentParams = await getPrivateBranchDeploymentParams();
+            await doDeployment(await getPrivateBranchDeploymentParams());
+            process.exit(0);
+            return;
 
         } else if (process.env.TRAVIS_BRANCH === DEPLOYMENT_QUEUE_BRANCH) {
-            banner('NOT READY TO DO OFFICIAL DEPLOYMENTS YET');
+            await doOfficialDeployment();
             process.exit(0);
             return;
 
@@ -94,11 +94,6 @@ interface IDeploymentParams {
             process.exit(0);
             return;
         }
-
-        let deploymentResultOutput = await doDeployment(deploymentParams);
-
-        banner('SUCCESS, DEPLOYMENT COMPLETE!', deploymentResultOutput, chalk.green.bold);
-        process.exit(0);
 
     } catch (error) {
         banner('AN ERROR OCCURRED', error.message || error, chalk.bold.red);
@@ -163,7 +158,7 @@ function precheckOrExit(): void {
     });
 }
 
-async function doDeployment(params: IDeploymentParams): Promise<string> {
+async function doDeployment(params: IDeploymentParams): Promise<void> {
     const { version, npmPublishTag } = params;
     const gitTagName = "v" + params.version;
 
@@ -269,7 +264,7 @@ async function doDeployment(params: IDeploymentParams): Promise<string> {
         fs.removeSync(repoLocalFolderPath);
     }
 
-    return releaseNotesWithNbsp.replace(/&nbsp;/g, " ");
+    banner('SUCCESS, DEPLOYMENT COMPLETE!', releaseNotesWithNbsp.replace(/&nbsp;/g, " "), chalk.green.bold);
 }
 
 async function getPrivateBranchDeploymentParams(): Promise<IDeploymentParams> {
@@ -280,6 +275,12 @@ async function getPrivateBranchDeploymentParams(): Promise<IDeploymentParams> {
         version,
         npmPublishTag
     };
+}
+
+async function doOfficialDeployment(): Promise<void> {
+    //let thisYaml = //https://raw.githubusercontent.com/OfficeDev/office-js/deployment-queue/DEPLOY_REQUEST.yaml
+    banner('NOT READY TO DO OFFICIAL DEPLOYMENTS YET');
+
 }
 
 // async function getTravisQueueBranchDeploymentParams(): Promise<IDeploymentParams> {
