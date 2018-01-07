@@ -10,11 +10,8 @@ git:
 node_js:
 - 6.9.4
 
-install:
-- cd deployment.script && npm install
-
-before_script:
-- cd deployment.script && npm run build
-
 script:
-- cd deployment.script && npm run deploy
+- cd deployment.script
+- npm install
+- npm run build
+- npm run deploy
