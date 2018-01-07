@@ -1,3 +1,11 @@
+#####################################################################
+#### Please keep this file in sync with the ".gitignore"
+#### and ".npmignore" files from the "release branch"
+####     (for ".npmignore", the contents from this file is pasted
+####      in the bottom portion of the file)
+#####################################################################
+
+
 node_modules/**
 *.js
 *.map
