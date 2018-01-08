@@ -1,0 +1,28 @@
+{
+    // NOTE, to modify this file to be skipped (when entering environmental variables), run:
+    //     "git update-index --skip-worktree .vscode\launch.json"
+
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Test",
+            "program": "${workspaceRoot}/deployment.script/deploy.ts",
+            "args": [],
+            "preLaunchTask": "build",
+            "sourceMaps": true,
+            "cwd": "${workspaceRoot}",
+            "console": "integratedTerminal",
+            "env": {
+
+            }
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Attach to Process",
+            "port": 5858
+        }
+    ]
+}
