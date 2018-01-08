@@ -96,11 +96,13 @@ export function generateDeploymentYamlText(partialContext: {
         ...partialContext,
         deployedAt: `${moment().utc().format('YYYY-MM-DD h:mm a')} UTC  (${moment().tz("America/Los_Angeles").format('YYYY-MM-DD h:mm a')} Pacific Time)`,
         isOfficialBuild: partialContext.npmPublishTag !== "private",
-        historyBlockString: jsyaml.safeDump(partialContext.historyInfo, { indent: 4 })
+        historyBlockString: jsyaml.safeDump({ history: partialContext.historyInfo }, { indent: 4 })
     };
 
     const template = stripSpaces(`
         version: {{{version}}}
+        githubReleaseUrl: https://github.com/OfficeDev/office-js/releases/tag/v{{{version}}}
+        githubViewUrl: https://github.com/OfficeDev/office-js/tree/v{{{version}}}
         deployedAt: {{{deployedAt}}}
 
         {{{historyBlockString}}}
@@ -126,6 +128,45 @@ export function generateDeploymentYamlText(partialContext: {
                 @microsoft/office-js@{{{version}}}/dist/office.d.ts
 
         buildLog: https://travis-ci.org/OfficeDev/office-js/builds/{{{travisBuildId}}}
+    `);
+
+    return handlebars.compile(template)(context);
+}
+
+export function generateReleaseMarkdownText(context: {
+    commitMessage: string;
+    version: string;
+    travisBuildId: string;
+    npmPublishTag: string;
+    DEPLOYMENT_YAML_FILENAME: string
+}): string {
+    const template = stripSpaces(`
+        ### {{{commitMessage}}}
+
+        * Full version details & commit history: https://github.com/OfficeDev/office-js/blob/v{{{version}}}/{{{DEPLOYMENT_YAML_FILENAME}}}
+        * Build log: https://travis-ci.org/OfficeDev/office-js/builds/{{{travisBuildId}}}
+
+        ### Unpkg URLs:
+
+        {{#if isOfficialBuild}}
+        > #### Builds using this same tag ("{{{npmPublishTag}}}"):
+        > https://unpkg.com/@microsoft/office-js@{{{npmPublishTag}}}/dist/office.js
+        > https://unpkg.com/@microsoft/office-js@{{{npmPublishTag}}}/dist/office.debug.js  (unminified)
+        {{/if}}
+        > #### This specific build number:
+        > * https://unpkg.com/@microsoft/office-js@{{{version}}}/dist/office.js
+        > * https://unpkg.com/@microsoft/office-js@{{{version}}}/dist/office.debug.js  (unminified)
+
+        ### Script Lab references:
+
+        {{#if isOfficialBuild}}
+        > #### Builds using this same tag ("{{{npmPublishTag}}}"):
+        > * @microsoft/office-js@{{{npmPublishTag}}}/dist/office.js
+        > * @microsoft/office-js@{{{npmPublishTag}}}/dist/office.d.ts
+        {{/if}}
+        > #### This specific build number:
+        > * @microsoft/office-js@{{{version}}}/dist/office.js
+        > * @microsoft/office-js@{{{version}}}/dist/office.d.ts
     `);
 
     return handlebars.compile(template)(context);

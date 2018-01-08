@@ -4,6 +4,7 @@ import { isString, isNil } from "lodash";
 import * as chalk from 'chalk';
 import * as shell from 'shelljs';
 import * as fs from "fs-extra";
+import * as path from 'path';
 import * as jsyaml from 'js-yaml';
 
 import { banner, stripSpaces, execCommand } from "./util";
@@ -49,6 +50,8 @@ interface IEnvironmentVariables {
 const OFFICIAL_BRANCHES = ["release", "release-next", "beta", "beta-next"];
 const DEPLOYMENT_QUEUE_BRANCH = "deployment-queue";
 
+let WORKING_DIRECTORY = path.resolve(process.env.TRAVIS_BUILD_DIR, "..", "working-travis-output-dir");
+
 interface IOfficialBranchDeployRequest {
     targetBranch: string;
     from: string;
@@ -80,6 +83,7 @@ interface IDeploymentParams {
 
 async function attemptDeployScript() {
     printBuildStartInfo();
+    makeWorkingDirectory();
 
     precheckOrExit();
 
@@ -114,6 +118,16 @@ async function attemptDeployScript() {
     }
 }
 
+function makeWorkingDirectory() {
+    if (!fs.existsSync(WORKING_DIRECTORY)) {
+        fs.mkdirSync(WORKING_DIRECTORY);
+    } else {
+        fs.emptyDirSync(WORKING_DIRECTORY);
+    }
+
+    banner("Working directory", WORKING_DIRECTORY);
+}
+
 function printBuildStartInfo() {
     const fieldsToPrint: (keyof IEnvironmentVariables)[] = [
         "TRAVIS",
@@ -133,10 +147,6 @@ function printBuildStartInfo() {
         .join(",\n");
 
     banner('TravisCI build started', fieldsString, chalk.green.bold);
-
-    console.log("Build directory: " + process.env.TRAVIS_BUILD_DIR);
-    console.log("Files therein:");
-    fs.readdirSync(process.env.TRAVIS_BUILD_DIR).forEach(name => console.log(" * " + name));
 }
 
 function precheckOrExit(): void {
@@ -174,15 +184,16 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
 
     banner("This deployment's target NPM version", "Target package version: " + version, chalk.magenta.bold);
 
+    const historyInfo = getHistoryInfoFromSubmittedRepoState();
     const deploymentFileContents = VersionUtils.generateDeploymentYamlText({
         npmPublishTag,
         version,
+        historyInfo,
         travisBuildId: process.env.TRAVIS_BUILD_ID,
-        travisBuildNumber: process.env.TRAVIS_BUILD_NUMBER,
-        historyInfo: getHistoryInfoFromSubmittedRepoState()
+        travisBuildNumber: process.env.TRAVIS_BUILD_NUMBER
     });
 
-    const repoLocalFolderPath = process.env.TRAVIS_BUILD_DIR + "/" + "office-js/";
+    const repoLocalFolderPath = WORKING_DIRECTORY + "/" + "office-js/";
     fs.removeSync(repoLocalFolderPath);
 
     execCommand(`git clone ${TOKENIZED_GITHUB_PUSH_URL} ${repoLocalFolderPath}`, {
@@ -235,15 +246,17 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
     execCommand(`git tag -a ${gitTagName} -m "${commitMessage}"`);
     execCommand(`git push origin ${gitTagName}`);
 
-    const releaseNotesWithNbsp = deploymentFileContents.split("\n").map(line => {
-        let regex = /^(\s*)(.+?)(\|\-)?$/;
-        // Match 0 or more starting spaces, followed by a non-greedy (lazy) anything, followed by optionally a "|-" at the end.
-        let result = regex.exec(line);
-        if (!result) {
-            return line;
-        }
-        return (result[1].length > 0 ? ("&nbsp;".repeat(result[1].length - 1) + " ") : "") + result[2];
-    }).join("\n");
+    console.log(`FYI, if will need to delete the tag, run`);
+    console.log(`    git push --delete origin {${gitTagName}}`);
+    console.log(`And also discard the resulting draft from "https://github.com/OfficeDev/office-js/releases"`);
+
+    const markdownReleaseNotes = VersionUtils.generateReleaseMarkdownText({
+        npmPublishTag,
+        DEPLOYMENT_YAML_FILENAME,
+        version,
+        commitMessage: historyInfo.commitMessage,
+        travisBuildId: process.env.TRAVIS_BUILD_ID,
+    });
 
     // Documentation: https://developer.github.com/v3/repos/releases/#create-a-release
     const response = await fetch("https://api.github.com/repos/OfficeDev/office-js/releases", {
@@ -254,7 +267,7 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
         body: JSON.stringify({
             "tag_name": gitTagName,
             "name": gitTagName,
-            "body": releaseNotesWithNbsp,
+            "body": markdownReleaseNotes,
             "prerelease": true,
             "draft": false
         })
@@ -272,11 +285,21 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
         fs.removeSync(repoLocalFolderPath);
     }
 
-    banner('SUCCESS, DEPLOYMENT COMPLETE!', releaseNotesWithNbsp.replace(/&nbsp;/g, " "), chalk.green.bold);
+    banner('SUCCESS, DEPLOYMENT COMPLETE!', markdownReleaseNotes, chalk.green.bold);
 }
 
-function getHistoryInfoFromSubmittedRepoState(): { [key: string]: any } {
-    const contents = fs.readFileSync(process.env.TRAVIS_BUILD_DIR + "/" + DEPLOYMENT_YAML_FILENAME).toString();
+function getHistoryInfoFromSubmittedRepoState(): { commitMessage: string, privateBranchName: string, fullCommitHistory: string } {
+    const fullPath = process.env.TRAVIS_BUILD_DIR + "/" + DEPLOYMENT_YAML_FILENAME;
+    if (!fs.existsSync(fullPath)) {
+        banner(`No ${DEPLOYMENT_YAML_FILENAME} found!`, "Will use what is available on the the environment variables instead", chalk.yellow.bold);
+        return {
+            commitMessage: process.env.TRAVIS_COMMIT_MESSAGE,
+            privateBranchName: process.env.TRAVIS_BRANCH,
+            fullCommitHistory: ""
+        };
+    }
+
+    const contents = fs.readFileSync(fullPath).toString();
     return jsyaml.safeLoad(contents)["history"];
 }
 
