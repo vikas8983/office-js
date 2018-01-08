@@ -111,11 +111,11 @@ export function generateDeploymentYamlText(partialContext: {
         {{#if isOfficialBuild}}
             builds using this same tag ("{{{npmPublishTag}}}"):
                 https://unpkg.com/@microsoft/office-js@{{{npmPublishTag}}}/dist/office.js
-                https://unpkg.com/@microsoft/office-js@{{{npmPublishTag}}}/dist/office.debug.js  (unminified)
+                https://unpkg.com/@microsoft/office-js@{{{npmPublishTag}}}/dist/office.d.ts
         {{/if}}
             this specific build number:
                 https://unpkg.com/@microsoft/office-js@{{{version}}}/dist/office.js
-                https://unpkg.com/@microsoft/office-js@{{{version}}}/dist/office.debug.js  (unminified)
+                https://unpkg.com/@microsoft/office-js@{{{version}}}/dist/office.d.ts
 
         scriptLabReferences: |-
         {{#if isOfficialBuild}}
@@ -151,11 +151,11 @@ export function generateReleaseMarkdownText(context: {
         {{#if isOfficialBuild}}
         > #### Builds using this same tag ("{{{npmPublishTag}}}"):
         > https://unpkg.com/@microsoft/office-js@{{{npmPublishTag}}}/dist/office.js
-        > https://unpkg.com/@microsoft/office-js@{{{npmPublishTag}}}/dist/office.debug.js  (unminified)
+        > https://unpkg.com/@microsoft/office-js@{{{npmPublishTag}}}/dist/office.d.ts
         {{/if}}
         > #### This specific build number:
         > * https://unpkg.com/@microsoft/office-js@{{{version}}}/dist/office.js
-        > * https://unpkg.com/@microsoft/office-js@{{{version}}}/dist/office.debug.js  (unminified)
+        > * https://unpkg.com/@microsoft/office-js@{{{version}}}/dist/office.d.ts
 
         ### Script Lab references:
 
