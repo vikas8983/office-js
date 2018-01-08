@@ -1,3 +1,8 @@
+version: 1.1.3-private.35
+githubReleaseUrl: https://github.com/OfficeDev/office-js/releases/tag/v1.1.3-private.35
+githubViewUrl: https://github.com/OfficeDev/office-js/tree/v1.1.3-private.35
+deployedAt: 2018-01-08 5:19 am UTC  (2018-01-07 9:19 pm Pacific Time)
+
 history:
     privateBranchName: __private--beta-next--16.0.9002.5450--2018-01-07--9.15pm
     commitMessage: __private--beta-next--16.0.9002.5450--2018-01-07--9.15pm
@@ -30,3 +35,16 @@ history:
             message: >-
                 [BEGIN PUBLISH UPDATES] --
                 __private--beta-next--16.0.9002.5450--2018-01-07--9.15pm
+
+
+unpkgUrls: |-
+    this specific build number:
+        https://unpkg.com/@microsoft/office-js@1.1.3-private.35/dist/office.js
+        https://unpkg.com/@microsoft/office-js@1.1.3-private.35/dist/office.debug.js  (unminified)
+
+scriptLabReferences: |-
+    this specific build number:
+        @microsoft/office-js@1.1.3-private.35/dist/office.js
+        @microsoft/office-js@1.1.3-private.35/dist/office.d.ts
+
+buildLog: https://travis-ci.org/OfficeDev/office-js/builds/326232282
