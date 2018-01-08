@@ -1,6 +1,6 @@
 [![NPM Deployment Status](https://travis-ci.org/OfficeDev/office-js.svg?branch=release)](https://travis-ci.org/OfficeDev/office-js/builds)
 
-# This branch acts as the "command" infrastructure for NPM deployments of "@microsoft/office-js"
+# This branch acts as the deployment infrastructure for NPM deployments of "@microsoft/office-js"
 
 It's used to trigger a deployment to one of the official branches.
 
@@ -13,7 +13,10 @@ It's used to trigger a deployment to one of the official branches.
 4. Once the pull request is approved, the deployment will take place.
 
 
-# More info on this branch
+<br/>
+<br/>
+
+# FYI, more info regarding this branch
 
 The branch is an orphan branch, NOT INTENDED TO BE MERGED OR PULLED-INTO from the normal branches.  It is here for the the triggering of deployments only.
 
