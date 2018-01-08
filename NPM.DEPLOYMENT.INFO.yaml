@@ -1,0 +1,32 @@
+history:
+    privateBranchName: __private--beta-next--16.0.9002.5450--2018-01-07--9.15pm
+    commitMessage: __private--beta-next--16.0.9002.5450--2018-01-07--9.15pm
+    fullCommitHistory:
+        - 
+            sha: >-
+                https://github.com/OfficeDev/office-js/commits/8958648cdecc2d6ea4ede9f6872a79fd485f7b08
+            message: >-
+                JS dist files --
+                __private--beta-next--16.0.9002.5450--2018-01-07--9.15pm
+        - 
+            sha: >-
+                https://github.com/OfficeDev/office-js/commits/6e615cdf0ea7f951eda0e4c921c50b94b9de4362
+            message: >-
+                Localized strings --
+                __private--beta-next--16.0.9002.5450--2018-01-07--9.15pm
+        - 
+            sha: >-
+                https://github.com/OfficeDev/office-js/commits/529ea005a74870ae8c017e44dedbb7785f9b590c
+            message: Copying other assets from the release branch of the repo
+        - 
+            sha: >-
+                https://github.com/OfficeDev/office-js/commits/dfe5e0de822497423d3923e6576c5ad5f2142097
+            message: >-
+                [PUBLISH TOOL] Add deployment infrastructure for private NPM
+                publish
+        - 
+            sha: >-
+                https://github.com/OfficeDev/office-js/commits/af15b02674effe40ea03076f35897dd27d789e60
+            message: >-
+                [BEGIN PUBLISH UPDATES] --
+                __private--beta-next--16.0.9002.5450--2018-01-07--9.15pm
