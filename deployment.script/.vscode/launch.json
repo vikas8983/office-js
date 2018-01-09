@@ -1,6 +1,8 @@
 {
     // NOTE, to modify this file to be skipped (when entering environmental variables), run:
     //     "git update-index --skip-worktree .vscode\launch.json"
+    // undo via:  git update-index --no-skip-worktree .vscode\launch.json
+
     "version": "0.2.0",
     "configurations": [
         {
