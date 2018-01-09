@@ -49,13 +49,14 @@ interface IEnvironmentVariables {
 
 const OFFICIAL_BRANCHES = ["release", "release-next", "beta", "beta-next"];
 const DEPLOYMENT_QUEUE_BRANCH = "deployment-queue";
+const ADHOC_TAG = "adhoc"; // used to tag NPM releases, and also expected to be part of a "__adhoc"-prefixed branch
 
 let WORKING_DIRECTORY = path.resolve(process.env.TRAVIS_BUILD_DIR, "..", "working-travis-output-dir");
 
 interface IOfficialBranchDeployRequest {
     targetBranch: string;
     from: string;
-    deletePrivateBranchOnSuccessfulDeployment: boolean;
+    deleteAdhocBranchOnSuccessfulDeployment: boolean;
 }
 
 interface IDeploymentParams {
@@ -87,8 +88,9 @@ async function attemptDeployScript() {
 
     precheckOrExit();
 
-    if (process.env.TRAVIS_BRANCH.startsWith("__private")) {
-        await doDeployment(await getPrivateBranchDeploymentParams());
+    if (process.env.TRAVIS_BRANCH.startsWith("__" + ADHOC_TAG)) {
+        const version = await VersionUtils.getNextVersionNumberForNonReleaseTag(ADHOC_TAG);
+        await doDeployment({ version, npmPublishTag: ADHOC_TAG });
         return;
 
     } else if (process.env.TRAVIS_BRANCH === DEPLOYMENT_QUEUE_BRANCH) {
@@ -107,12 +109,11 @@ async function attemptDeployScript() {
 
     } else {
         const message = stripSpaces(`
-                UNKNOWN BRANCH:
-                Branch "${process.env.TRAVIS_BRANCH}" neither starts with "__private" or "__travis-queue",
-                    nor matches any of the following: [${
-            OFFICIAL_BRANCHES.map(item => `"${item}"`).join(", ")
-            }].
-            `);
+            UNKNOWN BRANCH: Branch "${process.env.TRAVIS_BRANCH}" does not match any of the following:
+                * A branch that starts with "__${ADHOC_TAG}".
+                * The "${DEPLOYMENT_QUEUE_BRANCH}" branch.
+                * Any of the following official branches: [${OFFICIAL_BRANCHES.map(item => `"${item}"`).join(", ")}].
+        `);
         banner('SKIPPING DEPLOYMENT', message, chalk.yellow.bold);
         return;
     }
@@ -190,7 +191,8 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
         version,
         historyInfo,
         travisBuildId: process.env.TRAVIS_BUILD_ID,
-        travisBuildNumber: process.env.TRAVIS_BUILD_NUMBER
+        travisBuildNumber: process.env.TRAVIS_BUILD_NUMBER,
+        isOfficialBuild: npmPublishTag !== ADHOC_TAG,
     });
 
     const repoLocalFolderPath = WORKING_DIRECTORY + "/" + "office-js/";
@@ -286,31 +288,23 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
     }
 
     banner('SUCCESS, DEPLOYMENT COMPLETE!', markdownReleaseNotes, chalk.green.bold);
+
+    banner(`GitHub Releases page for v${version}`, `https://github.com/OfficeDev/office-js/releases/tag/v${version}`, chalk.green.bold);
 }
 
-function getHistoryInfoFromSubmittedRepoState(): { commitMessage: string, privateBranchName: string, fullCommitHistory: string } {
+function getHistoryInfoFromSubmittedRepoState(): { commitMessage: string, adhocBranchName: string, fullCommitHistory: string } {
     const fullPath = process.env.TRAVIS_BUILD_DIR + "/" + DEPLOYMENT_YAML_FILENAME;
     if (!fs.existsSync(fullPath)) {
         banner(`No ${DEPLOYMENT_YAML_FILENAME} found!`, "Will use what is available on the the environment variables instead", chalk.yellow.bold);
         return {
             commitMessage: process.env.TRAVIS_COMMIT_MESSAGE,
-            privateBranchName: process.env.TRAVIS_BRANCH,
+            adhocBranchName: process.env.TRAVIS_BRANCH,
             fullCommitHistory: ""
         };
     }
 
     const contents = fs.readFileSync(fullPath).toString();
     return jsyaml.safeLoad(contents)["history"];
-}
-
-async function getPrivateBranchDeploymentParams(): Promise<IDeploymentParams> {
-    const npmPublishTag = "private";
-    const version = await VersionUtils.getNextVersionNumberForNonReleaseTag(npmPublishTag);
-
-    return {
-        version,
-        npmPublishTag
-    };
 }
 
 async function doOfficialDeployment(): Promise<void> {
@@ -347,7 +341,7 @@ async function doOfficialDeployment(): Promise<void> {
 //         : await VersionUtils.getNextVersionNumberForNonReleaseTag(targetBranchName);
 
 //     // Note that for official branches, the NPM tag and github tag are the same thing
-//     //     (unlike for private branches, where the tag is always "private", but the branch is "__private-xyz")
+//     //     (unlike for adhoc branches, where the tag is always "adhoc", but the branch is "__adhoc-xyz")
 //     const npmPublishTag = targetBranchName;
 
 //     return {

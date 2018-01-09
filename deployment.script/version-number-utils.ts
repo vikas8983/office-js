@@ -26,7 +26,7 @@ export async function getReleasePackageVersonStringFromRepo(): Promise<string> {
 export async function getNextReleaseVersionNumber() {
     let currentReleaseVersionString = await getReleasePackageVersonStringFromRepo();
     // For release, increment it not by one patch version, but by TWO.
-    // That way, the release-next/beta/beta-next/private versions don't get mixed up with the main one
+    // That way, the release-next/beta/beta-next/adhoc versions don't get mixed up with the main one
     // (e.g., in a dropdown or alphabetical list.)
 
     const oneUp = semver.inc(currentReleaseVersionString, "patch")!;
@@ -90,12 +90,12 @@ export function generateDeploymentYamlText(partialContext: {
     travisBuildNumber: string,
     travisBuildId: string,
     npmPublishTag: string,
+    isOfficialBuild: boolean
     historyInfo: {}
 }): string {
     const context = {
         ...partialContext,
         deployedAt: `${moment().utc().format('YYYY-MM-DD h:mm a')} UTC  (${moment().tz("America/Los_Angeles").format('YYYY-MM-DD h:mm a')} Pacific Time)`,
-        isOfficialBuild: partialContext.npmPublishTag !== "private",
         historyBlockString: jsyaml.safeDump({ history: partialContext.historyInfo }, { indent: 4 })
     };
 
