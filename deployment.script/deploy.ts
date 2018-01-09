@@ -288,6 +288,8 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
     }
 
     banner('SUCCESS, DEPLOYMENT COMPLETE!', markdownReleaseNotes, chalk.green.bold);
+
+    banner(`GitHub Releases page for v${version}`, `https://github.com/OfficeDev/office-js/releases/tag/v${version}`, chalk.green.bold);
 }
 
 function getHistoryInfoFromSubmittedRepoState(): { commitMessage: string, adhocBranchName: string, fullCommitHistory: string } {
