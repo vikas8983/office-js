@@ -1,50 +1,32 @@
-version: 1.1.3-private.36
-githubReleaseUrl: https://github.com/OfficeDev/office-js/releases/tag/v1.1.3-private.36
-githubViewUrl: https://github.com/OfficeDev/office-js/tree/v1.1.3-private.36
-deployedAt: 2018-01-08 8:33 pm UTC  (2018-01-08 12:33 pm Pacific Time)
-
 history:
-    privateBranchName: __private--beta--local-enlistment--2018-01-08--12.24pm
-    commitMessage: __private--beta--local-enlistment--2018-01-08--12.24pm
+    adhocBranchName: __adhoc--beta--local-enlistment--2018-01-08--4.30pm
+    commitMessage: __adhoc--beta--local-enlistment--2018-01-08--4.30pm
     fullCommitHistory:
         - 
             sha: >-
-                https://github.com/OfficeDev/office-js/commits/7196d7016c9787d7764aa078e174c2a50f2c6504
+                https://github.com/OfficeDev/office-js/commits/12863f2cffe0157b31390ae38f31dba818d8886a
             message: >-
                 JS dist files --
-                __private--beta--local-enlistment--2018-01-08--12.24pm
+                __adhoc--beta--local-enlistment--2018-01-08--4.30pm
         - 
             sha: >-
-                https://github.com/OfficeDev/office-js/commits/f6603fde40c4175df9a02c4e80dea774d9183fd1
+                https://github.com/OfficeDev/office-js/commits/420dc6c9a77e4719ee31cc718782183d86375b6a
             message: >-
                 Localized strings --
-                __private--beta--local-enlistment--2018-01-08--12.24pm
+                __adhoc--beta--local-enlistment--2018-01-08--4.30pm
         - 
             sha: >-
-                https://github.com/OfficeDev/office-js/commits/6b63b69af61172a1b1296f9101d44765d781706e
+                https://github.com/OfficeDev/office-js/commits/29954d8d250d075146388de51860c7ad37a4fab9
             message: Copying other assets from the release branch of the repo
         - 
             sha: >-
-                https://github.com/OfficeDev/office-js/commits/c466bcdaeeab2a690668772a5ac438a4781f30e0
+                https://github.com/OfficeDev/office-js/commits/e540b564744d63bf55939031912bccfc7a417b90
             message: >-
-                [PUBLISH TOOL] Add deployment infrastructure for private NPM
+                [PUBLISH TOOL] Add deployment infrastructure for adhoc NPM
                 publish
         - 
             sha: >-
-                https://github.com/OfficeDev/office-js/commits/8aea45bae591ae6075fbcd8b3901f2c1f14e7342
+                https://github.com/OfficeDev/office-js/commits/c9eb17c7e5bdfa16d02626e08b80c8924bf86d01
             message: >-
                 [BEGIN PUBLISH UPDATES] --
-                __private--beta--local-enlistment--2018-01-08--12.24pm
-
-
-unpkgUrls: |-
-    this specific build number:
-        https://unpkg.com/@microsoft/office-js@1.1.3-private.36/dist/office.js
-        https://unpkg.com/@microsoft/office-js@1.1.3-private.36/dist/office.d.ts
-
-scriptLabReferences: |-
-    this specific build number:
-        @microsoft/office-js@1.1.3-private.36/dist/office.js
-        @microsoft/office-js@1.1.3-private.36/dist/office.d.ts
-
-buildLog: https://travis-ci.org/OfficeDev/office-js/builds/326540552
+                __adhoc--beta--local-enlistment--2018-01-08--4.30pm
