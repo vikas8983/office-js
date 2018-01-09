@@ -21,13 +21,13 @@ targetBranch:
 
 
 # Now specify the URL to the commits listing FOR THE BRANCH YOU WANT TO COPY THE FILES FROM.
-#    The branch must a "__private-..."-prefixed branch
+#    The branch must a "__adhoc-..."-prefixed branch
 
 from:
 
 
 
-# Would you like to automatically delete the private branch on completion?
+# Would you like to automatically delete the adhoc branch on completion?
 #    (Generally yes -- there is nothing left to do with the branch, it's only in the way)
 
-deletePrivateBranchOnSuccessfulDeployment: true
+deleteAdhocBranchOnSuccessfulDeployment: true
