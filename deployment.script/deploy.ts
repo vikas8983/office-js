@@ -252,7 +252,7 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
     console.log(`    git push --delete origin {${gitTagName}}`);
     console.log(`And also discard the resulting draft from "https://github.com/OfficeDev/office-js/releases"`);
 
-    const markdownReleaseNotes = VersionUtils.generateReleaseMarkdownText({
+    const markdownReleasesNotes = VersionUtils.generateMarkdownDescription({
         npmPublishTag,
         DEPLOYMENT_YAML_FILENAME,
         version,
@@ -269,7 +269,7 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
         body: JSON.stringify({
             "tag_name": gitTagName,
             "name": gitTagName,
-            "body": markdownReleaseNotes,
+            "body": markdownReleasesNotes,
             "prerelease": true,
             "draft": false
         })
@@ -287,7 +287,7 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
         fs.removeSync(repoLocalFolderPath);
     }
 
-    banner('SUCCESS, DEPLOYMENT COMPLETE!', markdownReleaseNotes, chalk.green.bold);
+    banner('SUCCESS, DEPLOYMENT COMPLETE!', markdownReleasesNotes.replace(/&nbsp;/g, ' '), chalk.green.bold);
 
     banner(`GitHub Releases page for v${version}`, `https://github.com/OfficeDev/office-js/releases/tag/v${version}`, chalk.green.bold);
 }

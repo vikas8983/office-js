@@ -108,24 +108,14 @@ export function generateDeploymentYamlText(partialContext: {
         {{{historyBlockString}}}
 
         unpkgUrls: |-
+            this specific build number:
+                https://unpkg.com/@microsoft/office-js@{{{version}}}/dist/office.js
+                https://unpkg.com/@microsoft/office-js@{{{version}}}/dist/office.d.ts
         {{#if isOfficialBuild}}
             builds using this same tag ("{{{npmPublishTag}}}"):
                 https://unpkg.com/@microsoft/office-js@{{{npmPublishTag}}}/dist/office.js
                 https://unpkg.com/@microsoft/office-js@{{{npmPublishTag}}}/dist/office.d.ts
         {{/if}}
-            this specific build number:
-                https://unpkg.com/@microsoft/office-js@{{{version}}}/dist/office.js
-                https://unpkg.com/@microsoft/office-js@{{{version}}}/dist/office.d.ts
-
-        scriptLabReferences: |-
-        {{#if isOfficialBuild}}
-            builds using this same tag ("{{{npmPublishTag}}}"):
-                @microsoft/office-js@{{{npmPublishTag}}}/dist/office.js
-                @microsoft/office-js@{{{npmPublishTag}}}/dist/office.d.ts
-        {{/if}}
-            this specific build number:
-                @microsoft/office-js@{{{version}}}/dist/office.js
-                @microsoft/office-js@{{{version}}}/dist/office.d.ts
 
         buildLog: https://travis-ci.org/OfficeDev/office-js/builds/{{{travisBuildId}}}
     `);
@@ -133,7 +123,7 @@ export function generateDeploymentYamlText(partialContext: {
     return handlebars.compile(template)(context);
 }
 
-export function generateReleaseMarkdownText(context: {
+export function generateMarkdownDescription(context: {
     commitMessage: string;
     version: string;
     travisBuildId: string;
@@ -141,32 +131,39 @@ export function generateReleaseMarkdownText(context: {
     DEPLOYMENT_YAML_FILENAME: string
 }): string {
     const template = stripSpaces(`
-        ### {{{commitMessage}}}
+        ### From version "{{{commitMessage}}}"
 
         * Full version details & commit history: https://github.com/OfficeDev/office-js/blob/v{{{version}}}/{{{DEPLOYMENT_YAML_FILENAME}}}
         * Build log: https://travis-ci.org/OfficeDev/office-js/builds/{{{travisBuildId}}}
 
-        ### Unpkg URLs:
+        <br />
 
+        ### Unpkg CDN URLs
+        > #### This specific build number:
+        > * https://unpkg.com/@microsoft/office-js@{{{version}}}/dist/office.js
+        > * https://unpkg.com/@microsoft/office-js@{{{version}}}/dist/office.d.ts
         {{#if isOfficialBuild}}
         > #### Builds using this same tag ("{{{npmPublishTag}}}"):
         > https://unpkg.com/@microsoft/office-js@{{{npmPublishTag}}}/dist/office.js
         > https://unpkg.com/@microsoft/office-js@{{{npmPublishTag}}}/dist/office.d.ts
         {{/if}}
-        > #### This specific build number:
-        > * https://unpkg.com/@microsoft/office-js@{{{version}}}/dist/office.js
-        > * https://unpkg.com/@microsoft/office-js@{{{version}}}/dist/office.d.ts
 
-        ### Script Lab references:
+        ### IntelliSense
 
+        > #### Script Lab:
+        > * Copy-paste both of the above URLs (**office.js** *and* **office.d.ts**) into the **Libraries** tab.  That's it.
+        >
+        > #### TypeScript-based project:
+        > 1. \`npm install @microsoft/{{{version}}}\`  (for this specific build number)
         {{#if isOfficialBuild}}
-        > #### Builds using this same tag ("{{{npmPublishTag}}}"):
-        > * @microsoft/office-js@{{{npmPublishTag}}}/dist/office.js
-        > * @microsoft/office-js@{{{npmPublishTag}}}/dist/office.d.ts
-        {{/if}}
-        > #### This specific build number:
-        > * @microsoft/office-js@{{{version}}}/dist/office.js
-        > * @microsoft/office-js@{{{version}}}/dist/office.d.ts
+        >         &nbsp;&nbsp;&nbsp;&nbsp; or
+        >    \`npm install @microsoft/office-js@{{{npmPublishTag}}}\`  (for any version of the "npmPublishTag" tag)
+        > 2. At the top of the TS file, add:
+        > \`/// <reference path="./node_modules/@microsoft/office-js/dist/office.d.ts" />\`
+        >
+        > #### VS JavaScript-based project
+        > * VS **2017**:  Download the **d.ts** file from above link and stick it inside your project.
+        > * VS **2015** or earlier:  Under \`Scripts\\_references.js\`, replace the URL inside \`/// <reference path="https://appsforoffice.microsoft.com/lib/1/hosted/office.js" />\` with the **.js** (*not* d.ts) URL above.
     `);
 
     return handlebars.compile(template)(context);
