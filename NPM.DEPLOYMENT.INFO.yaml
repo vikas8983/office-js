@@ -1,0 +1,33 @@
+tag: adhoc
+history:
+    adhocBranchName: __adhoc--current--local-enlistment--2018-01-12--11.37am
+    commitMessage: __adhoc--current--local-enlistment--2018-01-12--11.37am
+    fullCommitHistory:
+        - 
+            sha: >-
+                https://github.com/OfficeDev/office-js/commits/6ce7cee8e542f3412d5877470056141f43234d3c
+            message: >-
+                JS dist files --
+                __adhoc--current--local-enlistment--2018-01-12--11.37am
+        - 
+            sha: >-
+                https://github.com/OfficeDev/office-js/commits/5ffd075e7dcddb1ac84d1fc948ef9438bd97a36e
+            message: >-
+                Localized strings --
+                __adhoc--current--local-enlistment--2018-01-12--11.37am
+        - 
+            sha: >-
+                https://github.com/OfficeDev/office-js/commits/c9e5e17523a001d205143f63ab790030abde296b
+            message: Copying other assets from the release branch of the repo
+        - 
+            sha: >-
+                https://github.com/OfficeDev/office-js/commits/e0c9e1f1a7ba03398190c7b9b45d98905abfcb1b
+            message: >-
+                [PUBLISH TOOL] Add deployment infrastructure for adhoc NPM
+                publish
+        - 
+            sha: >-
+                https://github.com/OfficeDev/office-js/commits/84dcdcf1ba84b5aaa0e88f24f31b708d9321f003
+            message: >-
+                [BEGIN PUBLISH UPDATES] --
+                __adhoc--current--local-enlistment--2018-01-12--11.37am
