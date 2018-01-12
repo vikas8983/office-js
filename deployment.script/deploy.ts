@@ -7,7 +7,7 @@ import * as fs from "fs-extra";
 import * as path from 'path';
 import * as jsyaml from 'js-yaml';
 
-import { banner, stripSpaces, execCommand } from "./util";
+import { banner, stripSpaces, execCommand, fetchAndThrowOnError } from "./util";
 import * as VersionUtils from "./version-number-utils";
 
 declare var process: {
@@ -101,7 +101,7 @@ async function attemptDeployScript() {
     precheckOrExit();
 
     if (process.env.TRAVIS_BRANCH.startsWith(ADHOC_BRANCH_PREFIX)) {
-        const deploymentInfoFromSubmittedRepoState = getDeploymentInfoFromSubmittedRepoState();
+        const deploymentInfoFromSubmittedRepoState = await getDeploymentInfoFromSubmittedRepoState();
         const npmPublishTag = deploymentInfoFromSubmittedRepoState.tag;
         const version = await VersionUtils.getNextVersionNumberForNonReleaseTag(npmPublishTag);
         await doDeployment({ version, npmPublishTag, deploymentInfoFromSubmittedRepoState });
@@ -113,11 +113,11 @@ async function attemptDeployScript() {
 
     } else if (OFFICIAL_BRANCHES.indexOf(process.env.TRAVIS_BRANCH) >= 0) {
         const message = stripSpaces(`
-                Deployment to one of the official branches must happen through the
-                "${DEPLOYMENT_QUEUE_BRANCH}" branch. Please see
-                https://github.com/OfficeDev/office-js/blob/deployment-queue/README.md
-                for more info.
-            `);
+            Deployment to one of the official branches must happen through the
+            "${DEPLOYMENT_QUEUE_BRANCH}" branch. Please see
+            https://github.com/OfficeDev/office-js/blob/deployment-queue/README.md
+            for more info.
+        `);
         banner('SKIPPING DEPLOYMENT', message, chalk.yellow.bold);
         return;
 
@@ -199,13 +199,21 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
 
     banner("This deployment's target NPM version", "Target package version: " + version, chalk.magenta.bold);
 
-    const deploymentFileContents = VersionUtils.generateDeploymentYamlText({
+    const commonHandlebarsParams = {
         npmPublishTag,
         version,
-        historyInfo: deploymentInfoFromSubmittedRepoState.history,
         travisBuildId: process.env.TRAVIS_BUILD_ID,
-        travisBuildNumber: process.env.TRAVIS_BUILD_NUMBER,
         includeTagUrls: npmPublishTag !== DEFAULT_ADHOC_TAG,
+    };
+    const deploymentFileContents = VersionUtils.generateDeploymentYamlText({
+        ...commonHandlebarsParams,
+        historyInfo: deploymentInfoFromSubmittedRepoState.history,
+        travisBuildNumber: process.env.TRAVIS_BUILD_NUMBER,
+    });
+    const markdownReleasesNotes = VersionUtils.generateMarkdownDescription({
+        ...commonHandlebarsParams,
+        DEPLOYMENT_YAML_FILENAME,
+        commitMessage: deploymentInfoFromSubmittedRepoState.history.commitMessage,
     });
 
     const repoLocalFolderPath = WORKING_DIRECTORY + "/" + "office-js/";
@@ -253,7 +261,8 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
     if (npmPublishTag === "release") {
         execCommand(`npm publish`);
     }
-
+    console.log(`FYI, if you need to unpublish (must be done within the first 24 hours), run:`);
+    console.log(`    npm unpublish @microsoft/office-js@${version}`);
 
     // If NPM succeeded, tag it and also add an NPM release:
     console.log(`Also tag the branch, and make a GitHub release: https://github.com/OfficeDev/office-js/releases/tag/${gitTagName}`);
@@ -261,18 +270,9 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
     execCommand(`git tag -a ${gitTagName} -m "${commitMessage}"`);
     execCommand(`git push origin ${gitTagName}`);
 
-    console.log(`FYI, if will need to delete the tag, run`);
-    console.log(`    git push --delete origin {${gitTagName}}`);
+    console.log(`FYI, if you need to delete the tag, run`);
+    console.log(`    git push --delete origin ${gitTagName}`);
     console.log(`And also discard the resulting draft from "https://github.com/OfficeDev/office-js/releases"`);
-
-    const markdownReleasesNotes = VersionUtils.generateMarkdownDescription({
-        npmPublishTag,
-        DEPLOYMENT_YAML_FILENAME,
-        version,
-        commitMessage: deploymentInfoFromSubmittedRepoState.history.commitMessage,
-        travisBuildId: process.env.TRAVIS_BUILD_ID,
-        includeTagUrls: npmPublishTag !== DEFAULT_ADHOC_TAG,
-    });
 
     // Documentation: https://developer.github.com/v3/repos/releases/#create-a-release
     const response = await fetch("https://api.github.com/repos/OfficeDev/office-js/releases", {
@@ -306,18 +306,16 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
     banner(`GitHub Releases page for v${version}`, `https://github.com/OfficeDev/office-js/releases/tag/v${version}`, chalk.green.bold);
 }
 
-function getDeploymentInfoFromSubmittedRepoState(): IDeploymentInfoFromSubmittedRepo {
-    const fullPath = process.env.TRAVIS_BUILD_DIR + "/" + DEPLOYMENT_YAML_FILENAME;
-    if (!fs.existsSync(fullPath)) {
-        throw new Error(`No ${DEPLOYMENT_YAML_FILENAME} found!`);
-    }
+async function getDeploymentInfoFromSubmittedRepoState(): Promise<IDeploymentInfoFromSubmittedRepo> {
+    const url = `https://raw.githubusercontent.com/OfficeDev/office-js/${process.env.TRAVIS_BRANCH}/NPM.DEPLOYMENT.INFO.yaml`;
+    const contents = await fetchAndThrowOnError(url, "text");
 
-    const contents = fs.readFileSync(fullPath).toString();
     const result = jsyaml.safeLoad(contents) as IDeploymentInfoFromSubmittedRepo;
     if (result.history && result.tag) {
         return result;
     } else {
-        throw new Error(`Missing required fields from in-repo "${DEPLOYMENT_YAML_FILENAME}" file.`);
+        throw new Error(`Missing required fields from in-repo "${DEPLOYMENT_YAML_FILENAME}" file.` +
+            "\n\n" + url + "\n\n" + contents);
     }
 }
 

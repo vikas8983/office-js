@@ -101,6 +101,7 @@ export function generateDeploymentYamlText(partialContext: {
 
     const template = stripSpaces(`
         version: {{{version}}}
+        tag: {{{npmPublishTag}}}
         githubReleaseUrl: https://github.com/OfficeDev/office-js/releases/tag/v{{{version}}}
         githubViewUrl: https://github.com/OfficeDev/office-js/tree/v{{{version}}}
         deployedAt: {{{deployedAt}}}
@@ -153,12 +154,12 @@ export function generateMarkdownDescription(context: {
 
         > #### Script Lab:
         > * Copy-paste both of the above URLs (**office.js** *and* **office.d.ts**) into the **Libraries** tab.  That's it.
-        >
         > #### TypeScript-based project:
         > 1. \`npm install @microsoft/{{{version}}}\`  (for this specific build number)
         {{#if isOfficialBuild}}
         >         &nbsp;&nbsp;&nbsp;&nbsp; or
         >    \`npm install @microsoft/office-js@{{{npmPublishTag}}}\`  (for any version of the "npmPublishTag" tag)
+        {{/if}}
         > 2. At the top of the TS file, add:
         > \`/// <reference path="./node_modules/@microsoft/office-js/dist/office.d.ts" />\`
         >
