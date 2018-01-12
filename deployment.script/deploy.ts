@@ -49,9 +49,20 @@ interface IEnvironmentVariables {
 
 const OFFICIAL_BRANCHES = ["release", "release-next", "beta", "beta-next"];
 const DEPLOYMENT_QUEUE_BRANCH = "deployment-queue";
-const ADHOC_TAG = "adhoc"; // used to tag NPM releases, and also expected to be part of a "__adhoc"-prefixed branch
+const ADHOC_BRANCH_PREFIX = "__adhoc";
+const DEFAULT_ADHOC_TAG = "adhoc";
 
-let WORKING_DIRECTORY = path.resolve(process.env.TRAVIS_BUILD_DIR, "..", "working-travis-output-dir");
+interface IDeploymentInfoFromSubmittedRepo {
+    tag: string,
+    history: {
+        commitMessage: string,
+        adhocBranchName: string,
+        fullCommitHistory: string
+    }
+}
+let deploymentInfoFromSubmittedRepoState: IDeploymentInfoFromSubmittedRepo;
+
+const WORKING_DIRECTORY = path.resolve(process.env.TRAVIS_BUILD_DIR, "..", "working-travis-output-dir");
 
 interface IOfficialBranchDeployRequest {
     targetBranch: string;
@@ -88,9 +99,12 @@ async function attemptDeployScript() {
 
     precheckOrExit();
 
-    if (process.env.TRAVIS_BRANCH.startsWith("__" + ADHOC_TAG)) {
-        const version = await VersionUtils.getNextVersionNumberForNonReleaseTag(ADHOC_TAG);
-        await doDeployment({ version, npmPublishTag: ADHOC_TAG });
+    deploymentInfoFromSubmittedRepoState = getDeploymentInfoFromSubmittedRepoState();
+
+    if (process.env.TRAVIS_BRANCH.startsWith(ADHOC_BRANCH_PREFIX)) {
+        const npmPublishTag = deploymentInfoFromSubmittedRepoState.tag;
+        const version = await VersionUtils.getNextVersionNumberForNonReleaseTag(npmPublishTag);
+        await doDeployment({ version, npmPublishTag });
         return;
 
     } else if (process.env.TRAVIS_BRANCH === DEPLOYMENT_QUEUE_BRANCH) {
@@ -110,7 +124,7 @@ async function attemptDeployScript() {
     } else {
         const message = stripSpaces(`
             UNKNOWN BRANCH: Branch "${process.env.TRAVIS_BRANCH}" does not match any of the following:
-                * A branch that starts with "__${ADHOC_TAG}".
+                * A branch that starts with "__${ADHOC_BRANCH_PREFIX}".
                 * The "${DEPLOYMENT_QUEUE_BRANCH}" branch.
                 * Any of the following official branches: [${OFFICIAL_BRANCHES.map(item => `"${item}"`).join(", ")}].
         `);
@@ -185,14 +199,13 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
 
     banner("This deployment's target NPM version", "Target package version: " + version, chalk.magenta.bold);
 
-    const historyInfo = getHistoryInfoFromSubmittedRepoState();
     const deploymentFileContents = VersionUtils.generateDeploymentYamlText({
         npmPublishTag,
         version,
-        historyInfo,
+        historyInfo: deploymentInfoFromSubmittedRepoState.history,
         travisBuildId: process.env.TRAVIS_BUILD_ID,
         travisBuildNumber: process.env.TRAVIS_BUILD_NUMBER,
-        isOfficialBuild: npmPublishTag !== ADHOC_TAG,
+        includeTagUrls: npmPublishTag !== DEFAULT_ADHOC_TAG,
     });
 
     const repoLocalFolderPath = WORKING_DIRECTORY + "/" + "office-js/";
@@ -256,8 +269,9 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
         npmPublishTag,
         DEPLOYMENT_YAML_FILENAME,
         version,
-        commitMessage: historyInfo.commitMessage,
+        commitMessage: deploymentInfoFromSubmittedRepoState.history.commitMessage,
         travisBuildId: process.env.TRAVIS_BUILD_ID,
+        includeTagUrls: npmPublishTag !== DEFAULT_ADHOC_TAG,
     });
 
     // Documentation: https://developer.github.com/v3/repos/releases/#create-a-release
@@ -292,19 +306,19 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
     banner(`GitHub Releases page for v${version}`, `https://github.com/OfficeDev/office-js/releases/tag/v${version}`, chalk.green.bold);
 }
 
-function getHistoryInfoFromSubmittedRepoState(): { commitMessage: string, adhocBranchName: string, fullCommitHistory: string } {
+function getDeploymentInfoFromSubmittedRepoState(): IDeploymentInfoFromSubmittedRepo {
     const fullPath = process.env.TRAVIS_BUILD_DIR + "/" + DEPLOYMENT_YAML_FILENAME;
     if (!fs.existsSync(fullPath)) {
-        banner(`No ${DEPLOYMENT_YAML_FILENAME} found!`, "Will use what is available on the the environment variables instead", chalk.yellow.bold);
-        return {
-            commitMessage: process.env.TRAVIS_COMMIT_MESSAGE,
-            adhocBranchName: process.env.TRAVIS_BRANCH,
-            fullCommitHistory: ""
-        };
+        throw new Error(`No ${DEPLOYMENT_YAML_FILENAME} found!`);
     }
 
     const contents = fs.readFileSync(fullPath).toString();
-    return jsyaml.safeLoad(contents)["history"];
+    const result = jsyaml.safeLoad(contents) as IDeploymentInfoFromSubmittedRepo;
+    if (result.history && result.tag) {
+        return result;
+    } else {
+        throw new Error(`Missing required fields from in-repo "${DEPLOYMENT_YAML_FILENAME}" file.`);
+    }
 }
 
 async function doOfficialDeployment(): Promise<void> {

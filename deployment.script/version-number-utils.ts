@@ -90,7 +90,7 @@ export function generateDeploymentYamlText(partialContext: {
     travisBuildNumber: string,
     travisBuildId: string,
     npmPublishTag: string,
-    isOfficialBuild: boolean
+    includeTagUrls: boolean
     historyInfo: {}
 }): string {
     const context = {
@@ -111,7 +111,7 @@ export function generateDeploymentYamlText(partialContext: {
             this specific build number:
                 https://unpkg.com/@microsoft/office-js@{{{version}}}/dist/office.js
                 https://unpkg.com/@microsoft/office-js@{{{version}}}/dist/office.d.ts
-        {{#if isOfficialBuild}}
+        {{#if includeTagUrls}}
             builds using this same tag ("{{{npmPublishTag}}}"):
                 https://unpkg.com/@microsoft/office-js@{{{npmPublishTag}}}/dist/office.js
                 https://unpkg.com/@microsoft/office-js@{{{npmPublishTag}}}/dist/office.d.ts
@@ -128,7 +128,8 @@ export function generateMarkdownDescription(context: {
     version: string;
     travisBuildId: string;
     npmPublishTag: string;
-    DEPLOYMENT_YAML_FILENAME: string
+    includeTagUrls: boolean;
+    DEPLOYMENT_YAML_FILENAME: string;
 }): string {
     const template = stripSpaces(`
         ### From version "{{{commitMessage}}}"
@@ -142,7 +143,7 @@ export function generateMarkdownDescription(context: {
         > #### This specific build number:
         > * https://unpkg.com/@microsoft/office-js@{{{version}}}/dist/office.js
         > * https://unpkg.com/@microsoft/office-js@{{{version}}}/dist/office.d.ts
-        {{#if isOfficialBuild}}
+        {{#if includeTagUrls}}
         > #### Builds using this same tag ("{{{npmPublishTag}}}"):
         > https://unpkg.com/@microsoft/office-js@{{{npmPublishTag}}}/dist/office.js
         > https://unpkg.com/@microsoft/office-js@{{{npmPublishTag}}}/dist/office.d.ts
