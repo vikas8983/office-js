@@ -60,7 +60,6 @@ interface IDeploymentInfoFromSubmittedRepo {
         fullCommitHistory: string
     }
 }
-let deploymentInfoFromSubmittedRepoState: IDeploymentInfoFromSubmittedRepo;
 
 const WORKING_DIRECTORY = path.resolve(process.env.TRAVIS_BUILD_DIR, "..", "working-travis-output-dir");
 
@@ -77,6 +76,8 @@ interface IDeploymentParams {
     /** A script to run after cloning. Note that the current working directory at that point
      * is still the original one from the start of the script */
     afterCloneBeforeCommit?: (repoLocalFolderPath: string) => Promise<any>;
+
+    deploymentInfoFromSubmittedRepoState: IDeploymentInfoFromSubmittedRepo;
 }
 
 (async () => {
@@ -99,12 +100,11 @@ async function attemptDeployScript() {
 
     precheckOrExit();
 
-    deploymentInfoFromSubmittedRepoState = getDeploymentInfoFromSubmittedRepoState();
-
     if (process.env.TRAVIS_BRANCH.startsWith(ADHOC_BRANCH_PREFIX)) {
+        const deploymentInfoFromSubmittedRepoState = getDeploymentInfoFromSubmittedRepoState();
         const npmPublishTag = deploymentInfoFromSubmittedRepoState.tag;
         const version = await VersionUtils.getNextVersionNumberForNonReleaseTag(npmPublishTag);
-        await doDeployment({ version, npmPublishTag });
+        await doDeployment({ version, npmPublishTag, deploymentInfoFromSubmittedRepoState });
         return;
 
     } else if (process.env.TRAVIS_BRANCH === DEPLOYMENT_QUEUE_BRANCH) {
@@ -194,7 +194,7 @@ function precheckOrExit(): void {
 }
 
 async function doDeployment(params: IDeploymentParams): Promise<void> {
-    const { version, npmPublishTag } = params;
+    const { version, npmPublishTag, deploymentInfoFromSubmittedRepoState } = params;
     const gitTagName = "v" + params.version;
 
     banner("This deployment's target NPM version", "Target package version: " + version, chalk.magenta.bold);
