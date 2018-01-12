@@ -1,6 +1,6 @@
 #!/usr/bin/env node --harmony
 
-import { isString, isNil } from "lodash";
+import { isString, isNil, cloneDeep } from "lodash";
 import * as chalk from 'chalk';
 import * as shell from 'shelljs';
 import * as fs from "fs-extra";
@@ -48,17 +48,19 @@ interface IEnvironmentVariables {
 }
 
 const OFFICIAL_BRANCHES = ["release", "release-next", "beta", "beta-next"];
+const OFFICIAL_TAGS = cloneDeep(OFFICIAL_BRANCHES).concat("latest");
 const DEPLOYMENT_QUEUE_BRANCH = "deployment-queue";
 const ADHOC_BRANCH_PREFIX = "__adhoc";
 const DEFAULT_ADHOC_TAG = "adhoc";
 
 interface IDeploymentInfoFromSubmittedRepo {
     tag: string,
-    history: {
-        commitMessage: string,
-        adhocBranchName: string,
-        fullCommitHistory: string
-    }
+    history: IDeploymentInfoFromSubmittedRepoHistory,
+}
+interface IDeploymentInfoFromSubmittedRepoHistory {
+    commitMessage: string,
+    adhocBranchName: string,
+    fullCommitHistory: string,
 }
 
 const WORKING_DIRECTORY = path.resolve(process.env.TRAVIS_BUILD_DIR, "..", "working-travis-output-dir");
@@ -77,7 +79,7 @@ interface IDeploymentParams {
      * is still the original one from the start of the script */
     afterCloneBeforeCommit?: (repoLocalFolderPath: string) => Promise<any>;
 
-    deploymentInfoFromSubmittedRepoState: IDeploymentInfoFromSubmittedRepo;
+    historyInfo: IDeploymentInfoFromSubmittedRepoHistory;
 }
 
 (async () => {
@@ -104,7 +106,7 @@ async function attemptDeployScript() {
         const deploymentInfoFromSubmittedRepoState = await getDeploymentInfoFromSubmittedRepoState();
         const npmPublishTag = deploymentInfoFromSubmittedRepoState.tag;
         const version = await VersionUtils.getNextVersionNumberForNonReleaseTag(npmPublishTag);
-        await doDeployment({ version, npmPublishTag, deploymentInfoFromSubmittedRepoState });
+        await doDeployment({ version, npmPublishTag, historyInfo: deploymentInfoFromSubmittedRepoState.history });
         return;
 
     } else if (process.env.TRAVIS_BRANCH === DEPLOYMENT_QUEUE_BRANCH) {
@@ -194,8 +196,12 @@ function precheckOrExit(): void {
 }
 
 async function doDeployment(params: IDeploymentParams): Promise<void> {
-    const { version, npmPublishTag, deploymentInfoFromSubmittedRepoState } = params;
+    const { version, npmPublishTag, historyInfo } = params;
     const gitTagName = "v" + params.version;
+
+    if (OFFICIAL_TAGS.indexOf(npmPublishTag) >= 0) {
+        throw new Error("Private build may not use an official NPM tag!");
+    }
 
     banner("This deployment's target NPM version", "Target package version: " + version, chalk.magenta.bold);
 
@@ -207,13 +213,13 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
     };
     const deploymentFileContents = VersionUtils.generateDeploymentYamlText({
         ...commonHandlebarsParams,
-        historyInfo: deploymentInfoFromSubmittedRepoState.history,
+        historyInfo: historyInfo,
         travisBuildNumber: process.env.TRAVIS_BUILD_NUMBER,
     });
     const markdownReleasesNotes = VersionUtils.generateMarkdownDescription({
         ...commonHandlebarsParams,
         DEPLOYMENT_YAML_FILENAME,
-        commitMessage: deploymentInfoFromSubmittedRepoState.history.commitMessage,
+        commitMessage: historyInfo.commitMessage,
     });
 
     const repoLocalFolderPath = WORKING_DIRECTORY + "/" + "office-js/";
