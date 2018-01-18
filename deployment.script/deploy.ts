@@ -436,10 +436,6 @@ async function doOfficialDeployment(): Promise<void> {
             })();
         },
         rightBeforeCompletion: async () => {
-            if (currentYaml.deleteAdhocBranchOnSuccessfulDeployment) {
-                execCommand(`git push origin --delete ${currentYaml.from}`);
-            }
-
             (() => {
                 console.log(`Reset the ${DEPLOY_REQUEST_FILENAME} "from" and "targetBranch" keys:`);
                 const repoDeployCopyFolderPath = `${WORKING_DIRECTORY}/office-js-repo-deploy-copy-${new Date().getTime()}/`;
@@ -464,6 +460,10 @@ async function doOfficialDeployment(): Promise<void> {
                 fs.writeFileSync(repoDeployCopyDeployRequestFilePath, sanitizedDeployRequestFileContents);
                 execCommand(`git add -A`);
                 execCommand(`git push origin ${DEPLOYMENT_QUEUE_BRANCH}`);
+
+                if (currentYaml.deleteAdhocBranchOnSuccessfulDeployment) {
+                    execCommand(`git push origin --delete ${currentYaml.from}`);
+                }
             })();
         }
     });
