@@ -16,14 +16,14 @@
 #    * BETA files that are on EDOG but *NOT* the public CDN yet
 #         ==> choose "beta-next"
 
-targetBranch:
+targetBranch: beta
 
 
 
 # Now specify the URL to the commits listing FOR THE BRANCH YOU WANT TO COPY THE FILES FROM.
 #    The branch must a "__adhoc-..."-prefixed branch
 
-from:
+from: https://github.com/OfficeDev/office-js/commits/__adhoc--beta-next--16.0.8918.5450--2018-01-18--8.52am--beta-edog
 
 
 
