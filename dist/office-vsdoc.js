@@ -13011,7 +13011,7 @@ var Excel;
 	var Runtime = (function(_super) {
 		__extends(Runtime, _super);
 		function Runtime() {
-			/// <summary> Represents the Excel Runtime class. [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
+			/// <summary> Represents the Excel Runtime class. [Api set: ExcelApi 1.5] </summary>
 			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
 			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
 			/// <field name="enableEvents" type="Boolean">Turn on/off JavaScript events in current taskpane or content add-in. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>

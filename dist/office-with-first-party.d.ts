@@ -3934,6 +3934,20 @@ declare namespace Excel {
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         worksheetId: string;
+        /**
+         *
+         * Gets the range that represents the changed area of a specific worksheet.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getRange(ctx: Excel.RequestContext): Excel.Range;
+        /**
+         *
+         * Gets the range that represents the changed area of a specific worksheet. It might return null object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getRangeOrNullObject(ctx: Excel.RequestContext): Excel.Range;
     }
     /**
      *
@@ -3984,6 +3998,20 @@ declare namespace Excel {
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         worksheetId: string;
+        /**
+         *
+         * Gets the range that represents the changed area of a table on a specific worksheet.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getRange(ctx: Excel.RequestContext): Excel.Range;
+        /**
+         *
+         * Gets the range that represents the changed area of a table on a specific worksheet. It might return null object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getRangeOrNullObject(ctx: Excel.RequestContext): Excel.Range;
     }
     /**
      *
@@ -4315,7 +4343,7 @@ declare namespace Excel {
      *
      * Represents the Excel Runtime class.
      *
-     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     * [Api set: ExcelApi 1.5]
      */
     class Runtime extends OfficeExtension.ClientObject {
         /**
@@ -12386,9 +12414,9 @@ declare namespace Excel {
         toJSON(): Excel.Interfaces.CustomFunctionData;
     }
     class InvocationContext {
-        constructor(setResultHandler: (any) => void);
-        onCanceled: () => void;
-        readonly setResult: (any) => void;
+        constructor(setResultHandler?: (result: any) => void);
+        onCanceled: (() => void) | undefined;
+        readonly setResult?: (result: any) => void;
     }
     interface InvocationContextMap {
         [key: number]: InvocationContext;
@@ -24508,7 +24536,7 @@ declare namespace Excel {
          *
          * Represents the Excel Runtime class.
          *
-         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         * [Api set: ExcelApi 1.5]
          */
         interface RuntimeLoadOptions {
             $all?: boolean;
