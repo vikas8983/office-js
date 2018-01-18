@@ -1,0 +1,33 @@
+tag: adhoc
+history:
+    adhocBranchName: __adhoc--beta-next--16.0.8918.5450--2018-01-18--8.52am--beta-edog
+    commitMessage: __adhoc--beta-next--16.0.8918.5450--2018-01-18--8.52am--beta-edog
+    fullCommitHistory:
+        - 
+            sha: >-
+                https://github.com/OfficeDev/office-js/commits/aec425fd08ac0a8cef9f6dde1e8f06ec7e3b3098
+            message: >-
+                JS dist files --
+                __adhoc--beta-next--16.0.8918.5450--2018-01-18--8.52am--beta-edog
+        - 
+            sha: >-
+                https://github.com/OfficeDev/office-js/commits/404018626c919a0f5d33ed4c5adacb397593f220
+            message: >-
+                Localized strings --
+                __adhoc--beta-next--16.0.8918.5450--2018-01-18--8.52am--beta-edog
+        - 
+            sha: >-
+                https://github.com/OfficeDev/office-js/commits/0001b53ee2570208f5fc22a6e56a379208bbabbc
+            message: Copying other assets from the release branch of the repo
+        - 
+            sha: >-
+                https://github.com/OfficeDev/office-js/commits/6426f6fac4b77da2f40d1f15c7f4ceaa61870931
+            message: >-
+                [PUBLISH TOOL] Add deployment infrastructure for adhoc NPM
+                publish
+        - 
+            sha: >-
+                https://github.com/OfficeDev/office-js/commits/e7ce97abcbe88197aae0ac076d94a8c333f475d3
+            message: >-
+                [BEGIN PUBLISH UPDATES] --
+                __adhoc--beta-next--16.0.8918.5450--2018-01-18--8.52am--beta-edog
