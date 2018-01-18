@@ -1,4 +1,9 @@
+version: 1.1.3-adhoc.3
 tag: adhoc
+githubReleaseUrl: https://github.com/OfficeDev/office-js/releases/tag/v1.1.3-adhoc.3
+githubViewUrl: https://github.com/OfficeDev/office-js/tree/v1.1.3-adhoc.3
+deployedAt: 2018-01-18 4:50 am UTC  (2018-01-17 8:50 pm Pacific Time)
+
 history:
     adhocBranchName: __adhoc--beta--local--2018-01-17--8.46pm--sso
     commitMessage: word and excel sso
@@ -25,3 +30,11 @@ history:
             sha: >-
                 https://github.com/OfficeDev/office-js/commits/3b0b2f253fd6c0414b177e18f449a104a79225c7
             message: '[BEGIN PUBLISH UPDATES] -- word and excel sso'
+
+
+unpkgUrls: |-
+    this specific build number:
+        https://unpkg.com/@microsoft/office-js@1.1.3-adhoc.3/dist/office.js
+        https://unpkg.com/@microsoft/office-js@1.1.3-adhoc.3/dist/office.d.ts
+
+buildLog: https://travis-ci.org/OfficeDev/office-js/builds/330198991
