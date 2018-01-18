@@ -1,6 +1,6 @@
 // Type definitions for Office.js
 // Project: http://dev.office.com
-// Definitions by: OfficeDev <https://github.com/OfficeDev>, Lance Austin <https://github.com/LanceEA>
+// Definitions by: OfficeDev <https://github.com/OfficeDev>, Lance Austin <https://github.com/LanceEA>, Michael Zlatkovsky <https://github.com/Zlatkovsky>, Kim Brandl <https://github.com/kbrandl>, Ricky Kirkham <https://github.com/Rick-Kirkham>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 /*
@@ -134,17 +134,14 @@ declare namespace Office {
     export interface Error {
         /**
          * Gets the numeric code of the error.
-         * @since 1.0
          */
         code: number;
         /**
          * Gets the name of the error.
-         * @since 1.0
          */
         message: string;
         /**
          * Gets a detailed description of the error.
-         * @since 1.0
          */
         name: string;
     }
@@ -244,7 +241,7 @@ declare namespace Office {
         bodyBackgroundColor: string;
         bodyForegroundColor: string;
         controlBackgroundColor: string;
-        controlForgroundColor: string;
+        controlForegroundColor: string;
     }
     /**
      * Dialog object returned as part of the displayDialogAsync callback. The object exposes methods for registering event handlers and closing the dialog
@@ -2617,6 +2614,8 @@ declare namespace OfficeExtension {
 		/** The value of the result that is retrieved from the document after "context.sync()" is invoked. */
 		value: T;
 	}
+
+	type RetrieveResult<T extends ClientObject, TData> = { $proxy: T; $isNullObject: boolean; toJSON: () => TData; } & TData;
 }
 declare namespace OfficeExtension {
 	export interface DebugInfo {
@@ -2890,6 +2889,28 @@ declare namespace OfficeExtension {
 
 
 declare namespace OfficeCore {
+    namespace ErrorCodes {
+        var generalException: string;
+    }
+    module Interfaces {
+        interface CollectionLoadOptions {
+            $top?: number;
+            $skip?: number;
+        }
+    }
+}
+declare namespace OfficeCore {
+    namespace ErrorCodes {
+        var generalException: string;
+    }
+    module Interfaces {
+        interface CollectionLoadOptions {
+            $top?: number;
+            $skip?: number;
+        }
+    }
+}
+declare namespace OfficeCore {
     namespace ExperimentErrorCodes {
         var generalException: string;
     }
@@ -2906,6 +2927,494 @@ declare namespace OfficeCore {
         var generalException: string;
     }
     module Interfaces {
+    }
+}
+declare namespace OfficeCore {
+    /**
+     *
+     * Represents a single comment in the document.
+     *
+     * [Api set: Comments 1.1]
+     */
+    class Comment extends OfficeExtension.ClientObject {
+        /**
+         *
+         * Gets this comment's parent. If this is a root comment, throws.
+         *
+         * [Api set: Comments 1.1]
+         */
+        readonly parent: OfficeCore.Comment;
+        /**
+         *
+         * Gets this comment's parent. If this is a root comment, returns a null object.
+         *
+         * [Api set: Comments 1.1]
+         */
+        readonly parentOrNullObject: OfficeCore.Comment;
+        /**
+         *
+         * Gets the replies to this comment. If this is not a root comment, returns an empty collection.
+         *
+         * [Api set: Comments 1.1]
+         */
+        readonly replies: OfficeCore.CommentCollection;
+        /**
+         *
+         * Gets an object representing the comment's author. Read-only.
+         *
+         * [Api set: Comments 1.1]
+         */
+        readonly author: OfficeCore.CommentAuthor;
+        /**
+         *
+         * Gets when the comment was created. Read-only.
+         *
+         * [Api set: Comments 1.1]
+         */
+        readonly created: Date;
+        /**
+         *
+         * Returns a value that uniquely identifies the comment in a given document. Read-only.
+         *
+         * [Api set: Comments 1.1]
+         */
+        readonly id: string;
+        /**
+         *
+         * Gets the level of the comment: 0 if it is a root comment, or 1 if it is a reply. Read-only.
+         *
+         * [Api set: Comments 1.1]
+         */
+        readonly level: number;
+        /**
+         *
+         * Gets the comment's mentions.
+         *
+         * [Api set: Comments 1.1]
+         */
+        readonly mentions: Array<OfficeCore.CommentMention>;
+        /**
+         *
+         * Gets or sets whether this comment is resolved.
+         *
+         * [Api set: Comments 1.1]
+         */
+        resolved: boolean;
+        /**
+         *
+         * Gets or sets the comment's plain text, without formatting.
+         *
+         * [Api set: Comments 1.1]
+         */
+        text: string;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        set(properties: Interfaces.CommentUpdateData, options?: {
+            /**
+             * Throw an error if the passed-in property list includes read-only properties (default = true).
+             */
+            throwOnReadOnly?: boolean;
+        }): void;
+        /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
+        set(properties: Comment): void;
+        /**
+         *
+         * Deletes this comment. If this is a root comment, deletes the entire comment thread.
+         *
+         * [Api set: Comments 1.1]
+         */
+        delete(): void;
+        /**
+         *
+         * Gets this comment's parent. If this is a root comment, returns a new comment object representing itself.
+            This method is useful for accessing thread-level properties from either a reply or the root comment.
+            
+            e.g. comment.getParentOrSelf().resolved = true;
+         *
+         * [Api set: Comments 1.1]
+         */
+        getParentOrSelf(): OfficeCore.Comment;
+        /**
+         *
+         * Gets the comment's rich text in the specified markup format.
+         *
+         * [Api set: Comments 1.1]
+         */
+        getRichText(format: string): OfficeExtension.ClientResult<string>;
+        /**
+         *
+         * Appends a new reply to the comment's thread.
+         *
+         * [Api set: Comments 1.1]
+         *
+         * @param text The body of the reply.
+         * @param format The markup format of the text parameter.
+         * @returns
+         */
+        reply(text: string, format: string): OfficeCore.Comment;
+        /**
+         *
+         * Sets the comment's rich text.
+         *
+         * [Api set: Comments 1.1]
+         *
+         * @param text The text of the comment.
+         * @param format The markup format of the 'text' parameter.
+         */
+        setRichText(text: string, format: string): OfficeExtension.ClientResult<string>;
+        /**
+         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+         */
+        load(option?: OfficeCore.Interfaces.CommentLoadOptions): OfficeCore.Comment;
+        load(option?: string | string[]): OfficeCore.Comment;
+        load(option?: {
+            select?: string;
+            expand?: string;
+        }): OfficeCore.Comment;
+        toJSON(): OfficeCore.Interfaces.CommentData;
+    }
+    /**
+     *
+     * Represents the author of a comment.
+     *
+     * [Api set: Comments 1.1]
+     */
+    interface CommentAuthor {
+        /**
+         *
+         * The email address of the author.
+         *
+         * [Api set: Comments 1.1]
+         */
+        email: string;
+        /**
+         *
+         * The name of the author.
+         *
+         * [Api set: Comments 1.1]
+         */
+        name: string;
+    }
+    /**
+     *
+     * Represents a mention within a comment.
+     *
+     * [Api set: Comments 1.1]
+     */
+    interface CommentMention {
+        /**
+         *
+         * The email address of the person mentioned.
+         *
+         * [Api set: Comments 1.1]
+         */
+        email: string;
+        /**
+         *
+         * The name of the person mentioned.
+         *
+         * [Api set: Comments 1.1]
+         */
+        name: string;
+        /**
+         *
+         * The text displayed for the mention.
+         *
+         * [Api set: Comments 1.1]
+         */
+        text: string;
+    }
+    /**
+     *
+     * Represents a collection of comments, either replies to a specific comment thread, or all comments in the document or part of the document.
+     *
+     * [Api set: Comments 1.1]
+     */
+    class CommentCollection extends OfficeExtension.ClientObject {
+        /** Gets the loaded child items in this collection. */
+        readonly items: Array<OfficeCore.Comment>;
+        /**
+         *
+         * Returns the number of comments in the collection. Read-only.
+         *
+         * [Api set: Comments 1.1]
+         */
+        getCount(): OfficeExtension.ClientResult<number>;
+        /**
+         *
+         * Gets a comment object using its id.
+         *
+         * [Api set: Comments 1.1]
+         */
+        getItem(id: string): OfficeCore.Comment;
+        /**
+         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+         */
+        load(option?: OfficeCore.Interfaces.CommentCollectionLoadOptions & OfficeCore.Interfaces.CollectionLoadOptions): OfficeCore.CommentCollection;
+        load(option?: string | string[]): OfficeCore.CommentCollection;
+        load(option?: OfficeExtension.LoadOption): OfficeCore.CommentCollection;
+        toJSON(): OfficeCore.Interfaces.CommentCollectionData;
+    }
+    /**
+     *
+     * Represents a markup (rich) text format.
+     *
+     * [Api set: Comments 1.1]
+     */
+    namespace CommentTextFormat {
+        var plain: string;
+        var markdown: string;
+        var delta: string;
+    }
+    namespace ErrorCodes {
+        var generalException: string;
+    }
+    module Interfaces {
+        interface CollectionLoadOptions {
+            $top?: number;
+            $skip?: number;
+        }
+        /** An interface for updating data on the Comment object, for use in "comment.set({ ... })". */
+        interface CommentUpdateData {
+            /**
+             *
+             * Gets or sets whether this comment is resolved.
+             *
+             * [Api set: Comments 1.1]
+             */
+            resolved?: boolean;
+            /**
+             *
+             * Gets or sets the comment's plain text, without formatting.
+             *
+             * [Api set: Comments 1.1]
+             */
+            text?: string;
+        }
+        /** An interface for updating data on the CommentCollection object, for use in "commentCollection.set({ ... })". */
+        interface CommentCollectionUpdateData {
+            items?: OfficeCore.Interfaces.CommentData[];
+        }
+        /** An interface describing the data returned by calling "comment.toJSON()". */
+        interface CommentData {
+            /**
+            *
+            * Gets this comment's parent. If this is a root comment, throws.
+            *
+            * [Api set: Comments 1.1]
+            */
+            parent?: OfficeCore.Interfaces.CommentData;
+            /**
+            *
+            * Gets this comment's parent. If this is a root comment, returns a null object.
+            *
+            * [Api set: Comments 1.1]
+            */
+            parentOrNullObject?: OfficeCore.Interfaces.CommentData;
+            /**
+            *
+            * Gets the replies to this comment. If this is not a root comment, returns an empty collection.
+            *
+            * [Api set: Comments 1.1]
+            */
+            replies?: OfficeCore.Interfaces.CommentCollectionData;
+            /**
+             *
+             * Gets an object representing the comment's author. Read-only.
+             *
+             * [Api set: Comments 1.1]
+             */
+            author?: OfficeCore.CommentAuthor;
+            /**
+             *
+             * Gets when the comment was created. Read-only.
+             *
+             * [Api set: Comments 1.1]
+             */
+            created?: Date;
+            /**
+             *
+             * Returns a value that uniquely identifies the comment in a given document. Read-only.
+             *
+             * [Api set: Comments 1.1]
+             */
+            id?: string;
+            /**
+             *
+             * Gets the level of the comment: 0 if it is a root comment, or 1 if it is a reply. Read-only.
+             *
+             * [Api set: Comments 1.1]
+             */
+            level?: number;
+            /**
+             *
+             * Gets the comment's mentions.
+             *
+             * [Api set: Comments 1.1]
+             */
+            mentions?: Array<OfficeCore.CommentMention>;
+            /**
+             *
+             * Gets or sets whether this comment is resolved.
+             *
+             * [Api set: Comments 1.1]
+             */
+            resolved?: boolean;
+            /**
+             *
+             * Gets or sets the comment's plain text, without formatting.
+             *
+             * [Api set: Comments 1.1]
+             */
+            text?: string;
+        }
+        /** An interface describing the data returned by calling "commentCollection.toJSON()". */
+        interface CommentCollectionData {
+            items?: OfficeCore.Interfaces.CommentData[];
+        }
+        /**
+         *
+         * Represents a single comment in the document.
+         *
+         * [Api set: Comments 1.1]
+         */
+        interface CommentLoadOptions {
+            $all?: boolean;
+            /**
+            *
+            * Gets this comment's parent. If this is a root comment, throws.
+            *
+            * [Api set: Comments 1.1]
+            */
+            parent?: OfficeCore.Interfaces.CommentLoadOptions;
+            /**
+            *
+            * Gets this comment's parent. If this is a root comment, returns a null object.
+            *
+            * [Api set: Comments 1.1]
+            */
+            parentOrNullObject?: OfficeCore.Interfaces.CommentLoadOptions;
+            /**
+             *
+             * Gets an object representing the comment's author. Read-only.
+             *
+             * [Api set: Comments 1.1]
+             */
+            author?: boolean;
+            /**
+             *
+             * Gets when the comment was created. Read-only.
+             *
+             * [Api set: Comments 1.1]
+             */
+            created?: boolean;
+            /**
+             *
+             * Returns a value that uniquely identifies the comment in a given document. Read-only.
+             *
+             * [Api set: Comments 1.1]
+             */
+            id?: boolean;
+            /**
+             *
+             * Gets the level of the comment: 0 if it is a root comment, or 1 if it is a reply. Read-only.
+             *
+             * [Api set: Comments 1.1]
+             */
+            level?: boolean;
+            /**
+             *
+             * Gets the comment's mentions.
+             *
+             * [Api set: Comments 1.1]
+             */
+            mentions?: boolean;
+            /**
+             *
+             * Gets or sets whether this comment is resolved.
+             *
+             * [Api set: Comments 1.1]
+             */
+            resolved?: boolean;
+            /**
+             *
+             * Gets or sets the comment's plain text, without formatting.
+             *
+             * [Api set: Comments 1.1]
+             */
+            text?: boolean;
+        }
+        /**
+         *
+         * Represents a collection of comments, either replies to a specific comment thread, or all comments in the document or part of the document.
+         *
+         * [Api set: Comments 1.1]
+         */
+        interface CommentCollectionLoadOptions {
+            $all?: boolean;
+            /**
+            *
+            * For EACH ITEM in the collection: Gets this comment's parent. If this is a root comment, throws.
+            *
+            * [Api set: Comments 1.1]
+            */
+            parent?: OfficeCore.Interfaces.CommentLoadOptions;
+            /**
+            *
+            * For EACH ITEM in the collection: Gets this comment's parent. If this is a root comment, returns a null object.
+            *
+            * [Api set: Comments 1.1]
+            */
+            parentOrNullObject?: OfficeCore.Interfaces.CommentLoadOptions;
+            /**
+             *
+             * For EACH ITEM in the collection: Gets an object representing the comment's author. Read-only.
+             *
+             * [Api set: Comments 1.1]
+             */
+            author?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Gets when the comment was created. Read-only.
+             *
+             * [Api set: Comments 1.1]
+             */
+            created?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Returns a value that uniquely identifies the comment in a given document. Read-only.
+             *
+             * [Api set: Comments 1.1]
+             */
+            id?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Gets the level of the comment: 0 if it is a root comment, or 1 if it is a reply. Read-only.
+             *
+             * [Api set: Comments 1.1]
+             */
+            level?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Gets the comment's mentions.
+             *
+             * [Api set: Comments 1.1]
+             */
+            mentions?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Gets or sets whether this comment is resolved.
+             *
+             * [Api set: Comments 1.1]
+             */
+            resolved?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Gets or sets the comment's plain text, without formatting.
+             *
+             * [Api set: Comments 1.1]
+             */
+            text?: boolean;
+        }
     }
 }
 
@@ -3104,6 +3613,7 @@ declare namespace Excel {
         constructor(url?: string | Session);
         readonly workbook: Workbook;
         readonly application: Application;
+        readonly runtime: Runtime;
     }
     /**
      * Executes a batch script that performs actions on the Excel object model, using a new RequestContext. When the promise is resolved, any tracked objects that were automatically allocated during execution will be released.
@@ -3242,7 +3752,7 @@ declare namespace Excel {
      *
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    interface WorksheetDataChangedEvent {
+    interface WorksheetDataChangedEventArgs {
         /**
          *
          * Gets the range address that represents the changed area of a specific worksheet.
@@ -3278,6 +3788,20 @@ declare namespace Excel {
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         worksheetId: string;
+        /**
+         *
+         * Gets the range that represents the changed area of a specific worksheet.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getRange(ctx: Excel.RequestContext): Excel.Range;
+        /**
+         *
+         * Gets the range that represents the changed area of a specific worksheet. It might return null object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getRangeOrNullObject(ctx: Excel.RequestContext): Excel.Range;
     }
     /**
      *
@@ -3285,7 +3809,7 @@ declare namespace Excel {
      *
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    interface TableDataChangedEvent {
+    interface TableDataChangedEventArgs {
         /**
          *
          * Gets the address that represents the changed area of a table on a specific worksheet.
@@ -3328,6 +3852,20 @@ declare namespace Excel {
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         worksheetId: string;
+        /**
+         *
+         * Gets the range that represents the changed area of a table on a specific worksheet.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getRange(ctx: Excel.RequestContext): Excel.Range;
+        /**
+         *
+         * Gets the range that represents the changed area of a table on a specific worksheet. It might return null object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getRangeOrNullObject(ctx: Excel.RequestContext): Excel.Range;
     }
     /**
      *
@@ -3335,7 +3873,7 @@ declare namespace Excel {
      *
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    interface WorksheetActivatedEvent {
+    interface WorksheetActivatedEventArgs {
         /**
          *
          * Gets the type of the event. See Excel.EventType for details.
@@ -3357,7 +3895,7 @@ declare namespace Excel {
      *
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    interface WorksheetDeactivatedEvent {
+    interface WorksheetDeactivatedEventArgs {
         /**
          *
          * Gets the type of the event. See Excel.EventType for details.
@@ -3379,7 +3917,7 @@ declare namespace Excel {
      *
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    interface WorksheetSelectionChangedEvent {
+    interface WorksheetSelectionChangedEventArgs {
         /**
          *
          * Gets the range address that represents the selected area of a specific worksheet.
@@ -3408,7 +3946,7 @@ declare namespace Excel {
      *
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    interface TableSelectionChangedEvent {
+    interface TableSelectionChangedEventArgs {
         /**
          *
          * Gets the range address that represents the selected area of the table on a specific worksheet.
@@ -3451,7 +3989,7 @@ declare namespace Excel {
      *
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    interface WorksheetAddedEvent {
+    interface WorksheetAddedEventArgs {
         /**
          *
          * Gets the source of the event. See Excel.EventSource for details.
@@ -3476,6 +4014,221 @@ declare namespace Excel {
     }
     /**
      *
+     * Provides information about the worksheet that raised the Deleted event.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface WorksheetDeletedEventArgs {
+        /**
+         *
+         * Gets the source of the event. See Excel.EventSource for details.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        source: string;
+        /**
+         *
+         * Gets the type of the event. See Excel.EventType for details.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        type: string;
+        /**
+         *
+         * Gets the id of the worksheet that is added to the workbook.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        worksheetId: string;
+    }
+    /**
+     *
+     * Provides information about the chart that raised the Added event.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface ChartAddedEventArgs {
+        /**
+         *
+         * Gets the id of the chart that is added to the worksheet.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        chartId: string;
+        /**
+         *
+         * Gets the source of the event. See Excel.EventSource for details.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        source: string;
+        /**
+         *
+         * Gets the type of the event. See Excel.EventType for details.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        type: string;
+        /**
+         *
+         * Gets the id of the worksheet in which the chart is added.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        worksheetId: string;
+    }
+    /**
+     *
+     * Provides information about the chart that raised the Activated event.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface ChartActivatedEventArgs {
+        /**
+         *
+         * Gets the id of the chart that is activated.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        chartId: string;
+        /**
+         *
+         * Gets the type of the event. See Excel.EventType for details.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        type: string;
+        /**
+         *
+         * Gets the id of the worksheet in which the chart is activated.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        worksheetId: string;
+    }
+    /**
+     *
+     * Provides information about the chart that raised the Deactivated event.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface ChartDeactivatedEventArgs {
+        /**
+         *
+         * Gets the id of the chart that is deactivated.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        chartId: string;
+        /**
+         *
+         * Gets the type of the event. See Excel.EventType for details.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        type: string;
+        /**
+         *
+         * Gets the id of the worksheet in which the chart is deactivated.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        worksheetId: string;
+    }
+    /**
+     *
+     * Provides information about the chart that raised the Deleted event.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface ChartDeletedEventArgs {
+        /**
+         *
+         * Gets the id of the chart that is deleted from the worksheet.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        chartId: string;
+        /**
+         *
+         * Gets the source of the event. See Excel.EventSource for details.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        source: string;
+        /**
+         *
+         * Gets the type of the event. See Excel.EventType for details.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        type: string;
+        /**
+         *
+         * Gets the id of the worksheet in which the chart is deleted.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        worksheetId: string;
+    }
+    /**
+     *
+     * Provides information about the worksheet that raised the Calculated event.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface WorksheetCalculatedEventArgs {
+        /**
+         *
+         * Gets the type of the event. See Excel.EventType for details.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        type: string;
+        /**
+         *
+         * Gets the id of the worksheet that is calculated.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        worksheetId: string;
+    }
+    /**
+     *
+     * Represents the Excel Runtime class.
+     *
+     * [Api set: ExcelApi 1.5]
+     */
+    class Runtime extends OfficeExtension.ClientObject {
+        /**
+         *
+         * Turn on/off JavaScript events in current taskpane or content add-in.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        enableEvents: boolean;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        set(properties: Interfaces.RuntimeUpdateData, options?: {
+            /**
+             * Throw an error if the passed-in property list includes read-only properties (default = true).
+             */
+            throwOnReadOnly?: boolean;
+        }): void;
+        /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
+        set(properties: Runtime): void;
+        /**
+         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+         */
+        load(option?: Excel.Interfaces.RuntimeLoadOptions): Excel.Runtime;
+        load(option?: string | string[]): Excel.Runtime;
+        load(option?: {
+            select?: string;
+            expand?: string;
+        }): Excel.Runtime;
+        toJSON(): Excel.Interfaces.RuntimeData;
+    }
+    /**
+     *
      * Represents the Excel application that manages the workbook.
      *
      * [Api set: ExcelApi 1.1]
@@ -3497,6 +4250,15 @@ declare namespace Excel {
          * @param calculationType Specifies the calculation type to use. See Excel.CalculationType for details.
          */
         calculate(calculationType: string): void;
+        /**
+         *
+         * Creates a new hidden workbook by using an optional base64 encoded .xlsx file.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param base64File Optional. The base64 encoded .xlsx file. The default value is null.
+         */
+        createWorkbook(base64File?: string): Excel.WorkbookCreated;
         /**
          *
          * Suspends calculation until the next "context.sync()" is called. Once set, it is the developer's responsibility to re-calc the workbook, to ensure that any dependencies are propagated.
@@ -3726,6 +4488,24 @@ declare namespace Excel {
             expand?: string;
         }): Excel.WorkbookProtection;
         toJSON(): Excel.Interfaces.WorkbookProtectionData;
+    }
+    /**
+     *
+     * The WorkbookCreated object is the top level object created by Application.CreateWorkbook. A WorkbookCreated object is a special Workbook object.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class WorkbookCreated extends OfficeExtension.ClientObject {
+        /**
+         *
+         * Open the workbook.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        open(): void;
+        toJSON(): {
+            [key: string]: string;
+        };
     }
     /**
      *
@@ -3994,28 +4774,35 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        readonly onActivated: OfficeExtension.EventHandlers<Excel.WorksheetActivatedEvent>;
+        readonly onActivated: OfficeExtension.EventHandlers<Excel.WorksheetActivatedEventArgs>;
+        /**
+         *
+         * Occurs when the worksheet is calculated.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly onCalculated: OfficeExtension.EventHandlers<Excel.WorksheetCalculatedEventArgs>;
         /**
          *
          * Occurs when data changed on a specific worksheet.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        readonly onDataChanged: OfficeExtension.EventHandlers<Excel.WorksheetDataChangedEvent>;
+        readonly onDataChanged: OfficeExtension.EventHandlers<Excel.WorksheetDataChangedEventArgs>;
         /**
          *
          * Occurs when the worksheet is deactivated.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        readonly onDeactivated: OfficeExtension.EventHandlers<Excel.WorksheetDeactivatedEvent>;
+        readonly onDeactivated: OfficeExtension.EventHandlers<Excel.WorksheetDeactivatedEventArgs>;
         /**
          *
          * Occurs when the selection changed on a specific worksheet.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        readonly onSelectionChanged: OfficeExtension.EventHandlers<Excel.WorksheetSelectionChangedEvent>;
+        readonly onSelectionChanged: OfficeExtension.EventHandlers<Excel.WorksheetSelectionChangedEventArgs>;
         toJSON(): Excel.Interfaces.WorksheetData;
     }
     /**
@@ -4096,21 +4883,35 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        readonly onActivated: OfficeExtension.EventHandlers<Excel.WorksheetActivatedEvent>;
+        readonly onActivated: OfficeExtension.EventHandlers<Excel.WorksheetActivatedEventArgs>;
         /**
          *
          * Occurs when a new worksheet is added to the workbook.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        readonly onAdded: OfficeExtension.EventHandlers<Excel.WorksheetAddedEvent>;
+        readonly onAdded: OfficeExtension.EventHandlers<Excel.WorksheetAddedEventArgs>;
+        /**
+         *
+         * Occurs when any worksheet in the workbook is calculated.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly onCalculated: OfficeExtension.EventHandlers<Excel.WorksheetCalculatedEventArgs>;
         /**
          *
          * Occurs when any worksheet in the workbook is deactivated.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        readonly onDeactivated: OfficeExtension.EventHandlers<Excel.WorksheetDeactivatedEvent>;
+        readonly onDeactivated: OfficeExtension.EventHandlers<Excel.WorksheetDeactivatedEventArgs>;
+        /**
+         *
+         * Occurs when a worksheet is deleted from the workbook.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly onDeleted: OfficeExtension.EventHandlers<Excel.WorksheetDeletedEventArgs>;
         toJSON(): Excel.Interfaces.WorksheetCollectionData;
     }
     /**
@@ -4337,6 +5138,13 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class Range extends OfficeExtension.ClientObject {
+        /**
+         *
+         * Represents a collection of contiguous areas for the range. Read-only.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly areas: Excel.AreaCollection;
         /**
          *
          * Collection of ConditionalFormats that intersect the range. Read-only.
@@ -5573,7 +6381,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        readonly onDataChanged: OfficeExtension.EventHandlers<Excel.TableDataChangedEvent>;
+        readonly onDataChanged: OfficeExtension.EventHandlers<Excel.TableDataChangedEventArgs>;
         toJSON(): Excel.Interfaces.TableCollectionData;
     }
     /**
@@ -5761,14 +6569,14 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        readonly onDataChanged: OfficeExtension.EventHandlers<Excel.TableDataChangedEvent>;
+        readonly onDataChanged: OfficeExtension.EventHandlers<Excel.TableDataChangedEventArgs>;
         /**
          *
          * Occurs when the selection changed on a specific table.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        readonly onSelectionChanged: OfficeExtension.EventHandlers<Excel.TableSelectionChangedEvent>;
+        readonly onSelectionChanged: OfficeExtension.EventHandlers<Excel.TableSelectionChangedEventArgs>;
         toJSON(): Excel.Interfaces.TableData;
     }
     /**
@@ -6206,7 +7014,7 @@ declare namespace Excel {
         formula1?: string | number | Excel.Range;
         /**
          *
-         * Gets or sets the Formula1, i.e. maximum value or value depending of the operator.
+         * Gets or sets the Formula2, i.e. maximum value or value depending of the operator.
             When setting the value, it can be passed in as a number, a range object, or a string formula (where the string is either a stringified number, a cell reference like "=A1", or a formula like "=MIN(A1, B1)").
             When retrieving the value, it will always be returned as a string formula, for example: "=10", "=A1", "=SUM(A1:B5)", etc.
          *
@@ -6806,6 +7614,34 @@ declare namespace Excel {
         load(option?: Excel.Interfaces.ChartCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.ChartCollection;
         load(option?: string | string[]): Excel.ChartCollection;
         load(option?: OfficeExtension.LoadOption): Excel.ChartCollection;
+        /**
+         *
+         * Occurs when a chart is activated.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly onActivated: OfficeExtension.EventHandlers<Excel.ChartActivatedEventArgs>;
+        /**
+         *
+         * Occurs when a new chart is added to the worksheet.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly onAdded: OfficeExtension.EventHandlers<Excel.ChartAddedEventArgs>;
+        /**
+         *
+         * Occurs when a chart is deactivated.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly onDeactivated: OfficeExtension.EventHandlers<Excel.ChartDeactivatedEventArgs>;
+        /**
+         *
+         * Occurs when a chart is deleted.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly onDeleted: OfficeExtension.EventHandlers<Excel.ChartDeletedEventArgs>;
         toJSON(): Excel.Interfaces.ChartCollectionData;
     }
     /**
@@ -6977,6 +7813,20 @@ declare namespace Excel {
             select?: string;
             expand?: string;
         }): Excel.Chart;
+        /**
+         *
+         * Occurs when the chart is activated.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly onActivated: OfficeExtension.EventHandlers<Excel.ChartActivatedEventArgs>;
+        /**
+         *
+         * Occurs when the chart is deactivated.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly onDeactivated: OfficeExtension.EventHandlers<Excel.ChartDeactivatedEventArgs>;
         toJSON(): Excel.Interfaces.ChartData;
     }
     /**
@@ -7767,8 +8617,10 @@ declare namespace Excel {
          * Sets all the category names for the specified axis.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param sourceData The Range object corresponding to the source data.
          */
-        setCategoryNames(sourceData: Array<string> | Excel.Range): void;
+        setCategoryNames(sourceData: Excel.Range): void;
         /**
          *
          * Set the specified axis where the other axis crosses at.
@@ -7781,6 +8633,8 @@ declare namespace Excel {
          * Sets the axis display unit to a custom value.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param value Custom value of the display unit
          */
         setCustomDisplayUnit(value: number): void;
         /**
@@ -9767,8 +10621,6 @@ declare namespace Excel {
         listFormulas(): void;
         pivotSelect(Name: string, Mode: string, UseStandardName?: boolean): void;
         refreshTable(): OfficeExtension.ClientResult<boolean>;
-        repeatAllLabels(Repeat: string): void;
-        update(): void;
         /**
          * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
          */
@@ -11317,6 +12169,8 @@ declare namespace Excel {
     }
     interface CustomFunctionSettings {
         resultSetterDelayMillis?: number;
+        resultSetterLifeMillis?: number;
+        batchQuotaMillis?: number;
     }
     /**
      *
@@ -11414,9 +12268,9 @@ declare namespace Excel {
         toJSON(): Excel.Interfaces.CustomFunctionData;
     }
     class InvocationContext {
-        constructor(setResultHandler: (any) => void);
-        onCanceled: () => void;
-        readonly setResult: (any) => void;
+        constructor(setResultHandler?: (result: any) => void);
+        onCanceled: (() => void) | undefined;
+        readonly setResult?: (result: any) => void;
     }
     interface InvocationContextMap {
         [key: number]: InvocationContext;
@@ -11902,6 +12756,27 @@ declare namespace Excel {
         toJSON(): {
             [key: string]: string;
         };
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class AreaCollection extends OfficeExtension.ClientObject {
+        /** Gets the loaded child items in this collection. */
+        readonly items: Array<Excel.Range>;
+        /**
+         *
+         * Gets the number of contiguous areas in a range.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getCount(): OfficeExtension.ClientResult<number>;
+        /**
+         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+         */
+        load(option?: Excel.Interfaces.AreaCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.AreaCollection;
+        load(option?: string | string[]): Excel.AreaCollection;
+        load(option?: OfficeExtension.LoadOption): Excel.AreaCollection;
+        toJSON(): Excel.Interfaces.AreaCollectionData;
     }
     /**
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
@@ -12965,6 +13840,11 @@ declare namespace Excel {
         worksheetAddedEvent = 13,
         worksheetSelectionChangedEvent = 14,
         worksheetDeletedEvent = 15,
+        worksheetCalculatedEvent = 16,
+        chartAddedEvent = 50,
+        chartActivatedEvent = 51,
+        chartDeactivatedEvent = 52,
+        chartDeletedEvent = 53,
         tableSelectionChangedEvent = 100,
         tableDataChangedEvent = 101,
         customFunctionExecutionBeginEvent = 200,
@@ -13104,6 +13984,36 @@ declare namespace Excel {
          *
          */
         var worksheetDeleted: string;
+        /**
+         *
+         * ChartAdded represents the type of event that is registered on ChartCollection, and occurs when a new chart is added to the worksheet.
+         *
+         */
+        var chartAdded: string;
+        /**
+         *
+         * ChartActivated represents the type of event that is registered on Chart or ChartCollection, and occurs when chart activates.
+         *
+         */
+        var chartActivated: string;
+        /**
+         *
+         * ChartDeactivated represents the type of event that is registered on Chart or ChartCollection, and occurs when chart deactivates.
+         *
+         */
+        var chartDeactivated: string;
+        /**
+         *
+         * ChartDeleted represents the type of event that is registered on ChartCollection, and occurs when a chart is deleted from the worksheet.
+         *
+         */
+        var chartDeleted: string;
+        /**
+         *
+         * WorksheetCalculated represents the type of event that is registered on Worksheet or WorksheetCollection, and occurs when a worksheet is calculated.
+         *
+         */
+        var worksheetCalculated: string;
     }
     /**
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
@@ -17395,6 +18305,16 @@ declare namespace Excel {
             $top?: number;
             $skip?: number;
         }
+        /** An interface for updating data on the Runtime object, for use in "runtime.set({ ... })". */
+        interface RuntimeUpdateData {
+            /**
+             *
+             * Turn on/off JavaScript events in current taskpane or content add-in.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            enableEvents?: boolean;
+        }
         /** An interface for updating data on the Workbook object, for use in "workbook.set({ ... })". */
         interface WorkbookUpdateData {
             /**
@@ -19949,6 +20869,10 @@ declare namespace Excel {
              */
             printErrors?: string;
         }
+        /** An interface for updating data on the AreaCollection object, for use in "areaCollection.set({ ... })". */
+        interface AreaCollectionUpdateData {
+            items?: Excel.Interfaces.RangeData[];
+        }
         /** An interface for updating data on the CalculatedFieldCollection object, for use in "calculatedFieldCollection.set({ ... })". */
         interface CalculatedFieldCollectionUpdateData {
             items?: Excel.Interfaces.PivotFieldData[];
@@ -19991,6 +20915,16 @@ declare namespace Excel {
         interface PivotItemCollectionUpdateData {
             items?: Excel.Interfaces.PivotItemData[];
         }
+        /** An interface describing the data returned by calling "runtime.toJSON()". */
+        interface RuntimeData {
+            /**
+             *
+             * Turn on/off JavaScript events in current taskpane or content add-in.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            enableEvents?: boolean;
+        }
         /** An interface describing the data returned by calling "application.toJSON()". */
         interface ApplicationData {
             /**
@@ -20016,35 +20950,35 @@ declare namespace Excel {
             *
             * [Api set: ExcelApi 1.1]
             */
-            bindings?: Excel.Interfaces.BindingCollectionData;
+            bindings?: Excel.Interfaces.BindingData[];
             /**
             *
             * Represents the collection of custom functions defined in add-ins. Read-only.
             *
             * [Api set: CustomFunctions 1.1]
             */
-            customFunctions?: Excel.Interfaces.CustomFunctionCollectionData;
+            customFunctions?: Excel.Interfaces.CustomFunctionData[];
             /**
             *
             * Represents the collection of custom XML parts contained by this workbook. Read-only.
             *
             * [Api set: ExcelApi 1.5]
             */
-            customXmlParts?: Excel.Interfaces.CustomXmlPartCollectionData;
+            customXmlParts?: Excel.Interfaces.CustomXmlPartData[];
             /**
             *
             * Represents a collection of workbook scoped named items (named ranges and constants). Read-only.
             *
             * [Api set: ExcelApi 1.1]
             */
-            names?: Excel.Interfaces.NamedItemCollectionData;
+            names?: Excel.Interfaces.NamedItemData[];
             /**
             *
             * Represents a collection of PivotTables associated with the workbook. Read-only.
             *
             * [Api set: ExcelApi 1.3]
             */
-            pivotTables?: Excel.Interfaces.PivotTableCollectionData;
+            pivotTables?: Excel.Interfaces.PivotTableData[];
             /**
             *
             * Gets the workbook properties.
@@ -20065,29 +20999,29 @@ declare namespace Excel {
             *
             * [Api set: ExcelApi 1.4]
             */
-            settings?: Excel.Interfaces.SettingCollectionData;
+            settings?: Excel.Interfaces.SettingData[];
             /**
             *
             * Represents a collection of styles associated with the workbook. Read-only.
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
-            styles?: Excel.Interfaces.StyleCollectionData;
+            styles?: Excel.Interfaces.StyleData[];
             /**
             *
             * Represents a collection of tables associated with the workbook. Read-only.
             *
             * [Api set: ExcelApi 1.1]
             */
-            tables?: Excel.Interfaces.TableCollectionData;
+            tables?: Excel.Interfaces.TableData[];
             /**
             *
             * Represents a collection of worksheets associated with the workbook. Read-only.
             *
             * [Api set: ExcelApi 1.1]
             */
-            worksheets?: Excel.Interfaces.WorksheetCollectionData;
-            pivotCaches?: Excel.Interfaces.PivotCacheCollectionData;
+            worksheets?: Excel.Interfaces.WorksheetData[];
+            pivotCaches?: Excel.Interfaces.PivotCacheData[];
             /**
              *
              * Gets the workbook name.
@@ -20129,14 +21063,14 @@ declare namespace Excel {
             *
             * [Api set: ExcelApi 1.1]
             */
-            charts?: Excel.Interfaces.ChartCollectionData;
+            charts?: Excel.Interfaces.ChartData[];
             /**
             *
             * Collection of names scoped to the current worksheet. Read-only.
             *
             * [Api set: ExcelApi 1.4]
             */
-            names?: Excel.Interfaces.NamedItemCollectionData;
+            names?: Excel.Interfaces.NamedItemData[];
             /**
             *
             * Gets the PageLayout object of the worksheet. Read-only.
@@ -20150,7 +21084,7 @@ declare namespace Excel {
             *
             * [Api set: ExcelApi 1.3]
             */
-            pivotTables?: Excel.Interfaces.PivotTableCollectionData;
+            pivotTables?: Excel.Interfaces.PivotTableData[];
             /**
             *
             * Returns sheet protection object for a worksheet.
@@ -20164,7 +21098,7 @@ declare namespace Excel {
             *
             * [Api set: ExcelApi 1.1]
             */
-            tables?: Excel.Interfaces.TableCollectionData;
+            tables?: Excel.Interfaces.TableData[];
             /**
              *
              * Gets or sets the worksheet's gridlines flag.
@@ -20259,11 +21193,18 @@ declare namespace Excel {
         interface RangeData {
             /**
             *
+            * Represents a collection of contiguous areas for the range. Read-only.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            areas?: Excel.Interfaces.RangeData[];
+            /**
+            *
             * Collection of ConditionalFormats that intersect the range. Read-only.
             *
             * [Api set: ExcelApi 1.6]
             */
-            conditionalFormats?: Excel.Interfaces.ConditionalFormatCollectionData;
+            conditionalFormats?: Excel.Interfaces.ConditionalFormatData[];
             /**
             *
             * Returns a data validation object. Read-only.
@@ -20450,7 +21391,7 @@ declare namespace Excel {
             *
             * [Api set: ExcelApi 1.3]
             */
-            rows?: Excel.Interfaces.RangeViewCollectionData;
+            rows?: Excel.Interfaces.RangeViewData[];
             /**
              *
              * Represents the cell addresses of the RangeView.
@@ -20667,24 +21608,10 @@ declare namespace Excel {
         }
         /** An interface describing the data returned by calling "bindingCollection.toJSON()". */
         interface BindingCollectionData {
-            /**
-             *
-             * Returns the number of bindings in the collection. Read-only.
-             *
-             * [Api set: ExcelApi 1.1]
-             */
-            count?: number;
             items?: Excel.Interfaces.BindingData[];
         }
         /** An interface describing the data returned by calling "tableCollection.toJSON()". */
         interface TableCollectionData {
-            /**
-             *
-             * Returns the number of tables in the workbook. Read-only.
-             *
-             * [Api set: ExcelApi 1.1]
-             */
-            count?: number;
             items?: Excel.Interfaces.TableData[];
         }
         /** An interface describing the data returned by calling "table.toJSON()". */
@@ -20695,14 +21622,14 @@ declare namespace Excel {
             *
             * [Api set: ExcelApi 1.1]
             */
-            columns?: Excel.Interfaces.TableColumnCollectionData;
+            columns?: Excel.Interfaces.TableColumnData[];
             /**
             *
             * Represents a collection of all the rows in the table. Read-only.
             *
             * [Api set: ExcelApi 1.1]
             */
-            rows?: Excel.Interfaces.TableRowCollectionData;
+            rows?: Excel.Interfaces.TableRowData[];
             /**
             *
             * Represents the sorting for the table.
@@ -20790,13 +21717,6 @@ declare namespace Excel {
         }
         /** An interface describing the data returned by calling "tableColumnCollection.toJSON()". */
         interface TableColumnCollectionData {
-            /**
-             *
-             * Returns the number of columns in the table. Read-only.
-             *
-             * [Api set: ExcelApi 1.1]
-             */
-            count?: number;
             items?: Excel.Interfaces.TableColumnData[];
         }
         /** An interface describing the data returned by calling "tableColumn.toJSON()". */
@@ -20839,13 +21759,6 @@ declare namespace Excel {
         }
         /** An interface describing the data returned by calling "tableRowCollection.toJSON()". */
         interface TableRowCollectionData {
-            /**
-             *
-             * Returns the number of rows in the table. Read-only.
-             *
-             * [Api set: ExcelApi 1.1]
-             */
-            count?: number;
             items?: Excel.Interfaces.TableRowData[];
         }
         /** An interface describing the data returned by calling "tableRow.toJSON()". */
@@ -20911,7 +21824,7 @@ declare namespace Excel {
             *
             * [Api set: ExcelApi 1.1]
             */
-            borders?: Excel.Interfaces.RangeBorderCollectionData;
+            borders?: Excel.Interfaces.RangeBorderData[];
             /**
             *
             * Returns the fill object defined on the overall range. Read-only.
@@ -21058,13 +21971,6 @@ declare namespace Excel {
         }
         /** An interface describing the data returned by calling "rangeBorderCollection.toJSON()". */
         interface RangeBorderCollectionData {
-            /**
-             *
-             * Number of border objects in the collection. Read-only.
-             *
-             * [Api set: ExcelApi 1.1]
-             */
-            count?: number;
             items?: Excel.Interfaces.RangeBorderData[];
         }
         /** An interface describing the data returned by calling "rangeFont.toJSON()". */
@@ -21114,13 +22020,6 @@ declare namespace Excel {
         }
         /** An interface describing the data returned by calling "chartCollection.toJSON()". */
         interface ChartCollectionData {
-            /**
-             *
-             * Returns the number of charts in the worksheet. Read-only.
-             *
-             * [Api set: ExcelApi 1.1]
-             */
-            count?: number;
             items?: Excel.Interfaces.ChartData[];
         }
         /** An interface describing the data returned by calling "chart.toJSON()". */
@@ -21159,7 +22058,7 @@ declare namespace Excel {
             *
             * [Api set: ExcelApi 1.1]
             */
-            series?: Excel.Interfaces.ChartSeriesCollectionData;
+            series?: Excel.Interfaces.ChartSeriesData[];
             /**
             *
             * Represents the title of the specified chart, including the text, visibility, position and formating of the title. Read-only.
@@ -21250,13 +22149,6 @@ declare namespace Excel {
         }
         /** An interface describing the data returned by calling "chartSeriesCollection.toJSON()". */
         interface ChartSeriesCollectionData {
-            /**
-             *
-             * Returns the number of series in the collection. Read-only.
-             *
-             * [Api set: ExcelApi 1.1]
-             */
-            count?: number;
             items?: Excel.Interfaces.ChartSeriesData[];
         }
         /** An interface describing the data returned by calling "chartSeries.toJSON()". */
@@ -21274,14 +22166,14 @@ declare namespace Excel {
             *
             * [Api set: ExcelApi 1.1]
             */
-            points?: Excel.Interfaces.ChartPointsCollectionData;
+            points?: Excel.Interfaces.ChartPointData[];
             /**
             *
             * Represents a collection of trendlines in the series. Read-only.
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
-            trendlines?: Excel.Interfaces.ChartTrendlineCollectionData;
+            trendlines?: Excel.Interfaces.ChartTrendlineData[];
             /**
              *
              * Represents the chart type of a series. See Excel.ChartType for details.
@@ -21388,13 +22280,6 @@ declare namespace Excel {
         }
         /** An interface describing the data returned by calling "chartPointsCollection.toJSON()". */
         interface ChartPointsCollectionData {
-            /**
-             *
-             * Returns the number of chart points in the series. Read-only.
-             *
-             * [Api set: ExcelApi 1.1]
-             */
-            count?: number;
             items?: Excel.Interfaces.ChartPointData[];
         }
         /** An interface describing the data returned by calling "chartPoint.toJSON()". */
@@ -21952,7 +22837,7 @@ declare namespace Excel {
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
-            legendEntries?: Excel.Interfaces.ChartLegendEntryCollectionData;
+            legendEntries?: Excel.Interfaces.ChartLegendEntryData[];
             /**
              *
              * Represents the height of the legend on the chart.
@@ -22407,10 +23292,10 @@ declare namespace Excel {
             * [Api set: ExcelApi 1.3]
             */
             worksheet?: Excel.Interfaces.WorksheetData;
-            calculatedFields?: Excel.Interfaces.CalculatedFieldCollectionData;
+            calculatedFields?: Excel.Interfaces.PivotFieldData[];
             dataBodyRange?: Excel.Interfaces.RangeData;
             dataLabelRange?: Excel.Interfaces.RangeData;
-            pivotFields?: Excel.Interfaces.PivotFieldCollectionData;
+            pivotFields?: Excel.Interfaces.PivotFieldData[];
             /**
              *
              * True if the PivotTable report shows grand totals for columns.
@@ -22497,7 +23382,7 @@ declare namespace Excel {
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
-            custom?: Excel.Interfaces.CustomPropertyCollectionData;
+            custom?: Excel.Interfaces.CustomPropertyData[];
             /**
              *
              * Gets or sets the author of the workbook.
@@ -23044,7 +23929,7 @@ declare namespace Excel {
             *
             * [Api set: ExcelApi 1.6]
             */
-            borders?: Excel.Interfaces.ConditionalRangeBorderCollectionData;
+            borders?: Excel.Interfaces.ConditionalRangeBorderData[];
             /**
             *
             * Returns the fill object defined on the overall conditional format range. Read-only.
@@ -23141,41 +24026,6 @@ declare namespace Excel {
         }
         /** An interface describing the data returned by calling "conditionalRangeBorderCollection.toJSON()". */
         interface ConditionalRangeBorderCollectionData {
-            /**
-            *
-            * Gets the top border
-            *
-            * [Api set: ExcelApi 1.6]
-            */
-            bottom?: Excel.Interfaces.ConditionalRangeBorderData;
-            /**
-            *
-            * Gets the top border
-            *
-            * [Api set: ExcelApi 1.6]
-            */
-            left?: Excel.Interfaces.ConditionalRangeBorderData;
-            /**
-            *
-            * Gets the top border
-            *
-            * [Api set: ExcelApi 1.6]
-            */
-            right?: Excel.Interfaces.ConditionalRangeBorderData;
-            /**
-            *
-            * Gets the top border
-            *
-            * [Api set: ExcelApi 1.6]
-            */
-            top?: Excel.Interfaces.ConditionalRangeBorderData;
-            /**
-             *
-             * Number of border objects in the collection. Read-only.
-             *
-             * [Api set: ExcelApi 1.6]
-             */
-            count?: number;
             items?: Excel.Interfaces.ConditionalRangeBorderData[];
         }
         /** An interface describing the data returned by calling "customFunction.toJSON()". */
@@ -23263,7 +24113,7 @@ declare namespace Excel {
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
-            borders?: Excel.Interfaces.RangeBorderCollectionData;
+            borders?: Excel.Interfaces.RangeBorderData[];
             /**
             *
             * The Fill of the style.
@@ -23454,6 +24304,10 @@ declare namespace Excel {
              */
             printErrors?: string;
         }
+        /** An interface describing the data returned by calling "areaCollection.toJSON()". */
+        interface AreaCollectionData {
+            items?: Excel.Interfaces.RangeData[];
+        }
         /** An interface describing the data returned by calling "functionResult.toJSON()". */
         interface FunctionResultData<T> {
             /**
@@ -23489,9 +24343,9 @@ declare namespace Excel {
         /** An interface describing the data returned by calling "pivotField.toJSON()". */
         interface PivotFieldData {
             currentPage?: Excel.Interfaces.PivotItemData;
-            hiddenItems?: Excel.Interfaces.PivotItemCollectionData;
-            pivotItems?: Excel.Interfaces.PivotItemCollectionData;
-            visiblePivotItems?: Excel.Interfaces.PivotItemCollectionData;
+            hiddenItems?: Excel.Interfaces.PivotItemData[];
+            pivotItems?: Excel.Interfaces.PivotItemData[];
+            visiblePivotItems?: Excel.Interfaces.PivotItemData[];
             aggregationFunction?: string;
             allItemsVisible?: boolean;
             autoSortField?: string;
@@ -23531,6 +24385,22 @@ declare namespace Excel {
         /** An interface describing the data returned by calling "pivotItemCollection.toJSON()". */
         interface PivotItemCollectionData {
             items?: Excel.Interfaces.PivotItemData[];
+        }
+        /**
+         *
+         * Represents the Excel Runtime class.
+         *
+         * [Api set: ExcelApi 1.5]
+         */
+        interface RuntimeLoadOptions {
+            $all?: boolean;
+            /**
+             *
+             * Turn on/off JavaScript events in current taskpane or content add-in.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            enableEvents?: boolean;
         }
         /**
          *
@@ -28283,34 +29153,6 @@ declare namespace Excel {
         interface ConditionalRangeBorderCollectionLoadOptions {
             $all?: boolean;
             /**
-            *
-            * Gets the top border
-            *
-            * [Api set: ExcelApi 1.6]
-            */
-            bottom?: Excel.Interfaces.ConditionalRangeBorderLoadOptions;
-            /**
-            *
-            * Gets the top border
-            *
-            * [Api set: ExcelApi 1.6]
-            */
-            left?: Excel.Interfaces.ConditionalRangeBorderLoadOptions;
-            /**
-            *
-            * Gets the top border
-            *
-            * [Api set: ExcelApi 1.6]
-            */
-            right?: Excel.Interfaces.ConditionalRangeBorderLoadOptions;
-            /**
-            *
-            * Gets the top border
-            *
-            * [Api set: ExcelApi 1.6]
-            */
-            top?: Excel.Interfaces.ConditionalRangeBorderLoadOptions;
-            /**
              *
              * For EACH ITEM in the collection: HTML color code representing the color of the border line, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
              *
@@ -28863,6 +29705,189 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             printErrors?: boolean;
+        }
+        /**
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        interface AreaCollectionLoadOptions {
+            $all?: boolean;
+            /**
+            *
+            * For EACH ITEM in the collection: Returns a data validation object.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            dataValidation?: Excel.Interfaces.DataValidationLoadOptions;
+            /**
+            *
+            * For EACH ITEM in the collection: Returns a format object, encapsulating the range's font, fill, borders, alignment, and other properties.
+            *
+            * [Api set: ExcelApi 1.1]
+            */
+            format?: Excel.Interfaces.RangeFormatLoadOptions;
+            /**
+            *
+            * For EACH ITEM in the collection: The worksheet containing the current range.
+            *
+            * [Api set: ExcelApi 1.1]
+            */
+            worksheet?: Excel.Interfaces.WorksheetLoadOptions;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents the range reference in A1-style. Address value will contain the Sheet reference (e.g. Sheet1!A1:B4). Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            address?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents range reference for the specified range in the language of the user. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            addressLocal?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Number of cells in the range. This API will return -1 if the cell count exceeds 2^31-1 (2,147,483,647). Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            cellCount?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents the total number of columns in the range. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            columnCount?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents if all columns of the current range are hidden.
+             *
+             * [Api set: ExcelApi 1.2]
+             */
+            columnHidden?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents the column number of the first cell in the range. Zero-indexed. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            columnIndex?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents the formula in A1-style notation.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            formulas?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents the formula in A1-style notation, in the user's language and number-formatting locale.  For example, the English "=SUM(A1, 1.5)" formula would become "=SUMME(A1; 1,5)" in German.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            formulasLocal?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents the formula in R1C1-style notation.
+             *
+             * [Api set: ExcelApi 1.2]
+             */
+            formulasR1C1?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents if all cells of the current range are hidden.
+             *
+             * [Api set: ExcelApi 1.2]
+             */
+            hidden?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents the hyperlink set for the current range.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            hyperlink?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents Excel's number format code for the given cell.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            numberFormat?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents Excel's number format code for the given cell as a string in the language of the user.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormatLocal?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Returns the total number of rows in the range. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            rowCount?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents if all rows of the current range are hidden.
+             *
+             * [Api set: ExcelApi 1.2]
+             */
+            rowHidden?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Returns the row number of the first cell in the range. Zero-indexed. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            rowIndex?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents the style of the current range. This return either null or a string.
+                If the styles of the cells are inconsistent, null will be returned.
+                For custom styles, the style name will be returned. For built-in styles, a string representing a value in the BuiltInStyle enum will be returned.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            style?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Text values of the specified range. The Text value will not depend on the cell width. The # sign substitution that happens in Excel UI will not affect the text value returned by the API. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            text?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents the type of data of each cell. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            valueTypes?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents the raw values of the specified range. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            values?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents if the current range is an entire column.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            isEntireColumn?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents if the current range is an entire row.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            isEntireRow?: boolean;
         }
         /**
          *
