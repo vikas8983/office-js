@@ -72,8 +72,8 @@ interface IOfficialBranchDeployRequest {
 }
 
 interface IDeploymentParams {
+    branchToCheckOut: string;
     npmPublishTag: string;
-    version: string;
 
     /** A script to run after cloning. Note that the current working directory at that point
      * is still the original one from the start of the script */
@@ -103,10 +103,13 @@ async function attemptDeployScript() {
     precheckOrExit();
 
     if (process.env.TRAVIS_BRANCH.startsWith(ADHOC_BRANCH_PREFIX)) {
-        const deploymentInfoFromSubmittedRepoState = await getDeploymentInfoFromSubmittedRepoState();
+        const deploymentInfoFromSubmittedRepoState = await getDeploymentInfoFromGithubRepoState(process.env.TRAVIS_BRANCH);
         const npmPublishTag = deploymentInfoFromSubmittedRepoState.tag;
-        const version = await VersionUtils.getNextVersionNumberForNonReleaseTag(npmPublishTag);
-        await doDeployment({ version, npmPublishTag, historyInfo: deploymentInfoFromSubmittedRepoState.history });
+        await doDeployment({
+            branchToCheckOut: process.env.TRAVIS_BRANCH,
+            npmPublishTag,
+            historyInfo: deploymentInfoFromSubmittedRepoState.history
+        });
         return;
 
     } else if (process.env.TRAVIS_BRANCH === DEPLOYMENT_QUEUE_BRANCH) {
@@ -196,8 +199,9 @@ function precheckOrExit(): void {
 }
 
 async function doDeployment(params: IDeploymentParams): Promise<void> {
-    const { version, npmPublishTag, historyInfo } = params;
-    const gitTagName = "v" + params.version;
+    const { npmPublishTag, historyInfo } = params;
+    const version = await VersionUtils.getNextVersionNumber(npmPublishTag);
+    const gitTagName = "v" + version;
 
     if (OFFICIAL_TAGS.indexOf(npmPublishTag) >= 0) {
         throw new Error("Private build may not use an official NPM tag!");
@@ -232,7 +236,7 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
     shell.pushd(repoLocalFolderPath);
 
 
-    execCommand(`git checkout ${process.env.TRAVIS_BRANCH}`);
+    execCommand(`git checkout ${params.branchToCheckOut}`);
     execCommand('git config --add user.name "Travis CI"');
     execCommand('git config --add user.email "travis.ci@microsoft.com"');
 
@@ -267,6 +271,7 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
     if (npmPublishTag === "release") {
         execCommand(`npm publish`);
     }
+
     console.log(`FYI, if you need to unpublish (must be done within the first 24 hours), run:`);
     console.log(`    npm unpublish @microsoft/office-js@${version}`);
 
@@ -312,15 +317,15 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
     banner(`GitHub Releases page for v${version}`, `https://github.com/OfficeDev/office-js/releases/tag/v${version}`, chalk.green.bold);
 }
 
-async function getDeploymentInfoFromSubmittedRepoState(): Promise<IDeploymentInfoFromSubmittedRepo> {
-    const url = `https://raw.githubusercontent.com/OfficeDev/office-js/${process.env.TRAVIS_BRANCH}/NPM.DEPLOYMENT.INFO.yaml`;
+async function getDeploymentInfoFromGithubRepoState(lookupBranch: string): Promise<IDeploymentInfoFromSubmittedRepo> {
+    const url = `https://raw.githubusercontent.com/OfficeDev/office-js/${lookupBranch}/NPM.DEPLOYMENT.INFO.yaml`;
     const contents = await fetchAndThrowOnError(url, "text");
 
     const result = jsyaml.safeLoad(contents) as IDeploymentInfoFromSubmittedRepo;
     if (result.history && result.tag) {
         return result;
     } else {
-        throw new Error(`Missing required fields from in-repo "${DEPLOYMENT_YAML_FILENAME}" file.` +
+        throw new Error(`Missing required fields from in-repo "${DEPLOYMENT_YAML_FILENAME}" file of branch "${lookupBranch}".` +
             "\n\n" + url + "\n\n" + contents);
     }
 }
@@ -335,6 +340,10 @@ async function doOfficialDeployment(): Promise<void> {
         return;
     }
 
+    if (OFFICIAL_BRANCHES.indexOf(currentYaml.targetBranch) < 0) {
+        throw new Error(`Invalid target branch "${currentYaml.targetBranch}"; does not belong to the list of official branches`);
+    }
+
     banner("DEPLOYMENT REQUEST DETECTED", stripSpaces(`
         Acknowledging request to deploy to
             "${currentYaml.targetBranch}"
@@ -342,7 +351,60 @@ async function doOfficialDeployment(): Promise<void> {
             ${currentYaml.from}
     `));
 
-    banner('NOT READY TO DO OFFICIAL DEPLOYMENTS YET');
+    // for purposes of the official tags, the NPM publish tag will be the same as the branch name (beta, release-next, etc)
+    const npmPublishTag = currentYaml.targetBranch;
+    const historyInfo = (await getDeploymentInfoFromGithubRepoState(currentYaml.from)).history;
+
+    await doDeployment({
+        branchToCheckOut: currentYaml.targetBranch,
+        npmPublishTag,
+        historyInfo,
+        afterCloneBeforeCommit: async (repoLocalFolderPath: string) => {
+            console.log(`Delete all files except ".git" and the "dist" folder`);
+            fs.readdirSync(repoLocalFolderPath)
+                .filter(filename => [".git", "dist"].indexOf(filename) < 0)
+                .forEach(filename => fs.removeSync(repoLocalFolderPath + '/' + filename));
+
+
+            // Now copy over all files from the release branch except ".git" and "dist":
+
+            const repoDifferentCopyFolderPath = process.env.TRAVIS_BUILD_DIR + "/" + "office-js-repo-different-copy/";
+            fs.removeSync(repoDifferentCopyFolderPath);
+            execCommand(`git clone ${TOKENIZED_GITHUB_PUSH_URL} ${repoDifferentCopyFolderPath}`, {
+                token: process.env.GH_TOKEN
+            });
+            fs.readdirSync(repoDifferentCopyFolderPath)
+                .filter(filename => [".git", "dist"].indexOf(filename) < 0)
+                .forEach(filename => fs.copySync(
+                    repoDifferentCopyFolderPath + '/' + filename,
+                    repoLocalFolderPath + '/' + filename,
+                    {
+                        preserveTimestamps: true
+                    }
+                ));
+
+
+            // And do this again, this time with copying ONLY the DIST folder from the "from" branch:
+
+            fs.removeSync(repoDifferentCopyFolderPath);
+            execCommand(`git clone ${TOKENIZED_GITHUB_PUSH_URL} ${repoDifferentCopyFolderPath}`, {
+                token: process.env.GH_TOKEN
+            });
+            execCommand(`git checkout ${currentYaml.from}`);
+            fs.copySync(
+                repoDifferentCopyFolderPath + '/dist',
+                repoLocalFolderPath + '/dist',
+                {
+                    preserveTimestamps: true
+                }
+            );
+
+            fs.removeSync(repoDifferentCopyFolderPath);
+        }
+    });
+
+    // FIXME now need to remove the current yaml stuff
+    banner('Still need to remove the current YAML stuff');
 }
 
 // async function getTravisQueueBranchDeploymentParams(): Promise<IDeploymentParams> {
@@ -366,30 +428,7 @@ async function doOfficialDeployment(): Promise<void> {
 //         version,
 //         npmPublishTag,
 
-//         afterCloneBeforeCommit: async (repoLocalFolderPath: string) => {
-//             console.log(`Delete all files except ".git" and the "dist" folder`);
-//             fs.readdirSync(repoLocalFolderPath)
-//                 .filter(filename => [".git", "dist"].indexOf(filename) < 0)
-//                 .forEach(filename => fs.removeSync(repoLocalFolderPath + '/' + filename));
 
-//             const repoCopyFolderPath = process.env.TRAVIS_BUILD_DIR + "/" + "office-js-repo-copy-release-branch/";
-//             execCommand(`git clone ${TOKENIZED_GITHUB_PUSH_URL} ${repoCopyFolderPath}`, {
-//                 token: process.env.GH_TOKEN
-//             });
-
-//             console.log(`Now, from a different clone of the "release" branch, copy all files except ".git" and the "dist" folder`);
-//             fs.readdirSync(repoCopyFolderPath)
-//                 .filter(filename => [".git", "dist"].indexOf(filename) < 0)
-//                 .forEach(filename => fs.copySync(
-//                     repoCopyFolderPath + '/' + filename,
-//                     repoLocalFolderPath + '/' + filename,
-//                     {
-//                         preserveTimestamps: true
-//                     }
-//                 ));
-
-//             fs.removeSync(repoCopyFolderPath);
-//         }
 
 //     };
 // }
