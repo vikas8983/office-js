@@ -77,11 +77,13 @@ interface IDeploymentParams {
     npmPublishTag: string;
     commitMessagePartial: string;
 
+    historyInfo: IDeploymentInfoFromSubmittedRepoHistory;
+
     /** A script to run after cloning. Note that the current working directory at that point
      * is still the original one from the start of the script */
     afterCloneBeforeCommit?: (repoLocalFolderPath: string) => Promise<any>;
 
-    historyInfo: IDeploymentInfoFromSubmittedRepoHistory;
+    rightBeforeCompletion?: () => Promise<any>;
 }
 
 (async () => {
@@ -326,7 +328,7 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
             "tag_name": gitTagName,
             "name": gitTagName,
             "body": markdownReleasesNotes!,
-            "prerelease": true,
+            "prerelease": !isOfficialBuild,
             "draft": false
         })
     });
@@ -337,6 +339,12 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
 
 
     shell.popd();
+
+
+    if (params.rightBeforeCompletion) {
+        await params.rightBeforeCompletion();
+    }
+
 
     banner('SUCCESS, DEPLOYMENT COMPLETE!', markdownReleasesNotes!.replace(/&nbsp;/g, ' '), chalk.green.bold);
 
@@ -426,10 +434,37 @@ async function doOfficialDeployment(): Promise<void> {
                     }
                 );
             })();
+        },
+        rightBeforeCompletion: async () => {
+            if (currentYaml.deleteAdhocBranchOnSuccessfulDeployment) {
+                execCommand(`git push origin --delete ${currentYaml.from}`);
+            }
+
+            (() => {
+                console.log(`Reset the ${DEPLOY_REQUEST_FILENAME} "from" and "targetBranch" keys:`);
+                const repoDeployCopyFolderPath = `${WORKING_DIRECTORY}/office-js-repo-deploy-copy-${new Date().getTime()}/`;
+                fs.removeSync(repoDeployCopyFolderPath);
+                execCommand(`git clone --single-branch --depth 1 -b ${DEPLOYMENT_QUEUE_BRANCH} ${TOKENIZED_GITHUB_PUSH_URL} ${repoDeployCopyFolderPath}`, {
+                    token: process.env.GH_TOKEN
+                });
+                shell.pushd(repoDeployCopyFolderPath);
+
+                const repoDeployCopyDeployRequestFilePath = repoDeployCopyFolderPath + "/" + DEPLOY_REQUEST_FILENAME;
+                const sanitizedDeployRequestFileContents =
+                    (fs.readFileSync(repoDeployCopyDeployRequestFilePath).toString().split("\n"))
+                        .map(line => {
+                            if (line.startsWith("from:")) {
+                                return "from:";
+                            } else if (line.startsWith("targetBranch:")) {
+                                return "targetBranch:";
+                            }
+                            return line;
+                        })
+                        .join("\n");
+                fs.writeFileSync(repoDeployCopyDeployRequestFilePath, sanitizedDeployRequestFileContents);
+                execCommand(`git add -A`);
+                execCommand(`git push origin ${DEPLOYMENT_QUEUE_BRANCH}`);
+            })();
         }
     });
-
-    // FIXME now need to remove the current yaml stuff
-    // FIXME also deleteAdhocBranchOnSuccessfulDeployment
-    banner('Still need to remove the current YAML stuff');
 }
