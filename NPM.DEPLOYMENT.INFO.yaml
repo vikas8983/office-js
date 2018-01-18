@@ -1,46 +1,27 @@
-version: 1.1.3-adhoc.4
-tag: adhoc
-githubReleaseUrl: https://github.com/OfficeDev/office-js/releases/tag/v1.1.3-adhoc.4
-githubViewUrl: https://github.com/OfficeDev/office-js/tree/v1.1.3-adhoc.4
-deployedAt: 2018-01-18 4:55 pm UTC  (2018-01-18 8:55 am Pacific Time)
-
+tag: experiment-kiwi
 history:
-    adhocBranchName: __adhoc--beta-next--16.0.8918.5450--2018-01-18--8.52am--beta-edog
-    commitMessage: __adhoc--beta-next--16.0.8918.5450--2018-01-18--8.52am--beta-edog
+    adhocBranchName: __adhoc--experiment-kiwi--beta--local--2018-01-18--3.36pm
+    commitMessage: added new option to load options
     fullCommitHistory:
         - 
             sha: >-
-                https://github.com/OfficeDev/office-js/commits/aec425fd08ac0a8cef9f6dde1e8f06ec7e3b3098
-            message: >-
-                JS dist files --
-                __adhoc--beta-next--16.0.8918.5450--2018-01-18--8.52am--beta-edog
+                https://github.com/OfficeDev/office-js/commits/02898a46ae1740c6115738412f0cc80338306888
+            message: JS dist files -- added new option to load options
         - 
             sha: >-
-                https://github.com/OfficeDev/office-js/commits/404018626c919a0f5d33ed4c5adacb397593f220
-            message: >-
-                Localized strings --
-                __adhoc--beta-next--16.0.8918.5450--2018-01-18--8.52am--beta-edog
+                https://github.com/OfficeDev/office-js/commits/008d3384da12fdc651777bfb68160d320e2ed830
+            message: Localized strings -- added new option to load options
         - 
             sha: >-
-                https://github.com/OfficeDev/office-js/commits/0001b53ee2570208f5fc22a6e56a379208bbabbc
+                https://github.com/OfficeDev/office-js/commits/4c8aa79afcdd1e2db614cc47bacb6ceab6ae061c
             message: Copying other assets from the release branch of the repo
         - 
             sha: >-
-                https://github.com/OfficeDev/office-js/commits/6426f6fac4b77da2f40d1f15c7f4ceaa61870931
+                https://github.com/OfficeDev/office-js/commits/4e6937774ae35807ca5607a3ac65e2577cfad967
             message: >-
                 [PUBLISH TOOL] Add deployment infrastructure for adhoc NPM
                 publish
         - 
             sha: >-
-                https://github.com/OfficeDev/office-js/commits/e7ce97abcbe88197aae0ac076d94a8c333f475d3
-            message: >-
-                [BEGIN PUBLISH UPDATES] --
-                __adhoc--beta-next--16.0.8918.5450--2018-01-18--8.52am--beta-edog
-
-
-unpkgUrls: |-
-    this specific build number:
-        https://unpkg.com/@microsoft/office-js@1.1.3-adhoc.4/dist/office.js
-        https://unpkg.com/@microsoft/office-js@1.1.3-adhoc.4/dist/office.d.ts
-
-buildLog: https://travis-ci.org/OfficeDev/office-js/builds/330445859
+                https://github.com/OfficeDev/office-js/commits/49a7eebbd2c2467efa8b004daf364dba45a5231b
+            message: '[BEGIN PUBLISH UPDATES] -- added new option to load options'
