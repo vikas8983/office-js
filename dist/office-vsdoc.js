@@ -1,4 +1,4 @@
-/* Version: 16.0.9010.1000 */
+/* Version: 16.0.9015.1000 */
 /*
 	Copyright (c) Microsoft Corporation.  All rights reserved.
 */
@@ -13011,7 +13011,7 @@ var Excel;
 	var Runtime = (function(_super) {
 		__extends(Runtime, _super);
 		function Runtime() {
-			/// <summary> Represents the Excel Runtime class. [Api set: ExcelApi 1.5] </summary>
+			/// <summary> Represents the Excel Runtime class. [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
 			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
 			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
 			/// <field name="enableEvents" type="Boolean">Turn on/off JavaScript events in current taskpane or content add-in. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
@@ -14100,141 +14100,6 @@ var Excel;
 
 var Excel;
 (function (Excel) {
-	var Visual = (function(_super) {
-		__extends(Visual, _super);
-		function Visual() {
-			/// <summary> Represents a visual object in a workbook. [Api set: ExcelApi 99.9] </summary>
-			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
-			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
-			/// <field name="id" type="String">The unique id of visual, not the guid of VisualDefinition. Read-only. [Api set: ExcelApi 99.9]</field>
-		}
-
-		Visual.prototype.load = function(option) {
-			/// <summary>
-			/// Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-			/// </summary>
-			/// <param name="option" type="string | string[] | OfficeExtension.LoadOption"/>
-			/// <returns type="Excel.Visual"/>
-		}
-		Visual.prototype.delete = function() {
-			/// <summary>
-			/// Delete the visual. [Api set: ExcelApi 99.9]
-			/// </summary>
-			/// <returns ></returns>
-		}
-
-		return Visual;
-	})(OfficeExtension.ClientObject);
-	Excel.Visual = Visual;
-})(Excel || (Excel = {__proto__: null}));
-
-var Excel;
-(function (Excel) {
-	/// <summary> [Api set: ExcelApi 99.9] </summary>
-	var VisualCategory = {
-		__proto__: null,
-		"column": "column",
-		"bar": "bar",
-		"line": "line",
-		"area": "area",
-		"pie": "pie",
-		"donut": "donut",
-		"scatter": "scatter",
-		"bubble": "bubble",
-		"statistical": "statistical",
-		"stock": "stock",
-		"combo": "combo",
-		"hierarchy": "hierarchy",
-		"surface": "surface",
-		"map": "map",
-		"funnel": "funnel",
-		"radar": "radar",
-		"waterfall": "waterfall",
-		"threeD": "threeD",
-		"other": "other",
-	}
-	Excel.VisualCategory = VisualCategory;
-})(Excel || (Excel = {__proto__: null}));
-
-var Excel;
-(function (Excel) {
-	var VisualCollection = (function(_super) {
-		__extends(VisualCollection, _super);
-		function VisualCollection() {
-			/// <summary> A collection of all the visuals on a worksheet. [Api set: ExcelApi 99.9] </summary>
-			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
-			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
-			/// <field name="items" type="Array" elementType="Excel.Visual">Gets the loaded child items in this collection.</field>
-		}
-
-		VisualCollection.prototype.load = function(option) {
-			/// <summary>
-			/// Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-			/// </summary>
-			/// <param name="option" type="string | string[] | OfficeExtension.LoadOption"/>
-			/// <returns type="Excel.VisualCollection"/>
-		}
-		VisualCollection.prototype.add = function(visualDefinitionGuid, dataSourceType, dataSourceContent) {
-			/// <summary>
-			/// Creates a new visual. [Api set: ExcelApi 99.9]
-			/// </summary>
-			/// <param name="visualDefinitionGuid" type="String">The guid of a VisualDefinition, not the id for an instance of a Visual.</param>
-			/// <param name="dataSourceType" type="String" optional="true">The data source type of visual. e.g. xlFormula</param>
-			/// <param name="dataSourceContent" type="String" optional="true">The data source content</param>
-			/// <returns type="Excel.Visual"></returns>
-		}
-		VisualCollection.prototype.getDefinitions = function() {
-			/// <summary>
-			/// Gets all visual definitions. [Api set: ExcelApi 99.9]
-			/// </summary>
-			/// <returns type="OfficeExtension.ClientResult&lt;Array<Excel.VisualDefinition>&gt;"></returns>
-			var result = new OfficeExtension.ClientResult();
-			result.__proto__ = null;
-			result.value = [];
-			return result;
-		}
-		VisualCollection.prototype.getPreview = function(visualDefinitionGuid, width, height, dpi) {
-			/// <summary>
-			/// Get the preview of a visual. [Api set: ExcelApi 99.9]
-			/// </summary>
-			/// <param name="visualDefinitionGuid" type="String">The guid of a VisualDefinition, not the id for an instance of a Visual.</param>
-			/// <param name="width" type="Number">The width of the preview.</param>
-			/// <param name="height" type="Number">The height of the preview.</param>
-			/// <param name="dpi" type="Number">The dpi setting.</param>
-			/// <returns type="OfficeExtension.ClientResult&lt;string&gt;"></returns>
-			var result = new OfficeExtension.ClientResult();
-			result.__proto__ = null;
-			result.value = '';
-			return result;
-		}
-
-		return VisualCollection;
-	})(OfficeExtension.ClientObject);
-	Excel.VisualCollection = VisualCollection;
-})(Excel || (Excel = {__proto__: null}));
-
-var Excel;
-(function (Excel) {
-	var Interfaces;
-	(function (Interfaces) {
-		var VisualDefinition = (function() {
-			function VisualDefinition() {
-				/// <summary> Represents a visual definition [Api set: ExcelApi 99.9] </summary>
-				/// <field name="category" type="String">Represents the category of a visual definition. [Api set: ExcelApi 99.9]</field>
-				/// <field name="categoryRank" type="Number">Represents the category rank of a visual definition. [Api set: ExcelApi 99.9]</field>
-				/// <field name="description" type="String">Represents the decription of a visual definition. [Api set: ExcelApi 99.9]</field>
-				/// <field name="id" type="String">Represents the id of a visual definition. [Api set: ExcelApi 99.9]</field>
-				/// <field name="title" type="String">Represents the title of a visual definition. [Api set: ExcelApi 99.9]</field>
-			}
-			return VisualDefinition;
-		})();
-		Interfaces.VisualDefinition.__proto__ = null;
-		Interfaces.VisualDefinition = VisualDefinition;
-	})(Interfaces = Excel.Interfaces || (Excel.Interfaces = { __proto__: null}));
-})(Excel || (Excel = {__proto__: null}));
-
-var Excel;
-(function (Excel) {
 	var Workbook = (function(_super) {
 		__extends(Workbook, _super);
 		function Workbook() {
@@ -14407,7 +14272,6 @@ var Excel;
 			/// <field name="tabColor" type="String">Gets or sets the worksheet tab color.              When retrieving the tab color, if the worksheet is invisible, the value will be null. If the worksheet is visible but the tab color is set to auto, an empty string will be returned. Otherwise, the property will be set to a color, in the form &quot;#123456&quot;              When setting the color, use an empty-string to set an &quot;auto&quot; color, or a real color otherwise. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="tables" type="Excel.TableCollection">Collection of tables that are part of the worksheet. Read-only. [Api set: ExcelApi 1.1]</field>
 			/// <field name="visibility" type="String">The Visibility of the worksheet. [Api set: ExcelApi 1.1 for reading visibility; 1.2 for setting it.]</field>
-			/// <field name="visuals" type="Excel.VisualCollection">Returns collection of visuals that are part of the worksheet. Read-only. [Api set: ExcelApi 99.9]</field>
 			/// <field name="onActivated" type="OfficeExtension.EventHandlers">Occurs when the worksheet is activated. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="onCalculated" type="OfficeExtension.EventHandlers">Occurs when the worksheet is calculated. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="onDataChanged" type="OfficeExtension.EventHandlers">Occurs when data changed on a specific worksheet. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
@@ -20552,6 +20416,7 @@ var Word;
 				/// <summary>An interface for updating data on the Document object, for use in "document.set({ ... })".</summary>
 				/// <field name="body" type="Word.Interfaces.BodyUpdateData">Gets the body object of the document. The body is the text that excludes headers, footers, footnotes, textboxes, etc.. [Api set: WordApi 1.1]</field>
 				/// <field name="properties" type="Word.Interfaces.DocumentPropertiesUpdateData">Gets the properties of the document. [Api set: WordApi 1.3]</field>
+				/// <field name="allowCloseOnUntitled" type="Boolean">Gets or sets a value that indicates that, when opening a new document, whether it is allowed to close this document even if this document is untitled. True to close, false otherwise. [Api set: WordApi]</field>;
 			}
 			return DocumentUpdateData;
 		})();

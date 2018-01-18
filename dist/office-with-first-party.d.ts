@@ -1,6 +1,6 @@
 // Type definitions for Office.js
 // Project: http://dev.office.com
-// Definitions by: OfficeDev <https://github.com/OfficeDev>, Lance Austin <https://github.com/LanceEA>
+// Definitions by: OfficeDev <https://github.com/OfficeDev>, Lance Austin <https://github.com/LanceEA>, Michael Zlatkovsky <https://github.com/Zlatkovsky>, Kim Brandl <https://github.com/kbrandl>, Ricky Kirkham <https://github.com/Rick-Kirkham>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 /*
@@ -134,17 +134,14 @@ declare namespace Office {
     export interface Error {
         /**
          * Gets the numeric code of the error.
-         * @since 1.0
          */
         code: number;
         /**
          * Gets the name of the error.
-         * @since 1.0
          */
         message: string;
         /**
          * Gets a detailed description of the error.
-         * @since 1.0
          */
         name: string;
     }
@@ -244,7 +241,7 @@ declare namespace Office {
         bodyBackgroundColor: string;
         bodyForegroundColor: string;
         controlBackgroundColor: string;
-        controlForgroundColor: string;
+        controlForegroundColor: string;
     }
     /**
      * Dialog object returned as part of the displayDialogAsync callback. The object exposes methods for registering event handlers and closing the dialog
@@ -2617,6 +2614,8 @@ declare namespace OfficeExtension {
 		/** The value of the result that is retrieved from the document after "context.sync()" is invoked. */
 		value: T;
 	}
+
+	type RetrieveResult<T extends ClientObject, TData> = { $proxy: T; $isNullObject: boolean; toJSON: () => TData; } & TData;
 }
 declare namespace OfficeExtension {
 	export interface DebugInfo {
@@ -3935,20 +3934,6 @@ declare namespace Excel {
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         worksheetId: string;
-        /**
-         *
-         * Gets the range that represents the changed area of a specific worksheet.
-         *
-         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-         */
-        getRange(ctx: Excel.RequestContext): Excel.Range;
-        /**
-         *
-         * Gets the range that represents the changed area of a specific worksheet. It might return null object.
-         *
-         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-         */
-        getRangeOrNullObject(ctx: Excel.RequestContext): Excel.Range;
     }
     /**
      *
@@ -3999,20 +3984,6 @@ declare namespace Excel {
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         worksheetId: string;
-        /**
-         *
-         * Gets the range that represents the changed area of a table on a specific worksheet.
-         *
-         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-         */
-        getRange(ctx: Excel.RequestContext): Excel.Range;
-        /**
-         *
-         * Gets the range that represents the changed area of a table on a specific worksheet. It might return null object.
-         *
-         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-         */
-        getRangeOrNullObject(ctx: Excel.RequestContext): Excel.Range;
     }
     /**
      *
@@ -4344,7 +4315,7 @@ declare namespace Excel {
      *
      * Represents the Excel Runtime class.
      *
-     * [Api set: ExcelApi 1.5]
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
     class Runtime extends OfficeExtension.ClientObject {
         /**
@@ -4710,13 +4681,6 @@ declare namespace Excel {
          * [Api set: ExcelApi 1.1]
          */
         readonly tables: Excel.TableCollection;
-        /**
-         *
-         * Returns collection of visuals that are part of the worksheet. Read-only.
-         *
-         * [Api set: ExcelApi 99.9]
-         */
-        readonly visuals: Excel.VisualCollection;
         /**
          *
          * Gets or sets the worksheet's gridlines flag.
@@ -10023,128 +9987,6 @@ declare namespace Excel {
     }
     /**
      *
-     * A collection of all the visuals on a worksheet.
-     *
-     * [Api set: ExcelApi 99.9]
-     */
-    class VisualCollection extends OfficeExtension.ClientObject {
-        /** Gets the loaded child items in this collection. */
-        readonly items: Array<Excel.Visual>;
-        /**
-         *
-         * Creates a new visual.
-         *
-         * [Api set: ExcelApi 99.9]
-         *
-         * @param visualDefinitionGuid  The guid of a VisualDefinition, not the id for an instance of a Visual.
-         * @param dataSourceType The data source type of visual. e.g. xlFormula
-         * @param dataSourceContent The data source content
-         */
-        add(visualDefinitionGuid: string, dataSourceType?: string, dataSourceContent?: string): Excel.Visual;
-        /**
-         *
-         * Gets all visual definitions.
-         *
-         * [Api set: ExcelApi 99.9]
-         */
-        getDefinitions(): OfficeExtension.ClientResult<Array<Excel.VisualDefinition>>;
-        /**
-         *
-         * Get the preview of a visual.
-         *
-         * [Api set: ExcelApi 99.9]
-         *
-         * @param visualDefinitionGuid  The guid of a VisualDefinition, not the id for an instance of a Visual.
-         * @param width  The width of the preview.
-         * @param height  The height of the preview.
-         * @param dpi  The dpi setting.
-         */
-        getPreview(visualDefinitionGuid: string, width: number, height: number, dpi: number): OfficeExtension.ClientResult<string>;
-        /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         */
-        load(option?: Excel.Interfaces.VisualCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.VisualCollection;
-        load(option?: string | string[]): Excel.VisualCollection;
-        load(option?: OfficeExtension.LoadOption): Excel.VisualCollection;
-        toJSON(): Excel.Interfaces.VisualCollectionData;
-    }
-    /**
-     *
-     * Represents a visual object in a workbook.
-     *
-     * [Api set: ExcelApi 99.9]
-     */
-    class Visual extends OfficeExtension.ClientObject {
-        /**
-         *
-         * The unique id of visual, not the guid of VisualDefinition. Read-only.
-         *
-         * [Api set: ExcelApi 99.9]
-         */
-        readonly id: string;
-        /**
-         *
-         * Delete the visual.
-         *
-         * [Api set: ExcelApi 99.9]
-         */
-        delete(): void;
-        /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         */
-        load(option?: Excel.Interfaces.VisualLoadOptions): Excel.Visual;
-        load(option?: string | string[]): Excel.Visual;
-        load(option?: {
-            select?: string;
-            expand?: string;
-        }): Excel.Visual;
-        toJSON(): Excel.Interfaces.VisualData;
-    }
-    /**
-     *
-     * Represents a visual definition
-     *
-     * [Api set: ExcelApi 99.9]
-     */
-    interface VisualDefinition {
-        /**
-         *
-         * Represents the category of a visual definition.
-         *
-         * [Api set: ExcelApi 99.9]
-         */
-        category: string;
-        /**
-         *
-         * Represents the category rank of a visual definition.
-         *
-         * [Api set: ExcelApi 99.9]
-         */
-        categoryRank: number;
-        /**
-         *
-         * Represents the decription of a visual definition.
-         *
-         * [Api set: ExcelApi 99.9]
-         */
-        description: string;
-        /**
-         *
-         * Represents the id of a visual definition.
-         *
-         * [Api set: ExcelApi 99.9]
-         */
-        id: string;
-        /**
-         *
-         * Represents the title of a visual definition.
-         *
-         * [Api set: ExcelApi 99.9]
-         */
-        title: string;
-    }
-    /**
-     *
      * Manages sorting operations on Range objects.
      *
      * [Api set: ExcelApi 1.2]
@@ -13533,30 +13375,6 @@ declare namespace Excel {
     namespace ChartUnderlineStyle {
         var none: string;
         var single: string;
-    }
-    /**
-     * [Api set: ExcelApi 99.9]
-     */
-    namespace VisualCategory {
-        var column: string;
-        var bar: string;
-        var line: string;
-        var area: string;
-        var pie: string;
-        var donut: string;
-        var scatter: string;
-        var bubble: string;
-        var statistical: string;
-        var stock: string;
-        var combo: string;
-        var hierarchy: string;
-        var surface: string;
-        var map: string;
-        var funnel: string;
-        var radar: string;
-        var waterfall: string;
-        var threeD: string;
-        var other: string;
     }
     /**
      *
@@ -20285,10 +20103,6 @@ declare namespace Excel {
             */
             line?: Excel.Interfaces.ChartLineFormatUpdateData;
         }
-        /** An interface for updating data on the VisualCollection object, for use in "visualCollection.set({ ... })". */
-        interface VisualCollectionUpdateData {
-            items?: Excel.Interfaces.VisualData[];
-        }
         /** An interface for updating data on the CustomXmlPartScopedCollection object, for use in "customXmlPartScopedCollection.set({ ... })". */
         interface CustomXmlPartScopedCollectionUpdateData {
             items?: Excel.Interfaces.CustomXmlPartData[];
@@ -21403,13 +21217,6 @@ declare namespace Excel {
             * [Api set: ExcelApi 1.1]
             */
             tables?: Excel.Interfaces.TableData[];
-            /**
-            *
-            * Returns collection of visuals that are part of the worksheet. Read-only.
-            *
-            * [Api set: ExcelApi 99.9]
-            */
-            visuals?: Excel.Interfaces.VisualData[];
             /**
              *
              * Gets or sets the worksheet's gridlines flag.
@@ -23531,20 +23338,6 @@ declare namespace Excel {
             */
             line?: Excel.Interfaces.ChartLineFormatData;
         }
-        /** An interface describing the data returned by calling "visualCollection.toJSON()". */
-        interface VisualCollectionData {
-            items?: Excel.Interfaces.VisualData[];
-        }
-        /** An interface describing the data returned by calling "visual.toJSON()". */
-        interface VisualData {
-            /**
-             *
-             * The unique id of visual, not the guid of VisualDefinition. Read-only.
-             *
-             * [Api set: ExcelApi 99.9]
-             */
-            id?: string;
-        }
         /** An interface describing the data returned by calling "tableSort.toJSON()". */
         interface TableSortData {
             /**
@@ -24715,7 +24508,7 @@ declare namespace Excel {
          *
          * Represents the Excel Runtime class.
          *
-         * [Api set: ExcelApi 1.5]
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         interface RuntimeLoadOptions {
             $all?: boolean;
@@ -28078,38 +27871,6 @@ declare namespace Excel {
         }
         /**
          *
-         * A collection of all the visuals on a worksheet.
-         *
-         * [Api set: ExcelApi 99.9]
-         */
-        interface VisualCollectionLoadOptions {
-            $all?: boolean;
-            /**
-             *
-             * For EACH ITEM in the collection: The unique id of visual, not the guid of VisualDefinition. Read-only.
-             *
-             * [Api set: ExcelApi 99.9]
-             */
-            id?: boolean;
-        }
-        /**
-         *
-         * Represents a visual object in a workbook.
-         *
-         * [Api set: ExcelApi 99.9]
-         */
-        interface VisualLoadOptions {
-            $all?: boolean;
-            /**
-             *
-             * The unique id of visual, not the guid of VisualDefinition. Read-only.
-             *
-             * [Api set: ExcelApi 99.9]
-             */
-            id?: boolean;
-        }
-        /**
-         *
          * Manages sorting operations on Table objects.
          *
          * [Api set: ExcelApi 1.2]
@@ -30590,6 +30351,13 @@ declare namespace Word {
          */
         createDocument(base64File?: string): Word.DocumentCreated;
         /**
+         *
+         * Check whether Tap (Insert Document Item) feature is enabled.
+         *
+         * [Api set: WordApi]
+         */
+        isTapEnabled(): OfficeExtension.ClientResult<boolean>;
+        /**
          * Create a new instance of Word.Application object
          */
         static newObject(context: OfficeExtension.ClientRequestContext): Word.Application;
@@ -31853,6 +31621,13 @@ declare namespace Word {
         readonly settings: Word.SettingCollection;
         /**
          *
+         * Gets or sets a value that indicates that, when opening a new document, whether it is allowed to close this document even if this document is untitled. True to close, false otherwise.
+         *
+         * [Api set: WordApi]
+         */
+        allowCloseOnUntitled: boolean;
+        /**
+         *
          * Indicates whether the changes in the document have been saved. A value of true indicates that the document hasn't changed since it was saved. Read-only.
          *
          * [Api set: WordApi 1.1]
@@ -31901,6 +31676,15 @@ declare namespace Word {
          * [Api set: WordApi 1.1]
          */
         getSelection(): Word.Range;
+        /**
+         *
+         * Launch Tap (Insert Document Item) feature native pane.
+         *
+         * [Api set: WordApi]
+         *
+         * @param documentUrl Optional. The url of document to show objects after initial launch. The default value is null.
+         */
+        launchTapPane(documentUrl?: string): void;
         /**
          *
          * Open the document.
@@ -36038,6 +35822,13 @@ declare namespace Word {
             * [Api set: WordApi 1.3]
             */
             properties?: Word.Interfaces.DocumentPropertiesUpdateData;
+            /**
+             *
+             * Gets or sets a value that indicates that, when opening a new document, whether it is allowed to close this document even if this document is untitled. True to close, false otherwise.
+             *
+             * [Api set: WordApi]
+             */
+            allowCloseOnUntitled?: boolean;
         }
         /** An interface for updating data on the DocumentCreated object, for use in "documentCreated.set({ ... })". */
         interface DocumentCreatedUpdateData {
@@ -36734,7 +36525,7 @@ declare namespace Word {
             *
             * [Api set: WordApi 1.1]
             */
-            contentControls?: Word.Interfaces.ContentControlCollectionData;
+            contentControls?: Word.Interfaces.ContentControlData[];
             /**
             *
             * Gets the text format of the body. Use this to get and set font name, size, color and other properties. Read-only.
@@ -36748,21 +36539,21 @@ declare namespace Word {
             *
             * [Api set: WordApi 1.1]
             */
-            inlinePictures?: Word.Interfaces.InlinePictureCollectionData;
+            inlinePictures?: Word.Interfaces.InlinePictureData[];
             /**
             *
             * Gets the collection of list objects in the body. Read-only.
             *
             * [Api set: WordApi 1.3]
             */
-            lists?: Word.Interfaces.ListCollectionData;
+            lists?: Word.Interfaces.ListData[];
             /**
             *
             * Gets the collection of paragraph objects in the body. Read-only.
             *
             * [Api set: WordApi 1.1]
             */
-            paragraphs?: Word.Interfaces.ParagraphCollectionData;
+            paragraphs?: Word.Interfaces.ParagraphData[];
             /**
             *
             * Gets the parent body of the body. For example, a table cell body's parent body could be a header. Throws if there isn't a parent body. Read-only.
@@ -36811,7 +36602,7 @@ declare namespace Word {
             *
             * [Api set: WordApi 1.3]
             */
-            tables?: Word.Interfaces.TableCollectionData;
+            tables?: Word.Interfaces.TableData[];
             /**
              *
              * Gets or sets the style name for the body. Use this property for custom styles and localized style names. To use the built-in styles that are portable between locales, see the "styleBuiltIn" property.
@@ -36849,7 +36640,7 @@ declare namespace Word {
             *
             * [Api set: WordApi 1.1]
             */
-            contentControls?: Word.Interfaces.ContentControlCollectionData;
+            contentControls?: Word.Interfaces.ContentControlData[];
             /**
             *
             * Gets the text format of the content control. Use this to get and set font name, size, color, and other properties. Read-only.
@@ -36863,21 +36654,21 @@ declare namespace Word {
             *
             * [Api set: WordApi 1.1]
             */
-            inlinePictures?: Word.Interfaces.InlinePictureCollectionData;
+            inlinePictures?: Word.Interfaces.InlinePictureData[];
             /**
             *
             * Gets the collection of list objects in the content control. Read-only.
             *
             * [Api set: WordApi 1.3]
             */
-            lists?: Word.Interfaces.ListCollectionData;
+            lists?: Word.Interfaces.ListData[];
             /**
             *
             * Get the collection of paragraph objects in the content control. Read-only.
             *
             * [Api set: WordApi 1.1]
             */
-            paragraphs?: Word.Interfaces.ParagraphCollectionData;
+            paragraphs?: Word.Interfaces.ParagraphData[];
             /**
             *
             * Gets the parent body of the content control. Read-only.
@@ -36933,7 +36724,7 @@ declare namespace Word {
             *
             * [Api set: WordApi 1.3]
             */
-            tables?: Word.Interfaces.TableCollectionData;
+            tables?: Word.Interfaces.TableData[];
             /**
              *
              * Gets or sets the appearance of the content control. The value can be 'boundingBox', 'tags' or 'hidden'.
@@ -37105,14 +36896,14 @@ declare namespace Word {
             *
             * [Api set: WordApi 1.1]
             */
-            contentControls?: Word.Interfaces.ContentControlCollectionData;
+            contentControls?: Word.Interfaces.ContentControlData[];
             /**
             *
             * Gets the custom XML parts in the document. Read-only.
             *
             * [Api set: WordApi BETA (PREVIEW ONLY)]
             */
-            customXmlParts?: Word.Interfaces.CustomXmlPartCollectionData;
+            customXmlParts?: Word.Interfaces.CustomXmlPartData[];
             /**
             *
             * Gets the properties of the document. Read-only.
@@ -37126,14 +36917,21 @@ declare namespace Word {
             *
             * [Api set: WordApi 1.1]
             */
-            sections?: Word.Interfaces.SectionCollectionData;
+            sections?: Word.Interfaces.SectionData[];
             /**
             *
             * Gets the add-in's settings in the document. Read-only.
             *
             * [Api set: WordApi BETA (PREVIEW ONLY)]
             */
-            settings?: Word.Interfaces.SettingCollectionData;
+            settings?: Word.Interfaces.SettingData[];
+            /**
+             *
+             * Gets or sets a value that indicates that, when opening a new document, whether it is allowed to close this document even if this document is untitled. True to close, false otherwise.
+             *
+             * [Api set: WordApi]
+             */
+            allowCloseOnUntitled?: boolean;
             /**
              *
              * Indicates whether the changes in the document have been saved. A value of true indicates that the document hasn't changed since it was saved. Read-only.
@@ -37157,14 +36955,14 @@ declare namespace Word {
             *
             * [Api set: WordApiHiddenDocument 1.3]
             */
-            contentControls?: Word.Interfaces.ContentControlCollectionData;
+            contentControls?: Word.Interfaces.ContentControlData[];
             /**
             *
             * Gets the custom XML parts in the document. Read-only.
             *
             * [Api set: WordApiHiddenDocument 1.4]
             */
-            customXmlParts?: Word.Interfaces.CustomXmlPartCollectionData;
+            customXmlParts?: Word.Interfaces.CustomXmlPartData[];
             /**
             *
             * Gets the properties of the document. Read-only.
@@ -37178,14 +36976,14 @@ declare namespace Word {
             *
             * [Api set: WordApiHiddenDocument 1.3]
             */
-            sections?: Word.Interfaces.SectionCollectionData;
+            sections?: Word.Interfaces.SectionData[];
             /**
             *
             * Gets the add-in's settings in the document. Read-only.
             *
             * [Api set: WordApiHiddenDocument 1.4]
             */
-            settings?: Word.Interfaces.SettingCollectionData;
+            settings?: Word.Interfaces.SettingData[];
             /**
              *
              * Indicates whether the changes in the document have been saved. A value of true indicates that the document hasn't changed since it was saved. Read-only.
@@ -37202,7 +37000,7 @@ declare namespace Word {
             *
             * [Api set: WordApi 1.3]
             */
-            customProperties?: Word.Interfaces.CustomPropertyCollectionData;
+            customProperties?: Word.Interfaces.CustomPropertyData[];
             /**
              *
              * Gets the application name of the document. Read only.
@@ -37516,7 +37314,7 @@ declare namespace Word {
             *
             * [Api set: WordApi 1.3]
             */
-            paragraphs?: Word.Interfaces.ParagraphCollectionData;
+            paragraphs?: Word.Interfaces.ParagraphData[];
             /**
              *
              * Gets the list's id.
@@ -37575,7 +37373,7 @@ declare namespace Word {
             *
             * [Api set: WordApi 1.1]
             */
-            contentControls?: Word.Interfaces.ContentControlCollectionData;
+            contentControls?: Word.Interfaces.ContentControlData[];
             /**
             *
             * Gets the text format of the paragraph. Use this to get and set font name, size, color, and other properties. Read-only.
@@ -37589,7 +37387,7 @@ declare namespace Word {
             *
             * [Api set: WordApi 1.1]
             */
-            inlinePictures?: Word.Interfaces.InlinePictureCollectionData;
+            inlinePictures?: Word.Interfaces.InlinePictureData[];
             /**
             *
             * Gets the List to which this paragraph belongs. Throws if the paragraph is not in a list. Read-only.
@@ -37792,7 +37590,7 @@ declare namespace Word {
             *
             * [Api set: WordApi 1.1]
             */
-            contentControls?: Word.Interfaces.ContentControlCollectionData;
+            contentControls?: Word.Interfaces.ContentControlData[];
             /**
             *
             * Gets the text format of the range. Use this to get and set font name, size, color, and other properties. Read-only.
@@ -37806,21 +37604,21 @@ declare namespace Word {
             *
             * [Api set: WordApi 1.2]
             */
-            inlinePictures?: Word.Interfaces.InlinePictureCollectionData;
+            inlinePictures?: Word.Interfaces.InlinePictureData[];
             /**
             *
             * Gets the collection of list objects in the range. Read-only.
             *
             * [Api set: WordApi 1.3]
             */
-            lists?: Word.Interfaces.ListCollectionData;
+            lists?: Word.Interfaces.ListData[];
             /**
             *
             * Gets the collection of paragraph objects in the range. Read-only.
             *
             * [Api set: WordApi 1.1]
             */
-            paragraphs?: Word.Interfaces.ParagraphCollectionData;
+            paragraphs?: Word.Interfaces.ParagraphData[];
             /**
             *
             * Gets the parent body of the range. Read-only.
@@ -37876,7 +37674,7 @@ declare namespace Word {
             *
             * [Api set: WordApi 1.3]
             */
-            tables?: Word.Interfaces.TableCollectionData;
+            tables?: Word.Interfaces.TableData[];
             /**
              *
              * Gets the first hyperlink in the range, or sets a hyperlink on the range. All hyperlinks in the range are deleted when you set a new hyperlink on the range. Use a '#' to separate the address part from the optional location part.
@@ -38068,14 +37866,14 @@ declare namespace Word {
             *
             * [Api set: WordApi 1.3]
             */
-            rows?: Word.Interfaces.TableRowCollectionData;
+            rows?: Word.Interfaces.TableRowData[];
             /**
             *
             * Gets the child tables nested one level deeper. Read-only.
             *
             * [Api set: WordApi 1.3]
             */
-            tables?: Word.Interfaces.TableCollectionData;
+            tables?: Word.Interfaces.TableData[];
             /**
              *
              * Gets or sets the alignment of the table against the page column. The value can be 'left', 'centered' or 'right'.
@@ -38208,7 +38006,7 @@ declare namespace Word {
             *
             * [Api set: WordApi 1.3]
             */
-            cells?: Word.Interfaces.TableCellCollectionData;
+            cells?: Word.Interfaces.TableCellData[];
             /**
             *
             * Gets the font. Use this to get and set font name, size, color, and other properties. Read-only.
@@ -38955,6 +38753,13 @@ declare namespace Word {
             * [Api set: WordApi 1.3]
             */
             properties?: Word.Interfaces.DocumentPropertiesLoadOptions;
+            /**
+             *
+             * Gets or sets a value that indicates that, when opening a new document, whether it is allowed to close this document even if this document is untitled. True to close, false otherwise.
+             *
+             * [Api set: WordApi]
+             */
+            allowCloseOnUntitled?: boolean;
             /**
              *
              * Indicates whether the changes in the document have been saved. A value of true indicates that the document hasn't changed since it was saved. Read-only.
