@@ -3,6 +3,9 @@ import * as shell from 'shelljs';
 import { forIn } from 'lodash';
 require('isomorphic-fetch');
 
+export interface AdditionalInfoError extends Error {
+    additionalInfo: string;
+}
 
 /**
  * Creates a chalk based section with the specific color.
@@ -68,13 +71,13 @@ export function execCommand(originalSanitizedCommand: string, secretSubstitution
 
     let result: any = shell.exec(command, hadSecrets ? { silent: true } : null!);
     if (result.code !== 0) {
-        const message = `An error occurred while executing "${originalSanitizedCommand}"`;
-        console.error(message);
+        let error: AdditionalInfoError = new Error(`An error occurred while executing "${originalSanitizedCommand}"`) as any;
+        console.error(error.message);
         if (!hadSecrets) {
-            console.error(result.stderr);
+            error.additionalInfo = result.stderr;
+            console.error(error.additionalInfo);
         }
-
-        throw new Error(message);
+        throw error;
     }
 }
 

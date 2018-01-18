@@ -24,6 +24,20 @@ export async function getNextVersionNumber(npmTag: string): Promise<string> {
     }
 }
 
+export function incrementLastNumber(version: string, npmPublishTag: string): string {
+    const regex = /^(.*\.)(\d+)$/;
+    /* Matches the last digit of all of the following:
+        1.1.3-beta.1
+        1.1.3-beta.1111
+        1.1.4
+    */
+    const result = regex.exec(version)!;
+    let lastNumber = Number.parseInt(result[2]);
+    lastNumber = lastNumber + (npmPublishTag === "release" ? 2 : 1);
+
+    return result[1] + lastNumber;
+}
+
 export function updatePackageJson(version: string): void {
     const packageJsonPath = "package.json";
     const packageJsonContentsArray = fs.readFileSync(packageJsonPath).toString().split("\n");
@@ -155,7 +169,7 @@ async function getNextSuffixedVersion(mainVersionNumberString: string, tagName: 
     }
 
     const matchingVersions = versionsArray
-        .filter(item => item.startsWith(mainVersionNumberString + "-" + tagName));
+        .filter(item => item.startsWith(mainVersionNumberString + "-" + tagName + "."));
 
     if (matchingVersions.length === 0) {
         return `${mainVersionNumberString}-${tagName}.0`;

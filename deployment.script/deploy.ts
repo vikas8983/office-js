@@ -7,7 +7,7 @@ import * as fs from "fs-extra";
 import * as path from 'path';
 import * as jsyaml from 'js-yaml';
 
-import { banner, stripSpaces, execCommand, fetchAndThrowOnError } from "./util";
+import { banner, stripSpaces, execCommand, fetchAndThrowOnError, AdditionalInfoError } from "./util";
 import * as VersionUtils from "./version-number-utils";
 
 declare var process: {
@@ -72,8 +72,10 @@ interface IOfficialBranchDeployRequest {
 }
 
 interface IDeploymentParams {
+    isOfficialBuild: boolean;
     branchToCheckOut: string;
     npmPublishTag: string;
+    commitMessagePartial: string;
 
     /** A script to run after cloning. Note that the current working directory at that point
      * is still the original one from the start of the script */
@@ -106,6 +108,8 @@ async function attemptDeployScript() {
         const deploymentInfoFromSubmittedRepoState = await getDeploymentInfoFromGithubRepoState(process.env.TRAVIS_BRANCH);
         const npmPublishTag = deploymentInfoFromSubmittedRepoState.tag;
         await doDeployment({
+            isOfficialBuild: false,
+            commitMessagePartial: process.env.TRAVIS_COMMIT_MESSAGE,
             branchToCheckOut: process.env.TRAVIS_BRANCH,
             npmPublishTag,
             historyInfo: deploymentInfoFromSubmittedRepoState.history
@@ -146,6 +150,10 @@ function makeWorkingDirectory() {
     }
 
     banner("Working directory", WORKING_DIRECTORY);
+
+    shell.pushd(WORKING_DIRECTORY);
+    execCommand('dir');
+    shell.popd();
 }
 
 function printBuildStartInfo() {
@@ -199,91 +207,114 @@ function precheckOrExit(): void {
 }
 
 async function doDeployment(params: IDeploymentParams): Promise<void> {
-    const { npmPublishTag, historyInfo } = params;
-    const version = await VersionUtils.getNextVersionNumber(npmPublishTag);
-    const gitTagName = "v" + version;
+    const { npmPublishTag, historyInfo, isOfficialBuild, commitMessagePartial } = params;
 
-    if (OFFICIAL_TAGS.indexOf(npmPublishTag) >= 0) {
+    if (!isOfficialBuild && OFFICIAL_TAGS.indexOf(npmPublishTag) >= 0) {
         throw new Error("Private build may not use an official NPM tag!");
     }
-
-    banner("This deployment's target NPM version", "Target package version: " + version, chalk.magenta.bold);
-
-    const commonHandlebarsParams = {
-        npmPublishTag,
-        version,
-        travisBuildId: process.env.TRAVIS_BUILD_ID,
-        includeTagUrls: npmPublishTag !== DEFAULT_ADHOC_TAG,
-    };
-    const deploymentFileContents = VersionUtils.generateDeploymentYamlText({
-        ...commonHandlebarsParams,
-        historyInfo: historyInfo,
-        travisBuildNumber: process.env.TRAVIS_BUILD_NUMBER,
-    });
-    const markdownReleasesNotes = VersionUtils.generateMarkdownDescription({
-        ...commonHandlebarsParams,
-        DEPLOYMENT_YAML_FILENAME,
-        commitMessage: historyInfo.commitMessage,
-    });
 
     const repoLocalFolderPath = WORKING_DIRECTORY + "/" + "office-js/";
     fs.removeSync(repoLocalFolderPath);
 
-    execCommand(`git clone ${TOKENIZED_GITHUB_PUSH_URL} ${repoLocalFolderPath}`, {
+    execCommand(`git clone --single-branch --depth 1 -b ${params.branchToCheckOut} ${TOKENIZED_GITHUB_PUSH_URL} ${repoLocalFolderPath}`, {
         token: process.env.GH_TOKEN
     });
-
-    shell.pushd(repoLocalFolderPath);
-
-
-    execCommand(`git checkout ${params.branchToCheckOut}`);
-    execCommand('git config --add user.name "Travis CI"');
-    execCommand('git config --add user.email "travis.ci@microsoft.com"');
-
-    shell.popd();
-
 
     if (params.afterCloneBeforeCommit) {
         await params.afterCloneBeforeCommit(repoLocalFolderPath);
     }
 
-
     shell.pushd(repoLocalFolderPath);
 
-    fs.writeFileSync(DEPLOYMENT_YAML_FILENAME, deploymentFileContents);
-    execCommand(`git add ${DEPLOYMENT_YAML_FILENAME}`);
+    execCommand('git config --add user.name "Travis CI"');
+    execCommand('git config --add user.email "travis.ci@microsoft.com"');
 
-    VersionUtils.updatePackageJson(version);
 
-    const commitMessage = `${TRAVIS_AUTO_COMMIT_TEXT} ${process.env.TRAVIS_COMMIT_MESSAGE} [skip ci]`;
+    let npmDeploymentSuceeded = false;
+    let version: string = await VersionUtils.getNextVersionNumber(npmPublishTag);
+    let deploymentFileContents: string;
+    let markdownReleasesNotes: string;
+
+    while (!npmDeploymentSuceeded) {
+        console.log(chalk.cyan.bold(`Tenantive version: ${version}`));
+
+        const commonHandlebarsParams = {
+            npmPublishTag,
+            version,
+            travisBuildId: process.env.TRAVIS_BUILD_ID,
+            includeTagUrls: npmPublishTag !== DEFAULT_ADHOC_TAG,
+        };
+        deploymentFileContents = VersionUtils.generateDeploymentYamlText({
+            ...commonHandlebarsParams,
+            historyInfo: historyInfo,
+            travisBuildNumber: process.env.TRAVIS_BUILD_NUMBER,
+        });
+        markdownReleasesNotes = VersionUtils.generateMarkdownDescription({
+            ...commonHandlebarsParams,
+            DEPLOYMENT_YAML_FILENAME,
+            commitMessage: historyInfo.commitMessage,
+        });
+
+        fs.writeFileSync(DEPLOYMENT_YAML_FILENAME, deploymentFileContents!);
+        VersionUtils.updatePackageJson(version);
+
+        // Publish to NPM first (even before writing to repo).
+        // Rationale:  that way, if there is an unpublished version, and run into an
+        //     "npm ERR! You cannot publish over the previously published version XYZ"
+        // error, we can revamp the version number and keep trying until we get it right.
+
+        fs.writeFileSync(".npmrc", `//registry.npmjs.org/:_authToken=${process.env.NPM_TOKEN}`);
+        try {
+            execCommand(`npm publish --tag ${npmPublishTag}`);
+            npmDeploymentSuceeded = true;
+        } catch (e) {
+            const wasFailureDueToPreviouslyPublishedDeletedVersion =
+                (e as AdditionalInfoError).additionalInfo &&
+                ((e as AdditionalInfoError).additionalInfo.indexOf(
+                    "npm ERR! You cannot publish over the previously published version") > 0);
+
+            if (wasFailureDueToPreviouslyPublishedDeletedVersion) {
+                version = VersionUtils.incrementLastNumber(version, npmPublishTag);
+                console.log(chalk.cyan.bold(`Previous version was taken, trying again with an incremented version number...`));
+            } else {
+                throw e;
+            }
+        }
+    }
+
+
+    console.log(`Having successfully published to NPM, finish off any remaining NPM tasks:`);
+
+    // For "office-js" package, the "release" tag is same as "latest" -- so for release, tag it as the "latest" too:
+    if (npmPublishTag === "release") {
+        execCommand(`npm dist-tag add @microsoft/office-js@${version!} latest`);
+    }
+
+    console.log(chalk.magenta(`FYI, if you need to unpublish (must be done within the first 24 hours), run:`));
+    console.log(chalk.magenta(`    npm unpublish @microsoft/office-js@${version!}`));
+
+
+
+    console.log(`Now commit and push to the repo`);
+
+    const commitMessage = `${TRAVIS_AUTO_COMMIT_TEXT} ${commitMessagePartial} [skip ci]`;
     // Note: "skip CI" will skip travis running on the build.  https://docs.travis-ci.com/user/customizing-the-build/#Skipping-a-build
 
+    console.log("");
+    execCommand(`git add -A`);
     execCommand(`git commit --allow-empty -m "${commitMessage}"`);
     execCommand(`git push`);
 
 
-    // Now that the repo is updated, publish to NPM:
-
-    fs.writeFileSync(".npmrc", `//registry.npmjs.org/:_authToken=${process.env.NPM_TOKEN}`);
-    execCommand(`npm publish --tag ${npmPublishTag}`);
-
-    // For us, the "release" tag is same as "latest" -- so for release, publish without a tag (implicit latest) too:
-    if (npmPublishTag === "release") {
-        execCommand(`npm publish`);
-    }
-
-    console.log(`FYI, if you need to unpublish (must be done within the first 24 hours), run:`);
-    console.log(`    npm unpublish @microsoft/office-js@${version}`);
-
-    // If NPM succeeded, tag it and also add an NPM release:
+    const gitTagName = "v" + version;
     console.log(`Also tag the branch, and make a GitHub release: https://github.com/OfficeDev/office-js/releases/tag/${gitTagName}`);
-
     execCommand(`git tag -a ${gitTagName} -m "${commitMessage}"`);
     execCommand(`git push origin ${gitTagName}`);
 
-    console.log(`FYI, if you need to delete the tag, run`);
-    console.log(`    git push --delete origin ${gitTagName}`);
-    console.log(`And also discard the resulting draft from "https://github.com/OfficeDev/office-js/releases"`);
+    console.log(chalk.magenta(`FYI, if you need to delete the tag, run`));
+    console.log(chalk.magenta(`    git push --delete origin ${gitTagName}`));
+    console.log(chalk.magenta(`You'll also need to discard the resulting draft in "https://github.com/OfficeDev/office-js/releases"`));
+    console.log(chalk.magenta(`    (be sure that you're logged in to see it)`));
 
     // Documentation: https://developer.github.com/v3/repos/releases/#create-a-release
     const response = await fetch("https://api.github.com/repos/OfficeDev/office-js/releases", {
@@ -294,7 +325,7 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
         body: JSON.stringify({
             "tag_name": gitTagName,
             "name": gitTagName,
-            "body": markdownReleasesNotes,
+            "body": markdownReleasesNotes!,
             "prerelease": true,
             "draft": false
         })
@@ -307,12 +338,7 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
 
     shell.popd();
 
-    let removeLocalFolderAtCompletion = true;
-    if (removeLocalFolderAtCompletion) {
-        fs.removeSync(repoLocalFolderPath);
-    }
-
-    banner('SUCCESS, DEPLOYMENT COMPLETE!', markdownReleasesNotes.replace(/&nbsp;/g, ' '), chalk.green.bold);
+    banner('SUCCESS, DEPLOYMENT COMPLETE!', markdownReleasesNotes!.replace(/&nbsp;/g, ' '), chalk.green.bold);
 
     banner(`GitHub Releases page for v${version}`, `https://github.com/OfficeDev/office-js/releases/tag/v${version}`, chalk.green.bold);
 }
@@ -356,6 +382,8 @@ async function doOfficialDeployment(): Promise<void> {
     const historyInfo = (await getDeploymentInfoFromGithubRepoState(currentYaml.from)).history;
 
     await doDeployment({
+        isOfficialBuild: true,
+        commitMessagePartial: `Deploy to '${currentYaml.targetBranch}' from '${currentYaml.from}'`,
         branchToCheckOut: currentYaml.targetBranch,
         npmPublishTag,
         historyInfo,
@@ -366,69 +394,42 @@ async function doOfficialDeployment(): Promise<void> {
                 .forEach(filename => fs.removeSync(repoLocalFolderPath + '/' + filename));
 
 
-            // Now copy over all files from the release branch except ".git" and "dist":
+            (() => {
+                console.log(`Now copy over all files from the release branch except ".git" and "dist":`);
+                const repoReleaseCopyFolderPath = `${WORKING_DIRECTORY}/office-js-repo-release-copy-${new Date().getTime()}/`;
+                fs.removeSync(repoReleaseCopyFolderPath);
+                execCommand(`git clone --single-branch --depth 1 ${TOKENIZED_GITHUB_PUSH_URL} ${repoReleaseCopyFolderPath}`, {
+                    token: process.env.GH_TOKEN
+                });
+                fs.readdirSync(repoReleaseCopyFolderPath)
+                    .filter(filename => [".git", "dist"].indexOf(filename) < 0)
+                    .forEach(filename => fs.copySync(
+                        repoReleaseCopyFolderPath + '/' + filename,
+                        repoLocalFolderPath + '/' + filename,
+                        {
+                            preserveTimestamps: true
+                        }
+                    ));
+            })();
 
-            const repoDifferentCopyFolderPath = process.env.TRAVIS_BUILD_DIR + "/" + "office-js-repo-different-copy/";
-            fs.removeSync(repoDifferentCopyFolderPath);
-            execCommand(`git clone ${TOKENIZED_GITHUB_PUSH_URL} ${repoDifferentCopyFolderPath}`, {
-                token: process.env.GH_TOKEN
-            });
-            fs.readdirSync(repoDifferentCopyFolderPath)
-                .filter(filename => [".git", "dist"].indexOf(filename) < 0)
-                .forEach(filename => fs.copySync(
-                    repoDifferentCopyFolderPath + '/' + filename,
-                    repoLocalFolderPath + '/' + filename,
+            (() => {
+                // And do this again, this time with copying ONLY the DIST folder from the "from" branch:
+                const repoFromBranchCopyFolderPath = `${WORKING_DIRECTORY}/office-js-repo-release-copy-${new Date().getTime()}/`;
+                execCommand(`git clone --single-branch --depth 1 -b ${currentYaml.from} ${TOKENIZED_GITHUB_PUSH_URL} ${repoFromBranchCopyFolderPath}`, {
+                    token: process.env.GH_TOKEN
+                });
+                fs.copySync(
+                    repoFromBranchCopyFolderPath + '/dist',
+                    repoLocalFolderPath + '/dist',
                     {
                         preserveTimestamps: true
                     }
-                ));
-
-
-            // And do this again, this time with copying ONLY the DIST folder from the "from" branch:
-
-            fs.removeSync(repoDifferentCopyFolderPath);
-            execCommand(`git clone ${TOKENIZED_GITHUB_PUSH_URL} ${repoDifferentCopyFolderPath}`, {
-                token: process.env.GH_TOKEN
-            });
-            execCommand(`git checkout ${currentYaml.from}`);
-            fs.copySync(
-                repoDifferentCopyFolderPath + '/dist',
-                repoLocalFolderPath + '/dist',
-                {
-                    preserveTimestamps: true
-                }
-            );
-
-            fs.removeSync(repoDifferentCopyFolderPath);
+                );
+            })();
         }
     });
 
     // FIXME now need to remove the current yaml stuff
+    // FIXME also deleteAdhocBranchOnSuccessfulDeployment
     banner('Still need to remove the current YAML stuff');
 }
-
-// async function getTravisQueueBranchDeploymentParams(): Promise<IDeploymentParams> {
-//     const targetBranchName = process.env.TRAVIS_BRANCH.substr(TRAVIS_QUEUE_BRANCH_PREFIX.length);
-//     if (OFFICIAL_BRANCHES.indexOf(targetBranchName) < 0) {
-//         throw new Error(`The branch "${process.env.TRAVIS_BRANCH}" starts with the "${TRAVIS_QUEUE_BRANCH_PREFIX}" prefix, ` +
-//             `but does not seem to match one of the official repo branches (${OFFICIAL_BRANCHES.map(item => `"${item}"`).join(", ")})`);
-//     }
-
-//     banner("Kicking off deployment to an official branch", `Target deployment branch: ${targetBranchName}`);
-
-//     const version = (targetBranchName === "release")
-//         ? await VersionUtils.getNextReleaseVersionNumber()
-//         : await VersionUtils.getNextVersionNumberForNonReleaseTag(targetBranchName);
-
-//     // Note that for official branches, the NPM tag and github tag are the same thing
-//     //     (unlike for adhoc branches, where the tag is always "adhoc", but the branch is "__adhoc-xyz")
-//     const npmPublishTag = targetBranchName;
-
-//     return {
-//         version,
-//         npmPublishTag,
-
-
-
-//     };
-// }
