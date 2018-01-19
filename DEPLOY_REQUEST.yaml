@@ -16,14 +16,14 @@
 #    * BETA files that are on EDOG but *NOT* the public CDN yet
 #         ==> choose "beta-next"
 
-targetBranch: beta-next
+targetBranch:
 
 
 
 # Now specify the NAME OF THE BRANCH YOU WANT TO COPY THE FILES FROM.
 #    For example "__adhoc--beta-next--16.0.8918.5450--2018-01-18--8.52am"
 
-from: __adhoc--beta--16.0.9002.5450--2018-01-18--7.20pm--beta-next-9002
+from:
 
 
 
