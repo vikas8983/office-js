@@ -459,7 +459,7 @@ async function doOfficialDeployment(): Promise<void> {
                         .join("\n");
                 fs.writeFileSync(repoDeployCopyDeployRequestFilePath, sanitizedDeployRequestFileContents);
                 execCommand(`git add -A`);
-                execCommand(`git commit --allow-empty -m "Remove ${DEPLOY_REQUEST_FILENAME} parameters, to ready for next job"`);
+                execCommand(`git commit --allow-empty -m "Remove ${DEPLOY_REQUEST_FILENAME} parameters, to ready for next job [skip ci]"`);
                 execCommand(`git push origin ${DEPLOYMENT_QUEUE_BRANCH}`);
 
                 if (currentYaml.deleteAdhocBranchOnSuccessfulDeployment) {
