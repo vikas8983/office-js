@@ -12,6 +12,8 @@ It's used to trigger a deployment to one of the official branches.
 3. Submit your changes as a pull request.
 4. Once the pull request is approved, the deployment will take place.
 
+If you run into issues, contact Michael Zlatkovsky
+
 
 <br/>
 <br/>
