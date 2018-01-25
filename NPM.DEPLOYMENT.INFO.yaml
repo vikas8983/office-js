@@ -1,49 +1,33 @@
-version: 1.1.4
-tag: release
-githubReleaseUrl: https://github.com/OfficeDev/office-js/releases/tag/v1.1.4
-githubViewUrl: https://github.com/OfficeDev/office-js/tree/v1.1.4
-deployedAt: 2018-01-19 3:43 am UTC  (2018-01-18 7:43 pm Pacific Time)
-
+tag: experiment-kiwi
 history:
-    adhocBranchName: __adhoc--release--16.0.8918.5450--2018-01-18--7.40pm
-    commitMessage: __adhoc--release--16.0.8918.5450--2018-01-18--7.40pm
+    adhocBranchName: __adhoc--experiment-kiwi--release--local--2018-01-24--11.41pm
+    commitMessage: __adhoc--experiment-kiwi--release--local--2018-01-24--11.41pm
     fullCommitHistory:
         - 
             sha: >-
-                https://github.com/OfficeDev/office-js/commits/2d55b49b6036ffa0ab627c0a48c88944b78df295
+                https://github.com/OfficeDev/office-js/commits/28f669907b39aaff0d8e0b1996c5df3a85df3e2c
             message: >-
                 JS dist files --
-                __adhoc--release--16.0.8918.5450--2018-01-18--7.40pm
+                __adhoc--experiment-kiwi--release--local--2018-01-24--11.41pm
         - 
             sha: >-
-                https://github.com/OfficeDev/office-js/commits/9a7cfe25657e961d55037dda8aa8647be4f758e7
+                https://github.com/OfficeDev/office-js/commits/953ec176643dc78aeae0986bd31c22226fcb25aa
             message: >-
                 Localized strings --
-                __adhoc--release--16.0.8918.5450--2018-01-18--7.40pm
+                __adhoc--experiment-kiwi--release--local--2018-01-24--11.41pm
         - 
             sha: >-
-                https://github.com/OfficeDev/office-js/commits/c1ca4a4bc0fb1d76196cc2a5c0aaef0e14e91f77
+                https://github.com/OfficeDev/office-js/commits/38cb5b614b6c68d4f1a16156af10ad3ee7c630d6
             message: Copying other assets from the release branch of the repo
         - 
             sha: >-
-                https://github.com/OfficeDev/office-js/commits/1fcdb88523d7d61000e4577f144bbcb790f8ba85
+                https://github.com/OfficeDev/office-js/commits/8812cb9b0998ae0c90d12fed983cf5a236aee938
             message: >-
                 [PUBLISH TOOL] Add deployment infrastructure for adhoc NPM
                 publish
         - 
             sha: >-
-                https://github.com/OfficeDev/office-js/commits/69ab6ab8ff4adc022298c8c3f66a069cd6b38d96
+                https://github.com/OfficeDev/office-js/commits/f5be6e0d5afe10add830386e90da555e40c3cf26
             message: >-
                 [BEGIN PUBLISH UPDATES] --
-                __adhoc--release--16.0.8918.5450--2018-01-18--7.40pm
-
-
-unpkgUrls: |-
-    this specific build number:
-        https://unpkg.com/@microsoft/office-js@1.1.4/dist/office.js
-        https://unpkg.com/@microsoft/office-js@1.1.4/dist/office.d.ts
-    builds using this same tag ("release"):
-        https://unpkg.com/@microsoft/office-js@release/dist/office.js
-        https://unpkg.com/@microsoft/office-js@release/dist/office.d.ts
-
-buildLog: https://travis-ci.org/OfficeDev/office-js/builds/330655521
+                __adhoc--experiment-kiwi--release--local--2018-01-24--11.41pm
