@@ -8432,7 +8432,8 @@ var OfficeExtension;
 					prop=scalarWriteablePropertyNames[i];
 					if (input.hasOwnProperty(prop)) {
 						if (typeof input[prop] !=="undefined") {
-							this['set'+prop.substr(0, 1).toUpperCase()+prop.substr(1)]=input[prop];
+							var setterFunc=this['set'+prop.substr(0, 1).toUpperCase()+prop.substr(1)];
+							setterFunc(input[prop]);
 						}
 					}
 				}
