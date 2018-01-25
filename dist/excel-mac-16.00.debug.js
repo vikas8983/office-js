@@ -14757,8 +14757,8 @@ var Excel;
 	var _typeRuntime="Runtime";
 	var Runtime=(function (_super) {
 		__extends(Runtime, _super);
-		function Runtime() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function Runtime(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(Runtime.prototype, "_className", {
 			get: function () {
@@ -14790,8 +14790,8 @@ var Excel;
 	var _typeApplication="Application";
 	var Application=(function (_super) {
 		__extends(Application, _super);
-		function Application() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function Application(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(Application.prototype, "_className", {
 			get: function () {
@@ -14863,8 +14863,8 @@ var Excel;
 	var _typeWorkbook="Workbook";
 	var Workbook=(function (_super) {
 		__extends(Workbook, _super);
-		function Workbook() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function Workbook(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(Workbook.prototype, "_className", {
 			get: function () {
@@ -15124,8 +15124,12 @@ var Excel;
 	var _typeWorksheet="Worksheet";
 	var Worksheet=(function (_super) {
 		__extends(Worksheet, _super);
-		function Worksheet() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function Worksheet(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setName=_this.setName.bind(_this);
+			_this.setPosition=_this.setPosition.bind(_this);
+			_this.setVisibility=_this.setVisibility.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(Worksheet.prototype, "_className", {
 			get: function () {
@@ -15390,8 +15394,8 @@ var Excel;
 	var _typeWorksheetCollection="WorksheetCollection";
 	var WorksheetCollection=(function (_super) {
 		__extends(WorksheetCollection, _super);
-		function WorksheetCollection() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function WorksheetCollection(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(WorksheetCollection.prototype, "_className", {
 			get: function () {
@@ -15483,8 +15487,8 @@ var Excel;
 	var _typeWorksheetProtection="WorksheetProtection";
 	var WorksheetProtection=(function (_super) {
 		__extends(WorksheetProtection, _super);
-		function WorksheetProtection() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function WorksheetProtection(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(WorksheetProtection.prototype, "_className", {
 			get: function () {
@@ -15572,8 +15576,16 @@ var Excel;
 	var _typeRange="Range";
 	var Range=(function (_super) {
 		__extends(Range, _super);
-		function Range() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function Range(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setColumnHidden=_this.setColumnHidden.bind(_this);
+			_this.setFormulas=_this.setFormulas.bind(_this);
+			_this.setFormulasLocal=_this.setFormulasLocal.bind(_this);
+			_this.setFormulasR1C1=_this.setFormulasR1C1.bind(_this);
+			_this.setNumberFormat=_this.setNumberFormat.bind(_this);
+			_this.setRowHidden=_this.setRowHidden.bind(_this);
+			_this.setValues=_this.setValues.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(Range.prototype, "_className", {
 			get: function () {
@@ -16160,8 +16172,14 @@ var Excel;
 	var _typeRangeView="RangeView";
 	var RangeView=(function (_super) {
 		__extends(RangeView, _super);
-		function RangeView() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function RangeView(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setFormulas=_this.setFormulas.bind(_this);
+			_this.setFormulasLocal=_this.setFormulasLocal.bind(_this);
+			_this.setFormulasR1C1=_this.setFormulasR1C1.bind(_this);
+			_this.setNumberFormat=_this.setNumberFormat.bind(_this);
+			_this.setValues=_this.setValues.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(RangeView.prototype, "_className", {
 			get: function () {
@@ -16412,8 +16430,8 @@ var Excel;
 	var _typeRangeViewCollection="RangeViewCollection";
 	var RangeViewCollection=(function (_super) {
 		__extends(RangeViewCollection, _super);
-		function RangeViewCollection() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function RangeViewCollection(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(RangeViewCollection.prototype, "_className", {
 			get: function () {
@@ -16487,8 +16505,8 @@ var Excel;
 	var _typeSettingCollection="SettingCollection";
 	var SettingCollection=(function (_super) {
 		__extends(SettingCollection, _super);
-		function SettingCollection() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function SettingCollection(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(SettingCollection.prototype, "_className", {
 			get: function () {
@@ -16589,8 +16607,10 @@ var Excel;
 	var _typeSetting="Setting";
 	var Setting=(function (_super) {
 		__extends(Setting, _super);
-		function Setting() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function Setting(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setValue=_this.setValue.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(Setting.prototype, "_className", {
 			get: function () {
@@ -16708,8 +16728,8 @@ var Excel;
 	var _typeNamedItemCollection="NamedItemCollection";
 	var NamedItemCollection=(function (_super) {
 		__extends(NamedItemCollection, _super);
-		function NamedItemCollection() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function NamedItemCollection(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(NamedItemCollection.prototype, "_className", {
 			get: function () {
@@ -16795,8 +16815,11 @@ var Excel;
 	var _typeNamedItem="NamedItem";
 	var NamedItem=(function (_super) {
 		__extends(NamedItem, _super);
-		function NamedItem() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function NamedItem(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setComment=_this.setComment.bind(_this);
+			_this.setVisible=_this.setVisible.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(NamedItem.prototype, "_className", {
 			get: function () {
@@ -17016,8 +17039,8 @@ var Excel;
 	var _typeBinding="Binding";
 	var Binding=(function (_super) {
 		__extends(Binding, _super);
-		function Binding() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function Binding(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(Binding.prototype, "_className", {
 			get: function () {
@@ -17173,8 +17196,8 @@ var Excel;
 	var _typeBindingCollection="BindingCollection";
 	var BindingCollection=(function (_super) {
 		__extends(BindingCollection, _super);
-		function BindingCollection() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function BindingCollection(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(BindingCollection.prototype, "_className", {
 			get: function () {
@@ -17288,8 +17311,8 @@ var Excel;
 	var _typeTableCollection="TableCollection";
 	var TableCollection=(function (_super) {
 		__extends(TableCollection, _super);
-		function TableCollection() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function TableCollection(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(TableCollection.prototype, "_className", {
 			get: function () {
@@ -17404,8 +17427,18 @@ var Excel;
 	var _typeTable="Table";
 	var Table=(function (_super) {
 		__extends(Table, _super);
-		function Table() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function Table(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setHighlightFirstColumn=_this.setHighlightFirstColumn.bind(_this);
+			_this.setHighlightLastColumn=_this.setHighlightLastColumn.bind(_this);
+			_this.setName=_this.setName.bind(_this);
+			_this.setShowBandedColumns=_this.setShowBandedColumns.bind(_this);
+			_this.setShowBandedRows=_this.setShowBandedRows.bind(_this);
+			_this.setShowFilterButton=_this.setShowFilterButton.bind(_this);
+			_this.setShowHeaders=_this.setShowHeaders.bind(_this);
+			_this.setShowTotals=_this.setShowTotals.bind(_this);
+			_this.setStyle=_this.setStyle.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(Table.prototype, "_className", {
 			get: function () {
@@ -17750,8 +17783,8 @@ var Excel;
 	var _typeTableColumnCollection="TableColumnCollection";
 	var TableColumnCollection=(function (_super) {
 		__extends(TableColumnCollection, _super);
-		function TableColumnCollection() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function TableColumnCollection(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(TableColumnCollection.prototype, "_className", {
 			get: function () {
@@ -17856,8 +17889,11 @@ var Excel;
 	var _typeTableColumn="TableColumn";
 	var TableColumn=(function (_super) {
 		__extends(TableColumn, _super);
-		function TableColumn() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function TableColumn(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setName=_this.setName.bind(_this);
+			_this.setValues=_this.setValues.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(TableColumn.prototype, "_className", {
 			get: function () {
@@ -18028,8 +18064,8 @@ var Excel;
 	var _typeTableRowCollection="TableRowCollection";
 	var TableRowCollection=(function (_super) {
 		__extends(TableRowCollection, _super);
-		function TableRowCollection() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function TableRowCollection(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(TableRowCollection.prototype, "_className", {
 			get: function () {
@@ -18127,8 +18163,10 @@ var Excel;
 	var _typeTableRow="TableRow";
 	var TableRow=(function (_super) {
 		__extends(TableRow, _super);
-		function TableRow() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function TableRow(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setValues=_this.setValues.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(TableRow.prototype, "_className", {
 			get: function () {
@@ -18225,8 +18263,14 @@ var Excel;
 	var _typeRangeFormat="RangeFormat";
 	var RangeFormat=(function (_super) {
 		__extends(RangeFormat, _super);
-		function RangeFormat() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function RangeFormat(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setColumnWidth=_this.setColumnWidth.bind(_this);
+			_this.setHorizontalAlignment=_this.setHorizontalAlignment.bind(_this);
+			_this.setRowHeight=_this.setRowHeight.bind(_this);
+			_this.setVerticalAlignment=_this.setVerticalAlignment.bind(_this);
+			_this.setWrapText=_this.setWrapText.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(RangeFormat.prototype, "_className", {
 			get: function () {
@@ -18451,8 +18495,11 @@ var Excel;
 	var _typeFormatProtection="FormatProtection";
 	var FormatProtection=(function (_super) {
 		__extends(FormatProtection, _super);
-		function FormatProtection() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function FormatProtection(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setFormulaHidden=_this.setFormulaHidden.bind(_this);
+			_this.setLocked=_this.setLocked.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(FormatProtection.prototype, "_className", {
 			get: function () {
@@ -18546,8 +18593,10 @@ var Excel;
 	var _typeRangeFill="RangeFill";
 	var RangeFill=(function (_super) {
 		__extends(RangeFill, _super);
-		function RangeFill() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function RangeFill(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setColor=_this.setColor.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(RangeFill.prototype, "_className", {
 			get: function () {
@@ -18628,8 +18677,12 @@ var Excel;
 	var _typeRangeBorder="RangeBorder";
 	var RangeBorder=(function (_super) {
 		__extends(RangeBorder, _super);
-		function RangeBorder() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function RangeBorder(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setColor=_this.setColor.bind(_this);
+			_this.setStyle=_this.setStyle.bind(_this);
+			_this.setWeight=_this.setWeight.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(RangeBorder.prototype, "_className", {
 			get: function () {
@@ -18753,8 +18806,8 @@ var Excel;
 	var _typeRangeBorderCollection="RangeBorderCollection";
 	var RangeBorderCollection=(function (_super) {
 		__extends(RangeBorderCollection, _super);
-		function RangeBorderCollection() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function RangeBorderCollection(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(RangeBorderCollection.prototype, "_className", {
 			get: function () {
@@ -18845,8 +18898,15 @@ var Excel;
 	var _typeRangeFont="RangeFont";
 	var RangeFont=(function (_super) {
 		__extends(RangeFont, _super);
-		function RangeFont() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function RangeFont(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setBold=_this.setBold.bind(_this);
+			_this.setColor=_this.setColor.bind(_this);
+			_this.setItalic=_this.setItalic.bind(_this);
+			_this.setName=_this.setName.bind(_this);
+			_this.setSize=_this.setSize.bind(_this);
+			_this.setUnderline=_this.setUnderline.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(RangeFont.prototype, "_className", {
 			get: function () {
@@ -19008,8 +19068,8 @@ var Excel;
 	var _typeChartCollection="ChartCollection";
 	var ChartCollection=(function (_super) {
 		__extends(ChartCollection, _super);
-		function ChartCollection() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ChartCollection(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(ChartCollection.prototype, "_className", {
 			get: function () {
@@ -19130,8 +19190,14 @@ var Excel;
 	var _typeChart="Chart";
 	var Chart=(function (_super) {
 		__extends(Chart, _super);
-		function Chart() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function Chart(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setHeight=_this.setHeight.bind(_this);
+			_this.setLeft=_this.setLeft.bind(_this);
+			_this.setName=_this.setName.bind(_this);
+			_this.setTop=_this.setTop.bind(_this);
+			_this.setWidth=_this.setWidth.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(Chart.prototype, "_className", {
 			get: function () {
@@ -19408,8 +19474,8 @@ var Excel;
 	var _typeChartAreaFormat="ChartAreaFormat";
 	var ChartAreaFormat=(function (_super) {
 		__extends(ChartAreaFormat, _super);
-		function ChartAreaFormat() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ChartAreaFormat(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(ChartAreaFormat.prototype, "_className", {
 			get: function () {
@@ -19489,8 +19555,8 @@ var Excel;
 	var _typeChartSeriesCollection="ChartSeriesCollection";
 	var ChartSeriesCollection=(function (_super) {
 		__extends(ChartSeriesCollection, _super);
-		function ChartSeriesCollection() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ChartSeriesCollection(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(ChartSeriesCollection.prototype, "_className", {
 			get: function () {
@@ -19585,8 +19651,10 @@ var Excel;
 	var _typeChartSeries="ChartSeries";
 	var ChartSeries=(function (_super) {
 		__extends(ChartSeries, _super);
-		function ChartSeries() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ChartSeries(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setName=_this.setName.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(ChartSeries.prototype, "_className", {
 			get: function () {
@@ -19702,8 +19770,8 @@ var Excel;
 	var _typeChartSeriesFormat="ChartSeriesFormat";
 	var ChartSeriesFormat=(function (_super) {
 		__extends(ChartSeriesFormat, _super);
-		function ChartSeriesFormat() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ChartSeriesFormat(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(ChartSeriesFormat.prototype, "_className", {
 			get: function () {
@@ -19783,8 +19851,8 @@ var Excel;
 	var _typeChartPointsCollection="ChartPointsCollection";
 	var ChartPointsCollection=(function (_super) {
 		__extends(ChartPointsCollection, _super);
-		function ChartPointsCollection() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ChartPointsCollection(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(ChartPointsCollection.prototype, "_className", {
 			get: function () {
@@ -19879,8 +19947,8 @@ var Excel;
 	var _typeChartPoint="ChartPoint";
 	var ChartPoint=(function (_super) {
 		__extends(ChartPoint, _super);
-		function ChartPoint() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ChartPoint(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(ChartPoint.prototype, "_className", {
 			get: function () {
@@ -19963,8 +20031,8 @@ var Excel;
 	var _typeChartPointFormat="ChartPointFormat";
 	var ChartPointFormat=(function (_super) {
 		__extends(ChartPointFormat, _super);
-		function ChartPointFormat() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ChartPointFormat(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(ChartPointFormat.prototype, "_className", {
 			get: function () {
@@ -20014,8 +20082,8 @@ var Excel;
 	var _typeChartAxes="ChartAxes";
 	var ChartAxes=(function (_super) {
 		__extends(ChartAxes, _super);
-		function ChartAxes() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ChartAxes(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(ChartAxes.prototype, "_className", {
 			get: function () {
@@ -20111,8 +20179,13 @@ var Excel;
 	var _typeChartAxis="ChartAxis";
 	var ChartAxis=(function (_super) {
 		__extends(ChartAxis, _super);
-		function ChartAxis() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ChartAxis(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setMajorUnit=_this.setMajorUnit.bind(_this);
+			_this.setMaximum=_this.setMaximum.bind(_this);
+			_this.setMinimum=_this.setMinimum.bind(_this);
+			_this.setMinorUnit=_this.setMinorUnit.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(ChartAxis.prototype, "_className", {
 			get: function () {
@@ -20305,8 +20378,8 @@ var Excel;
 	var _typeChartAxisFormat="ChartAxisFormat";
 	var ChartAxisFormat=(function (_super) {
 		__extends(ChartAxisFormat, _super);
-		function ChartAxisFormat() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ChartAxisFormat(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(ChartAxisFormat.prototype, "_className", {
 			get: function () {
@@ -20388,8 +20461,11 @@ var Excel;
 	var _typeChartAxisTitle="ChartAxisTitle";
 	var ChartAxisTitle=(function (_super) {
 		__extends(ChartAxisTitle, _super);
-		function ChartAxisTitle() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ChartAxisTitle(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setText=_this.setText.bind(_this);
+			_this.setVisible=_this.setVisible.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(ChartAxisTitle.prototype, "_className", {
 			get: function () {
@@ -20506,8 +20582,8 @@ var Excel;
 	var _typeChartAxisTitleFormat="ChartAxisTitleFormat";
 	var ChartAxisTitleFormat=(function (_super) {
 		__extends(ChartAxisTitleFormat, _super);
-		function ChartAxisTitleFormat() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ChartAxisTitleFormat(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(ChartAxisTitleFormat.prototype, "_className", {
 			get: function () {
@@ -20575,8 +20651,17 @@ var Excel;
 	var _typeChartDataLabels="ChartDataLabels";
 	var ChartDataLabels=(function (_super) {
 		__extends(ChartDataLabels, _super);
-		function ChartDataLabels() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ChartDataLabels(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setPosition=_this.setPosition.bind(_this);
+			_this.setSeparator=_this.setSeparator.bind(_this);
+			_this.setShowBubbleSize=_this.setShowBubbleSize.bind(_this);
+			_this.setShowCategoryName=_this.setShowCategoryName.bind(_this);
+			_this.setShowLegendKey=_this.setShowLegendKey.bind(_this);
+			_this.setShowPercentage=_this.setShowPercentage.bind(_this);
+			_this.setShowSeriesName=_this.setShowSeriesName.bind(_this);
+			_this.setShowValue=_this.setShowValue.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(ChartDataLabels.prototype, "_className", {
 			get: function () {
@@ -20795,8 +20880,8 @@ var Excel;
 	var _typeChartDataLabelFormat="ChartDataLabelFormat";
 	var ChartDataLabelFormat=(function (_super) {
 		__extends(ChartDataLabelFormat, _super);
-		function ChartDataLabelFormat() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ChartDataLabelFormat(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(ChartDataLabelFormat.prototype, "_className", {
 			get: function () {
@@ -20876,8 +20961,10 @@ var Excel;
 	var _typeChartGridlines="ChartGridlines";
 	var ChartGridlines=(function (_super) {
 		__extends(ChartGridlines, _super);
-		function ChartGridlines() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ChartGridlines(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setVisible=_this.setVisible.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(ChartGridlines.prototype, "_className", {
 			get: function () {
@@ -20977,8 +21064,8 @@ var Excel;
 	var _typeChartGridlinesFormat="ChartGridlinesFormat";
 	var ChartGridlinesFormat=(function (_super) {
 		__extends(ChartGridlinesFormat, _super);
-		function ChartGridlinesFormat() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ChartGridlinesFormat(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(ChartGridlinesFormat.prototype, "_className", {
 			get: function () {
@@ -21046,8 +21133,12 @@ var Excel;
 	var _typeChartLegend="ChartLegend";
 	var ChartLegend=(function (_super) {
 		__extends(ChartLegend, _super);
-		function ChartLegend() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ChartLegend(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setOverlay=_this.setOverlay.bind(_this);
+			_this.setPosition=_this.setPosition.bind(_this);
+			_this.setVisible=_this.setVisible.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(ChartLegend.prototype, "_className", {
 			get: function () {
@@ -21181,8 +21272,8 @@ var Excel;
 	var _typeChartLegendFormat="ChartLegendFormat";
 	var ChartLegendFormat=(function (_super) {
 		__extends(ChartLegendFormat, _super);
-		function ChartLegendFormat() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ChartLegendFormat(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(ChartLegendFormat.prototype, "_className", {
 			get: function () {
@@ -21262,8 +21353,12 @@ var Excel;
 	var _typeChartTitle="ChartTitle";
 	var ChartTitle=(function (_super) {
 		__extends(ChartTitle, _super);
-		function ChartTitle() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ChartTitle(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setOverlay=_this.setOverlay.bind(_this);
+			_this.setText=_this.setText.bind(_this);
+			_this.setVisible=_this.setVisible.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(ChartTitle.prototype, "_className", {
 			get: function () {
@@ -21397,8 +21492,8 @@ var Excel;
 	var _typeChartTitleFormat="ChartTitleFormat";
 	var ChartTitleFormat=(function (_super) {
 		__extends(ChartTitleFormat, _super);
-		function ChartTitleFormat() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ChartTitleFormat(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(ChartTitleFormat.prototype, "_className", {
 			get: function () {
@@ -21478,8 +21573,8 @@ var Excel;
 	var _typeChartFill="ChartFill";
 	var ChartFill=(function (_super) {
 		__extends(ChartFill, _super);
-		function ChartFill() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ChartFill(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(ChartFill.prototype, "_className", {
 			get: function () {
@@ -21522,8 +21617,10 @@ var Excel;
 	var _typeChartLineFormat="ChartLineFormat";
 	var ChartLineFormat=(function (_super) {
 		__extends(ChartLineFormat, _super);
-		function ChartLineFormat() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ChartLineFormat(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setColor=_this.setColor.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(ChartLineFormat.prototype, "_className", {
 			get: function () {
@@ -21604,8 +21701,15 @@ var Excel;
 	var _typeChartFont="ChartFont";
 	var ChartFont=(function (_super) {
 		__extends(ChartFont, _super);
-		function ChartFont() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ChartFont(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setBold=_this.setBold.bind(_this);
+			_this.setColor=_this.setColor.bind(_this);
+			_this.setItalic=_this.setItalic.bind(_this);
+			_this.setName=_this.setName.bind(_this);
+			_this.setSize=_this.setSize.bind(_this);
+			_this.setUnderline=_this.setUnderline.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(ChartFont.prototype, "_className", {
 			get: function () {
@@ -21767,8 +21871,8 @@ var Excel;
 	var _typeRangeSort="RangeSort";
 	var RangeSort=(function (_super) {
 		__extends(RangeSort, _super);
-		function RangeSort() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function RangeSort(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(RangeSort.prototype, "_className", {
 			get: function () {
@@ -21804,8 +21908,8 @@ var Excel;
 	var _typeTableSort="TableSort";
 	var TableSort=(function (_super) {
 		__extends(TableSort, _super);
-		function TableSort() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function TableSort(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(TableSort.prototype, "_className", {
 			get: function () {
@@ -21906,8 +22010,8 @@ var Excel;
 	var _typeFilter="Filter";
 	var Filter=(function (_super) {
 		__extends(Filter, _super);
-		function Filter() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function Filter(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(Filter.prototype, "_className", {
 			get: function () {
@@ -22018,8 +22122,8 @@ var Excel;
 	var _typeCustomXmlPartScopedCollection="CustomXmlPartScopedCollection";
 	var CustomXmlPartScopedCollection=(function (_super) {
 		__extends(CustomXmlPartScopedCollection, _super);
-		function CustomXmlPartScopedCollection() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function CustomXmlPartScopedCollection(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(CustomXmlPartScopedCollection.prototype, "_className", {
 			get: function () {
@@ -22101,8 +22205,8 @@ var Excel;
 	var _typeCustomXmlPartCollection="CustomXmlPartCollection";
 	var CustomXmlPartCollection=(function (_super) {
 		__extends(CustomXmlPartCollection, _super);
-		function CustomXmlPartCollection() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function CustomXmlPartCollection(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(CustomXmlPartCollection.prototype, "_className", {
 			get: function () {
@@ -22184,8 +22288,8 @@ var Excel;
 	var _typeCustomXmlPart="CustomXmlPart";
 	var CustomXmlPart=(function (_super) {
 		__extends(CustomXmlPart, _super);
-		function CustomXmlPart() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function CustomXmlPart(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(CustomXmlPart.prototype, "_className", {
 			get: function () {
@@ -22284,8 +22388,8 @@ var Excel;
 	var _type_V1Api="_V1Api";
 	var _V1Api=(function (_super) {
 		__extends(_V1Api, _super);
-		function _V1Api() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function _V1Api(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(_V1Api.prototype, "_className", {
 			get: function () {
@@ -22426,8 +22530,8 @@ var Excel;
 	var _typePivotTableCollection="PivotTableCollection";
 	var PivotTableCollection=(function (_super) {
 		__extends(PivotTableCollection, _super);
-		function PivotTableCollection() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function PivotTableCollection(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(PivotTableCollection.prototype, "_className", {
 			get: function () {
@@ -22509,8 +22613,10 @@ var Excel;
 	var _typePivotTable="PivotTable";
 	var PivotTable=(function (_super) {
 		__extends(PivotTable, _super);
-		function PivotTable() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function PivotTable(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setName=_this.setName.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(PivotTable.prototype, "_className", {
 			get: function () {
@@ -22637,8 +22743,8 @@ var Excel;
 	var _typeConditionalFormatCollection="ConditionalFormatCollection";
 	var ConditionalFormatCollection=(function (_super) {
 		__extends(ConditionalFormatCollection, _super);
-		function ConditionalFormatCollection() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ConditionalFormatCollection(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(ConditionalFormatCollection.prototype, "_className", {
 			get: function () {
@@ -22721,8 +22827,11 @@ var Excel;
 	var _typeConditionalFormat="ConditionalFormat";
 	var ConditionalFormat=(function (_super) {
 		__extends(ConditionalFormat, _super);
-		function ConditionalFormat() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ConditionalFormat(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setPriority=_this.setPriority.bind(_this);
+			_this.setStopIfTrue=_this.setStopIfTrue.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(ConditionalFormat.prototype, "_className", {
 			get: function () {
@@ -23094,8 +23203,15 @@ var Excel;
 	var _typeDataBarConditionalFormat="DataBarConditionalFormat";
 	var DataBarConditionalFormat=(function (_super) {
 		__extends(DataBarConditionalFormat, _super);
-		function DataBarConditionalFormat() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function DataBarConditionalFormat(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setAxisColor=_this.setAxisColor.bind(_this);
+			_this.setAxisFormat=_this.setAxisFormat.bind(_this);
+			_this.setBarDirection=_this.setBarDirection.bind(_this);
+			_this.setLowerBoundRule=_this.setLowerBoundRule.bind(_this);
+			_this.setShowDataBarOnly=_this.setShowDataBarOnly.bind(_this);
+			_this.setUpperBoundRule=_this.setUpperBoundRule.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(DataBarConditionalFormat.prototype, "_className", {
 			get: function () {
@@ -23294,8 +23410,12 @@ var Excel;
 	var _typeConditionalDataBarPositiveFormat="ConditionalDataBarPositiveFormat";
 	var ConditionalDataBarPositiveFormat=(function (_super) {
 		__extends(ConditionalDataBarPositiveFormat, _super);
-		function ConditionalDataBarPositiveFormat() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ConditionalDataBarPositiveFormat(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setBorderColor=_this.setBorderColor.bind(_this);
+			_this.setFillColor=_this.setFillColor.bind(_this);
+			_this.setGradientFill=_this.setGradientFill.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(ConditionalDataBarPositiveFormat.prototype, "_className", {
 			get: function () {
@@ -23406,8 +23526,13 @@ var Excel;
 	var _typeConditionalDataBarNegativeFormat="ConditionalDataBarNegativeFormat";
 	var ConditionalDataBarNegativeFormat=(function (_super) {
 		__extends(ConditionalDataBarNegativeFormat, _super);
-		function ConditionalDataBarNegativeFormat() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ConditionalDataBarNegativeFormat(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setBorderColor=_this.setBorderColor.bind(_this);
+			_this.setFillColor=_this.setFillColor.bind(_this);
+			_this.setMatchPositiveBorderColor=_this.setMatchPositiveBorderColor.bind(_this);
+			_this.setMatchPositiveFillColor=_this.setMatchPositiveFillColor.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(ConditionalDataBarNegativeFormat.prototype, "_className", {
 			get: function () {
@@ -23535,8 +23660,8 @@ var Excel;
 	var _typeCustomConditionalFormat="CustomConditionalFormat";
 	var CustomConditionalFormat=(function (_super) {
 		__extends(CustomConditionalFormat, _super);
-		function CustomConditionalFormat() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function CustomConditionalFormat(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(CustomConditionalFormat.prototype, "_className", {
 			get: function () {
@@ -23618,8 +23743,12 @@ var Excel;
 	var _typeConditionalFormatRule="ConditionalFormatRule";
 	var ConditionalFormatRule=(function (_super) {
 		__extends(ConditionalFormatRule, _super);
-		function ConditionalFormatRule() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ConditionalFormatRule(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setFormula=_this.setFormula.bind(_this);
+			_this.setFormulaLocal=_this.setFormulaLocal.bind(_this);
+			_this.setFormulaR1C1=_this.setFormulaR1C1.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(ConditionalFormatRule.prototype, "_className", {
 			get: function () {
@@ -23730,8 +23859,13 @@ var Excel;
 	var _typeIconSetConditionalFormat="IconSetConditionalFormat";
 	var IconSetConditionalFormat=(function (_super) {
 		__extends(IconSetConditionalFormat, _super);
-		function IconSetConditionalFormat() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function IconSetConditionalFormat(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setCriteria=_this.setCriteria.bind(_this);
+			_this.setReverseIconOrder=_this.setReverseIconOrder.bind(_this);
+			_this.setShowIconOnly=_this.setShowIconOnly.bind(_this);
+			_this.setStyle=_this.setStyle.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(IconSetConditionalFormat.prototype, "_className", {
 			get: function () {
@@ -23859,8 +23993,10 @@ var Excel;
 	var _typeColorScaleConditionalFormat="ColorScaleConditionalFormat";
 	var ColorScaleConditionalFormat=(function (_super) {
 		__extends(ColorScaleConditionalFormat, _super);
-		function ColorScaleConditionalFormat() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ColorScaleConditionalFormat(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setCriteria=_this.setCriteria.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(ColorScaleConditionalFormat.prototype, "_className", {
 			get: function () {
@@ -23950,8 +24086,10 @@ var Excel;
 	var _typeTopBottomConditionalFormat="TopBottomConditionalFormat";
 	var TopBottomConditionalFormat=(function (_super) {
 		__extends(TopBottomConditionalFormat, _super);
-		function TopBottomConditionalFormat() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function TopBottomConditionalFormat(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setRule=_this.setRule.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(TopBottomConditionalFormat.prototype, "_className", {
 			get: function () {
@@ -24051,8 +24189,10 @@ var Excel;
 	var _typePresetCriteriaConditionalFormat="PresetCriteriaConditionalFormat";
 	var PresetCriteriaConditionalFormat=(function (_super) {
 		__extends(PresetCriteriaConditionalFormat, _super);
-		function PresetCriteriaConditionalFormat() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function PresetCriteriaConditionalFormat(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setRule=_this.setRule.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(PresetCriteriaConditionalFormat.prototype, "_className", {
 			get: function () {
@@ -24152,8 +24292,10 @@ var Excel;
 	var _typeTextConditionalFormat="TextConditionalFormat";
 	var TextConditionalFormat=(function (_super) {
 		__extends(TextConditionalFormat, _super);
-		function TextConditionalFormat() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function TextConditionalFormat(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setRule=_this.setRule.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(TextConditionalFormat.prototype, "_className", {
 			get: function () {
@@ -24253,8 +24395,10 @@ var Excel;
 	var _typeCellValueConditionalFormat="CellValueConditionalFormat";
 	var CellValueConditionalFormat=(function (_super) {
 		__extends(CellValueConditionalFormat, _super);
-		function CellValueConditionalFormat() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function CellValueConditionalFormat(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setRule=_this.setRule.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(CellValueConditionalFormat.prototype, "_className", {
 			get: function () {
@@ -24354,8 +24498,10 @@ var Excel;
 	var _typeConditionalRangeFormat="ConditionalRangeFormat";
 	var ConditionalRangeFormat=(function (_super) {
 		__extends(ConditionalRangeFormat, _super);
-		function ConditionalRangeFormat() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ConditionalRangeFormat(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setNumberFormat=_this.setNumberFormat.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(ConditionalRangeFormat.prototype, "_className", {
 			get: function () {
@@ -24485,8 +24631,14 @@ var Excel;
 	var _typeConditionalRangeFont="ConditionalRangeFont";
 	var ConditionalRangeFont=(function (_super) {
 		__extends(ConditionalRangeFont, _super);
-		function ConditionalRangeFont() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ConditionalRangeFont(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setBold=_this.setBold.bind(_this);
+			_this.setColor=_this.setColor.bind(_this);
+			_this.setItalic=_this.setItalic.bind(_this);
+			_this.setStrikethrough=_this.setStrikethrough.bind(_this);
+			_this.setUnderline=_this.setUnderline.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(ConditionalRangeFont.prototype, "_className", {
 			get: function () {
@@ -24635,8 +24787,10 @@ var Excel;
 	var _typeConditionalRangeFill="ConditionalRangeFill";
 	var ConditionalRangeFill=(function (_super) {
 		__extends(ConditionalRangeFill, _super);
-		function ConditionalRangeFill() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ConditionalRangeFill(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setColor=_this.setColor.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(ConditionalRangeFill.prototype, "_className", {
 			get: function () {
@@ -24717,8 +24871,11 @@ var Excel;
 	var _typeConditionalRangeBorder="ConditionalRangeBorder";
 	var ConditionalRangeBorder=(function (_super) {
 		__extends(ConditionalRangeBorder, _super);
-		function ConditionalRangeBorder() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ConditionalRangeBorder(context, objectPath) {
+			var _this=_super.call(this, context, objectPath) || this;
+			_this.setColor=_this.setColor.bind(_this);
+			_this.setStyle=_this.setStyle.bind(_this);
+			return _this;
 		}
 		Object.defineProperty(ConditionalRangeBorder.prototype, "_className", {
 			get: function () {
@@ -24825,8 +24982,8 @@ var Excel;
 	var _typeConditionalRangeBorderCollection="ConditionalRangeBorderCollection";
 	var ConditionalRangeBorderCollection=(function (_super) {
 		__extends(ConditionalRangeBorderCollection, _super);
-		function ConditionalRangeBorderCollection() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function ConditionalRangeBorderCollection(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(ConditionalRangeBorderCollection.prototype, "_className", {
 			get: function () {
@@ -24982,8 +25139,8 @@ var Excel;
 	var _typeInternalTest="InternalTest";
 	var InternalTest=(function (_super) {
 		__extends(InternalTest, _super);
-		function InternalTest() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function InternalTest(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(InternalTest.prototype, "_className", {
 			get: function () {
@@ -25518,8 +25675,8 @@ var Excel;
 	var _typeFunctionResult="FunctionResult";
 	var FunctionResult=(function (_super) {
 		__extends(FunctionResult, _super);
-		function FunctionResult() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function FunctionResult(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(FunctionResult.prototype, "_className", {
 			get: function () {
@@ -25595,8 +25752,8 @@ var Excel;
 	var _typeFunctions="Functions";
 	var Functions=(function (_super) {
 		__extends(Functions, _super);
-		function Functions() {
-			return _super !==null && _super.apply(this, arguments) || this;
+		function Functions(context, objectPath) {
+			return _super.call(this, context, objectPath) || this;
 		}
 		Object.defineProperty(Functions.prototype, "_className", {
 			get: function () {

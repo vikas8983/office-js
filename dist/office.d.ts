@@ -3745,6 +3745,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.5]
      */
     class Runtime extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         toJSON(): {
             [key: string]: string;
         };
@@ -3761,6 +3762,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class Application extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Returns the calculation mode used in the workbook. See Excel.CalculationMode for details.
          *
@@ -3818,15 +3820,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ApplicationLoadOptions): Excel.Application;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.Application;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -3846,6 +3839,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class Workbook extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Represents the Excel application instance that contains this workbook.
          *
@@ -3939,15 +3933,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.WorkbookLoadOptions): Excel.Workbook;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.Workbook;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -3974,6 +3959,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class Worksheet extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Returns collection of charts that are part of the worksheet.
          *
@@ -4251,15 +4237,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.WorksheetLoadOptions): Excel.Worksheet;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.Worksheet;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -4279,6 +4256,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class WorksheetCollection extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /** Gets the loaded child items in this collection. */
         readonly items: Excel.Worksheet[];
         /**
@@ -4358,15 +4336,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.WorksheetCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.WorksheetCollection;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.WorksheetCollection;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -4386,6 +4355,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.2]
      */
     class WorksheetProtection extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Sheet protection options.
          *
@@ -4442,15 +4412,6 @@ declare namespace Excel {
          * This method returns the object itself, so that you can chain this call with other method calls on the same object.
          */
         load(properties: Excel.Interfaces.WorksheetProtectionLoadOptions): Excel.WorksheetProtection;
-        /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.WorksheetProtection;
         /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
@@ -4545,6 +4506,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class Range extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Collection of ConditionalFormats that intersect the range.
          *
@@ -5181,15 +5143,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.RangeLoadOptions): Excel.Range;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.Range;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -5226,6 +5179,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.3]
      */
     class RangeView extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Represents a collection of range views associated with the range.
          *
@@ -5480,15 +5434,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.RangeViewLoadOptions): Excel.RangeView;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.RangeView;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -5508,6 +5453,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.3]
      */
     class RangeViewCollection extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /** Gets the loaded child items in this collection. */
         readonly items: Excel.RangeView[];
         /**
@@ -5546,15 +5492,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.RangeViewCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.RangeViewCollection;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.RangeViewCollection;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -5574,6 +5511,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.4]
      */
     class SettingCollection extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /** Gets the loaded child items in this collection. */
         readonly items: Excel.Setting[];
         /**
@@ -5631,15 +5569,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.SettingCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.SettingCollection;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.SettingCollection;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -5666,6 +5595,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.4]
      */
     class Setting extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         private static DateJSONPrefix;
         private static DateJSONSuffix;
         private static replaceStringDateWithDate(value);
@@ -5753,15 +5683,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.SettingLoadOptions): Excel.Setting;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.Setting;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -5781,6 +5702,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class NamedItemCollection extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /** Gets the loaded child items in this collection. */
         readonly items: Excel.NamedItem[];
         /**
@@ -5852,15 +5774,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.NamedItemCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.NamedItemCollection;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.NamedItemCollection;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -5880,6 +5793,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class NamedItem extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Returns the worksheet on which the named item is scoped to. Throws an error if the items is scoped to the workbook instead.
          *
@@ -6049,15 +5963,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.NamedItemLoadOptions): Excel.NamedItem;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.NamedItem;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -6077,6 +5982,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class Binding extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Represents binding identifier.
          *
@@ -6141,15 +6047,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.BindingLoadOptions): Excel.Binding;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.Binding;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -6183,6 +6080,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class BindingCollection extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /** Gets the loaded child items in this collection. */
         readonly items: Excel.Binding[];
         /**
@@ -6311,15 +6209,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.BindingCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.BindingCollection;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.BindingCollection;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -6339,6 +6228,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class TableCollection extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /** Gets the loaded child items in this collection. */
         readonly items: Excel.Table[];
         /**
@@ -6413,15 +6303,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.TableCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.TableCollection;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.TableCollection;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -6441,6 +6322,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class Table extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Represents a collection of all the columns in the table.
          *
@@ -6858,15 +6740,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.TableLoadOptions): Excel.Table;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.Table;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -6886,6 +6759,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class TableColumnCollection extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /** Gets the loaded child items in this collection. */
         readonly items: Excel.TableColumn[];
         /**
@@ -6961,15 +6835,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.TableColumnCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.TableColumnCollection;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.TableColumnCollection;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -6989,6 +6854,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class TableColumn extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Retrieve the filter applied to the column.
          *
@@ -7148,15 +7014,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.TableColumnLoadOptions): Excel.TableColumn;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.TableColumn;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -7181,6 +7038,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class TableRowCollection extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /** Gets the loaded child items in this collection. */
         readonly items: Excel.TableRow[];
         /**
@@ -7247,15 +7105,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.TableRowCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.TableRowCollection;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.TableRowCollection;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -7280,6 +7129,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class TableRow extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Returns the index number of the row within the rows collection of the table. Zero-indexed.
          *
@@ -7371,15 +7221,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.TableRowLoadOptions): Excel.TableRow;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.TableRow;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -7399,6 +7240,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class RangeFormat extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Collection of border objects that apply to the overall range.
          *
@@ -7640,15 +7482,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.RangeFormatLoadOptions): Excel.RangeFormat;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.RangeFormat;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -7668,6 +7501,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.2]
      */
     class FormatProtection extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Indicates if Excel hides the formula for the cells in the range. A null value indicates that the entire range doesn't have uniform formula hidden setting.
          *
@@ -7766,15 +7600,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.FormatProtectionLoadOptions): Excel.FormatProtection;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.FormatProtection;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -7794,6 +7619,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class RangeFill extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * HTML color code representing the color of the border line, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange")
          *
@@ -7870,15 +7696,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.RangeFillLoadOptions): Excel.RangeFill;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.RangeFill;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -7898,6 +7715,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class RangeBorder extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * HTML color code representing the color of the border line, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
          *
@@ -8035,15 +7853,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.RangeBorderLoadOptions): Excel.RangeBorder;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.RangeBorder;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -8063,6 +7872,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class RangeBorderCollection extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /** Gets the loaded child items in this collection. */
         readonly items: Excel.RangeBorder[];
         /**
@@ -8120,15 +7930,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.RangeBorderCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.RangeBorderCollection;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.RangeBorderCollection;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -8148,6 +7949,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class RangeFont extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Represents the bold status of font.
          *
@@ -8370,15 +8172,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.RangeFontLoadOptions): Excel.RangeFont;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.RangeFont;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -8398,6 +8191,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class ChartCollection extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /** Gets the loaded child items in this collection. */
         readonly items: Excel.Chart[];
         /**
@@ -8485,15 +8279,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ChartCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.ChartCollection;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ChartCollection;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -8513,6 +8298,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class Chart extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Represents chart axes.
          *
@@ -8829,15 +8615,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ChartLoadOptions): Excel.Chart;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.Chart;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -8857,6 +8634,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class ChartAreaFormat extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Represents the fill format of an object, which includes background formatting information.
          *
@@ -8905,15 +8683,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ChartAreaFormatLoadOptions): Excel.ChartAreaFormat;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ChartAreaFormat;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -8933,6 +8702,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class ChartSeriesCollection extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /** Gets the loaded child items in this collection. */
         readonly items: Excel.ChartSeries[];
         /**
@@ -8979,15 +8749,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ChartSeriesCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.ChartSeriesCollection;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ChartSeriesCollection;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -9007,6 +8768,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class ChartSeries extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Represents the formatting of a chart series, which includes fill and line formatting.
          *
@@ -9090,15 +8852,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ChartSeriesLoadOptions): Excel.ChartSeries;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ChartSeries;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -9118,6 +8871,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class ChartSeriesFormat extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Represents the fill format of a chart series, which includes background formating information.
          *
@@ -9166,15 +8920,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ChartSeriesFormatLoadOptions): Excel.ChartSeriesFormat;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ChartSeriesFormat;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -9194,6 +8939,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class ChartPointsCollection extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /** Gets the loaded child items in this collection. */
         readonly items: Excel.ChartPoint[];
         /**
@@ -9240,15 +8986,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ChartPointsCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.ChartPointsCollection;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ChartPointsCollection;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -9268,6 +9005,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class ChartPoint extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Encapsulates the format properties chart point.
          *
@@ -9302,15 +9040,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ChartPointLoadOptions): Excel.ChartPoint;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ChartPoint;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -9330,6 +9059,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class ChartPointFormat extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Represents the fill format of a chart, which includes background formating information.
          *
@@ -9352,6 +9082,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class ChartAxes extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Represents the category axis in a chart.
          *
@@ -9408,15 +9139,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ChartAxesLoadOptions): Excel.ChartAxes;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ChartAxes;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -9436,6 +9158,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class ChartAxis extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Represents the formatting of a chart object, which includes line and font formatting.
          *
@@ -9628,15 +9351,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ChartAxisLoadOptions): Excel.ChartAxis;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ChartAxis;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -9656,6 +9370,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class ChartAxisFormat extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Represents the font attributes (font name, font size, color, etc.) for a chart axis element.
          *
@@ -9704,15 +9419,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ChartAxisFormatLoadOptions): Excel.ChartAxisFormat;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ChartAxisFormat;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -9732,6 +9438,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class ChartAxisTitle extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Represents the formatting of chart axis title.
          *
@@ -9838,15 +9545,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ChartAxisTitleLoadOptions): Excel.ChartAxisTitle;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ChartAxisTitle;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -9866,6 +9564,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class ChartAxisTitleFormat extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Represents the font attributes, such as font name, font size, color, etc. of chart axis title object.
          *
@@ -9906,15 +9605,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ChartAxisTitleFormatLoadOptions): Excel.ChartAxisTitleFormat;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ChartAxisTitleFormat;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -9934,6 +9624,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class ChartDataLabels extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Represents the format of chart data labels, which includes fill and font formatting.
          *
@@ -10226,15 +9917,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ChartDataLabelsLoadOptions): Excel.ChartDataLabels;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ChartDataLabels;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -10254,6 +9936,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class ChartDataLabelFormat extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Represents the fill format of the current chart data label.
          *
@@ -10302,15 +9985,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ChartDataLabelFormatLoadOptions): Excel.ChartDataLabelFormat;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ChartDataLabelFormat;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -10330,6 +10004,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class ChartGridlines extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Represents the formatting of chart gridlines.
          *
@@ -10405,15 +10080,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ChartGridlinesLoadOptions): Excel.ChartGridlines;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ChartGridlines;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -10433,6 +10099,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class ChartGridlinesFormat extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Represents chart line formatting.
          *
@@ -10473,15 +10140,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ChartGridlinesFormatLoadOptions): Excel.ChartGridlinesFormat;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ChartGridlinesFormat;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -10501,6 +10159,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class ChartLegend extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Represents the formatting of a chart legend, which includes fill and font formatting.
          *
@@ -10638,15 +10297,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ChartLegendLoadOptions): Excel.ChartLegend;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ChartLegend;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -10666,6 +10316,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class ChartLegendFormat extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Represents the fill format of an object, which includes background formating information.
          *
@@ -10714,15 +10365,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ChartLegendFormatLoadOptions): Excel.ChartLegendFormat;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ChartLegendFormat;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -10742,6 +10384,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class ChartTitle extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Represents the formatting of a chart title, which includes fill and font formatting.
          *
@@ -10879,15 +10522,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ChartTitleLoadOptions): Excel.ChartTitle;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ChartTitle;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -10907,6 +10541,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class ChartTitleFormat extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Represents the fill format of an object, which includes background formating information.
          *
@@ -10955,15 +10590,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ChartTitleFormatLoadOptions): Excel.ChartTitleFormat;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ChartTitleFormat;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -10983,6 +10609,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class ChartFill extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
          */
@@ -11023,6 +10650,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class ChartLineFormat extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * HTML color code representing the color of lines in the chart.
          *
@@ -11099,15 +10727,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ChartLineFormatLoadOptions): Excel.ChartLineFormat;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ChartLineFormat;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -11127,6 +10746,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.1]
      */
     class ChartFont extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Represents the bold status of font.
          *
@@ -11349,15 +10969,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ChartFontLoadOptions): Excel.ChartFont;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ChartFont;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -11377,6 +10988,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.2]
      */
     class RangeSort extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          *
          * Perform a sort operation.
@@ -11423,6 +11035,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.2]
      */
     class TableSort extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Represents the current conditions used to last sort the table.
          *
@@ -11509,15 +11122,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.TableSortLoadOptions): Excel.TableSort;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.TableSort;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -11581,6 +11185,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.2]
      */
     class Filter extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * The currently applied filter on the given column.
          *
@@ -11763,15 +11368,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.FilterLoadOptions): Excel.Filter;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.Filter;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -11892,6 +11488,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.5]
      */
     class CustomXmlPartScopedCollection extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /** Gets the loaded child items in this collection. */
         readonly items: Excel.CustomXmlPart[];
         /**
@@ -11956,15 +11553,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.CustomXmlPartScopedCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.CustomXmlPartScopedCollection;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.CustomXmlPartScopedCollection;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -11984,6 +11572,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.5]
      */
     class CustomXmlPartCollection extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /** Gets the loaded child items in this collection. */
         readonly items: Excel.CustomXmlPart[];
         /**
@@ -12050,15 +11639,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.CustomXmlPartCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.CustomXmlPartCollection;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.CustomXmlPartCollection;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -12078,6 +11658,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.5]
      */
     class CustomXmlPart extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * The custom XML part's ID.
          *
@@ -12139,15 +11720,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.CustomXmlPartLoadOptions): Excel.CustomXmlPart;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.CustomXmlPart;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -12167,6 +11739,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.3]
      */
     class PivotTableCollection extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /** Gets the loaded child items in this collection. */
         readonly items: Excel.PivotTable[];
         /**
@@ -12223,15 +11796,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.PivotTableCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.PivotTableCollection;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.PivotTableCollection;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -12251,6 +11815,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.3]
      */
     class PivotTable extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * The worksheet containing the current PivotTable.
          *
@@ -12343,15 +11908,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.PivotTableLoadOptions): Excel.PivotTable;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.PivotTable;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -12371,6 +11927,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.6]
      */
     class ConditionalFormatCollection extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /** Gets the loaded child items in this collection. */
         readonly items: Excel.ConditionalFormat[];
         /**
@@ -12446,15 +12003,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ConditionalFormatCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.ConditionalFormatCollection;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ConditionalFormatCollection;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -12474,6 +12022,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.6]
      */
     class ConditionalFormat extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Returns the cell value conditional format properties if the current conditional format is a CellValue type.
          * For example to format all cells between 5 and 10.
@@ -12755,15 +12304,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ConditionalFormatLoadOptions): Excel.ConditionalFormat;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ConditionalFormat;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -12783,6 +12323,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.6]
      */
     class DataBarConditionalFormat extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Representation of all values to the left of the axis in an Excel data bar.
          *
@@ -13023,15 +12564,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.DataBarConditionalFormatLoadOptions): Excel.DataBarConditionalFormat;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.DataBarConditionalFormat;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -13051,6 +12583,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.6]
      */
     class ConditionalDataBarPositiveFormat extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * HTML color code representing the color of the border line, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
          * "" (empty string) if no border is present or set.
@@ -13182,15 +12715,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ConditionalDataBarPositiveFormatLoadOptions): Excel.ConditionalDataBarPositiveFormat;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ConditionalDataBarPositiveFormat;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -13210,6 +12734,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.6]
      */
     class ConditionalDataBarNegativeFormat extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * HTML color code representing the color of the border line, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
          * "Empty String" if no border is present or set.
@@ -13372,15 +12897,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ConditionalDataBarNegativeFormatLoadOptions): Excel.ConditionalDataBarNegativeFormat;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ConditionalDataBarNegativeFormat;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -13420,6 +12936,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.6]
      */
     class CustomConditionalFormat extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Returns a format object, encapsulating the conditional formats font, fill, borders, and other properties.
          *
@@ -13468,15 +12985,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.CustomConditionalFormatLoadOptions): Excel.CustomConditionalFormat;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.CustomConditionalFormat;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -13496,6 +13004,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.6]
      */
     class ConditionalFormatRule extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * The formula, if required, to evaluate the conditional format rule on.
          *
@@ -13625,15 +13134,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ConditionalFormatRuleLoadOptions): Excel.ConditionalFormatRule;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ConditionalFormatRule;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -13653,6 +13153,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.6]
      */
     class IconSetConditionalFormat extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * An array of Criteria and IconSets for the rules and potential custom icons for conditional icons. Note that for the first criterion only the custom icon can be modified, while type, formula and operator will be ignored when set.
          *
@@ -13813,15 +13314,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.IconSetConditionalFormatLoadOptions): Excel.IconSetConditionalFormat;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.IconSetConditionalFormat;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -13873,6 +13365,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.6]
      */
     class ColorScaleConditionalFormat extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * The criteria of the color scale. Midpoint is optional when using a two point color scale.
          *
@@ -13948,15 +13441,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ColorScaleConditionalFormatLoadOptions): Excel.ColorScaleConditionalFormat;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ColorScaleConditionalFormat;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -14028,6 +13512,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.6]
      */
     class TopBottomConditionalFormat extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Returns a format object, encapsulating the conditional formats font, fill, borders, and other properties.
          *
@@ -14103,15 +13588,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.TopBottomConditionalFormatLoadOptions): Excel.TopBottomConditionalFormat;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.TopBottomConditionalFormat;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -14151,6 +13627,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.6]
      */
     class PresetCriteriaConditionalFormat extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Returns a format object, encapsulating the conditional formats font, fill, borders, and other properties.
          *
@@ -14226,15 +13703,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.PresetCriteriaConditionalFormatLoadOptions): Excel.PresetCriteriaConditionalFormat;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.PresetCriteriaConditionalFormat;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -14268,6 +13736,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.6]
      */
     class TextConditionalFormat extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Returns a format object, encapsulating the conditional formats font, fill, borders, and other properties.
          *
@@ -14343,15 +13812,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.TextConditionalFormatLoadOptions): Excel.TextConditionalFormat;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.TextConditionalFormat;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -14391,6 +13851,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.6]
      */
     class CellValueConditionalFormat extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Returns a format object, encapsulating the conditional formats font, fill, borders, and other properties.
          *
@@ -14466,15 +13927,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.CellValueConditionalFormatLoadOptions): Excel.CellValueConditionalFormat;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.CellValueConditionalFormat;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -14520,6 +13972,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.6]
      */
     class ConditionalRangeFormat extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Collection of border objects that apply to the overall conditional format range.
          *
@@ -14611,15 +14064,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ConditionalRangeFormatLoadOptions): Excel.ConditionalRangeFormat;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ConditionalRangeFormat;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -14639,6 +14083,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.6]
      */
     class ConditionalRangeFont extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Represents the bold status of font.
          *
@@ -14839,15 +14284,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ConditionalRangeFontLoadOptions): Excel.ConditionalRangeFont;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ConditionalRangeFont;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -14867,6 +14303,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.6]
      */
     class ConditionalRangeFill extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * HTML color code representing the color of the fill, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
          *
@@ -14943,15 +14380,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ConditionalRangeFillLoadOptions): Excel.ConditionalRangeFill;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ConditionalRangeFill;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -14971,6 +14399,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.6]
      */
     class ConditionalRangeBorder extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * HTML color code representing the color of the border line, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
          *
@@ -15077,15 +14506,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.ConditionalRangeBorderLoadOptions): Excel.ConditionalRangeBorder;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ConditionalRangeBorder;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -15105,6 +14525,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.6]
      */
     class ConditionalRangeBorderCollection extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Gets the top border
          *
@@ -15193,15 +14614,6 @@ declare namespace Excel {
          * This method returns the object itself, so that you can chain this call with other method calls on the same object.
          */
         load(properties: Excel.Interfaces.ConditionalRangeBorderCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.ConditionalRangeBorderCollection;
-        /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): Excel.ConditionalRangeBorderCollection;
         /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
@@ -15874,6 +15286,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.2]
      */
     class FunctionResult<T> extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          * Error value (such as "#DIV/0") representing the error. If the error string is not set, then the function succeeded, and its result is written to the Value field. The error is always in the English locale.
          *
@@ -15908,15 +15321,6 @@ declare namespace Excel {
          */
         load(properties: Excel.Interfaces.FunctionResultLoadOptions): FunctionResult<T>;
         /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         *
-         * This RAW STRING-BASED overload accepts a simple string, where you can specify comma-separated properties, and request nested properties via "/" notation.
-         * However, note that overload does NOT provide compile-time-safety or auto-completion.
-         *
-         * This method returns the object itself, so that you can chain this call with other method calls on the same object.
-         */
-        load(option: string): FunctionResult<T>;
-        /**
          * Clears any cached data from previous invocations to `object.load(...)`.
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
@@ -15936,6 +15340,7 @@ declare namespace Excel {
      * [Api set: ExcelApi 1.2]
      */
     class Functions extends OfficeExtension.ClientObject {
+        constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
         /**
          *
          * Returns the absolute value of a number, a number without its sign.
