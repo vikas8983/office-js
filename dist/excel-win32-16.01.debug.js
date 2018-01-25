@@ -15533,9 +15533,12 @@ var Excel;
 	var _typeRange="Range";
 	var Range=(function (_super) {
 		__extends(Range, _super);
-		function Range() {
-			return _super !==null && _super.apply(this, arguments) || this;
-		}
+		function Range(context, objectPath) {
+            var _this = _super.call(this, context, objectPath) || this;
+            _this.setValues = _this.setValues.bind(_this);
+            _this.setNumberFormat = _this.setNumberFormat.bind(_this);
+            return _this;
+        }
 		Object.defineProperty(Range.prototype, "_className", {
 			get: function () {
 				return "Range";
