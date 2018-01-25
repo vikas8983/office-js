@@ -1,4 +1,4 @@
-/* Version: 16.0.8828.1000 */
+/* Version: 16.0.9023.1000 */
 
 if (window.Type && window.Type.registerNamespace) {
 Type.registerNamespace('Strings');} else {
@@ -140,6 +140,8 @@ Strings.OfficeOM.L_NotImplemented='Function {0} is not implemented.';
 Strings.OfficeOM.L_NotSupported='Function {0} is not supported.';
 Strings.OfficeOM.L_NotSupportedBindingType='The specified binding type {0} is not supported.';
 Strings.OfficeOM.L_NotSupportedEventType='The specified event type {0} is not supported.';
+Strings.OfficeOM.L_OperationCancelledError='Operation Cancelled';
+Strings.OfficeOM.L_OperationCancelledErrorMessage='The operation was cancelled by the user.';
 Strings.OfficeOM.L_OperationNotSupported='The operation is not supported.';
 Strings.OfficeOM.L_OperationNotSupportedOnMatrixData='Selected content needs to be in table format. Format the data as a table and try again.';
 Strings.OfficeOM.L_OperationNotSupportedOnThisBindingType='Operation is not supported on this binding type.';
@@ -193,4 +195,4 @@ Strings.OfficeOM.L_UserAborted='User aborted the consent request.';
 Strings.OfficeOM.L_UserAbortedMessage='The user did not consent the add-in permissions.';
 Strings.OfficeOM.L_UserClickIgnore='The user chose to ignore the dialog box.';
 Strings.OfficeOM.L_UserNotSignedIn='No user is signed into Office.';
-Strings.OfficeOM.L_ValueNotLoaded='The value of the result object has not been loaded yet. Before reading the value property, call \"context.sync()\" on the associated request context.';
+Strings.OfficeOM.L_ValueNotLoaded='The value of the result object has not been loaded yet. Before reading the value property, wait on the Promise returned from the associated batch call.';
