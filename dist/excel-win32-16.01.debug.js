@@ -8976,7 +8976,7 @@ var OfficeExtension;
 					if (input.hasOwnProperty(prop)) {
 						if (typeof input[prop] !=="undefined") {
 							var setterFunc=this['set'+prop.substr(0, 1).toUpperCase()+prop.substr(1)];
-							setterFunc.apply(this, input[prop]);
+							setterFunc(input[prop]);
 						}
 					}
 				}
