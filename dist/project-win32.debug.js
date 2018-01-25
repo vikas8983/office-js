@@ -1,5 +1,5 @@
-/* PowerPoint specific API library */
-/* Version: 16.0.6207.1000 */
+/* Project specific JavaScript API library */
+/* Version: 16.0.6222.1000 */
 /*
 	Copyright (c) Microsoft Corporation.  All rights reserved.
 */
@@ -797,8 +797,8 @@ OSF.OfficeAppContext = function OSF_OfficeAppContext(id, appName, appVersion, ap
     this.get_appMinorVersion = function get_appMinorVersion() {
         return this._appMinorVersion;
     };
-    this.get_requirementsMatrix = function get_requirementsMatrix() {
-        return this._requirementsMatrix;
+    this.get_requirementMatrix = function get_requirementMatrix() {
+        return this._requirementMatrix;
     };
 };
 OSF.OsfControlType = {
@@ -862,6 +862,10 @@ Microsoft.Office.WebExtension.Parameters = {
     Namespace: "namespace",
     Prefix: "prefix",
     XPath: "xPath",
+    ImageLeft: "imageLeft",
+    ImageTop: "imageTop",
+    ImageWidth: "imageWidth",
+    ImageHeight: "imageHeight",
     TaskId: "taskId",
     FieldId: "fieldId",
     FieldValue: "fieldValue",
@@ -1156,30 +1160,30 @@ var OfficeExt;
     (function (Requirement) {
         var RequirementMatrix = (function () {
             function RequirementMatrix(_setMap) {
-                this.setMap = _setMap;
+                this.isSetSupported = function _isSetSupported(name, minVersion) {
+                    if (name == undefined) {
+                        return false;
+                    }
+                    if (minVersion == undefined) {
+                        minVersion = 0;
+                    }
+                    var setSupportArray = this._setMap;
+                    var sets = setSupportArray._sets;
+                    if (sets.hasOwnProperty(name.toLowerCase())) {
+                        var setMaxVersion = sets[name.toLowerCase()];
+                        return setMaxVersion > 0 && setMaxVersion >= minVersion;
+                    } else {
+                        return false;
+                    }
+                };
+                this._setMap = _setMap;
             }
-            RequirementMatrix.prototype.isSetSupported = function (name, minVersion) {
-                if (name == undefined) {
-                    return false;
-                }
-                if (minVersion == undefined) {
-                    minVersion = 0;
-                }
-                var setSupportArray = this.setMap;
-                var sets = setSupportArray.sets;
-                if (sets.hasOwnProperty(name.toLowerCase())) {
-                    var setMaxVersion = sets[name.toLowerCase()];
-                    return setMaxVersion > 0 && setMaxVersion >= minVersion;
-                } else {
-                    return false;
-                }
-            };
             return RequirementMatrix;
         })();
         Requirement.RequirementMatrix = RequirementMatrix;
         var DefaultSetRequirement = (function () {
             function DefaultSetRequirement(setMap) {
-                this.sets = setMap;
+                this._sets = setMap;
             }
             return DefaultSetRequirement;
         })();
@@ -1438,8 +1442,8 @@ var OfficeExt;
             RequirementsMatrixFactory.getDefaultRequirementMatrix = function (appContext) {
                 this.initializeDefaultSetMatrix();
                 var defaultRequirementMatrix = undefined;
-                if (appContext.requirementMatrix != undefined && typeof (JSON) !== "undefined") {
-                    var matrixItem = JSON.parse(appContext.requirementMatrix);
+                if (appContext.get_requirementMatrix() != undefined && typeof (JSON) !== "undefined") {
+                    var matrixItem = JSON.parse(appContext.get_requirementMatrix());
                     defaultRequirementMatrix = new RequirementMatrix(new DefaultSetRequirement(matrixItem));
                 } else {
                     var appMinorVersion = appContext.get_appMinorVersion();
@@ -4046,1349 +4050,6 @@ var OSFAppTelemetry;
     OSF.AppTelemetry = OSFAppTelemetry;
 })(OSFAppTelemetry || (OSFAppTelemetry = {}));
 
-Microsoft.Office.WebExtension.BindingType = {
-    Table: "table",
-    Text: "text",
-    Matrix: "matrix"
-};
-OSF.DDA.BindingProperties = {
-    Id: "BindingId",
-    Type: Microsoft.Office.WebExtension.Parameters.BindingType
-};
-OSF.OUtil.augmentList(OSF.DDA.ListDescriptors, { BindingList: "BindingList" });
-OSF.OUtil.augmentList(OSF.DDA.PropertyDescriptors, {
-    Subset: "subset",
-    BindingProperties: "BindingProperties"
-});
-OSF.DDA.ListType.setListType(OSF.DDA.ListDescriptors.BindingList, OSF.DDA.PropertyDescriptors.BindingProperties);
-
-OSF.DDA.BindingPromise = function OSF_DDA_BindingPromise(bindingId, errorCallback) {
-    this._id = bindingId;
-    OSF.OUtil.defineEnumerableProperty(this, "onFail", {
-        get: function () {
-            return errorCallback;
-        },
-        set: function (onError) {
-            var t = typeof onError;
-            if (t != "undefined" && t != "function") {
-                throw OSF.OUtil.formatString(Strings.OfficeOM.L_CallbackNotAFunction, t);
-            }
-            errorCallback = onError;
-        }
-    });
-};
-OSF.DDA.BindingPromise.prototype = {
-    _fetch: function OSF_DDA_BindingPromise$_fetch(onComplete) {
-        if (this.binding) {
-            if (onComplete)
-                onComplete(this.binding);
-        } else {
-            if (!this._binding) {
-                var me = this;
-                Microsoft.Office.WebExtension.context.document.bindings.getByIdAsync(this._id, function (asyncResult) {
-                    if (asyncResult.status == Microsoft.Office.WebExtension.AsyncResultStatus.Succeeded) {
-                        OSF.OUtil.defineEnumerableProperty(me, "binding", {
-                            value: asyncResult.value
-                        });
-                        if (onComplete)
-                            onComplete(me.binding);
-                    } else {
-                        if (me.onFail)
-                            me.onFail(asyncResult);
-                    }
-                });
-            }
-        }
-        return this;
-    },
-    getDataAsync: function OSF_DDA_BindingPromise$getDataAsync() {
-        var args = arguments;
-        this._fetch(function onComplete(binding) {
-            binding.getDataAsync.apply(binding, args);
-        });
-        return this;
-    },
-    setDataAsync: function OSF_DDA_BindingPromise$setDataAsync() {
-        var args = arguments;
-        this._fetch(function onComplete(binding) {
-            binding.setDataAsync.apply(binding, args);
-        });
-        return this;
-    },
-    addHandlerAsync: function OSF_DDA_BindingPromise$addHandlerAsync() {
-        var args = arguments;
-        this._fetch(function onComplete(binding) {
-            binding.addHandlerAsync.apply(binding, args);
-        });
-        return this;
-    },
-    removeHandlerAsync: function OSF_DDA_BindingPromise$removeHandlerAsync() {
-        var args = arguments;
-        this._fetch(function onComplete(binding) {
-            binding.removeHandlerAsync.apply(binding, args);
-        });
-        return this;
-    }
-};
-
-OSF.DDA.BindingFacade = function OSF_DDA_BindingFacade(docInstance) {
-    this._eventDispatches = [];
-
-    OSF.OUtil.defineEnumerableProperty(this, "document", {
-        value: docInstance
-    });
-    var am = OSF.DDA.AsyncMethodNames;
-    OSF.DDA.DispIdHost.addAsyncMethods(this, [
-        am.AddFromSelectionAsync,
-        am.AddFromNamedItemAsync,
-        am.GetAllAsync,
-        am.GetByIdAsync,
-        am.ReleaseByIdAsync
-    ]);
-};
-
-OSF.DDA.UnknownBinding = function OSF_DDA_UknonwnBinding(id, docInstance) {
-    OSF.OUtil.defineEnumerableProperties(this, {
-        "document": { value: docInstance },
-        "id": { value: id }
-    });
-};
-
-OSF.DDA.Binding = function OSF_DDA_Binding(id, docInstance) {
-    OSF.OUtil.defineEnumerableProperties(this, {
-        "document": {
-            value: docInstance
-        },
-        "id": {
-            value: id
-        }
-    });
-
-    var am = OSF.DDA.AsyncMethodNames;
-    OSF.DDA.DispIdHost.addAsyncMethods(this, [
-        am.GetDataAsync,
-        am.SetDataAsync
-    ]);
-
-    var et = Microsoft.Office.WebExtension.EventType;
-    var bindingEventDispatches = docInstance.bindings._eventDispatches;
-    if (!bindingEventDispatches[id]) {
-        bindingEventDispatches[id] = new OSF.EventDispatch([
-            et.BindingSelectionChanged,
-            et.BindingDataChanged
-        ]);
-    }
-    var eventDispatch = bindingEventDispatches[id];
-
-    OSF.DDA.DispIdHost.addEventSupport(this, eventDispatch);
-};
-OSF.DDA.generateBindingId = function OSF_DDA$GenerateBindingId() {
-    return "UnnamedBinding_" + OSF.OUtil.getUniqueId() + "_" + new Date().getTime();
-};
-OSF.DDA.OMFactory = OSF.DDA.OMFactory || {};
-OSF.DDA.OMFactory.manufactureBinding = function OSF_DDA_OMFactory$manufactureBinding(bindingProperties, containingDocument) {
-    var id = bindingProperties[OSF.DDA.BindingProperties.Id];
-    var rows = bindingProperties[OSF.DDA.BindingProperties.RowCount];
-    var cols = bindingProperties[OSF.DDA.BindingProperties.ColumnCount];
-    var hasHeaders = bindingProperties[OSF.DDA.BindingProperties.HasHeaders];
-    var binding;
-    switch (bindingProperties[OSF.DDA.BindingProperties.Type]) {
-        case Microsoft.Office.WebExtension.BindingType.Text:
-            binding = new OSF.DDA.TextBinding(id, containingDocument);
-            break;
-        case Microsoft.Office.WebExtension.BindingType.Matrix:
-            binding = new OSF.DDA.MatrixBinding(id, containingDocument, rows, cols);
-            break;
-        case Microsoft.Office.WebExtension.BindingType.Table:
-            var isExcelApp = function () {
-                return (OSF.DDA.ExcelDocument) && (Microsoft.Office.WebExtension.context.document) && (Microsoft.Office.WebExtension.context.document instanceof OSF.DDA.ExcelDocument);
-            };
-            var tableBindingObject;
-            if (isExcelApp() && OSF.DDA.ExcelTableBinding) {
-                tableBindingObject = OSF.DDA.ExcelTableBinding;
-            } else {
-                tableBindingObject = OSF.DDA.TableBinding;
-            }
-            binding = new tableBindingObject(id, containingDocument, rows, cols, hasHeaders);
-            break;
-        default:
-            binding = new OSF.DDA.UnknownBinding(id, containingDocument);
-    }
-    return binding;
-};
-OSF.DDA.AsyncMethodNames.addNames({
-    AddFromSelectionAsync: "addFromSelectionAsync",
-    AddFromNamedItemAsync: "addFromNamedItemAsync",
-    GetAllAsync: "getAllAsync",
-    GetByIdAsync: "getByIdAsync",
-    ReleaseByIdAsync: "releaseByIdAsync",
-    GetDataAsync: "getDataAsync",
-    SetDataAsync: "setDataAsync"
-});
-
-(function () {
-    function processBinding(bindingDescriptor) {
-        return OSF.DDA.OMFactory.manufactureBinding(bindingDescriptor, Microsoft.Office.WebExtension.context.document);
-    }
-    function getObjectId(obj) {
-        return obj.id;
-    }
-
-    function processData(dataDescriptor, caller, callArgs) {
-        var data = dataDescriptor[Microsoft.Office.WebExtension.Parameters.Data];
-
-        if (OSF.DDA.TableDataProperties && data && (data[OSF.DDA.TableDataProperties.TableRows] != undefined || data[OSF.DDA.TableDataProperties.TableHeaders] != undefined)) {
-            data = OSF.DDA.OMFactory.manufactureTableData(data);
-        }
-        data = OSF.DDA.DataCoercion.coerceData(data, callArgs[Microsoft.Office.WebExtension.Parameters.CoercionType]);
-        return data == undefined ? null : data;
-    }
-
-    OSF.DDA.AsyncMethodCalls.define({
-        method: OSF.DDA.AsyncMethodNames.AddFromSelectionAsync,
-        requiredArguments: [
-            {
-                "name": Microsoft.Office.WebExtension.Parameters.BindingType,
-                "enum": Microsoft.Office.WebExtension.BindingType
-            }
-        ],
-        supportedOptions: [
-            {
-                name: Microsoft.Office.WebExtension.Parameters.Id,
-                value: {
-                    "types": ["string"],
-                    "calculate": OSF.DDA.generateBindingId
-                }
-            },
-            {
-                name: Microsoft.Office.WebExtension.Parameters.Columns,
-                value: {
-                    "types": ["object"],
-                    "defaultValue": null
-                }
-            }
-        ],
-        privateStateCallbacks: [],
-        onSucceeded: processBinding
-    });
-
-    OSF.DDA.AsyncMethodCalls.define({
-        method: OSF.DDA.AsyncMethodNames.AddFromNamedItemAsync,
-        requiredArguments: [
-            {
-                "name": Microsoft.Office.WebExtension.Parameters.ItemName,
-                "types": ["string"]
-            },
-            {
-                "name": Microsoft.Office.WebExtension.Parameters.BindingType,
-                "enum": Microsoft.Office.WebExtension.BindingType
-            }
-        ],
-        supportedOptions: [
-            {
-                name: Microsoft.Office.WebExtension.Parameters.Id,
-                value: {
-                    "types": ["string"],
-                    "calculate": OSF.DDA.generateBindingId
-                }
-            },
-            {
-                name: Microsoft.Office.WebExtension.Parameters.Columns,
-                value: {
-                    "types": ["object"],
-                    "defaultValue": null
-                }
-            }
-        ],
-        privateStateCallbacks: [
-            {
-                name: Microsoft.Office.WebExtension.Parameters.FailOnCollision,
-                value: function () {
-                    return true;
-                }
-            }
-        ],
-        onSucceeded: processBinding
-    });
-
-    OSF.DDA.AsyncMethodCalls.define({
-        method: OSF.DDA.AsyncMethodNames.GetAllAsync,
-        requiredArguments: [],
-        supportedOptions: [],
-        privateStateCallbacks: [],
-        onSucceeded: function (response) {
-            return OSF.OUtil.mapList(response[OSF.DDA.ListDescriptors.BindingList], processBinding);
-        }
-    });
-
-    OSF.DDA.AsyncMethodCalls.define({
-        method: OSF.DDA.AsyncMethodNames.GetByIdAsync,
-        requiredArguments: [
-            {
-                "name": Microsoft.Office.WebExtension.Parameters.Id,
-                "types": ["string"]
-            }
-        ],
-        supportedOptions: [],
-        privateStateCallbacks: [],
-        onSucceeded: processBinding
-    });
-
-    OSF.DDA.AsyncMethodCalls.define({
-        method: OSF.DDA.AsyncMethodNames.ReleaseByIdAsync,
-        requiredArguments: [
-            {
-                "name": Microsoft.Office.WebExtension.Parameters.Id,
-                "types": ["string"]
-            }
-        ],
-        supportedOptions: [],
-        privateStateCallbacks: [],
-        onSucceeded: function (response, caller, callArgs) {
-            var id = callArgs[Microsoft.Office.WebExtension.Parameters.Id];
-            delete caller._eventDispatches[id];
-        }
-    });
-
-    OSF.DDA.AsyncMethodCalls.define({
-        method: OSF.DDA.AsyncMethodNames.GetDataAsync,
-        requiredArguments: [],
-        supportedOptions: [
-            {
-                name: Microsoft.Office.WebExtension.Parameters.CoercionType,
-                value: {
-                    "enum": Microsoft.Office.WebExtension.CoercionType,
-                    "calculate": function (requiredArgs, binding) {
-                        return OSF.DDA.DataCoercion.getCoercionDefaultForBinding(binding.type);
-                    }
-                }
-            },
-            {
-                name: Microsoft.Office.WebExtension.Parameters.ValueFormat,
-                value: {
-                    "enum": Microsoft.Office.WebExtension.ValueFormat,
-                    "defaultValue": Microsoft.Office.WebExtension.ValueFormat.Unformatted
-                }
-            },
-            {
-                name: Microsoft.Office.WebExtension.Parameters.FilterType,
-                value: {
-                    "enum": Microsoft.Office.WebExtension.FilterType,
-                    "defaultValue": Microsoft.Office.WebExtension.FilterType.All
-                }
-            },
-            {
-                name: Microsoft.Office.WebExtension.Parameters.Rows,
-                value: {
-                    "types": ["object", "string"],
-                    "defaultValue": null
-                }
-            },
-            {
-                name: Microsoft.Office.WebExtension.Parameters.Columns,
-                value: {
-                    "types": ["object"],
-                    "defaultValue": null
-                }
-            },
-            {
-                name: Microsoft.Office.WebExtension.Parameters.StartRow,
-                value: {
-                    "types": ["number"],
-                    "defaultValue": 0
-                }
-            },
-            {
-                name: Microsoft.Office.WebExtension.Parameters.StartColumn,
-                value: {
-                    "types": ["number"],
-                    "defaultValue": 0
-                }
-            },
-            {
-                name: Microsoft.Office.WebExtension.Parameters.RowCount,
-                value: {
-                    "types": ["number"],
-                    "defaultValue": 0
-                }
-            },
-            {
-                name: Microsoft.Office.WebExtension.Parameters.ColumnCount,
-                value: {
-                    "types": ["number"],
-                    "defaultValue": 0
-                }
-            }
-        ],
-        checkCallArgs: function (callArgs, caller, stateInfo) {
-            if (callArgs[Microsoft.Office.WebExtension.Parameters.StartRow] == 0 && callArgs[Microsoft.Office.WebExtension.Parameters.StartColumn] == 0 && callArgs[Microsoft.Office.WebExtension.Parameters.RowCount] == 0 && callArgs[Microsoft.Office.WebExtension.Parameters.ColumnCount] == 0) {
-                delete callArgs[Microsoft.Office.WebExtension.Parameters.StartRow];
-                delete callArgs[Microsoft.Office.WebExtension.Parameters.StartColumn];
-                delete callArgs[Microsoft.Office.WebExtension.Parameters.RowCount];
-                delete callArgs[Microsoft.Office.WebExtension.Parameters.ColumnCount];
-            }
-            if (callArgs[Microsoft.Office.WebExtension.Parameters.CoercionType] != OSF.DDA.DataCoercion.getCoercionDefaultForBinding(caller.type) && (callArgs[Microsoft.Office.WebExtension.Parameters.StartRow] || callArgs[Microsoft.Office.WebExtension.Parameters.StartColumn] || callArgs[Microsoft.Office.WebExtension.Parameters.RowCount] || callArgs[Microsoft.Office.WebExtension.Parameters.ColumnCount])) {
-                throw OSF.DDA.ErrorCodeManager.errorCodes.ooeCoercionTypeNotMatchBinding;
-            }
-            return callArgs;
-        },
-        privateStateCallbacks: [
-            {
-                name: Microsoft.Office.WebExtension.Parameters.Id,
-                value: getObjectId
-            }
-        ],
-        onSucceeded: processData
-    });
-
-    OSF.DDA.AsyncMethodCalls.define({
-        method: OSF.DDA.AsyncMethodNames.SetDataAsync,
-        requiredArguments: [
-            {
-                "name": Microsoft.Office.WebExtension.Parameters.Data,
-                "types": ["string", "object", "number", "boolean"]
-            }
-        ],
-        supportedOptions: [
-            {
-                name: Microsoft.Office.WebExtension.Parameters.CoercionType,
-                value: {
-                    "enum": Microsoft.Office.WebExtension.CoercionType,
-                    "calculate": function (requiredArgs) {
-                        return OSF.DDA.DataCoercion.determineCoercionType(requiredArgs[Microsoft.Office.WebExtension.Parameters.Data]);
-                    }
-                }
-            },
-            {
-                name: Microsoft.Office.WebExtension.Parameters.Rows,
-                value: {
-                    "types": ["object", "string"],
-                    "defaultValue": null
-                }
-            },
-            {
-                name: Microsoft.Office.WebExtension.Parameters.Columns,
-                value: {
-                    "types": ["object"],
-                    "defaultValue": null
-                }
-            },
-            {
-                name: Microsoft.Office.WebExtension.Parameters.StartRow,
-                value: {
-                    "types": ["number"],
-                    "defaultValue": 0
-                }
-            },
-            {
-                name: Microsoft.Office.WebExtension.Parameters.StartColumn,
-                value: {
-                    "types": ["number"],
-                    "defaultValue": 0
-                }
-            }
-        ],
-        checkCallArgs: function (callArgs, caller, stateInfo) {
-            if (callArgs[Microsoft.Office.WebExtension.Parameters.StartRow] == 0 && callArgs[Microsoft.Office.WebExtension.Parameters.StartColumn] == 0) {
-                delete callArgs[Microsoft.Office.WebExtension.Parameters.StartRow];
-                delete callArgs[Microsoft.Office.WebExtension.Parameters.StartColumn];
-            }
-            if (callArgs[Microsoft.Office.WebExtension.Parameters.CoercionType] != OSF.DDA.DataCoercion.getCoercionDefaultForBinding(caller.type) && (callArgs[Microsoft.Office.WebExtension.Parameters.StartRow] || callArgs[Microsoft.Office.WebExtension.Parameters.StartColumn])) {
-                throw OSF.DDA.ErrorCodeManager.errorCodes.ooeCoercionTypeNotMatchBinding;
-            }
-            return callArgs;
-        },
-        privateStateCallbacks: [
-            {
-                name: Microsoft.Office.WebExtension.Parameters.Id,
-                value: getObjectId
-            }
-        ]
-    });
-})();
-
-Microsoft.Office.WebExtension.TableData = function Microsoft_Office_WebExtension_TableData(rows, headers) {
-    function fixData(data) {
-        if (data == null || data == undefined) {
-            return null;
-        }
-        try  {
-            for (var dim = OSF.DDA.DataCoercion.findArrayDimensionality(data, 2); dim < 2; dim++) {
-                data = [data];
-            }
-            return data;
-        } catch (ex) {
-        }
-    }
-    ;
-    OSF.OUtil.defineEnumerableProperties(this, {
-        "headers": {
-            get: function () {
-                return headers;
-            },
-            set: function (value) {
-                headers = fixData(value);
-            }
-        },
-        "rows": {
-            get: function () {
-                return rows;
-            },
-            set: function (value) {
-                rows = (value == null || (OSF.OUtil.isArray(value) && (value.length == 0))) ? [] : fixData(value);
-            }
-        }
-    });
-    this.headers = headers;
-    this.rows = rows;
-};
-OSF.DDA.OMFactory = OSF.DDA.OMFactory || {};
-OSF.DDA.OMFactory.manufactureTableData = function OSF_DDA_OMFactory$manufactureTableData(tableDataProperties) {
-    return new Microsoft.Office.WebExtension.TableData(tableDataProperties[OSF.DDA.TableDataProperties.TableRows], tableDataProperties[OSF.DDA.TableDataProperties.TableHeaders]);
-};
-OSF.OUtil.augmentList(OSF.DDA.PropertyDescriptors, { TableDataProperties: "TableDataProperties" });
-OSF.OUtil.augmentList(OSF.DDA.BindingProperties, {
-    RowCount: "BindingRowCount",
-    ColumnCount: "BindingColumnCount",
-    HasHeaders: "HasHeaders"
-});
-OSF.DDA.TableDataProperties = {
-    TableRows: "TableRows",
-    TableHeaders: "TableHeaders"
-};
-
-OSF.DDA.TableBinding = function OSF_DDA_TableBinding(id, docInstance, rows, cols, hasHeaders) {
-    OSF.DDA.TableBinding.uber.constructor.call(this, id, docInstance);
-    OSF.OUtil.defineEnumerableProperties(this, {
-        "type": {
-            value: Microsoft.Office.WebExtension.BindingType.Table
-        },
-        "rowCount": {
-            value: rows ? rows : 0
-        },
-        "columnCount": {
-            value: cols ? cols : 0
-        },
-        "hasHeaders": {
-            value: hasHeaders ? hasHeaders : false
-        }
-    });
-
-    var am = OSF.DDA.AsyncMethodNames;
-    OSF.DDA.DispIdHost.addAsyncMethods(this, [
-        am.AddRowsAsync,
-        am.AddColumnsAsync,
-        am.DeleteAllDataValuesAsync
-    ]);
-};
-OSF.OUtil.extend(OSF.DDA.TableBinding, OSF.DDA.Binding);
-OSF.DDA.AsyncMethodNames.addNames({
-    AddRowsAsync: "addRowsAsync",
-    AddColumnsAsync: "addColumnsAsync",
-    DeleteAllDataValuesAsync: "deleteAllDataValuesAsync"
-});
-
-(function () {
-    function getObjectId(obj) {
-        return obj.id;
-    }
-
-    OSF.DDA.AsyncMethodCalls.define({
-        method: OSF.DDA.AsyncMethodNames.AddRowsAsync,
-        requiredArguments: [
-            {
-                "name": Microsoft.Office.WebExtension.Parameters.Data,
-                "types": ["object"]
-            }
-        ],
-        supportedOptions: [],
-        privateStateCallbacks: [
-            {
-                name: Microsoft.Office.WebExtension.Parameters.Id,
-                value: getObjectId
-            }
-        ]
-    });
-
-    OSF.DDA.AsyncMethodCalls.define({
-        method: OSF.DDA.AsyncMethodNames.AddColumnsAsync,
-        requiredArguments: [
-            {
-                "name": Microsoft.Office.WebExtension.Parameters.Data,
-                "types": ["object"]
-            }
-        ],
-        supportedOptions: [],
-        privateStateCallbacks: [
-            {
-                name: Microsoft.Office.WebExtension.Parameters.Id,
-                value: getObjectId
-            }
-        ]
-    });
-
-    OSF.DDA.AsyncMethodCalls.define({
-        method: OSF.DDA.AsyncMethodNames.DeleteAllDataValuesAsync,
-        requiredArguments: [],
-        supportedOptions: [],
-        privateStateCallbacks: [
-            {
-                name: Microsoft.Office.WebExtension.Parameters.Id,
-                value: getObjectId
-            }
-        ]
-    });
-})();
-
-Microsoft.Office.WebExtension.CoercionType = {
-    Text: "text",
-    Matrix: "matrix",
-    Table: "table"
-};
-
-OSF.DDA.DataCoercion = (function OSF_DDA_DataCoercion() {
-    return {
-        findArrayDimensionality: function OSF_DDA_DataCoercion$findArrayDimensionality(obj) {
-            if (OSF.OUtil.isArray(obj)) {
-                var dim = 0;
-                for (var index = 0; index < obj.length; index++) {
-                    dim = Math.max(dim, OSF.DDA.DataCoercion.findArrayDimensionality(obj[index]));
-                }
-                return dim + 1;
-            } else {
-                return 0;
-            }
-        },
-        getCoercionDefaultForBinding: function OSF_DDA_DataCoercion$getCoercionDefaultForBinding(bindingType) {
-            switch (bindingType) {
-                case Microsoft.Office.WebExtension.BindingType.Matrix:
-                    return Microsoft.Office.WebExtension.CoercionType.Matrix;
-                case Microsoft.Office.WebExtension.BindingType.Table:
-                    return Microsoft.Office.WebExtension.CoercionType.Table;
-                case Microsoft.Office.WebExtension.BindingType.Text:
-                default:
-                    return Microsoft.Office.WebExtension.CoercionType.Text;
-            }
-        },
-        getBindingDefaultForCoercion: function OSF_DDA_DataCoercion$getBindingDefaultForCoercion(coercionType) {
-            switch (coercionType) {
-                case Microsoft.Office.WebExtension.CoercionType.Matrix:
-                    return Microsoft.Office.WebExtension.BindingType.Matrix;
-                case Microsoft.Office.WebExtension.CoercionType.Table:
-                    return Microsoft.Office.WebExtension.BindingType.Table;
-                case Microsoft.Office.WebExtension.CoercionType.Text:
-                case Microsoft.Office.WebExtension.CoercionType.Html:
-                case Microsoft.Office.WebExtension.CoercionType.Ooxml:
-                default:
-                    return Microsoft.Office.WebExtension.BindingType.Text;
-            }
-        },
-        determineCoercionType: function OSF_DDA_DataCoercion$determineCoercionType(data) {
-            if (data == null || data == undefined)
-                return null;
-            var sourceType = null;
-            var runtimeType = typeof data;
-            if (data.rows !== undefined) {
-                sourceType = Microsoft.Office.WebExtension.CoercionType.Table;
-            } else if (OSF.OUtil.isArray(data)) {
-                sourceType = Microsoft.Office.WebExtension.CoercionType.Matrix;
-            } else if (runtimeType == "string" || runtimeType == "number" || runtimeType == "boolean" || OSF.OUtil.isDate(data)) {
-                sourceType = Microsoft.Office.WebExtension.CoercionType.Text;
-            } else {
-                throw OSF.DDA.ErrorCodeManager.errorCodes.ooeUnsupportedDataObject;
-            }
-            return sourceType;
-        },
-        coerceData: function OSF_DDA_DataCoercion$coerceData(data, destinationType, sourceType) {
-            sourceType = sourceType || OSF.DDA.DataCoercion.determineCoercionType(data);
-            if (sourceType && sourceType != destinationType) {
-                OSF.OUtil.writeProfilerMark(OSF.InternalPerfMarker.DataCoercionBegin);
-                data = OSF.DDA.DataCoercion._coerceDataFromTable(destinationType, OSF.DDA.DataCoercion._coerceDataToTable(data, sourceType));
-                OSF.OUtil.writeProfilerMark(OSF.InternalPerfMarker.DataCoercionEnd);
-            }
-            return data;
-        },
-        _matrixToText: function OSF_DDA_DataCoercion$_matrixToText(matrix) {
-            if (matrix.length == 1 && matrix[0].length == 1)
-                return "" + matrix[0][0];
-            var val = "";
-            for (var i = 0; i < matrix.length; i++) {
-                val += matrix[i].join("\t") + "\n";
-            }
-            return val.substring(0, val.length - 1);
-        },
-        _textToMatrix: function OSF_DDA_DataCoercion$_textToMatrix(text) {
-            var ret = text.split("\n");
-            for (var i = 0; i < ret.length; i++)
-                ret[i] = ret[i].split("\t");
-            return ret;
-        },
-        _tableToText: function OSF_DDA_DataCoercion$_tableToText(table) {
-            var headers = "";
-            if (table.headers != null) {
-                headers = OSF.DDA.DataCoercion._matrixToText([table.headers]) + "\n";
-            }
-
-            var rows = OSF.DDA.DataCoercion._matrixToText(table.rows);
-            if (rows == "") {
-                headers = headers.substring(0, headers.length - 1);
-            }
-            return headers + rows;
-        },
-        _tableToMatrix: function OSF_DDA_DataCoercion$_tableToMatrix(table) {
-            var matrix = table.rows;
-            if (table.headers != null) {
-                matrix.unshift(table.headers);
-            }
-            return matrix;
-        },
-        _coerceDataFromTable: function OSF_DDA_DataCoercion$_coerceDataFromTable(coercionType, table) {
-            var value;
-            switch (coercionType) {
-                case Microsoft.Office.WebExtension.CoercionType.Table:
-                    value = table;
-                    break;
-                case Microsoft.Office.WebExtension.CoercionType.Matrix:
-                    value = OSF.DDA.DataCoercion._tableToMatrix(table);
-                    break;
-                case Microsoft.Office.WebExtension.CoercionType.SlideRange:
-                    value = null;
-                    if (OSF.DDA.OMFactory.manufactureSlideRange) {
-                        value = OSF.DDA.OMFactory.manufactureSlideRange(OSF.DDA.DataCoercion._tableToText(table));
-                    }
-                    if (value == null) {
-                        value = OSF.DDA.DataCoercion._tableToText(table);
-                    }
-                    break;
-                case Microsoft.Office.WebExtension.CoercionType.Text:
-                case Microsoft.Office.WebExtension.CoercionType.Html:
-                case Microsoft.Office.WebExtension.CoercionType.Ooxml:
-                default:
-                    value = OSF.DDA.DataCoercion._tableToText(table);
-                    break;
-            }
-            return value;
-        },
-        _coerceDataToTable: function OSF_DDA_DataCoercion$_coerceDataToTable(data, sourceType) {
-            if (sourceType == undefined) {
-                sourceType = OSF.DDA.DataCoercion.determineCoercionType(data);
-            }
-            var value;
-            switch (sourceType) {
-                case Microsoft.Office.WebExtension.CoercionType.Table:
-                    value = data;
-                    break;
-                case Microsoft.Office.WebExtension.CoercionType.Matrix:
-                    value = new Microsoft.Office.WebExtension.TableData(data);
-                    break;
-                case Microsoft.Office.WebExtension.CoercionType.Text:
-                case Microsoft.Office.WebExtension.CoercionType.Html:
-                case Microsoft.Office.WebExtension.CoercionType.Ooxml:
-                default:
-                    value = new Microsoft.Office.WebExtension.TableData(OSF.DDA.DataCoercion._textToMatrix(data));
-                    break;
-            }
-            return value;
-        }
-    };
-})();
-OSF.DDA.FilePropertiesDescriptor = {
-    Url: "Url"
-};
-OSF.OUtil.augmentList(OSF.DDA.PropertyDescriptors, {
-    FilePropertiesDescriptor: "FilePropertiesDescriptor"
-});
-
-Microsoft.Office.WebExtension.FileProperties = function Microsoft_Office_WebExtension_FileProperties(filePropertiesDescriptor) {
-    OSF.OUtil.defineEnumerableProperties(this, {
-        "url": {
-            value: filePropertiesDescriptor[OSF.DDA.FilePropertiesDescriptor.Url]
-        }
-    });
-};
-OSF.DDA.AsyncMethodNames.addNames({ GetFilePropertiesAsync: "getFilePropertiesAsync" });
-
-OSF.DDA.AsyncMethodCalls.define({
-    method: OSF.DDA.AsyncMethodNames.GetFilePropertiesAsync,
-    fromHost: [
-        { name: OSF.DDA.PropertyDescriptors.FilePropertiesDescriptor, value: 0 }
-    ],
-    requiredArguments: [],
-    supportedOptions: [],
-    onSucceeded: function (filePropertiesDescriptor, caller, callArgs) {
-        return new Microsoft.Office.WebExtension.FileProperties(filePropertiesDescriptor);
-    }
-});
-
-Microsoft.Office.WebExtension.GoToType = {
-    Binding: "binding",
-    NamedItem: "namedItem",
-    Slide: "slide",
-    Index: "index"
-};
-
-Microsoft.Office.WebExtension.SelectionMode = {
-    Default: "default",
-    Selected: "selected",
-    None: "none"
-};
-
-Microsoft.Office.WebExtension.Index = {
-    First: "first",
-    Last: "last",
-    Next: "next",
-    Previous: "previous"
-};
-OSF.DDA.AsyncMethodNames.addNames({ GoToByIdAsync: "goToByIdAsync" });
-
-OSF.DDA.AsyncMethodCalls.define({
-    method: OSF.DDA.AsyncMethodNames.GoToByIdAsync,
-    requiredArguments: [
-        {
-            "name": Microsoft.Office.WebExtension.Parameters.Id,
-            "types": ["string", "number"]
-        },
-        {
-            "name": Microsoft.Office.WebExtension.Parameters.GoToType,
-            "enum": Microsoft.Office.WebExtension.GoToType
-        }
-    ],
-    supportedOptions: [
-        {
-            name: Microsoft.Office.WebExtension.Parameters.SelectionMode,
-            value: {
-                "enum": Microsoft.Office.WebExtension.SelectionMode,
-                "defaultValue": Microsoft.Office.WebExtension.SelectionMode.Default
-            }
-        }
-    ]
-});
-
-OSF.OUtil.redefineList(Microsoft.Office.WebExtension.CoercionType, {
-    Text: "text"
-});
-OSF.OUtil.redefineList(Microsoft.Office.WebExtension.ValueFormat, {
-    Unformatted: "unformatted"
-});
-OSF.OUtil.redefineList(Microsoft.Office.WebExtension.FilterType, {
-    All: "all"
-});
-OSF.OUtil.redefineList(Microsoft.Office.WebExtension.GoToType, {
-    Slide: "slide",
-    Index: "index"
-});
-delete Microsoft.Office.WebExtension.BindingType;
-delete Microsoft.Office.WebExtension.select;
-
-OSF.DDA.SafeArray.Delegate.ParameterMap.define({
-    type: Microsoft.Office.WebExtension.Parameters.CoercionType,
-    toHost: [
-        { name: Microsoft.Office.WebExtension.CoercionType.Text, value: 0 },
-        { name: Microsoft.Office.WebExtension.CoercionType.Matrix, value: 1 },
-        { name: Microsoft.Office.WebExtension.CoercionType.Table, value: 2 }
-    ]
-});
-OSF.OUtil.augmentList(Microsoft.Office.WebExtension.CoercionType, { SlideRange: "slideRange" });
-
-OSF.DDA.SlideProperties = {
-    Id: 0,
-    Title: 1,
-    Index: 2
-};
-OSF.DDA.Slide = function OSF_DDA_Slide(id, title, index) {
-    OSF.OUtil.defineEnumerableProperties(this, {
-        "id": {
-            value: id
-        },
-        "title": {
-            value: title
-        },
-        "index": {
-            value: index
-        }
-    });
-};
-OSF.DDA.SlideRange = function OSF_DDA_SlideRange(slides) {
-    OSF.OUtil.defineEnumerableProperties(this, {
-        "slides": {
-            value: slides
-        }
-    });
-};
-OSF.DDA.OMFactory = OSF.DDA.OMFactory || {};
-OSF.DDA.OMFactory.manufactureSlideRange = function OSF_DDA_OMFactory$manufactureSlideRange(input) {
-    var items = null;
-    if (JSON) {
-        items = JSON.parse(input);
-    } else {
-        items = Sys.Serialization.JavaScriptSerializer.deserialize(input);
-    }
-    if (items == null) {
-        return null;
-    }
-    var numField = 0;
-    for (var key in OSF.DDA.SlideProperties) {
-        if (OSF.DDA.SlideProperties.hasOwnProperty(key)) {
-            numField++;
-        }
-    }
-    var slides = [];
-    var dataValid = true;
-    for (var i = 0; i < items.length && dataValid; i++) {
-        dataValid = false;
-        if (items[i].length == numField) {
-            var id = parseInt(items[i][OSF.DDA.SlideProperties.Id]);
-            var title = items[i][OSF.DDA.SlideProperties.Title];
-            var index = parseInt(items[i][OSF.DDA.SlideProperties.Index]);
-            if (!isNaN(id) && !isNaN(index)) {
-                dataValid = true;
-                slides.push(new OSF.DDA.Slide(id, title, index));
-            }
-        }
-    }
-    if (!dataValid) {
-        return null;
-    }
-    return new OSF.DDA.SlideRange(slides);
-};
-
-OSF.DDA.SafeArray.Delegate.ParameterMap.define({
-    type: Microsoft.Office.WebExtension.Parameters.CoercionType,
-    toHost: [
-        { name: Microsoft.Office.WebExtension.CoercionType.SlideRange, value: 7 }
-    ]
-});
-OSF.OUtil.augmentList(Microsoft.Office.WebExtension.CoercionType, { Html: "html" });
-OSF.DDA.SafeArray.Delegate.ParameterMap.define({
-    type: Microsoft.Office.WebExtension.Parameters.CoercionType,
-    toHost: [
-        { name: Microsoft.Office.WebExtension.CoercionType.Html, value: 3 }
-    ]
-});
-OSF.OUtil.augmentList(Microsoft.Office.WebExtension.CoercionType, { Ooxml: "ooxml" });
-OSF.DDA.SafeArray.Delegate.ParameterMap.define({
-    type: Microsoft.Office.WebExtension.Parameters.CoercionType,
-    toHost: [
-        { name: Microsoft.Office.WebExtension.CoercionType.Ooxml, value: 4 }
-    ]
-});
-OSF.OUtil.augmentList(Microsoft.Office.WebExtension.CoercionType, { OoxmlPackage: "ooxmlPackage" });
-OSF.DDA.SafeArray.Delegate.ParameterMap.define({
-    type: Microsoft.Office.WebExtension.Parameters.CoercionType,
-    toHost: [
-        { name: Microsoft.Office.WebExtension.CoercionType.OoxmlPackage, value: 5 }
-    ]
-});
-OSF.OUtil.augmentList(Microsoft.Office.WebExtension.CoercionType, { PdfFile: "pdf" });
-OSF.DDA.SafeArray.Delegate.ParameterMap.define({
-    type: Microsoft.Office.WebExtension.Parameters.CoercionType,
-    toHost: [
-        { name: Microsoft.Office.WebExtension.CoercionType.PdfFile, value: 6 }
-    ]
-});
-Microsoft.Office.WebExtension.FileType = {
-    Text: "text",
-    Compressed: "compressed",
-    Pdf: "pdf"
-};
-OSF.OUtil.augmentList(OSF.DDA.PropertyDescriptors, {
-    FileProperties: "FileProperties",
-    FileSliceProperties: "FileSliceProperties"
-});
-OSF.DDA.FileProperties = {
-    Handle: "FileHandle",
-    FileSize: "FileSize",
-    SliceSize: Microsoft.Office.WebExtension.Parameters.SliceSize
-};
-OSF.DDA.File = function OSF_DDA_File(handle, fileSize, sliceSize) {
-    OSF.OUtil.defineEnumerableProperties(this, {
-        "size": {
-            value: fileSize
-        },
-        "sliceCount": {
-            value: Math.ceil(fileSize / sliceSize)
-        }
-    });
-    var privateState = {};
-    privateState[OSF.DDA.FileProperties.Handle] = handle;
-    privateState[OSF.DDA.FileProperties.SliceSize] = sliceSize;
-    var am = OSF.DDA.AsyncMethodNames;
-    OSF.DDA.DispIdHost.addAsyncMethods(this, [
-        am.GetDocumentCopyChunkAsync,
-        am.ReleaseDocumentCopyAsync
-    ], privateState);
-};
-
-OSF.DDA.FileSliceOffset = "fileSliceoffset";
-OSF.DDA.AsyncMethodNames.addNames({
-    GetDocumentCopyAsync: "getFileAsync",
-    GetDocumentCopyChunkAsync: "getSliceAsync",
-    ReleaseDocumentCopyAsync: "closeAsync"
-});
-
-OSF.DDA.AsyncMethodCalls.define({
-    method: OSF.DDA.AsyncMethodNames.GetDocumentCopyAsync,
-    requiredArguments: [
-        {
-            "name": Microsoft.Office.WebExtension.Parameters.FileType,
-            "enum": Microsoft.Office.WebExtension.FileType
-        }
-    ],
-    supportedOptions: [
-        {
-            name: Microsoft.Office.WebExtension.Parameters.SliceSize,
-            value: {
-                "types": ["number"],
-                "defaultValue": 4 * 1024 * 1024
-            }
-        }
-    ],
-    checkCallArgs: function (callArgs, caller, stateInfo) {
-        var sliceSize = callArgs[Microsoft.Office.WebExtension.Parameters.SliceSize];
-
-        if (sliceSize <= 0 || sliceSize > (4 * 1024 * 1024)) {
-            throw OSF.DDA.ErrorCodeManager.errorCodes.ooeInvalidSliceSize;
-        }
-        return callArgs;
-    },
-    onSucceeded: function (fileDescriptor, caller, callArgs) {
-        return new OSF.DDA.File(fileDescriptor[OSF.DDA.FileProperties.Handle], fileDescriptor[OSF.DDA.FileProperties.FileSize], callArgs[Microsoft.Office.WebExtension.Parameters.SliceSize]);
-    }
-});
-
-OSF.DDA.AsyncMethodCalls.define({
-    method: OSF.DDA.AsyncMethodNames.GetDocumentCopyChunkAsync,
-    requiredArguments: [
-        {
-            "name": Microsoft.Office.WebExtension.Parameters.SliceIndex,
-            "types": ["number"]
-        }
-    ],
-    privateStateCallbacks: [
-        {
-            name: OSF.DDA.FileProperties.Handle,
-            value: function (caller, stateInfo) {
-                return stateInfo[OSF.DDA.FileProperties.Handle];
-            }
-        },
-        {
-            name: OSF.DDA.FileProperties.SliceSize,
-            value: function (caller, stateInfo) {
-                return stateInfo[OSF.DDA.FileProperties.SliceSize];
-            }
-        }
-    ],
-    checkCallArgs: function (callArgs, caller, stateInfo) {
-        var index = callArgs[Microsoft.Office.WebExtension.Parameters.SliceIndex];
-
-        if (index < 0 || index >= caller.sliceCount) {
-            throw OSF.DDA.ErrorCodeManager.errorCodes.ooeIndexOutOfRange;
-        }
-
-        callArgs[OSF.DDA.FileSliceOffset] = parseInt((index * stateInfo[OSF.DDA.FileProperties.SliceSize]).toString());
-        return callArgs;
-    },
-    onSucceeded: function (sliceDescriptor, caller, callArgs) {
-        var slice = {};
-        OSF.OUtil.defineEnumerableProperties(slice, {
-            "data": {
-                value: sliceDescriptor[Microsoft.Office.WebExtension.Parameters.Data]
-            },
-            "index": {
-                value: callArgs[Microsoft.Office.WebExtension.Parameters.SliceIndex]
-            },
-            "size": {
-                value: sliceDescriptor[OSF.DDA.FileProperties.SliceSize]
-            }
-        });
-        return slice;
-    }
-});
-
-OSF.DDA.AsyncMethodCalls.define({
-    method: OSF.DDA.AsyncMethodNames.ReleaseDocumentCopyAsync,
-    privateStateCallbacks: [
-        {
-            name: OSF.DDA.FileProperties.Handle,
-            value: function (caller, stateInfo) {
-                return stateInfo[OSF.DDA.FileProperties.Handle];
-            }
-        }
-    ]
-});
-
-OSF.DDA.SafeArray.Delegate.ParameterMap.define({
-    type: OSF.DDA.PropertyDescriptors.FileProperties,
-    fromHost: [
-        { name: OSF.DDA.FileProperties.Handle, value: 0 },
-        { name: OSF.DDA.FileProperties.FileSize, value: 1 }
-    ],
-    isComplexType: true
-});
-
-OSF.DDA.SafeArray.Delegate.ParameterMap.define({
-    type: OSF.DDA.PropertyDescriptors.FileSliceProperties,
-    fromHost: [
-        { name: Microsoft.Office.WebExtension.Parameters.Data, value: 0 },
-        { name: OSF.DDA.FileProperties.SliceSize, value: 1 }
-    ],
-    isComplexType: true
-});
-
-OSF.DDA.SafeArray.Delegate.ParameterMap.define({
-    type: Microsoft.Office.WebExtension.Parameters.FileType,
-    toHost: [
-        { name: Microsoft.Office.WebExtension.FileType.Text, value: 0 },
-        { name: Microsoft.Office.WebExtension.FileType.Compressed, value: 5 },
-        { name: Microsoft.Office.WebExtension.FileType.Pdf, value: 6 }
-    ]
-});
-
-OSF.DDA.SafeArray.Delegate.ParameterMap.define({
-    type: OSF.DDA.MethodDispId.dispidGetDocumentCopyMethod,
-    toHost: [{ name: Microsoft.Office.WebExtension.Parameters.FileType, value: 0 }],
-    fromHost: [
-        { name: OSF.DDA.PropertyDescriptors.FileProperties, value: OSF.DDA.SafeArray.Delegate.ParameterMap.self }
-    ]
-});
-
-OSF.DDA.SafeArray.Delegate.ParameterMap.define({
-    type: OSF.DDA.MethodDispId.dispidGetDocumentCopyChunkMethod,
-    toHost: [
-        { name: OSF.DDA.FileProperties.Handle, value: 0 },
-        { name: OSF.DDA.FileSliceOffset, value: 1 },
-        { name: OSF.DDA.FileProperties.SliceSize, value: 2 }
-    ],
-    fromHost: [
-        { name: OSF.DDA.PropertyDescriptors.FileSliceProperties, value: OSF.DDA.SafeArray.Delegate.ParameterMap.self }
-    ]
-});
-
-OSF.DDA.SafeArray.Delegate.ParameterMap.define({
-    type: OSF.DDA.MethodDispId.dispidReleaseDocumentCopyMethod,
-    toHost: [{ name: OSF.DDA.FileProperties.Handle, value: 0 }]
-});
-OSF.DDA.AsyncMethodNames.addNames({
-    GetSelectedDataAsync: "getSelectedDataAsync",
-    SetSelectedDataAsync: "setSelectedDataAsync"
-});
-
-(function () {
-    function processData(dataDescriptor, caller, callArgs) {
-        var data = dataDescriptor[Microsoft.Office.WebExtension.Parameters.Data];
-
-        if (OSF.DDA.TableDataProperties && data && (data[OSF.DDA.TableDataProperties.TableRows] != undefined || data[OSF.DDA.TableDataProperties.TableHeaders] != undefined)) {
-            data = OSF.DDA.OMFactory.manufactureTableData(data);
-        }
-        data = OSF.DDA.DataCoercion.coerceData(data, callArgs[Microsoft.Office.WebExtension.Parameters.CoercionType]);
-        return data == undefined ? null : data;
-    }
-
-    OSF.DDA.AsyncMethodCalls.define({
-        method: OSF.DDA.AsyncMethodNames.GetSelectedDataAsync,
-        requiredArguments: [
-            {
-                "name": Microsoft.Office.WebExtension.Parameters.CoercionType,
-                "enum": Microsoft.Office.WebExtension.CoercionType
-            }
-        ],
-        supportedOptions: [
-            {
-                name: Microsoft.Office.WebExtension.Parameters.ValueFormat,
-                value: {
-                    "enum": Microsoft.Office.WebExtension.ValueFormat,
-                    "defaultValue": Microsoft.Office.WebExtension.ValueFormat.Unformatted
-                }
-            },
-            {
-                name: Microsoft.Office.WebExtension.Parameters.FilterType,
-                value: {
-                    "enum": Microsoft.Office.WebExtension.FilterType,
-                    "defaultValue": Microsoft.Office.WebExtension.FilterType.All
-                }
-            }
-        ],
-        privateStateCallbacks: [],
-        onSucceeded: processData
-    });
-
-    OSF.DDA.AsyncMethodCalls.define({
-        method: OSF.DDA.AsyncMethodNames.SetSelectedDataAsync,
-        requiredArguments: [
-            {
-                "name": Microsoft.Office.WebExtension.Parameters.Data,
-                "types": ["string", "object", "number", "boolean"]
-            }
-        ],
-        supportedOptions: [
-            {
-                name: Microsoft.Office.WebExtension.Parameters.CoercionType,
-                value: {
-                    "enum": Microsoft.Office.WebExtension.CoercionType,
-                    "calculate": function (requiredArgs) {
-                        return OSF.DDA.DataCoercion.determineCoercionType(requiredArgs[Microsoft.Office.WebExtension.Parameters.Data]);
-                    }
-                }
-            }
-        ],
-        privateStateCallbacks: []
-    });
-})();
-
-OSF.DDA.SafeArray.Delegate.ParameterMap.define({
-    type: OSF.DDA.MethodDispId.dispidGetSelectedDataMethod,
-    fromHost: [
-        { name: Microsoft.Office.WebExtension.Parameters.Data, value: OSF.DDA.SafeArray.Delegate.ParameterMap.self }
-    ],
-    toHost: [
-        { name: Microsoft.Office.WebExtension.Parameters.CoercionType, value: 0 },
-        { name: Microsoft.Office.WebExtension.Parameters.ValueFormat, value: 1 },
-        { name: Microsoft.Office.WebExtension.Parameters.FilterType, value: 2 }
-    ]
-});
-
-OSF.DDA.SafeArray.Delegate.ParameterMap.define({
-    type: OSF.DDA.MethodDispId.dispidSetSelectedDataMethod,
-    toHost: [
-        { name: Microsoft.Office.WebExtension.Parameters.CoercionType, value: 0 },
-        { name: Microsoft.Office.WebExtension.Parameters.Data, value: 1 }
-    ]
-});
-
-OSF.DDA.SafeArray.Delegate.ParameterMap.define({
-    type: Microsoft.Office.WebExtension.Parameters.GoToType,
-    toHost: [
-        { name: Microsoft.Office.WebExtension.GoToType.Binding, value: 0 },
-        { name: Microsoft.Office.WebExtension.GoToType.NamedItem, value: 1 },
-        { name: Microsoft.Office.WebExtension.GoToType.Slide, value: 2 },
-        { name: Microsoft.Office.WebExtension.GoToType.Index, value: 3 }
-    ]
-});
-
-OSF.DDA.SafeArray.Delegate.ParameterMap.define({
-    type: Microsoft.Office.WebExtension.Parameters.SelectionMode,
-    toHost: [
-        { name: Microsoft.Office.WebExtension.SelectionMode.Default, value: 0 },
-        { name: Microsoft.Office.WebExtension.SelectionMode.Selected, value: 1 },
-        { name: Microsoft.Office.WebExtension.SelectionMode.None, value: 2 }
-    ]
-});
-
-OSF.DDA.SafeArray.Delegate.ParameterMap.define({
-    type: OSF.DDA.MethodDispId.dispidNavigateToMethod,
-    toHost: [
-        { name: Microsoft.Office.WebExtension.Parameters.Id, value: 0 },
-        { name: Microsoft.Office.WebExtension.Parameters.GoToType, value: 1 },
-        { name: Microsoft.Office.WebExtension.Parameters.SelectionMode, value: 2 }
-    ]
-});
-OSF.DDA.SettingsManager = {
-    SerializedSettings: "serializedSettings",
-    DateJSONPrefix: "Date(",
-    DataJSONSuffix: ")",
-    serializeSettings: function OSF_DDA_SettingsManager$serializeSettings(settingsCollection) {
-        var ret = {};
-        for (var key in settingsCollection) {
-            var value = settingsCollection[key];
-            try  {
-                if (JSON) {
-                    value = JSON.stringify(value, function dateReplacer(k, v) {
-                        return OSF.OUtil.isDate(this[k]) ? OSF.DDA.SettingsManager.DateJSONPrefix + this[k].getTime() + OSF.DDA.SettingsManager.DataJSONSuffix : v;
-                    });
-                } else {
-                    value = Sys.Serialization.JavaScriptSerializer.serialize(value);
-                }
-                ret[key] = value;
-            } catch (ex) {
-            }
-        }
-        return ret;
-    },
-    deserializeSettings: function OSF_DDA_SettingsManager$deserializeSettings(serializedSettings) {
-        var ret = {};
-        serializedSettings = serializedSettings || {};
-        for (var key in serializedSettings) {
-            var value = serializedSettings[key];
-            try  {
-                if (JSON) {
-                    value = JSON.parse(value, function dateReviver(k, v) {
-                        var d;
-                        if (typeof v === 'string' && v && v.length > 6 && v.slice(0, 5) === OSF.DDA.SettingsManager.DateJSONPrefix && v.slice(-1) === OSF.DDA.SettingsManager.DataJSONSuffix) {
-                            d = new Date(parseInt(v.slice(5, -1)));
-                            if (d) {
-                                return d;
-                            }
-                        }
-                        return v;
-                    });
-                } else {
-                    value = Sys.Serialization.JavaScriptSerializer.deserialize(value, true);
-                }
-                ret[key] = value;
-            } catch (ex) {
-            }
-        }
-        return ret;
-    }
-};
-
-OSF.DDA.Settings = function OSF_DDA_Settings(settings) {
-    settings = settings || {};
-
-    var cacheSessionSettings = function (settings) {
-        var osfSessionStorage = OSF.OUtil.getSessionStorage();
-        if (osfSessionStorage) {
-            var serializedSettings = OSF.DDA.SettingsManager.serializeSettings(settings);
-            var storageSettings = JSON ? JSON.stringify(serializedSettings) : Sys.Serialization.JavaScriptSerializer.serialize(serializedSettings);
-            osfSessionStorage.setItem(OSF._OfficeAppFactory.getCachedSessionSettingsKey(), storageSettings);
-        }
-    };
-    OSF.OUtil.defineEnumerableProperties(this, {
-        "get": {
-            value: function OSF_DDA_Settings$get(name) {
-                var e = Function._validateParams(arguments, [
-                    { name: "name", type: String, mayBeNull: false }
-                ]);
-                if (e)
-                    throw e;
-                var setting = settings[name];
-                return typeof (setting) === 'undefined' ? null : setting;
-            }
-        },
-        "set": {
-            value: function OSF_DDA_Settings$set(name, value) {
-                var e = Function._validateParams(arguments, [
-                    { name: "name", type: String, mayBeNull: false },
-                    { name: "value", mayBeNull: true }
-                ]);
-                if (e)
-                    throw e;
-                settings[name] = value;
-                cacheSessionSettings(settings);
-            }
-        },
-        "remove": {
-            value: function OSF_DDA_Settings$remove(name) {
-                var e = Function._validateParams(arguments, [
-                    { name: "name", type: String, mayBeNull: false }
-                ]);
-                if (e)
-                    throw e;
-                delete settings[name];
-                cacheSessionSettings(settings);
-            }
-        }
-    });
-    OSF.DDA.DispIdHost.addAsyncMethods(this, [OSF.DDA.AsyncMethodNames.SaveAsync], settings);
-};
-
-OSF.DDA.RefreshableSettings = function OSF_DDA_RefreshableSettings(settings) {
-    OSF.DDA.RefreshableSettings.uber.constructor.call(this, settings);
-    OSF.DDA.DispIdHost.addAsyncMethods(this, [OSF.DDA.AsyncMethodNames.RefreshAsync], settings);
-    OSF.DDA.DispIdHost.addEventSupport(this, new OSF.EventDispatch([Microsoft.Office.WebExtension.EventType.SettingsChanged]));
-};
-
-OSF.OUtil.extend(OSF.DDA.RefreshableSettings, OSF.DDA.Settings);
 Microsoft.Office.WebExtension.EventType = {};
 
 OSF.EventDispatch = function OSF_EventDispatch(eventTypes) {
@@ -5572,6 +4233,458 @@ OSF.DDA.AsyncMethodCalls.define({
     ],
     privateStateCallbacks: []
 });
+
+Microsoft.Office.WebExtension.TableData = function Microsoft_Office_WebExtension_TableData(rows, headers) {
+    function fixData(data) {
+        if (data == null || data == undefined) {
+            return null;
+        }
+        try  {
+            for (var dim = OSF.DDA.DataCoercion.findArrayDimensionality(data, 2); dim < 2; dim++) {
+                data = [data];
+            }
+            return data;
+        } catch (ex) {
+        }
+    }
+    ;
+    OSF.OUtil.defineEnumerableProperties(this, {
+        "headers": {
+            get: function () {
+                return headers;
+            },
+            set: function (value) {
+                headers = fixData(value);
+            }
+        },
+        "rows": {
+            get: function () {
+                return rows;
+            },
+            set: function (value) {
+                rows = (value == null || (OSF.OUtil.isArray(value) && (value.length == 0))) ? [] : fixData(value);
+            }
+        }
+    });
+    this.headers = headers;
+    this.rows = rows;
+};
+OSF.DDA.OMFactory = OSF.DDA.OMFactory || {};
+OSF.DDA.OMFactory.manufactureTableData = function OSF_DDA_OMFactory$manufactureTableData(tableDataProperties) {
+    return new Microsoft.Office.WebExtension.TableData(tableDataProperties[OSF.DDA.TableDataProperties.TableRows], tableDataProperties[OSF.DDA.TableDataProperties.TableHeaders]);
+};
+
+Microsoft.Office.WebExtension.CoercionType = {
+    Text: "text",
+    Matrix: "matrix",
+    Table: "table"
+};
+
+OSF.DDA.DataCoercion = (function OSF_DDA_DataCoercion() {
+    return {
+        findArrayDimensionality: function OSF_DDA_DataCoercion$findArrayDimensionality(obj) {
+            if (OSF.OUtil.isArray(obj)) {
+                var dim = 0;
+                for (var index = 0; index < obj.length; index++) {
+                    dim = Math.max(dim, OSF.DDA.DataCoercion.findArrayDimensionality(obj[index]));
+                }
+                return dim + 1;
+            } else {
+                return 0;
+            }
+        },
+        getCoercionDefaultForBinding: function OSF_DDA_DataCoercion$getCoercionDefaultForBinding(bindingType) {
+            switch (bindingType) {
+                case Microsoft.Office.WebExtension.BindingType.Matrix:
+                    return Microsoft.Office.WebExtension.CoercionType.Matrix;
+                case Microsoft.Office.WebExtension.BindingType.Table:
+                    return Microsoft.Office.WebExtension.CoercionType.Table;
+                case Microsoft.Office.WebExtension.BindingType.Text:
+                default:
+                    return Microsoft.Office.WebExtension.CoercionType.Text;
+            }
+        },
+        getBindingDefaultForCoercion: function OSF_DDA_DataCoercion$getBindingDefaultForCoercion(coercionType) {
+            switch (coercionType) {
+                case Microsoft.Office.WebExtension.CoercionType.Matrix:
+                    return Microsoft.Office.WebExtension.BindingType.Matrix;
+                case Microsoft.Office.WebExtension.CoercionType.Table:
+                    return Microsoft.Office.WebExtension.BindingType.Table;
+                case Microsoft.Office.WebExtension.CoercionType.Text:
+                case Microsoft.Office.WebExtension.CoercionType.Html:
+                case Microsoft.Office.WebExtension.CoercionType.Ooxml:
+                default:
+                    return Microsoft.Office.WebExtension.BindingType.Text;
+            }
+        },
+        determineCoercionType: function OSF_DDA_DataCoercion$determineCoercionType(data) {
+            if (data == null || data == undefined)
+                return null;
+            var sourceType = null;
+            var runtimeType = typeof data;
+            if (data.rows !== undefined) {
+                sourceType = Microsoft.Office.WebExtension.CoercionType.Table;
+            } else if (OSF.OUtil.isArray(data)) {
+                sourceType = Microsoft.Office.WebExtension.CoercionType.Matrix;
+            } else if (runtimeType == "string" || runtimeType == "number" || runtimeType == "boolean" || OSF.OUtil.isDate(data)) {
+                sourceType = Microsoft.Office.WebExtension.CoercionType.Text;
+            } else {
+                throw OSF.DDA.ErrorCodeManager.errorCodes.ooeUnsupportedDataObject;
+            }
+            return sourceType;
+        },
+        coerceData: function OSF_DDA_DataCoercion$coerceData(data, destinationType, sourceType) {
+            sourceType = sourceType || OSF.DDA.DataCoercion.determineCoercionType(data);
+            if (sourceType && sourceType != destinationType) {
+                OSF.OUtil.writeProfilerMark(OSF.InternalPerfMarker.DataCoercionBegin);
+                data = OSF.DDA.DataCoercion._coerceDataFromTable(destinationType, OSF.DDA.DataCoercion._coerceDataToTable(data, sourceType));
+                OSF.OUtil.writeProfilerMark(OSF.InternalPerfMarker.DataCoercionEnd);
+            }
+            return data;
+        },
+        _matrixToText: function OSF_DDA_DataCoercion$_matrixToText(matrix) {
+            if (matrix.length == 1 && matrix[0].length == 1)
+                return "" + matrix[0][0];
+            var val = "";
+            for (var i = 0; i < matrix.length; i++) {
+                val += matrix[i].join("\t") + "\n";
+            }
+            return val.substring(0, val.length - 1);
+        },
+        _textToMatrix: function OSF_DDA_DataCoercion$_textToMatrix(text) {
+            var ret = text.split("\n");
+            for (var i = 0; i < ret.length; i++)
+                ret[i] = ret[i].split("\t");
+            return ret;
+        },
+        _tableToText: function OSF_DDA_DataCoercion$_tableToText(table) {
+            var headers = "";
+            if (table.headers != null) {
+                headers = OSF.DDA.DataCoercion._matrixToText([table.headers]) + "\n";
+            }
+
+            var rows = OSF.DDA.DataCoercion._matrixToText(table.rows);
+            if (rows == "") {
+                headers = headers.substring(0, headers.length - 1);
+            }
+            return headers + rows;
+        },
+        _tableToMatrix: function OSF_DDA_DataCoercion$_tableToMatrix(table) {
+            var matrix = table.rows;
+            if (table.headers != null) {
+                matrix.unshift(table.headers);
+            }
+            return matrix;
+        },
+        _coerceDataFromTable: function OSF_DDA_DataCoercion$_coerceDataFromTable(coercionType, table) {
+            var value;
+            switch (coercionType) {
+                case Microsoft.Office.WebExtension.CoercionType.Table:
+                    value = table;
+                    break;
+                case Microsoft.Office.WebExtension.CoercionType.Matrix:
+                    value = OSF.DDA.DataCoercion._tableToMatrix(table);
+                    break;
+                case Microsoft.Office.WebExtension.CoercionType.SlideRange:
+                    value = null;
+                    if (OSF.DDA.OMFactory.manufactureSlideRange) {
+                        value = OSF.DDA.OMFactory.manufactureSlideRange(OSF.DDA.DataCoercion._tableToText(table));
+                    }
+                    if (value == null) {
+                        value = OSF.DDA.DataCoercion._tableToText(table);
+                    }
+                    break;
+                case Microsoft.Office.WebExtension.CoercionType.Text:
+                case Microsoft.Office.WebExtension.CoercionType.Html:
+                case Microsoft.Office.WebExtension.CoercionType.Ooxml:
+                default:
+                    value = OSF.DDA.DataCoercion._tableToText(table);
+                    break;
+            }
+            return value;
+        },
+        _coerceDataToTable: function OSF_DDA_DataCoercion$_coerceDataToTable(data, sourceType) {
+            if (sourceType == undefined) {
+                sourceType = OSF.DDA.DataCoercion.determineCoercionType(data);
+            }
+            var value;
+            switch (sourceType) {
+                case Microsoft.Office.WebExtension.CoercionType.Table:
+                    value = data;
+                    break;
+                case Microsoft.Office.WebExtension.CoercionType.Matrix:
+                    value = new Microsoft.Office.WebExtension.TableData(data);
+                    break;
+                case Microsoft.Office.WebExtension.CoercionType.Text:
+                case Microsoft.Office.WebExtension.CoercionType.Html:
+                case Microsoft.Office.WebExtension.CoercionType.Ooxml:
+                default:
+                    value = new Microsoft.Office.WebExtension.TableData(OSF.DDA.DataCoercion._textToMatrix(data));
+                    break;
+            }
+            return value;
+        }
+    };
+})();
+Microsoft.Office.WebExtension.ProjectViewTypes = {
+    Gantt: 1,
+    NetworkDiagram: 2,
+    TaskDiagram: 3,
+    TaskForm: 4,
+    TaskSheet: 5,
+    ResourceForm: 6,
+    ResourceSheet: 7,
+    ResourceGraph: 8,
+    TeamPlanner: 9,
+    TaskDetails: 10,
+    TaskNameForm: 11,
+    ResourceNames: 12,
+    Calendar: 13,
+    TaskUsage: 14,
+    ResourceUsage: 15,
+    Timeline: 16,
+    Drawing: 18,
+    ResourcePlan: 19
+};
+
+OSF.OUtil.redefineList(Microsoft.Office.WebExtension.CoercionType, {
+    Text: "text"
+});
+OSF.OUtil.redefineList(Microsoft.Office.WebExtension.ValueFormat, {
+    Unformatted: "unformatted"
+});
+
+OSF.OUtil.augmentList(Microsoft.Office.WebExtension.EventType, {
+    TaskSelectionChanged: "taskSelectionChanged",
+    ResourceSelectionChanged: "resourceSelectionChanged",
+    ViewSelectionChanged: "viewSelectionChanged"
+});
+
+OSF.DDA.AsyncMethodNames.addNames({
+    GetSelectedDataAsync: "getSelectedDataAsync",
+    SetSelectedDataAsync: "setSelectedDataAsync"
+});
+
+(function () {
+    function processData(dataDescriptor, caller, callArgs) {
+        var data = dataDescriptor[Microsoft.Office.WebExtension.Parameters.Data];
+
+        if (OSF.DDA.TableDataProperties && data && (data[OSF.DDA.TableDataProperties.TableRows] != undefined || data[OSF.DDA.TableDataProperties.TableHeaders] != undefined)) {
+            data = OSF.DDA.OMFactory.manufactureTableData(data);
+        }
+        data = OSF.DDA.DataCoercion.coerceData(data, callArgs[Microsoft.Office.WebExtension.Parameters.CoercionType]);
+        return data == undefined ? null : data;
+    }
+
+    OSF.DDA.AsyncMethodCalls.define({
+        method: OSF.DDA.AsyncMethodNames.GetSelectedDataAsync,
+        requiredArguments: [
+            {
+                "name": Microsoft.Office.WebExtension.Parameters.CoercionType,
+                "enum": Microsoft.Office.WebExtension.CoercionType
+            }
+        ],
+        supportedOptions: [
+            {
+                name: Microsoft.Office.WebExtension.Parameters.ValueFormat,
+                value: {
+                    "enum": Microsoft.Office.WebExtension.ValueFormat,
+                    "defaultValue": Microsoft.Office.WebExtension.ValueFormat.Unformatted
+                }
+            },
+            {
+                name: Microsoft.Office.WebExtension.Parameters.FilterType,
+                value: {
+                    "enum": Microsoft.Office.WebExtension.FilterType,
+                    "defaultValue": Microsoft.Office.WebExtension.FilterType.All
+                }
+            }
+        ],
+        privateStateCallbacks: [],
+        onSucceeded: processData
+    });
+
+    OSF.DDA.AsyncMethodCalls.define({
+        method: OSF.DDA.AsyncMethodNames.SetSelectedDataAsync,
+        requiredArguments: [
+            {
+                "name": Microsoft.Office.WebExtension.Parameters.Data,
+                "types": ["string", "object", "number", "boolean"]
+            }
+        ],
+        supportedOptions: [
+            {
+                name: Microsoft.Office.WebExtension.Parameters.CoercionType,
+                value: {
+                    "enum": Microsoft.Office.WebExtension.CoercionType,
+                    "calculate": function (requiredArgs) {
+                        return OSF.DDA.DataCoercion.determineCoercionType(requiredArgs[Microsoft.Office.WebExtension.Parameters.Data]);
+                    }
+                }
+            },
+            {
+                name: Microsoft.Office.WebExtension.Parameters.ImageLeft,
+                value: {
+                    "types": ["number", "boolean"],
+                    "defaultValue": false
+                }
+            },
+            {
+                name: Microsoft.Office.WebExtension.Parameters.ImageTop,
+                value: {
+                    "types": ["number", "boolean"],
+                    "defaultValue": false
+                }
+            },
+            {
+                name: Microsoft.Office.WebExtension.Parameters.ImageWidth,
+                value: {
+                    "types": ["number", "boolean"],
+                    "defaultValue": false
+                }
+            },
+            {
+                name: Microsoft.Office.WebExtension.Parameters.ImageHeight,
+                value: {
+                    "types": ["number", "boolean"],
+                    "defaultValue": false
+                }
+            }
+        ],
+        privateStateCallbacks: []
+    });
+})();
+
+OSF.DDA.SafeArray.Delegate.ParameterMap.define({
+    type: OSF.DDA.MethodDispId.dispidGetSelectedDataMethod,
+    fromHost: [
+        { name: Microsoft.Office.WebExtension.Parameters.Data, value: OSF.DDA.SafeArray.Delegate.ParameterMap.self }
+    ],
+    toHost: [
+        { name: Microsoft.Office.WebExtension.Parameters.CoercionType, value: 0 },
+        { name: Microsoft.Office.WebExtension.Parameters.ValueFormat, value: 1 },
+        { name: Microsoft.Office.WebExtension.Parameters.FilterType, value: 2 }
+    ]
+});
+
+OSF.DDA.SafeArray.Delegate.ParameterMap.define({
+    type: OSF.DDA.MethodDispId.dispidSetSelectedDataMethod,
+    toHost: [
+        { name: Microsoft.Office.WebExtension.Parameters.CoercionType, value: 0 },
+        { name: Microsoft.Office.WebExtension.Parameters.Data, value: 1 },
+        { name: Microsoft.Office.WebExtension.Parameters.ImageLeft, value: 2 },
+        { name: Microsoft.Office.WebExtension.Parameters.ImageTop, value: 3 },
+        { name: Microsoft.Office.WebExtension.Parameters.ImageWidth, value: 4 },
+        { name: Microsoft.Office.WebExtension.Parameters.ImageHeight, value: 5 }
+    ]
+});
+OSF.DDA.SettingsManager = {
+    SerializedSettings: "serializedSettings",
+    DateJSONPrefix: "Date(",
+    DataJSONSuffix: ")",
+    serializeSettings: function OSF_DDA_SettingsManager$serializeSettings(settingsCollection) {
+        var ret = {};
+        for (var key in settingsCollection) {
+            var value = settingsCollection[key];
+            try  {
+                if (JSON) {
+                    value = JSON.stringify(value, function dateReplacer(k, v) {
+                        return OSF.OUtil.isDate(this[k]) ? OSF.DDA.SettingsManager.DateJSONPrefix + this[k].getTime() + OSF.DDA.SettingsManager.DataJSONSuffix : v;
+                    });
+                } else {
+                    value = Sys.Serialization.JavaScriptSerializer.serialize(value);
+                }
+                ret[key] = value;
+            } catch (ex) {
+            }
+        }
+        return ret;
+    },
+    deserializeSettings: function OSF_DDA_SettingsManager$deserializeSettings(serializedSettings) {
+        var ret = {};
+        serializedSettings = serializedSettings || {};
+        for (var key in serializedSettings) {
+            var value = serializedSettings[key];
+            try  {
+                if (JSON) {
+                    value = JSON.parse(value, function dateReviver(k, v) {
+                        var d;
+                        if (typeof v === 'string' && v && v.length > 6 && v.slice(0, 5) === OSF.DDA.SettingsManager.DateJSONPrefix && v.slice(-1) === OSF.DDA.SettingsManager.DataJSONSuffix) {
+                            d = new Date(parseInt(v.slice(5, -1)));
+                            if (d) {
+                                return d;
+                            }
+                        }
+                        return v;
+                    });
+                } else {
+                    value = Sys.Serialization.JavaScriptSerializer.deserialize(value, true);
+                }
+                ret[key] = value;
+            } catch (ex) {
+            }
+        }
+        return ret;
+    }
+};
+
+OSF.DDA.Settings = function OSF_DDA_Settings(settings) {
+    settings = settings || {};
+
+    var cacheSessionSettings = function (settings) {
+        var osfSessionStorage = OSF.OUtil.getSessionStorage();
+        if (osfSessionStorage) {
+            var serializedSettings = OSF.DDA.SettingsManager.serializeSettings(settings);
+            var storageSettings = JSON ? JSON.stringify(serializedSettings) : Sys.Serialization.JavaScriptSerializer.serialize(serializedSettings);
+            osfSessionStorage.setItem(OSF._OfficeAppFactory.getCachedSessionSettingsKey(), storageSettings);
+        }
+    };
+    OSF.OUtil.defineEnumerableProperties(this, {
+        "get": {
+            value: function OSF_DDA_Settings$get(name) {
+                var e = Function._validateParams(arguments, [
+                    { name: "name", type: String, mayBeNull: false }
+                ]);
+                if (e)
+                    throw e;
+                var setting = settings[name];
+                return typeof (setting) === 'undefined' ? null : setting;
+            }
+        },
+        "set": {
+            value: function OSF_DDA_Settings$set(name, value) {
+                var e = Function._validateParams(arguments, [
+                    { name: "name", type: String, mayBeNull: false },
+                    { name: "value", mayBeNull: true }
+                ]);
+                if (e)
+                    throw e;
+                settings[name] = value;
+                cacheSessionSettings(settings);
+            }
+        },
+        "remove": {
+            value: function OSF_DDA_Settings$remove(name) {
+                var e = Function._validateParams(arguments, [
+                    { name: "name", type: String, mayBeNull: false }
+                ]);
+                if (e)
+                    throw e;
+                delete settings[name];
+                cacheSessionSettings(settings);
+            }
+        }
+    });
+    OSF.DDA.DispIdHost.addAsyncMethods(this, [OSF.DDA.AsyncMethodNames.SaveAsync], settings);
+};
+
+OSF.DDA.RefreshableSettings = function OSF_DDA_RefreshableSettings(settings) {
+    OSF.DDA.RefreshableSettings.uber.constructor.call(this, settings);
+    OSF.DDA.DispIdHost.addAsyncMethods(this, [OSF.DDA.AsyncMethodNames.RefreshAsync], settings);
+    OSF.DDA.DispIdHost.addEventSupport(this, new OSF.EventDispatch([Microsoft.Office.WebExtension.EventType.SettingsChanged]));
+};
+
+OSF.OUtil.extend(OSF.DDA.RefreshableSettings, OSF.DDA.Settings);
 OSF.OUtil.augmentList(Microsoft.Office.WebExtension.EventType, {
     SettingsChanged: "settingsChanged"
 });
@@ -5640,512 +4753,899 @@ OSF.DDA.SafeArray.Delegate.ParameterMap.define({
 });
 
 OSF.DDA.SafeArray.Delegate.ParameterMap.define({ type: OSF.DDA.EventDispId.dispidSettingsChangedEvent });
-OSF.DDA.AsyncMethodNames.addNames({
-    GetOfficeThemeAsync: "getOfficeThemeAsync",
-    GetDocumentThemeAsync: "getDocumentThemeAsync"
-});
-OSF.OUtil.augmentList(Microsoft.Office.WebExtension.EventType, {
-    OfficeThemeChanged: "officeThemeChanged",
-    DocumentThemeChanged: "documentThemeChanged"
-});
-OSF.OUtil.augmentList(Microsoft.Office.WebExtension.Parameters, {
-    DocumentTheme: "documentTheme",
-    OfficeTheme: "officeTheme"
-});
-OSF.OUtil.augmentList(OSF.DDA.EventDescriptors, {
-    DocumentThemeChangedEvent: "DocumentThemeChangedEvent",
-    OfficeThemeChangedEvent: "OfficeThemeChangedEvent"
-});
-OSF.OUtil.setNamespace("Theming", OSF.DDA);
-OSF.DDA.Theming.OfficeThemeEnum = {
-    PrimaryFontColor: "primaryFontColor",
-    PrimaryBackgroundColor: "primaryBackgroundColor",
-    SecondaryFontColor: "secondaryFontColor",
-    SecondaryBackgroundColor: "secondaryBackgroundColor"
-};
-OSF.DDA.Theming.DocumentThemeEnum = {
-    PrimaryFontColor: "primaryFontColor",
-    PrimaryBackgroundColor: "primaryBackgroundColor",
-    SecondaryFontColor: "secondaryFontColor",
-    SecondaryBackgroundColor: "secondaryBackgroundColor",
-    Accent1: "accent1",
-    Accent2: "accent2",
-    Accent3: "accent3",
-    Accent4: "accent4",
-    Accent5: "accent5",
-    Accent6: "accent6",
-    Hyperlink: "hyperlink",
-    FollowedHyperlink: "followedHyperlink",
-    HeaderLatinFont: "headerLatinFont",
-    HeaderEastAsianFont: "headerEastAsianFont",
-    HeaderScriptFont: "headerScriptFont",
-    HeaderLocalizedFont: "headerLocalizedFont",
-    BodyLatinFont: "bodyLatinFont",
-    BodyEastAsianFont: "bodyEastAsianFont",
-    BodyScriptFont: "bodyScriptFont",
-    BodyLocalizedFont: "bodyLocalizedFont"
-};
-OSF.DDA.Theming.ConvertToDocumentTheme = function OSF_DDA_Theming_ConvertToDocumentTheme(response) {
-    var mappingDocumentTheme = [
-        { name: "primaryFontColor", needToConvertToHex: true },
-        { name: "primaryBackgroundColor", needToConvertToHex: true },
-        { name: "secondaryFontColor", needToConvertToHex: true },
-        { name: "secondaryBackgroundColor", needToConvertToHex: true },
-        { name: "accent1", needToConvertToHex: true },
-        { name: "accent2", needToConvertToHex: true },
-        { name: "accent3", needToConvertToHex: true },
-        { name: "accent4", needToConvertToHex: true },
-        { name: "accent5", needToConvertToHex: true },
-        { name: "accent6", needToConvertToHex: true },
-        { name: "hyperlink", needToConvertToHex: true },
-        { name: "followedHyperlink", needToConvertToHex: true },
-        { name: "headerLatinFont", needToConvertToHex: false },
-        { name: "headerEastAsianFont", needToConvertToHex: false },
-        { name: "headerScriptFont", needToConvertToHex: false },
-        { name: "headerLocalizedFont", needToConvertToHex: false },
-        { name: "bodyLatinFont", needToConvertToHex: false },
-        { name: "bodyEastAsianFont", needToConvertToHex: false },
-        { name: "bodyScriptFont", needToConvertToHex: false },
-        { name: "bodyLocalizedFont", needToConvertToHex: false }
-    ];
-    var result = {};
-    for (var i = 0; i < mappingDocumentTheme.length; i++) {
-        if (mappingDocumentTheme[i].needToConvertToHex) {
-            result[mappingDocumentTheme[i].name] = OSF.OUtil.convertIntToCssHexColor(response[mappingDocumentTheme[i].name]);
-        } else {
-            result[mappingDocumentTheme[i].name] = response[mappingDocumentTheme[i].name];
-        }
-    }
-    return result;
-};
-OSF.DDA.Theming.ConvertToOfficeTheme = function OSF_DDA_Theming_ConvertToOfficeTheme(response) {
-    var result = {};
-    for (var key in response) {
-        result[key] = OSF.OUtil.convertIntToCssHexColor(response[key]);
-    }
-    return result;
-};
-OSF.DDA.AsyncMethodCalls.define({
-    method: OSF.DDA.AsyncMethodNames.GetDocumentThemeAsync,
-    requiredArguments: [],
-    supportedOptions: [],
-    privateStateCallbacks: [],
-    onSucceeded: OSF.DDA.Theming.ConvertToDocumentTheme
-});
-OSF.DDA.AsyncMethodCalls.define({
-    method: OSF.DDA.AsyncMethodNames.GetOfficeThemeAsync,
-    requiredArguments: [],
-    supportedOptions: [],
-    privateStateCallbacks: [],
-    onSucceeded: OSF.DDA.Theming.ConvertToOfficeTheme
-});
-OSF.DDA.Theming.OfficeThemeChangedEventArgs = function OSF_DDA_Theming_OfficeThemeChangedEventArgs(officeTheme) {
-    var ret = OSF.DDA.Theming.ConvertToOfficeTheme(officeTheme);
-    OSF.OUtil.defineEnumerableProperties(this, {
-        "type": {
-            value: Microsoft.Office.WebExtension.EventType.OfficeThemeChanged
-        },
-        "officeTheme": {
-            value: ret
-        }
-    });
-};
-OSF.DDA.Theming.DocumentThemeChangedEventArgs = function OSF_DDA_Theming_DocumentThemeChangedEventArgs(documentTheme) {
-    var ret = OSF.DDA.Theming.ConvertToDocumentTheme(documentTheme);
-    OSF.OUtil.defineEnumerableProperties(this, {
-        "type": {
-            value: Microsoft.Office.WebExtension.EventType.DocumentThemeChanged
-        },
-        "documentTheme": {
-            value: ret
-        }
-    });
-};
-var OSF_DDA_Theming_InternalThemeHandler = (function () {
-    function OSF_DDA_Theming_InternalThemeHandler() {
-        this._pseudoDocumentObject = null;
-        this._previousDocumentThemeData = null;
-        this._previousOfficeThemeData = null;
-        this._officeCss = null;
-        this._asyncCallsCompleted = null;
-        this._onAsyncCallsCompleted = null;
-    }
-    OSF_DDA_Theming_InternalThemeHandler.prototype.InitializeAndChangeOnce = function (callback) {
-        this._officeCss = this._getOfficeThemesCss();
-        if (!this._officeCss) {
-            if (callback) {
-                callback();
-            }
-            return;
-        }
-        this._onAsyncCallsCompleted = callback;
-        this._pseudoDocumentObject = {};
-        var pseudoDoc = this._pseudoDocumentObject;
-        OSF.DDA.DispIdHost.addAsyncMethods(pseudoDoc, [
-            OSF.DDA.AsyncMethodNames.GetOfficeThemeAsync,
-            OSF.DDA.AsyncMethodNames.GetDocumentThemeAsync
-        ]);
-        OSF.DDA.DispIdHost.addEventSupport(pseudoDoc, new OSF.EventDispatch([
-            Microsoft.Office.WebExtension.EventType.OfficeThemeChanged,
-            Microsoft.Office.WebExtension.EventType.DocumentThemeChanged
-        ]));
-        this._asyncCallsCompleted = {};
-        this._asyncCallsCompleted[OSF.DDA.AsyncMethodNames.GetOfficeThemeAsync] = false;
-        this._asyncCallsCompleted[OSF.DDA.AsyncMethodNames.GetDocumentThemeAsync] = false;
-        this._getAndProcessThemeData(pseudoDoc.getDocumentThemeAsync, Function.createDelegate(this, this._processDocumentThemeData), OSF.DDA.AsyncMethodNames.GetDocumentThemeAsync);
-        this._getAndProcessThemeData(pseudoDoc.getOfficeThemeAsync, Function.createDelegate(this, this._processOfficeThemeData), OSF.DDA.AsyncMethodNames.GetOfficeThemeAsync);
-    };
-    OSF_DDA_Theming_InternalThemeHandler.prototype._getOfficeThemesCss = function () {
-        function getOfficeThemesCssInternal() {
-            var cssFileName = "officethemes.css";
-            for (var i = 0; i < document.styleSheets.length; i++) {
-                var ss = document.styleSheets[i];
-                if (!ss.disabled && ss.href && cssFileName == ss.href.substring(ss.href.length - cssFileName.length, ss.href.length).toLowerCase()) {
-                    if ((!ss.cssRules) && (!ss.rules)) {
-                        return null;
-                    } else {
-                        return ss;
-                    }
-                }
-            }
-        }
-
-        try  {
-            return getOfficeThemesCssInternal();
-        } catch (e) {
-            return null;
-        }
-    };
-    OSF_DDA_Theming_InternalThemeHandler.prototype._changeCss = function (officeCss, selector, newRule) {
-        var length = officeCss.cssRules ? officeCss.cssRules.length : officeCss.rules.length;
-        for (var i = 0; i < length; i++) {
-            var rule;
-            if (officeCss.cssRules) {
-                rule = officeCss.cssRules[i];
-            } else {
-                rule = officeCss.rules[i];
-            }
-            var ruleSelector = rule.selectorText;
-            if (ruleSelector !== "" && ruleSelector.toLowerCase() == selector.toLowerCase()) {
-                if (officeCss.cssRules) {
-                    officeCss.deleteRule(i);
-                    officeCss.insertRule(ruleSelector + newRule, i);
-                } else {
-                    officeCss.removeRule(i);
-                    officeCss.addRule(ruleSelector, newRule, i);
-                }
-            }
-        }
-    };
-    OSF_DDA_Theming_InternalThemeHandler.prototype._changeDocumentThemeData = function (data) {
-        var documentThemeCssMapping = [
-            { name: "primaryFontColor", cssSelector: ".office-docTheme-primary-fontColor", cssProperty: "color" },
-            { name: "primaryBackgroundColor", cssSelector: ".office-docTheme-primary-bgColor", cssProperty: "background-color" },
-            { name: "secondaryFontColor", cssSelector: ".office-docTheme-secondary-fontColor", cssProperty: "color" },
-            { name: "secondaryBackgroundColor", cssSelector: ".office-docTheme-secondary-bgColor", cssProperty: "background-color" },
-            { name: "accent1", cssSelector: ".office-contentAccent1-color", cssProperty: "color" },
-            { name: "accent2", cssSelector: ".office-contentAccent2-color", cssProperty: "color" },
-            { name: "accent3", cssSelector: ".office-contentAccent3-color", cssProperty: "color" },
-            { name: "accent4", cssSelector: ".office-contentAccent4-color", cssProperty: "color" },
-            { name: "accent5", cssSelector: ".office-contentAccent5-color", cssProperty: "color" },
-            { name: "accent6", cssSelector: ".office-contentAccent6-color", cssProperty: "color" },
-            { name: "accent1", cssSelector: ".office-contentAccent1-bgColor", cssProperty: "background-color" },
-            { name: "accent2", cssSelector: ".office-contentAccent2-bgColor", cssProperty: "background-color" },
-            { name: "accent3", cssSelector: ".office-contentAccent3-bgColor", cssProperty: "background-color" },
-            { name: "accent4", cssSelector: ".office-contentAccent4-bgColor", cssProperty: "background-color" },
-            { name: "accent5", cssSelector: ".office-contentAccent5-bgColor", cssProperty: "background-color" },
-            { name: "accent6", cssSelector: ".office-contentAccent6-bgColor", cssProperty: "background-color" },
-            { name: "accent1", cssSelector: ".office-contentAccent1-borderColor", cssProperty: "border-color" },
-            { name: "accent2", cssSelector: ".office-contentAccent2-borderColor", cssProperty: "border-color" },
-            { name: "accent3", cssSelector: ".office-contentAccent3-borderColor", cssProperty: "border-color" },
-            { name: "accent4", cssSelector: ".office-contentAccent4-borderColor", cssProperty: "border-color" },
-            { name: "accent5", cssSelector: ".office-contentAccent5-borderColor", cssProperty: "border-color" },
-            { name: "accent6", cssSelector: ".office-contentAccent6-borderColor", cssProperty: "border-color" },
-            { name: "hyperlink", cssSelector: ".office-a", cssProperty: "color" },
-            { name: "followedHyperlink", cssSelector: ".office-a:visited", cssProperty: "color" },
-            { name: "headerLatinFont", cssSelector: ".office-headerFont-latin", cssProperty: "font-family" },
-            { name: "headerEastAsianFont", cssSelector: ".office-headerFont-eastAsian", cssProperty: "font-family" },
-            { name: "headerScriptFont", cssSelector: ".office-headerFont-script", cssProperty: "font-family" },
-            { name: "headerLocalizedFont", cssSelector: ".office-headerFont-localized", cssProperty: "font-family" },
-            { name: "bodyLatinFont", cssSelector: ".office-bodyFont-latin", cssProperty: "font-family" },
-            { name: "bodyEastAsianFont", cssSelector: ".office-bodyFont-eastAsian", cssProperty: "font-family" },
-            { name: "bodyScriptFont", cssSelector: ".office-bodyFont-script", cssProperty: "font-family" },
-            { name: "bodyLocalizedFont", cssSelector: ".office-bodyFont-localized", cssProperty: "font-family" }
-        ];
-        var realData = data.type == "documentThemeChanged" ? data.documentTheme : data;
-        for (var i = 0; i < documentThemeCssMapping.length; i++) {
-            if (this._previousDocumentThemeData === null || this._previousDocumentThemeData[documentThemeCssMapping[i].name] != realData[documentThemeCssMapping[i].name]) {
-                if (realData[documentThemeCssMapping[i].name] != null && realData[documentThemeCssMapping[i].name] != "") {
-                    var insertableText = realData[documentThemeCssMapping[i].name];
-
-                    if (documentThemeCssMapping[i].cssProperty === "font-family") {
-                        insertableText = '"' + insertableText.replace(/"/g, '\\"') + '"';
-                    }
-                    this._changeCss(this._officeCss, documentThemeCssMapping[i].cssSelector, "{" + documentThemeCssMapping[i].cssProperty + ":" + insertableText + ";}");
-                } else {
-                    this._changeCss(this._officeCss, documentThemeCssMapping[i].cssSelector, "{}");
-                }
-            }
-        }
-        this._previousDocumentThemeData = realData;
-    };
-    OSF_DDA_Theming_InternalThemeHandler.prototype._changeOfficeThemeData = function (data) {
-        var officeThemeCssMapping = [
-            { name: "primaryFontColor", cssSelector: ".office-officeTheme-primary-fontColor", cssProperty: "color" },
-            { name: "primaryBackgroundColor", cssSelector: ".office-officeTheme-primary-bgColor", cssProperty: "background-color" },
-            { name: "secondaryFontColor", cssSelector: ".office-officeTheme-secondary-fontColor", cssProperty: "color" },
-            { name: "secondaryBackgroundColor", cssSelector: ".office-officeTheme-secondary-bgColor", cssProperty: "background-color" }
-        ];
-        var realData = data.type == "officeThemeChanged" ? data.officeTheme : data;
-        for (var i = 0; i < officeThemeCssMapping.length; i++) {
-            if (this._previousOfficeThemeData === null || this._previousOfficeThemeData[officeThemeCssMapping[i].name] != realData[officeThemeCssMapping[i].name]) {
-                if (realData[officeThemeCssMapping[i].name] !== undefined) {
-                    this._changeCss(this._officeCss, officeThemeCssMapping[i].cssSelector, "{" + officeThemeCssMapping[i].cssProperty + ":" + realData[officeThemeCssMapping[i].name] + ";}");
-                }
-            }
-        }
-        this._previousOfficeThemeData = realData;
-    };
-    OSF_DDA_Theming_InternalThemeHandler.prototype._getAndProcessThemeData = function (getThemeMethod, processResultCallback, getThemeMethodIdentifier) {
-        getThemeMethod(Function.createDelegate(this, function (asyncResult) {
-            if (asyncResult.status == "succeeded") {
-                var data = asyncResult.value;
-                processResultCallback(data);
-            }
-            if (this._areAllCallsCompleted(getThemeMethodIdentifier) && this._onAsyncCallsCompleted) {
-                this._onAsyncCallsCompleted();
-                this._onAsyncCallsCompleted = null;
-            }
-        }));
-    };
-    OSF_DDA_Theming_InternalThemeHandler.prototype._processOfficeThemeData = function (data) {
-        this._changeOfficeThemeData(data);
-        this._pseudoDocumentObject.addHandlerAsync(Microsoft.Office.WebExtension.EventType.OfficeThemeChanged, Function.createDelegate(this, this._changeOfficeThemeData), null);
-    };
-    OSF_DDA_Theming_InternalThemeHandler.prototype._processDocumentThemeData = function (data) {
-        this._changeDocumentThemeData(data);
-        this._pseudoDocumentObject.addHandlerAsync(Microsoft.Office.WebExtension.EventType.DocumentThemeChanged, Function.createDelegate(this, this._changeDocumentThemeData), null);
-    };
-    OSF_DDA_Theming_InternalThemeHandler.prototype._areAllCallsCompleted = function (completedCall) {
-        var asyncCallsCompleted;
-
-        if (!(asyncCallsCompleted = this._asyncCallsCompleted)) {
-            return true;
-        }
-        if (completedCall && asyncCallsCompleted.hasOwnProperty(completedCall)) {
-            asyncCallsCompleted[completedCall] = true;
-        }
-        for (var call in asyncCallsCompleted) {
-            if (asyncCallsCompleted.hasOwnProperty(call) && asyncCallsCompleted[call]) {
-                continue;
-            }
-            return false;
-        }
-        return true;
-    };
-    return OSF_DDA_Theming_InternalThemeHandler;
-})();
-OSF.DDA.Theming.InternalThemeHandler = OSF_DDA_Theming_InternalThemeHandler;
-var parameterMap = OSF.DDA.SafeArray.Delegate.ParameterMap;
-parameterMap.define({
-    type: OSF.DDA.MethodDispId.dispidGetDocumentThemeMethod,
-    fromHost: [
-        { name: Microsoft.Office.WebExtension.Parameters.DocumentTheme, value: parameterMap.self }
-    ]
-});
-parameterMap.define({
-    type: OSF.DDA.MethodDispId.dispidGetOfficeThemeMethod,
-    fromHost: [
-        { name: Microsoft.Office.WebExtension.Parameters.OfficeTheme, value: parameterMap.self }
-    ]
-});
-parameterMap.define({
-    type: OSF.DDA.EventDispId.dispidDocumentThemeChangedEvent,
-    fromHost: [
-        { name: OSF.DDA.EventDescriptors.DocumentThemeChangedEvent, value: parameterMap.self }
-    ],
-    isComplexType: true
-});
-parameterMap.define({
-    type: OSF.DDA.EventDispId.dispidOfficeThemeChangedEvent,
-    fromHost: [
-        { name: OSF.DDA.EventDescriptors.OfficeThemeChangedEvent, value: parameterMap.self }
-    ],
-    isComplexType: true
-});
-var destKeys = OSF.DDA.Theming.DocumentThemeEnum;
-parameterMap.define({
-    type: Microsoft.Office.WebExtension.Parameters.DocumentTheme,
-    fromHost: [
-        { name: destKeys.PrimaryBackgroundColor, value: 0 },
-        { name: destKeys.PrimaryFontColor, value: 1 },
-        { name: destKeys.SecondaryBackgroundColor, value: 2 },
-        { name: destKeys.SecondaryFontColor, value: 3 },
-        { name: destKeys.Accent1, value: 4 },
-        { name: destKeys.Accent2, value: 5 },
-        { name: destKeys.Accent3, value: 6 },
-        { name: destKeys.Accent4, value: 7 },
-        { name: destKeys.Accent5, value: 8 },
-        { name: destKeys.Accent6, value: 9 },
-        { name: destKeys.Hyperlink, value: 10 },
-        { name: destKeys.FollowedHyperlink, value: 11 },
-        { name: destKeys.HeaderLatinFont, value: 12 },
-        { name: destKeys.HeaderEastAsianFont, value: 13 },
-        { name: destKeys.HeaderScriptFont, value: 14 },
-        { name: destKeys.HeaderLocalizedFont, value: 15 },
-        { name: destKeys.BodyLatinFont, value: 16 },
-        { name: destKeys.BodyEastAsianFont, value: 17 },
-        { name: destKeys.BodyScriptFont, value: 18 },
-        { name: destKeys.BodyLocalizedFont, value: 19 }
-    ],
-    isComplexType: true
-});
-destKeys = OSF.DDA.Theming.OfficeThemeEnum;
-parameterMap.define({
-    type: Microsoft.Office.WebExtension.Parameters.OfficeTheme,
-    fromHost: [
-        { name: destKeys.PrimaryFontColor, value: 0 },
-        { name: destKeys.PrimaryBackgroundColor, value: 1 },
-        { name: destKeys.SecondaryFontColor, value: 2 },
-        { name: destKeys.SecondaryBackgroundColor, value: 3 }
-    ],
-    isComplexType: true
-});
-parameterMap.define({
-    type: OSF.DDA.EventDescriptors.DocumentThemeChangedEvent,
-    fromHost: [
-        { name: Microsoft.Office.WebExtension.Parameters.DocumentTheme, value: parameterMap.self }
-    ],
-    isComplexType: true
-});
-parameterMap.define({
-    type: OSF.DDA.EventDescriptors.OfficeThemeChangedEvent,
-    fromHost: [
-        { name: Microsoft.Office.WebExtension.Parameters.OfficeTheme, value: parameterMap.self }
-    ],
-    isComplexType: true
-});
-OSF.OUtil.augmentList(Microsoft.Office.WebExtension.EventType, { DocumentSelectionChanged: "documentSelectionChanged" });
-OSF.DDA.DocumentSelectionChangedEventArgs = function OSF_DDA_DocumentSelectionChangedEventArgs(docInstance) {
-    OSF.OUtil.defineEnumerableProperties(this, {
-        "type": {
-            value: Microsoft.Office.WebExtension.EventType.DocumentSelectionChanged
-        },
-        "document": {
-            value: docInstance
-        }
-    });
-};
-
-OSF.DDA.SafeArray.Delegate.ParameterMap.define({ type: OSF.DDA.EventDispId.dispidDocumentSelectionChangedEvent });
-
 
 OSF.DDA.SafeArray.Delegate.ParameterMap.define({
-    type: OSF.DDA.PropertyDescriptors.FilePropertiesDescriptor,
-    fromHost: [
-        { name: OSF.DDA.FilePropertiesDescriptor.Url, value: 0 }
-    ],
-    isComplexType: true
-});
-
-OSF.DDA.SafeArray.Delegate.ParameterMap.define({
-    type: OSF.DDA.MethodDispId.dispidGetFilePropertiesMethod,
-    fromHost: [
-        { name: OSF.DDA.PropertyDescriptors.FilePropertiesDescriptor, value: OSF.DDA.SafeArray.Delegate.ParameterMap.self }
-    ]
-});
-OSF.OUtil.augmentList(OSF.DDA.EventDescriptors, { ActiveViewChangedEvent: "ActiveViewChangedEvent" });
-Microsoft.Office.WebExtension.ActiveView = {
-    Read: "read",
-    Edit: "edit"
-};
-OSF.OUtil.augmentList(Microsoft.Office.WebExtension.EventType, {
-    ActiveViewChanged: "activeViewChanged"
-});
-OSF.DDA.AsyncMethodNames.addNames({
-    GetActiveViewAsync: "getActiveViewAsync"
-});
-OSF.DDA.AsyncMethodCalls.define({
-    method: OSF.DDA.AsyncMethodNames.GetActiveViewAsync,
-    requiredArguments: [],
-    supportedOptions: [],
-    privateStateCallbacks: [],
-    onSucceeded: function (response) {
-        var data = response[Microsoft.Office.WebExtension.Parameters.ActiveView];
-        return data == undefined ? null : data;
-    }
-});
-OSF.DDA.ActiveViewChangedEventArgs = function OSF_DDA_ActiveViewChangedEventArgs(activeView) {
-    OSF.OUtil.defineEnumerableProperties(this, {
-        "type": {
-            value: Microsoft.Office.WebExtension.EventType.ActiveViewChanged
-        },
-        "activeView": {
-            value: activeView.activeView
-        }
-    });
-};
-
-OSF.DDA.SafeArray.Delegate.ParameterMap.define({
-    type: Microsoft.Office.WebExtension.Parameters.ActiveView,
-    fromHost: [
-        { name: 0, value: Microsoft.Office.WebExtension.ActiveView.Read },
-        { name: 1, value: Microsoft.Office.WebExtension.ActiveView.Edit }
+    type: Microsoft.Office.WebExtension.Parameters.CoercionType,
+    toHost: [
+        { name: Microsoft.Office.WebExtension.CoercionType.Text, value: 0 },
+        { name: Microsoft.Office.WebExtension.CoercionType.Matrix, value: 1 },
+        { name: Microsoft.Office.WebExtension.CoercionType.Table, value: 2 }
     ]
 });
 
-OSF.DDA.SafeArray.Delegate.ParameterMap.define({
-    type: OSF.DDA.MethodDispId.dispidGetActiveViewMethod,
-    fromHost: [
-        { name: Microsoft.Office.WebExtension.Parameters.ActiveView, value: OSF.DDA.SafeArray.Delegate.ParameterMap.self }
-    ]
-});
+Microsoft.Office.WebExtension.ProjectTaskFields = {
+    ActualCost: 0,
+    ActualDuration: 1,
+    ActualFinish: 2,
+    ActualOvertimeCost: 3,
+    ActualOvertimeWork: 4,
+    ActualStart: 5,
+    ActualWork: 6,
+    Text1: 7,
+    Text10: 8,
+    Finish10: 9,
+    Start10: 10,
+    Text11: 11,
+    Text12: 12,
+    Text13: 13,
+    Text14: 14,
+    Text15: 15,
+    Text16: 16,
+    Text17: 17,
+    Text18: 18,
+    Text19: 19,
+    Finish1: 20,
+    Start1: 21,
+    Text2: 22,
+    Text20: 23,
+    Text21: 24,
+    Text22: 25,
+    Text23: 26,
+    Text24: 27,
+    Text25: 28,
+    Text26: 29,
+    Text27: 30,
+    Text28: 31,
+    Text29: 32,
+    Finish2: 33,
+    Start2: 34,
+    Text3: 35,
+    Text30: 36,
+    Finish3: 37,
+    Start3: 38,
+    Text4: 39,
+    Finish4: 40,
+    Start4: 41,
+    Text5: 42,
+    Finish5: 43,
+    Start5: 44,
+    Text6: 45,
+    Finish6: 46,
+    Start6: 47,
+    Text7: 48,
+    Finish7: 49,
+    Start7: 50,
+    Text8: 51,
+    Finish8: 52,
+    Start8: 53,
+    Text9: 54,
+    Finish9: 55,
+    Start9: 56,
+    Baseline10BudgetCost: 57,
+    Baseline10BudgetWork: 58,
+    Baseline10Cost: 59,
+    Baseline10Duration: 60,
+    Baseline10Finish: 61,
+    Baseline10FixedCost: 62,
+    Baseline10FixedCostAccrual: 63,
+    Baseline10Start: 64,
+    Baseline10Work: 65,
+    Baseline1BudgetCost: 66,
+    Baseline1BudgetWork: 67,
+    Baseline1Cost: 68,
+    Baseline1Duration: 69,
+    Baseline1Finish: 70,
+    Baseline1FixedCost: 71,
+    Baseline1FixedCostAccrual: 72,
+    Baseline1Start: 73,
+    Baseline1Work: 74,
+    Baseline2BudgetCost: 75,
+    Baseline2BudgetWork: 76,
+    Baseline2Cost: 77,
+    Baseline2Duration: 78,
+    Baseline2Finish: 79,
+    Baseline2FixedCost: 80,
+    Baseline2FixedCostAccrual: 81,
+    Baseline2Start: 82,
+    Baseline2Work: 83,
+    Baseline3BudgetCost: 84,
+    Baseline3BudgetWork: 85,
+    Baseline3Cost: 86,
+    Baseline3Duration: 87,
+    Baseline3Finish: 88,
+    Baseline3FixedCost: 89,
+    Baseline3FixedCostAccrual: 90,
+    Basline3Start: 91,
+    Baseline3Work: 92,
+    Baseline4BudgetCost: 93,
+    Baseline4BudgetWork: 94,
+    Baseline4Cost: 95,
+    Baseline4Duration: 96,
+    Baseline4Finish: 97,
+    Baseline4FixedCost: 98,
+    Baseline4FixedCostAccrual: 99,
+    Baseline4Start: 100,
+    Baseline4Work: 101,
+    Baseline5BudgetCost: 102,
+    Baseline5BudgetWork: 103,
+    Baseline5Cost: 104,
+    Baseline5Duration: 105,
+    Baseline5Finish: 106,
+    Baseline5FixedCost: 107,
+    Baseline5FixedCostAccrual: 108,
+    Baseline5Start: 109,
+    Baseline5Work: 110,
+    Baseline6BudgetCost: 111,
+    Baseline6BudgetWork: 112,
+    Baseline6Cost: 113,
+    Baseline6Duration: 114,
+    Baseline6Finish: 115,
+    Baseline6FixedCost: 116,
+    Baseline6FixedCostAccrual: 117,
+    Baseline6Start: 118,
+    Baseline6Work: 119,
+    Baseline7BudgetCost: 120,
+    Baseline7BudgetWork: 121,
+    Baseline7Cost: 122,
+    Baseline7Duration: 123,
+    Baseline7Finish: 124,
+    Baseline7FixedCost: 125,
+    Baseline7FixedCostAccrual: 126,
+    Baseline7Start: 127,
+    Baseline7Work: 128,
+    Baseline8BudgetCost: 129,
+    Baseline8BudgetWork: 130,
+    Baseline8Cost: 131,
+    Baseline8Duration: 132,
+    Baseline8Finish: 133,
+    Baseline8FixedCost: 134,
+    Baseline8FixedCostAccrual: 135,
+    Baseline8Start: 136,
+    Baseline8Work: 137,
+    Baseline9BudgetCost: 138,
+    Baseline9BudgetWork: 139,
+    Baseline9Cost: 140,
+    Baseline9Duration: 141,
+    Baseline9Finish: 142,
+    Baseline9FixedCost: 143,
+    Baseline9FixedCostAccrual: 144,
+    Baseline9Start: 145,
+    Baseline9Work: 146,
+    BaselineBudgetCost: 147,
+    BaselineBudgetWork: 148,
+    BaselineCost: 149,
+    BaselineDuration: 150,
+    BaselineFinish: 151,
+    BaselineFixedCost: 152,
+    BaselineFixedCostAccrual: 153,
+    BaselineStart: 154,
+    BaselineWork: 155,
+    BudgetCost: 156,
+    BudgetWork: 157,
+    TaskCalendarGUID: 158,
+    ConstraintDate: 159,
+    ConstraintType: 160,
+    Cost1: 161,
+    Cost10: 162,
+    Cost2: 163,
+    Cost3: 164,
+    Cost4: 165,
+    Cost5: 166,
+    Cost6: 167,
+    Cost7: 168,
+    Cost8: 169,
+    Cost9: 170,
+    Date1: 171,
+    Date10: 172,
+    Date2: 173,
+    Date3: 174,
+    Date4: 175,
+    Date5: 176,
+    Date6: 177,
+    Date7: 178,
+    Date8: 179,
+    Date9: 180,
+    Deadline: 181,
+    Duration1: 182,
+    Duration10: 183,
+    Duration2: 184,
+    Duration3: 185,
+    Duration4: 186,
+    Duration5: 187,
+    Duration6: 188,
+    Duration7: 189,
+    Duration8: 190,
+    Duration9: 191,
+    Duration: 192,
+    EarnedValueMethod: 193,
+    FinishSlack: 194,
+    FixedCost: 195,
+    FixedCostAccrual: 196,
+    Flag10: 197,
+    Flag1: 198,
+    Flag11: 199,
+    Flag12: 200,
+    Flag13: 201,
+    Flag14: 202,
+    Flag15: 203,
+    Flag16: 204,
+    Flag17: 205,
+    Flag18: 206,
+    Flag19: 207,
+    Flag2: 208,
+    Flag20: 209,
+    Flag3: 210,
+    Flag4: 211,
+    Flag5: 212,
+    Flag6: 213,
+    Flag7: 214,
+    Flag8: 215,
+    Flag9: 216,
+    FreeSlack: 217,
+    HasRollupSubTasks: 218,
+    ID: 219,
+    Name: 220,
+    Notes: 221,
+    Number1: 222,
+    Number10: 223,
+    Number11: 224,
+    Number12: 225,
+    Number13: 226,
+    Number14: 227,
+    Number15: 228,
+    Number16: 229,
+    Number17: 230,
+    Number18: 231,
+    Number19: 232,
+    Number2: 233,
+    Number20: 234,
+    Number3: 235,
+    Number4: 236,
+    Number5: 237,
+    Number6: 238,
+    Number7: 239,
+    Number8: 240,
+    Number9: 241,
+    ScheduledDuration: 242,
+    ScheduledFinish: 243,
+    ScheduledStart: 244,
+    OutlineLevel: 245,
+    OvertimeCost: 246,
+    OvertimeWork: 247,
+    PercentComplete: 248,
+    PercentWorkComplete: 249,
+    Predecessors: 250,
+    PreleveledFinish: 251,
+    PreleveledStart: 252,
+    Priority: 253,
+    Active: 254,
+    Critical: 255,
+    Milestone: 256,
+    Overallocated: 257,
+    IsRollup: 258,
+    Summary: 259,
+    RegularWork: 260,
+    RemainingCost: 261,
+    RemainingDuration: 262,
+    RemainingOvertimeCost: 263,
+    RemainingWork: 264,
+    ResourceNames: 265,
+    ResourceNames_deprecated: 266,
+    Cost: 267,
+    Finish: 268,
+    Start: 269,
+    Work: 270,
+    StartSlack: 271,
+    Status: 272,
+    Successors: 273,
+    StatusManager: 274,
+    TotalSlack: 275,
+    TaskGUID: 276,
+    Type: 277,
+    WBS: 278,
+    WBSPREDECESSORS: 279,
+    WBSSUCCESSORS: 280,
+    WSSID: 281
+};
 
-OSF.DDA.SafeArray.Delegate.ParameterMap.define({
-    type: OSF.DDA.EventDescriptors.ActiveViewChangedEvent,
-    fromHost: [
-        { name: Microsoft.Office.WebExtension.Parameters.ActiveView, value: 0 }
-    ],
-    isComplexType: true
-});
+Microsoft.Office.WebExtension.ProjectResourceFields = {
+    Accrual: 0,
+    ActualCost: 1,
+    ActualOvertimeCost: 2,
+    ActualOvertimeWork: 3,
+    ActualOvertimeWorkProtected: 4,
+    ActualWork: 5,
+    ActualWorkProtected: 6,
+    BaseCalendar: 7,
+    Baseline10BudgetCost: 8,
+    Baseline10BudgetWork: 9,
+    Baseline10Cost: 10,
+    Baseline10Work: 11,
+    Baseline1BudgetCost: 12,
+    Baseline1BudgetWork: 13,
+    Baseline1Cost: 14,
+    Baseline1Work: 15,
+    Baseline2BudgetCost: 16,
+    Baseline2BudgetWork: 17,
+    Baseline2Cost: 18,
+    Baseline2Work: 19,
+    Baseline3BudgetCost: 20,
+    Baseline3BudgetWork: 21,
+    Baseline3Cost: 22,
+    Baseline3Work: 23,
+    Baseline4BudgetCost: 24,
+    Baseline4BudgetWork: 25,
+    Baseline4Cost: 26,
+    Baseline4Work: 27,
+    Baseline5BudgetCost: 28,
+    Baseline5BudgetWork: 29,
+    Baseline5Cost: 30,
+    Baseline5Work: 31,
+    Baseline6BudgetCost: 32,
+    Baseline6BudgetWork: 33,
+    Baseline6Cost: 34,
+    Baseline6Work: 35,
+    Baseline7BudgetCost: 36,
+    Baseline7BudgetWork: 37,
+    Baseline7Cost: 38,
+    Baseline7Work: 39,
+    Baseline8BudgetCost: 40,
+    Baseline8BudgetWork: 41,
+    Baseline8Cost: 42,
+    Baseline8Work: 43,
+    Baseline9BudgetCost: 44,
+    Baseline9BudgetWork: 45,
+    Baseline9Cost: 46,
+    Baseline9Work: 47,
+    BaselineBudgetCost: 48,
+    BaselineBudgetWork: 49,
+    BaselineCost: 50,
+    BaselineWork: 51,
+    BudgetCost: 52,
+    BudgetWork: 53,
+    ResourceCalendarGUID: 54,
+    Code: 55,
+    Cost1: 56,
+    Cost10: 57,
+    Cost2: 58,
+    Cost3: 59,
+    Cost4: 60,
+    Cost5: 61,
+    Cost6: 62,
+    Cost7: 63,
+    Cost8: 64,
+    Cost9: 65,
+    ResourceCreationDate: 66,
+    Date1: 67,
+    Date10: 68,
+    Date2: 69,
+    Date3: 70,
+    Date4: 71,
+    Date5: 72,
+    Date6: 73,
+    Date7: 74,
+    Date8: 75,
+    Date9: 76,
+    Duration1: 77,
+    Duration10: 78,
+    Duration2: 79,
+    Duration3: 80,
+    Duration4: 81,
+    Duration5: 82,
+    Duration6: 83,
+    Duration7: 84,
+    Duration8: 85,
+    Duration9: 86,
+    Email: 87,
+    End: 88,
+    Finish1: 89,
+    Finish10: 90,
+    Finish2: 91,
+    Finish3: 92,
+    Finish4: 93,
+    Finish5: 94,
+    Finish6: 95,
+    Finish7: 96,
+    Finish8: 97,
+    Finish9: 98,
+    Flag10: 99,
+    Flag1: 100,
+    Flag11: 101,
+    Flag12: 102,
+    Flag13: 103,
+    Flag14: 104,
+    Flag15: 105,
+    Flag16: 106,
+    Flag17: 107,
+    Flag18: 108,
+    Flag19: 109,
+    Flag2: 110,
+    Flag20: 111,
+    Flag3: 112,
+    Flag4: 113,
+    Flag5: 114,
+    Flag6: 115,
+    Flag7: 116,
+    Flag8: 117,
+    Flag9: 118,
+    Group: 119,
+    Units: 120,
+    Name: 121,
+    Notes: 122,
+    Number1: 123,
+    Number10: 124,
+    Number11: 125,
+    Number12: 126,
+    Number13: 127,
+    Number14: 128,
+    Number15: 129,
+    Number16: 130,
+    Number17: 131,
+    Number18: 132,
+    Number19: 133,
+    Number2: 134,
+    Number20: 135,
+    Number3: 136,
+    Number4: 137,
+    Number5: 138,
+    Number6: 139,
+    Number7: 140,
+    Number8: 141,
+    Number9: 142,
+    OvertimeCost: 143,
+    OvertimeRate: 144,
+    OvertimeWork: 145,
+    PercentWorkComplete: 146,
+    CostPerUse: 147,
+    Generic: 148,
+    OverAllocated: 149,
+    RegularWork: 150,
+    RemainingCost: 151,
+    RemainingOvertimeCost: 152,
+    RemainingOvertimeWork: 153,
+    RemainingWork: 154,
+    ResourceGUID: 155,
+    Cost: 156,
+    Work: 157,
+    Start: 158,
+    Start1: 159,
+    Start10: 160,
+    Start2: 161,
+    Start3: 162,
+    Start4: 163,
+    Start5: 164,
+    Start6: 165,
+    Start7: 166,
+    Start8: 167,
+    Start9: 168,
+    StandardRate: 169,
+    Text1: 170,
+    Text10: 171,
+    Text11: 172,
+    Text12: 173,
+    Text13: 174,
+    Text14: 175,
+    Text15: 176,
+    Text16: 177,
+    Text17: 178,
+    Text18: 179,
+    Text19: 180,
+    Text2: 181,
+    Text20: 182,
+    Text21: 183,
+    Text22: 184,
+    Text23: 185,
+    Text24: 186,
+    Text25: 187,
+    Text26: 188,
+    Text27: 189,
+    Text28: 190,
+    Text29: 191,
+    Text3: 192,
+    Text30: 193,
+    Text4: 194,
+    Text5: 195,
+    Text6: 196,
+    Text7: 197,
+    Text8: 198,
+    Text9: 199
+};
 
-OSF.DDA.SafeArray.Delegate.ParameterMap.define({
-    type: OSF.DDA.EventDispId.dispidActiveViewChangedEvent,
-    fromHost: [
-        { name: OSF.DDA.EventDescriptors.ActiveViewChangedEvent, value: OSF.DDA.SafeArray.Delegate.ParameterMap.self }
-    ]
-});
-OSF.DDA.PowerPointDocument = function OSF_DDA_PowerPointDocument(officeAppContext, settings) {
-    OSF.DDA.PowerPointDocument.uber.constructor.call(this, officeAppContext, settings);
+Microsoft.Office.WebExtension.ProjectProjectFields = {
+    CurrencyDigits: 0,
+    CurrencySymbol: 1,
+    CurrencySymbolPosition: 2,
+    DurationUnits: 3,
+    GUID: 4,
+    Finish: 5,
+    Start: 6,
+    ReadOnly: 7,
+    VERSION: 8,
+    WorkUnits: 9,
+    ProjectServerUrl: 10,
+    WSSUrl: 11,
+    WSSList: 12
+};
+OSF.DDA.ProjectDocument = function OSF_DDA_ProjectDocument(officeAppContext) {
+    OSF.DDA.ProjectDocument.uber.constructor.call(this, officeAppContext);
+    var am = OSF.DDA.AsyncMethodNames;
     OSF.DDA.DispIdHost.addAsyncMethods(this, [
-        OSF.DDA.AsyncMethodNames.GetSelectedDataAsync,
-        OSF.DDA.AsyncMethodNames.SetSelectedDataAsync,
-        OSF.DDA.AsyncMethodNames.GetDocumentCopyAsync,
-        OSF.DDA.AsyncMethodNames.GetActiveViewAsync,
-        OSF.DDA.AsyncMethodNames.GetFilePropertiesAsync,
-        OSF.DDA.AsyncMethodNames.GoToByIdAsync
+        am.GetSelectedDataAsync,
+        am.GetSelectedTask,
+        am.GetTask,
+        am.GetTaskField,
+        am.GetWSSUrl,
+        am.GetSelectedResource,
+        am.GetResourceField,
+        am.GetProjectField,
+        am.GetSelectedView,
+        am.GetTaskByIndex,
+        am.GetResourceByIndex,
+        am.SetTaskField,
+        am.SetResourceField,
+        am.GetMaxTaskIndex,
+        am.GetMaxResourceIndex
     ]);
     OSF.DDA.DispIdHost.addEventSupport(this, new OSF.EventDispatch([
-        Microsoft.Office.WebExtension.EventType.DocumentSelectionChanged,
-        Microsoft.Office.WebExtension.EventType.ActiveViewChanged
-    ]));
-    OSF.OUtil.finalizeProperties(this);
+        Microsoft.Office.WebExtension.EventType.TaskSelectionChanged,
+        Microsoft.Office.WebExtension.EventType.ResourceSelectionChanged,
+        Microsoft.Office.WebExtension.EventType.ViewSelectionChanged]));
 };
 
-OSF.OUtil.extend(OSF.DDA.PowerPointDocument, OSF.DDA.Document);
+OSF.OUtil.extend(OSF.DDA.ProjectDocument, OSF.DDA.Document);
+OSF.DDA.TaskSelectionChangedEventArgs = function OSF_DDA_TaskSelectionChangedEventArgs(doc) {
+    OSF.OUtil.defineEnumerableProperties(this, {
+        "type": {
+            value: Microsoft.Office.WebExtension.EventType.TaskSelectionChanged
+        },
+        "document": {
+            value: doc
+        }
+    });
+};
+OSF.DDA.ResourceSelectionChangedEventArgs = function OSF_DDA_ResourceSelectionChangedEventArgs(doc) {
+    OSF.OUtil.defineEnumerableProperties(this, {
+        "type": {
+            value: Microsoft.Office.WebExtension.EventType.ResourceSelectionChanged
+        },
+        "document": {
+            value: doc
+        }
+    });
+};
+OSF.DDA.ViewSelectionChangedEventArgs = function OSF_DDA_ViewSelectionChangedEventArgs(doc) {
+    OSF.OUtil.defineEnumerableProperties(this, {
+        "type": {
+            value: Microsoft.Office.WebExtension.EventType.ViewSelectionChanged
+        },
+        "document": {
+            value: doc
+        }
+    });
+};
 
 OSF.InitializationHelper.prototype.loadAppSpecificScriptAndCreateOM = function OSF_InitializationHelper$loadAppSpecificScriptAndCreateOM(appContext, appReady, basePath) {
     OSF.DDA.ErrorCodeManager.initializeErrorMessages(Strings.OfficeOM);
-    appContext.doc = new OSF.DDA.PowerPointDocument(appContext, this._initializeSettings(false));
+    appContext.doc = new OSF.DDA.ProjectDocument(appContext, this._initializeSettings(false));
     appReady();
 };
-OSF.InitializationHelper.prototype.prepareRightBeforeWebExtensionInitialize = function OSF_InitializationHelper$PowerPointWin32_prepareRightBeforeWebExtensionInitialize(appContext) {
-    var license = new OSF.DDA.License(appContext.get_eToken());
-    OSF._OfficeAppFactory.setContext(new OSF.DDA.Context(appContext, appContext.doc, license, null, OSF.DDA.OfficeTheme.getOfficeTheme));
-    var reason = appContext.get_reason();
-    reason = OSF.DDA.RichInitializationReason[reason];
-    OSF._OfficeAppFactory.setHostFacade(new OSF.DDA.DispIdHost.Facade(OSF.DDA.DispIdHost.getClientDelegateMethods, OSF.DDA.SafeArray.Delegate.ParameterMap));
-    var themeHandler = new OSF.DDA.Theming.InternalThemeHandler();
-    themeHandler.InitializeAndChangeOnce();
-    Microsoft.Office.WebExtension.initialize(reason);
-};
+OSF.DDA.AsyncMethodNames.addNames({
+    GetSelectedTask: "getSelectedTaskAsync",
+    GetTask: "getTaskAsync",
+    GetWSSUrl: "getWSSUrlAsync",
+    GetTaskField: "getTaskFieldAsync",
+    GetSelectedResource: "getSelectedResourceAsync",
+    GetResourceField: "getResourceFieldAsync",
+    GetProjectField: "getProjectFieldAsync",
+    GetSelectedView: "getSelectedViewAsync",
+    GetTaskByIndex: "getTaskByIndexAsync",
+    GetResourceByIndex: "getResourceByIndexAsync",
+    SetTaskField: "setTaskFieldAsync",
+    SetResourceField: "setResourceFieldAsync",
+    GetMaxTaskIndex: "getMaxTaskIndexAsync",
+    GetMaxResourceIndex: "getMaxResourceIndexAsync"
+});
+
+OSF.DDA.AsyncMethodCalls.define({
+    method: OSF.DDA.AsyncMethodNames.GetSelectedTask,
+    onSucceeded: function (taskIdDescriptor) {
+        return taskIdDescriptor[Microsoft.Office.WebExtension.Parameters.TaskId];
+    }
+});
+
+OSF.DDA.AsyncMethodCalls.define({
+    method: OSF.DDA.AsyncMethodNames.GetTaskByIndex,
+    requiredArguments: [
+        {
+            name: Microsoft.Office.WebExtension.Parameters.TaskIndex,
+            types: ["number"]
+        }
+    ],
+    supportedOptions: [],
+    privateStateCallbacks: [],
+    onSucceeded: function (taskIdDescriptor) {
+        return taskIdDescriptor[Microsoft.Office.WebExtension.Parameters.TaskId];
+    }
+});
+
+OSF.DDA.AsyncMethodCalls.define({
+    method: OSF.DDA.AsyncMethodNames.GetTask,
+    requiredArguments: [
+        {
+            name: Microsoft.Office.WebExtension.Parameters.TaskId,
+            types: ["string"]
+        }
+    ]
+});
+
+OSF.DDA.AsyncMethodCalls.define({
+    method: OSF.DDA.AsyncMethodNames.GetTaskField,
+    requiredArguments: [
+        {
+            name: Microsoft.Office.WebExtension.Parameters.TaskId,
+            types: ["string"]
+        },
+        {
+            name: Microsoft.Office.WebExtension.Parameters.FieldId,
+            types: ["number"]
+        }],
+    supportedOptions: [{
+            name: Microsoft.Office.WebExtension.Parameters.GetRawValue,
+            value: {
+                "types": ["boolean"],
+                "defaultValue": false
+            }
+        }]
+});
+
+OSF.DDA.AsyncMethodCalls.define({
+    method: OSF.DDA.AsyncMethodNames.GetResourceField,
+    requiredArguments: [
+        {
+            name: Microsoft.Office.WebExtension.Parameters.ResourceId,
+            types: ["string"]
+        },
+        {
+            name: Microsoft.Office.WebExtension.Parameters.FieldId,
+            types: ["number"]
+        }],
+    supportedOptions: [{
+            name: Microsoft.Office.WebExtension.Parameters.GetRawValue,
+            value: {
+                "types": ["boolean"],
+                "defaultValue": false
+            }
+        }]
+});
+
+OSF.DDA.AsyncMethodCalls.define({
+    method: OSF.DDA.AsyncMethodNames.GetProjectField,
+    requiredArguments: [
+        {
+            name: Microsoft.Office.WebExtension.Parameters.FieldId,
+            types: ["number"]
+        }
+    ],
+    supportedOptions: [{
+            name: Microsoft.Office.WebExtension.Parameters.GetRawValue,
+            value: {
+                "types": ["boolean"],
+                "defaultValue": false
+            }
+        }]
+});
+
+OSF.DDA.AsyncMethodCalls.define({
+    method: OSF.DDA.AsyncMethodNames.GetSelectedResource,
+    onSucceeded: function (resourceIdDescriptor) {
+        return resourceIdDescriptor[Microsoft.Office.WebExtension.Parameters.ResourceId];
+    }
+});
+
+OSF.DDA.AsyncMethodCalls.define({
+    method: OSF.DDA.AsyncMethodNames.GetResourceByIndex,
+    requiredArguments: [
+        {
+            name: Microsoft.Office.WebExtension.Parameters.ResourceIndex,
+            types: ["number"]
+        }
+    ],
+    supportedOptions: [],
+    privateStateCallbacks: [],
+    onSucceeded: function (resourceIdDescriptor) {
+        return resourceIdDescriptor[Microsoft.Office.WebExtension.Parameters.ResourceId];
+    }
+});
+
+OSF.DDA.AsyncMethodCalls.define({
+    method: OSF.DDA.AsyncMethodNames.GetWSSUrl
+});
+
+OSF.DDA.AsyncMethodCalls.define({
+    method: OSF.DDA.AsyncMethodNames.GetSelectedView
+});
+
+OSF.DDA.AsyncMethodCalls.define({
+    method: OSF.DDA.AsyncMethodNames.SetTaskField,
+    requiredArguments: [
+        {
+            name: Microsoft.Office.WebExtension.Parameters.TaskId,
+            types: ["string"]
+        },
+        {
+            name: Microsoft.Office.WebExtension.Parameters.FieldId,
+            types: ["number"]
+        },
+        {
+            "name": Microsoft.Office.WebExtension.Parameters.FieldValue,
+            "types": ["object", "string", "number", "boolean"]
+        }
+    ]
+});
+
+OSF.DDA.AsyncMethodCalls.define({
+    method: OSF.DDA.AsyncMethodNames.SetResourceField,
+    requiredArguments: [
+        {
+            name: Microsoft.Office.WebExtension.Parameters.ResourceId,
+            types: ["string"]
+        },
+        {
+            name: Microsoft.Office.WebExtension.Parameters.FieldId,
+            types: ["number"]
+        },
+        {
+            "name": Microsoft.Office.WebExtension.Parameters.FieldValue,
+            "types": ["object", "string", "number", "boolean"]
+        }
+    ]
+});
+
+OSF.DDA.AsyncMethodCalls.define({
+    method: OSF.DDA.AsyncMethodNames.GetMaxTaskIndex,
+    onSucceeded: function (taskIndexDescriptor) {
+        return taskIndexDescriptor[Microsoft.Office.WebExtension.Parameters.TaskIndex];
+    }
+});
+
+OSF.DDA.AsyncMethodCalls.define({
+    method: OSF.DDA.AsyncMethodNames.GetMaxResourceIndex,
+    onSucceeded: function (resourceIndexDescriptor) {
+        return resourceIndexDescriptor[Microsoft.Office.WebExtension.Parameters.ResourceIndex];
+    }
+});
+
+OSF.DDA.SafeArray.Delegate.ParameterMap.define({
+    type: OSF.DDA.MethodDispId.dispidGetSelectedTaskMethod,
+    fromHost: [
+        { name: Microsoft.Office.WebExtension.Parameters.TaskId, value: OSF.DDA.SafeArray.Delegate.ParameterMap.self }
+    ]
+});
+
+OSF.DDA.SafeArray.Delegate.ParameterMap.define({
+    type: OSF.DDA.MethodDispId.dispidGetTaskByIndexMethod,
+    fromHost: [
+        { name: Microsoft.Office.WebExtension.Parameters.TaskId, value: OSF.DDA.SafeArray.Delegate.ParameterMap.self }
+    ],
+    toHost: [
+        { name: Microsoft.Office.WebExtension.Parameters.TaskIndex, value: 0 }
+    ]
+});
+
+OSF.DDA.SafeArray.Delegate.ParameterMap.define({
+    type: OSF.DDA.MethodDispId.dispidGetTaskMethod,
+    fromHost: [
+        { name: "taskName", value: 0 },
+        { name: "wssTaskId", value: 1 },
+        { name: "resourceNames", value: 2 }
+    ],
+    toHost: [
+        { name: Microsoft.Office.WebExtension.Parameters.TaskId, value: 0 }
+    ]
+});
+
+OSF.DDA.SafeArray.Delegate.ParameterMap.define({
+    type: OSF.DDA.MethodDispId.dispidGetTaskFieldMethod,
+    fromHost: [
+        { name: Microsoft.Office.WebExtension.Parameters.FieldValue, value: OSF.DDA.SafeArray.Delegate.ParameterMap.self }
+    ],
+    toHost: [
+        { name: Microsoft.Office.WebExtension.Parameters.TaskId, value: 0 },
+        { name: Microsoft.Office.WebExtension.Parameters.FieldId, value: 1 },
+        { name: Microsoft.Office.WebExtension.Parameters.GetRawValue, value: 2 }
+    ]
+});
+
+OSF.DDA.SafeArray.Delegate.ParameterMap.define({
+    type: OSF.DDA.MethodDispId.dispidGetWSSUrlMethod,
+    fromHost: [
+        { name: Microsoft.Office.WebExtension.Parameters.ServerUrl, value: 0 },
+        { name: Microsoft.Office.WebExtension.Parameters.ListName, value: 1 }
+    ]
+});
+
+OSF.DDA.SafeArray.Delegate.ParameterMap.define({
+    type: OSF.DDA.MethodDispId.dispidGetSelectedResourceMethod,
+    fromHost: [
+        { name: Microsoft.Office.WebExtension.Parameters.ResourceId, value: OSF.DDA.SafeArray.Delegate.ParameterMap.self }
+    ]
+});
+
+OSF.DDA.SafeArray.Delegate.ParameterMap.define({
+    type: OSF.DDA.MethodDispId.dispidGetResourceByIndexMethod,
+    fromHost: [
+        { name: Microsoft.Office.WebExtension.Parameters.ResourceId, value: OSF.DDA.SafeArray.Delegate.ParameterMap.self }
+    ],
+    toHost: [
+        { name: Microsoft.Office.WebExtension.Parameters.ResourceIndex, value: 0 }
+    ]
+});
+
+OSF.DDA.SafeArray.Delegate.ParameterMap.define({
+    type: OSF.DDA.MethodDispId.dispidGetResourceFieldMethod,
+    fromHost: [
+        { name: Microsoft.Office.WebExtension.Parameters.FieldValue, value: OSF.DDA.SafeArray.Delegate.ParameterMap.self }
+    ],
+    toHost: [
+        { name: Microsoft.Office.WebExtension.Parameters.ResourceId, value: 0 },
+        { name: Microsoft.Office.WebExtension.Parameters.FieldId, value: 1 },
+        { name: Microsoft.Office.WebExtension.Parameters.GetRawValue, value: 2 }
+    ]
+});
+
+OSF.DDA.SafeArray.Delegate.ParameterMap.define({
+    type: OSF.DDA.MethodDispId.dispidGetProjectFieldMethod,
+    fromHost: [
+        { name: Microsoft.Office.WebExtension.Parameters.FieldValue, value: OSF.DDA.SafeArray.Delegate.ParameterMap.self }
+    ],
+    toHost: [
+        { name: Microsoft.Office.WebExtension.Parameters.FieldId, value: 0 },
+        { name: Microsoft.Office.WebExtension.Parameters.GetRawValue, value: 1 }
+    ]
+});
+
+OSF.DDA.SafeArray.Delegate.ParameterMap.define({
+    type: OSF.DDA.MethodDispId.dispidGetSelectedViewMethod,
+    fromHost: [
+        { name: Microsoft.Office.WebExtension.Parameters.ViewType, value: 0 },
+        { name: Microsoft.Office.WebExtension.Parameters.ViewName, value: 1 }
+    ]
+});
+
+OSF.DDA.SafeArray.Delegate.ParameterMap.define({
+    type: OSF.DDA.MethodDispId.dispidSetTaskFieldMethod,
+    toHost: [
+        { name: Microsoft.Office.WebExtension.Parameters.TaskId, value: 0 },
+        { name: Microsoft.Office.WebExtension.Parameters.FieldId, value: 1 },
+        { name: Microsoft.Office.WebExtension.Parameters.FieldValue, value: 2 }
+    ]
+});
+
+OSF.DDA.SafeArray.Delegate.ParameterMap.define({
+    type: OSF.DDA.MethodDispId.dispidSetResourceFieldMethod,
+    toHost: [
+        { name: Microsoft.Office.WebExtension.Parameters.ResourceId, value: 0 },
+        { name: Microsoft.Office.WebExtension.Parameters.FieldId, value: 1 },
+        { name: Microsoft.Office.WebExtension.Parameters.FieldValue, value: 2 }
+    ]
+});
+
+OSF.DDA.SafeArray.Delegate.ParameterMap.define({
+    type: OSF.DDA.MethodDispId.dispidGetMaxTaskIndexMethod,
+    fromHost: [
+        { name: Microsoft.Office.WebExtension.Parameters.TaskIndex, value: OSF.DDA.SafeArray.Delegate.ParameterMap.self }
+    ]
+});
+
+OSF.DDA.SafeArray.Delegate.ParameterMap.define({
+    type: OSF.DDA.MethodDispId.dispidGetMaxResourceIndexMethod,
+    fromHost: [
+        { name: Microsoft.Office.WebExtension.Parameters.ResourceIndex, value: OSF.DDA.SafeArray.Delegate.ParameterMap.self }
+    ]
+});
+
+OSF.DDA.SafeArray.Delegate.ParameterMap.define({ type: OSF.DDA.EventDispId.dispidTaskSelectionChangedEvent });
+
+OSF.DDA.SafeArray.Delegate.ParameterMap.define({ type: OSF.DDA.EventDispId.dispidResourceSelectionChangedEvent });
+
+OSF.DDA.SafeArray.Delegate.ParameterMap.define({ type: OSF.DDA.EventDispId.dispidViewSelectionChangedEvent });
