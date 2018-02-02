@@ -1,6 +1,6 @@
 // Type definitions for Office.js
 // Project: http://dev.office.com
-// Definitions by: OfficeDev <https://github.com/OfficeDev>, Lance Austin <https://github.com/LanceEA>
+// Definitions by: OfficeDev <https://github.com/OfficeDev>, Lance Austin <https://github.com/LanceEA>, Michael Zlatkovsky <https://github.com/Zlatkovsky>, Kim Brandl <https://github.com/kbrandl>, Ricky Kirkham <https://github.com/Rick-Kirkham>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 /*
@@ -134,17 +134,14 @@ declare namespace Office {
     export interface Error {
         /**
          * Gets the numeric code of the error.
-         * @since 1.0
          */
         code: number;
         /**
          * Gets the name of the error.
-         * @since 1.0
          */
         message: string;
         /**
          * Gets a detailed description of the error.
-         * @since 1.0
          */
         name: string;
     }
@@ -244,7 +241,7 @@ declare namespace Office {
         bodyBackgroundColor: string;
         bodyForegroundColor: string;
         controlBackgroundColor: string;
-        controlForgroundColor: string;
+        controlForegroundColor: string;
     }
     /**
      * Dialog object returned as part of the displayDialogAsync callback. The object exposes methods for registering event handlers and closing the dialog
@@ -2617,6 +2614,8 @@ declare namespace OfficeExtension {
 		/** The value of the result that is retrieved from the document after "context.sync()" is invoked. */
 		value: T;
 	}
+
+	type RetrieveResult<T extends ClientObject, TData> = { $proxy: T; $isNullObject: boolean; toJSON: () => TData; } & TData;
 }
 declare namespace OfficeExtension {
 	export interface DebugInfo {
@@ -2917,6 +2916,502 @@ declare namespace OfficeCore {
         var generalException: string;
     }
     module Interfaces {
+    }
+}
+declare namespace OfficeCore {
+    /**
+     *
+     * Represents a single comment in the document.
+     *
+     * [Api set: Comments 1.1]
+     */
+    class Comment extends OfficeExtension.ClientObject {
+        /**
+         *
+         * Gets this comment's parent. If this is a root comment, throws.
+         *
+         * [Api set: Comments 1.1]
+         */
+        readonly parent: OfficeCore.Comment;
+        /**
+         *
+         * Gets this comment's parent. If this is a root comment, returns a null object.
+         *
+         * [Api set: Comments 1.1]
+         */
+        readonly parentOrNullObject: OfficeCore.Comment;
+        /**
+         *
+         * Gets the replies to this comment. If this is not a root comment, returns an empty collection.
+         *
+         * [Api set: Comments 1.1]
+         */
+        readonly replies: OfficeCore.CommentCollection;
+        /**
+         *
+         * Gets an object representing the comment's author. Read-only.
+         *
+         * [Api set: Comments 1.1]
+         */
+        readonly author: OfficeCore.CommentAuthor;
+        /**
+         *
+         * Gets when the comment was created. Read-only.
+         *
+         * [Api set: Comments 1.1]
+         */
+        readonly created: Date;
+        /**
+         *
+         * Returns a value that uniquely identifies the comment in a given document. Read-only.
+         *
+         * [Api set: Comments 1.1]
+         */
+        readonly id: string;
+        /**
+         *
+         * Gets the level of the comment: 0 if it is a root comment, or 1 if it is a reply. Read-only.
+         *
+         * [Api set: Comments 1.1]
+         */
+        readonly level: number;
+        /**
+         *
+         * Gets the comment's mentions.
+         *
+         * [Api set: Comments 1.1]
+         */
+        readonly mentions: Array<OfficeCore.CommentMention>;
+        /**
+         *
+         * Gets or sets whether this comment is resolved.
+         *
+         * [Api set: Comments 1.1]
+         */
+        resolved: boolean;
+        /**
+         *
+         * Gets or sets the comment's plain text, without formatting.
+         *
+         * [Api set: Comments 1.1]
+         */
+        text: string;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        set(properties: Interfaces.CommentUpdateData, options?: {
+            /**
+             * Throw an error if the passed-in property list includes read-only properties (default = true).
+             */
+            throwOnReadOnly?: boolean;
+        }): void;
+        /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
+        set(properties: Comment): void;
+        /**
+         *
+         * Deletes this comment. If this is a root comment, deletes the entire comment thread.
+         *
+         * [Api set: Comments 1.1]
+         */
+        delete(): void;
+        /**
+         *
+         * Gets this comment's parent. If this is a root comment, returns a new comment object representing itself.
+            This method is useful for accessing thread-level properties from either a reply or the root comment.
+            
+            e.g. comment.getParentOrSelf().resolved = true;
+         *
+         * [Api set: Comments 1.1]
+         */
+        getParentOrSelf(): OfficeCore.Comment;
+        /**
+         *
+         * Gets the comment's rich text in the specified markup format.
+         *
+         * [Api set: Comments 1.1]
+         */
+        getRichText(format: string): OfficeExtension.ClientResult<string>;
+        /**
+         *
+         * Appends a new reply to the comment's thread.
+         *
+         * [Api set: Comments 1.1]
+         *
+         * @param text The body of the reply.
+         * @param format The markup format of the text parameter.
+         * @returns
+         */
+        reply(text: string, format: string): OfficeCore.Comment;
+        /**
+         *
+         * Sets the comment's rich text.
+         *
+         * [Api set: Comments 1.1]
+         *
+         * @param text The text of the comment.
+         * @param format The markup format of the 'text' parameter.
+         */
+        setRichText(text: string, format: string): OfficeExtension.ClientResult<string>;
+        /**
+         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+         */
+        load(option?: OfficeCore.Interfaces.CommentLoadOptions): OfficeCore.Comment;
+        load(option?: string | string[]): OfficeCore.Comment;
+        load(option?: {
+            select?: string;
+            expand?: string;
+        }): OfficeCore.Comment;
+        toJSON(): OfficeCore.Interfaces.CommentData;
+    }
+    /**
+     *
+     * Represents the author of a comment.
+     *
+     * [Api set: Comments 1.1]
+     */
+    interface CommentAuthor {
+        /**
+         *
+         * The email address of the author.
+         *
+         * [Api set: Comments 1.1]
+         */
+        email: string;
+        /**
+         *
+         * The name of the author.
+         *
+         * [Api set: Comments 1.1]
+         */
+        name: string;
+    }
+    /**
+     *
+     * Represents a mention within a comment.
+     *
+     * [Api set: Comments 1.1]
+     */
+    interface CommentMention {
+        /**
+         *
+         * The email address of the person mentioned.
+         *
+         * [Api set: Comments 1.1]
+         */
+        email: string;
+        /**
+         *
+         * The name of the person mentioned.
+         *
+         * [Api set: Comments 1.1]
+         */
+        name: string;
+        /**
+         *
+         * The text displayed for the mention.
+         *
+         * [Api set: Comments 1.1]
+         */
+        text: string;
+    }
+    /**
+     *
+     * Represents a collection of comments, either replies to a specific comment thread, or all comments in the document or part of the document.
+     *
+     * [Api set: Comments 1.1]
+     */
+    class CommentCollection extends OfficeExtension.ClientObject {
+        /** Gets the loaded child items in this collection. */
+        readonly items: Array<OfficeCore.Comment>;
+        /**
+         *
+         * Returns the number of comments in the collection. Read-only.
+         *
+         * [Api set: Comments 1.1]
+         */
+        getCount(): OfficeExtension.ClientResult<number>;
+        /**
+         *
+         * Gets a comment object using its id.
+         *
+         * [Api set: Comments 1.1]
+         */
+        getItem(id: string): OfficeCore.Comment;
+        /**
+         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+         */
+        load(option?: OfficeCore.Interfaces.CommentCollectionLoadOptions & OfficeCore.Interfaces.CollectionLoadOptions): OfficeCore.CommentCollection;
+        load(option?: string | string[]): OfficeCore.CommentCollection;
+        load(option?: OfficeExtension.LoadOption): OfficeCore.CommentCollection;
+        toJSON(): OfficeCore.Interfaces.CommentCollectionData;
+    }
+    /**
+     *
+     * Represents a markup (rich) text format.
+     *
+     * [Api set: Comments 1.1]
+     */
+    namespace CommentTextFormat {
+        var plain: string;
+        var markdown: string;
+        var delta: string;
+    }
+    namespace ErrorCodes {
+        var apiNotAvailable: string;
+        var clientError: string;
+        var generalException: string;
+        var invalidArgument: string;
+        var invalidGrant: string;
+        var invalidResourceUrl: string;
+        var serverError: string;
+        var unsupportedUserIdentity: string;
+        var userNotSignIn: string;
+    }
+    module Interfaces {
+        interface CollectionLoadOptions {
+            $top?: number;
+            $skip?: number;
+        }
+        /** An interface for updating data on the Comment object, for use in "comment.set({ ... })". */
+        interface CommentUpdateData {
+            /**
+             *
+             * Gets or sets whether this comment is resolved.
+             *
+             * [Api set: Comments 1.1]
+             */
+            resolved?: boolean;
+            /**
+             *
+             * Gets or sets the comment's plain text, without formatting.
+             *
+             * [Api set: Comments 1.1]
+             */
+            text?: string;
+        }
+        /** An interface for updating data on the CommentCollection object, for use in "commentCollection.set({ ... })". */
+        interface CommentCollectionUpdateData {
+            items?: OfficeCore.Interfaces.CommentData[];
+        }
+        /** An interface describing the data returned by calling "comment.toJSON()". */
+        interface CommentData {
+            /**
+            *
+            * Gets this comment's parent. If this is a root comment, throws.
+            *
+            * [Api set: Comments 1.1]
+            */
+            parent?: OfficeCore.Interfaces.CommentData;
+            /**
+            *
+            * Gets this comment's parent. If this is a root comment, returns a null object.
+            *
+            * [Api set: Comments 1.1]
+            */
+            parentOrNullObject?: OfficeCore.Interfaces.CommentData;
+            /**
+            *
+            * Gets the replies to this comment. If this is not a root comment, returns an empty collection.
+            *
+            * [Api set: Comments 1.1]
+            */
+            replies?: OfficeCore.Interfaces.CommentData[];
+            /**
+             *
+             * Gets an object representing the comment's author. Read-only.
+             *
+             * [Api set: Comments 1.1]
+             */
+            author?: OfficeCore.CommentAuthor;
+            /**
+             *
+             * Gets when the comment was created. Read-only.
+             *
+             * [Api set: Comments 1.1]
+             */
+            created?: Date;
+            /**
+             *
+             * Returns a value that uniquely identifies the comment in a given document. Read-only.
+             *
+             * [Api set: Comments 1.1]
+             */
+            id?: string;
+            /**
+             *
+             * Gets the level of the comment: 0 if it is a root comment, or 1 if it is a reply. Read-only.
+             *
+             * [Api set: Comments 1.1]
+             */
+            level?: number;
+            /**
+             *
+             * Gets the comment's mentions.
+             *
+             * [Api set: Comments 1.1]
+             */
+            mentions?: Array<OfficeCore.CommentMention>;
+            /**
+             *
+             * Gets or sets whether this comment is resolved.
+             *
+             * [Api set: Comments 1.1]
+             */
+            resolved?: boolean;
+            /**
+             *
+             * Gets or sets the comment's plain text, without formatting.
+             *
+             * [Api set: Comments 1.1]
+             */
+            text?: string;
+        }
+        /** An interface describing the data returned by calling "commentCollection.toJSON()". */
+        interface CommentCollectionData {
+            items?: OfficeCore.Interfaces.CommentData[];
+        }
+        /**
+         *
+         * Represents a single comment in the document.
+         *
+         * [Api set: Comments 1.1]
+         */
+        interface CommentLoadOptions {
+            $all?: boolean;
+            /**
+            *
+            * Gets this comment's parent. If this is a root comment, throws.
+            *
+            * [Api set: Comments 1.1]
+            */
+            parent?: OfficeCore.Interfaces.CommentLoadOptions;
+            /**
+            *
+            * Gets this comment's parent. If this is a root comment, returns a null object.
+            *
+            * [Api set: Comments 1.1]
+            */
+            parentOrNullObject?: OfficeCore.Interfaces.CommentLoadOptions;
+            /**
+             *
+             * Gets an object representing the comment's author. Read-only.
+             *
+             * [Api set: Comments 1.1]
+             */
+            author?: boolean;
+            /**
+             *
+             * Gets when the comment was created. Read-only.
+             *
+             * [Api set: Comments 1.1]
+             */
+            created?: boolean;
+            /**
+             *
+             * Returns a value that uniquely identifies the comment in a given document. Read-only.
+             *
+             * [Api set: Comments 1.1]
+             */
+            id?: boolean;
+            /**
+             *
+             * Gets the level of the comment: 0 if it is a root comment, or 1 if it is a reply. Read-only.
+             *
+             * [Api set: Comments 1.1]
+             */
+            level?: boolean;
+            /**
+             *
+             * Gets the comment's mentions.
+             *
+             * [Api set: Comments 1.1]
+             */
+            mentions?: boolean;
+            /**
+             *
+             * Gets or sets whether this comment is resolved.
+             *
+             * [Api set: Comments 1.1]
+             */
+            resolved?: boolean;
+            /**
+             *
+             * Gets or sets the comment's plain text, without formatting.
+             *
+             * [Api set: Comments 1.1]
+             */
+            text?: boolean;
+        }
+        /**
+         *
+         * Represents a collection of comments, either replies to a specific comment thread, or all comments in the document or part of the document.
+         *
+         * [Api set: Comments 1.1]
+         */
+        interface CommentCollectionLoadOptions {
+            $all?: boolean;
+            /**
+            *
+            * For EACH ITEM in the collection: Gets this comment's parent. If this is a root comment, throws.
+            *
+            * [Api set: Comments 1.1]
+            */
+            parent?: OfficeCore.Interfaces.CommentLoadOptions;
+            /**
+            *
+            * For EACH ITEM in the collection: Gets this comment's parent. If this is a root comment, returns a null object.
+            *
+            * [Api set: Comments 1.1]
+            */
+            parentOrNullObject?: OfficeCore.Interfaces.CommentLoadOptions;
+            /**
+             *
+             * For EACH ITEM in the collection: Gets an object representing the comment's author. Read-only.
+             *
+             * [Api set: Comments 1.1]
+             */
+            author?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Gets when the comment was created. Read-only.
+             *
+             * [Api set: Comments 1.1]
+             */
+            created?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Returns a value that uniquely identifies the comment in a given document. Read-only.
+             *
+             * [Api set: Comments 1.1]
+             */
+            id?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Gets the level of the comment: 0 if it is a root comment, or 1 if it is a reply. Read-only.
+             *
+             * [Api set: Comments 1.1]
+             */
+            level?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Gets the comment's mentions.
+             *
+             * [Api set: Comments 1.1]
+             */
+            mentions?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Gets or sets whether this comment is resolved.
+             *
+             * [Api set: Comments 1.1]
+             */
+            resolved?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Gets or sets the comment's plain text, without formatting.
+             *
+             * [Api set: Comments 1.1]
+             */
+            text?: boolean;
+        }
     }
 }
 
@@ -3250,11 +3745,11 @@ declare namespace Excel {
     }
     /**
      *
-     * Provides information about the worksheet that raised the DataChanged event.
+     * Provides information about the worksheet that raised the Changed event.
      *
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    interface WorksheetDataChangedEventArgs {
+    interface WorksheetChangedEventArgs {
         /**
          *
          * Gets the range address that represents the changed area of a specific worksheet.
@@ -3264,25 +3759,25 @@ declare namespace Excel {
         address: string;
         /**
          *
-         * Gets the change type that represents how the DataChanged event is triggered. See Excel.DataChangeType for details.
+         * Gets the change type that represents how the Changed event is triggered. See Excel.DataChangeType for details.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        changeType: string;
+        changeType: Excel.DataChangeType | "Others" | "RangeEdited" | "RowInserted" | "RowDeleted" | "ColumnInserted" | "ColumnDeleted" | "CellInserted" | "CellDeleted";
         /**
          *
          * Gets the source of the event. See Excel.EventSource for details.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        source: string;
+        source: Excel.EventSource | "Local" | "Remote";
         /**
          *
          * Gets the type of the event. See Excel.EventType for details.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        type: string;
+        type: Excel.EventType | "WorksheetChanged" | "WorksheetSelectionChanged" | "WorksheetAdded" | "WorksheetActivated" | "WorksheetDeactivated" | "TableChanged" | "TableSelectionChanged" | "WorksheetDeleted" | "ChartAdded" | "ChartActivated" | "ChartDeactivated" | "ChartDeleted" | "WorksheetCalculated";
         /**
          *
          * Gets the id of the worksheet in which the data changed.
@@ -3290,14 +3785,28 @@ declare namespace Excel {
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         worksheetId: string;
+        /**
+         *
+         * Gets the range that represents the changed area of a specific worksheet.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getRange(ctx: Excel.RequestContext): Excel.Range;
+        /**
+         *
+         * Gets the range that represents the changed area of a specific worksheet. It might return null object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getRangeOrNullObject(ctx: Excel.RequestContext): Excel.Range;
     }
     /**
      *
-     * Provides information about the table that raised the DataChanged event.
+     * Provides information about the table that raised the Changed event.
      *
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    interface TableDataChangedEventArgs {
+    interface TableChangedEventArgs {
         /**
          *
          * Gets the address that represents the changed area of a table on a specific worksheet.
@@ -3307,18 +3816,18 @@ declare namespace Excel {
         address: string;
         /**
          *
-         * Gets the change type that represents how the DataChanged event is triggered. See Excel.DataChangeType for details.
+         * Gets the change type that represents how the Changed event is triggered. See Excel.DataChangeType for details.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        changeType: string;
+        changeType: Excel.DataChangeType | "Others" | "RangeEdited" | "RowInserted" | "RowDeleted" | "ColumnInserted" | "ColumnDeleted" | "CellInserted" | "CellDeleted";
         /**
          *
          * Gets the source of the event. See Excel.EventSource for details.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        source: string;
+        source: Excel.EventSource | "Local" | "Remote";
         /**
          *
          * Gets the id of the table in which the data changed.
@@ -3332,7 +3841,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        type: string;
+        type: Excel.EventType | "WorksheetChanged" | "WorksheetSelectionChanged" | "WorksheetAdded" | "WorksheetActivated" | "WorksheetDeactivated" | "TableChanged" | "TableSelectionChanged" | "WorksheetDeleted" | "ChartAdded" | "ChartActivated" | "ChartDeactivated" | "ChartDeleted" | "WorksheetCalculated";
         /**
          *
          * Gets the id of the worksheet in which the data changed.
@@ -3340,6 +3849,20 @@ declare namespace Excel {
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         worksheetId: string;
+        /**
+         *
+         * Gets the range that represents the changed area of a table on a specific worksheet.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getRange(ctx: Excel.RequestContext): Excel.Range;
+        /**
+         *
+         * Gets the range that represents the changed area of a table on a specific worksheet. It might return null object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getRangeOrNullObject(ctx: Excel.RequestContext): Excel.Range;
     }
     /**
      *
@@ -3354,7 +3877,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        type: string;
+        type: Excel.EventType | "WorksheetChanged" | "WorksheetSelectionChanged" | "WorksheetAdded" | "WorksheetActivated" | "WorksheetDeactivated" | "TableChanged" | "TableSelectionChanged" | "WorksheetDeleted" | "ChartAdded" | "ChartActivated" | "ChartDeactivated" | "ChartDeleted" | "WorksheetCalculated";
         /**
          *
          * Gets the id of the worksheet that is activated.
@@ -3376,7 +3899,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        type: string;
+        type: Excel.EventType | "WorksheetChanged" | "WorksheetSelectionChanged" | "WorksheetAdded" | "WorksheetActivated" | "WorksheetDeactivated" | "TableChanged" | "TableSelectionChanged" | "WorksheetDeleted" | "ChartAdded" | "ChartActivated" | "ChartDeactivated" | "ChartDeleted" | "WorksheetCalculated";
         /**
          *
          * Gets the id of the worksheet that is deactivated.
@@ -3405,7 +3928,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        type: string;
+        type: Excel.EventType | "WorksheetChanged" | "WorksheetSelectionChanged" | "WorksheetAdded" | "WorksheetActivated" | "WorksheetDeactivated" | "TableChanged" | "TableSelectionChanged" | "WorksheetDeleted" | "ChartAdded" | "ChartActivated" | "ChartDeactivated" | "ChartDeleted" | "WorksheetCalculated";
         /**
          *
          * Gets the id of the worksheet in which the selection changed.
@@ -3448,7 +3971,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        type: string;
+        type: Excel.EventType | "WorksheetChanged" | "WorksheetSelectionChanged" | "WorksheetAdded" | "WorksheetActivated" | "WorksheetDeactivated" | "TableChanged" | "TableSelectionChanged" | "WorksheetDeleted" | "ChartAdded" | "ChartActivated" | "ChartDeactivated" | "ChartDeleted" | "WorksheetCalculated";
         /**
          *
          * Gets the id of the worksheet in which the selection changed.
@@ -3470,14 +3993,14 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        source: string;
+        source: Excel.EventSource | "Local" | "Remote";
         /**
          *
          * Gets the type of the event. See Excel.EventType for details.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        type: string;
+        type: Excel.EventType | "WorksheetChanged" | "WorksheetSelectionChanged" | "WorksheetAdded" | "WorksheetActivated" | "WorksheetDeactivated" | "TableChanged" | "TableSelectionChanged" | "WorksheetDeleted" | "ChartAdded" | "ChartActivated" | "ChartDeactivated" | "ChartDeleted" | "WorksheetCalculated";
         /**
          *
          * Gets the id of the worksheet that is added to the workbook.
@@ -3499,17 +4022,17 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        source: string;
+        source: Excel.EventSource | "Local" | "Remote";
         /**
          *
          * Gets the type of the event. See Excel.EventType for details.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        type: string;
+        type: Excel.EventType | "WorksheetChanged" | "WorksheetSelectionChanged" | "WorksheetAdded" | "WorksheetActivated" | "WorksheetDeactivated" | "TableChanged" | "TableSelectionChanged" | "WorksheetDeleted" | "ChartAdded" | "ChartActivated" | "ChartDeactivated" | "ChartDeleted" | "WorksheetCalculated";
         /**
          *
-         * Gets the id of the worksheet that is added to the workbook.
+         * Gets the id of the worksheet that is deleted from the workbook.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
@@ -3535,14 +4058,14 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        source: string;
+        source: Excel.EventSource | "Local" | "Remote";
         /**
          *
          * Gets the type of the event. See Excel.EventType for details.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        type: string;
+        type: Excel.EventType | "WorksheetChanged" | "WorksheetSelectionChanged" | "WorksheetAdded" | "WorksheetActivated" | "WorksheetDeactivated" | "TableChanged" | "TableSelectionChanged" | "WorksheetDeleted" | "ChartAdded" | "ChartActivated" | "ChartDeactivated" | "ChartDeleted" | "WorksheetCalculated";
         /**
          *
          * Gets the id of the worksheet in which the chart is added.
@@ -3571,7 +4094,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        type: string;
+        type: Excel.EventType | "WorksheetChanged" | "WorksheetSelectionChanged" | "WorksheetAdded" | "WorksheetActivated" | "WorksheetDeactivated" | "TableChanged" | "TableSelectionChanged" | "WorksheetDeleted" | "ChartAdded" | "ChartActivated" | "ChartDeactivated" | "ChartDeleted" | "WorksheetCalculated";
         /**
          *
          * Gets the id of the worksheet in which the chart is activated.
@@ -3600,7 +4123,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        type: string;
+        type: Excel.EventType | "WorksheetChanged" | "WorksheetSelectionChanged" | "WorksheetAdded" | "WorksheetActivated" | "WorksheetDeactivated" | "TableChanged" | "TableSelectionChanged" | "WorksheetDeleted" | "ChartAdded" | "ChartActivated" | "ChartDeactivated" | "ChartDeleted" | "WorksheetCalculated";
         /**
          *
          * Gets the id of the worksheet in which the chart is deactivated.
@@ -3629,14 +4152,14 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        source: string;
+        source: Excel.EventSource | "Local" | "Remote";
         /**
          *
          * Gets the type of the event. See Excel.EventType for details.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        type: string;
+        type: Excel.EventType | "WorksheetChanged" | "WorksheetSelectionChanged" | "WorksheetAdded" | "WorksheetActivated" | "WorksheetDeactivated" | "TableChanged" | "TableSelectionChanged" | "WorksheetDeleted" | "ChartAdded" | "ChartActivated" | "ChartDeactivated" | "ChartDeleted" | "WorksheetCalculated";
         /**
          *
          * Gets the id of the worksheet in which the chart is deleted.
@@ -3658,7 +4181,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        type: string;
+        type: Excel.EventType | "WorksheetChanged" | "WorksheetSelectionChanged" | "WorksheetAdded" | "WorksheetActivated" | "WorksheetDeactivated" | "TableChanged" | "TableSelectionChanged" | "WorksheetDeleted" | "ChartAdded" | "ChartActivated" | "ChartDeactivated" | "ChartDeleted" | "WorksheetCalculated";
         /**
          *
          * Gets the id of the worksheet that is calculated.
@@ -3671,7 +4194,7 @@ declare namespace Excel {
      *
      * Represents the Excel Runtime class.
      *
-     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     * [Api set: ExcelApi 1.5]
      */
     class Runtime extends OfficeExtension.ClientObject {
         /**
@@ -3682,12 +4205,7 @@ declare namespace Excel {
          */
         enableEvents: boolean;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.RuntimeUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.RuntimeUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: Runtime): void;
         /**
@@ -3710,11 +4228,15 @@ declare namespace Excel {
     class Application extends OfficeExtension.ClientObject {
         /**
          *
-         * Returns the calculation mode used in the workbook. See Excel.CalculationMode for details. Read-only.
+         * Returns the calculation mode used in the workbook. See Excel.CalculationMode for details.
          *
-         * [Api set: ExcelApi 1.1]
+         * [Api set: ExcelApi 1.1 for get, 1.8 for set]
          */
-        readonly calculationMode: string;
+        calculationMode: Excel.CalculationMode | "Automatic" | "AutomaticExceptTables" | "Manual";
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        set(properties: Interfaces.ApplicationUpdateData, options?: OfficeExtension.UpdateOptions): void;
+        /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
+        set(properties: Application): void;
         /**
          *
          * Recalculate all currently opened workbooks in Excel.
@@ -3723,7 +4245,16 @@ declare namespace Excel {
          *
          * @param calculationType Specifies the calculation type to use. See Excel.CalculationType for details.
          */
-        calculate(calculationType: string): void;
+        calculate(calculationType: Excel.CalculationType): void;
+        /**
+         *
+         * Recalculate all currently opened workbooks in Excel.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param calculationType Specifies the calculation type to use. See Excel.CalculationType for details.
+         */
+        calculate(calculationType: "Recalculate" | "Full" | "FullRebuild"): void;
         /**
          *
          * Creates a new hidden workbook by using an optional base64 encoded .xlsx file.
@@ -3856,7 +4387,6 @@ declare namespace Excel {
          * [Api set: ExcelApi 1.1]
          */
         readonly worksheets: Excel.WorksheetCollection;
-        readonly pivotCaches: Excel.PivotCacheCollection;
         /**
          *
          * Gets the workbook name.
@@ -3880,12 +4410,7 @@ declare namespace Excel {
          */
         saved: boolean;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.WorkbookUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.WorkbookUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: Workbook): void;
         /**
@@ -3972,14 +4497,28 @@ declare namespace Excel {
     class WorkbookCreated extends OfficeExtension.ClientObject {
         /**
          *
+         * Returns a value that uniquely identifies the WorkbookCreated object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly id: string;
+        /**
+         *
          * Open the workbook.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         open(): void;
-        toJSON(): {
-            [key: string]: string;
-        };
+        /**
+         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+         */
+        load(option?: Excel.Interfaces.WorkbookCreatedLoadOptions): Excel.WorkbookCreated;
+        load(option?: string | string[]): Excel.WorkbookCreated;
+        load(option?: {
+            select?: string;
+            expand?: string;
+        }): Excel.WorkbookCreated;
+        toJSON(): Excel.Interfaces.WorkbookCreatedData;
     }
     /**
      *
@@ -4104,14 +4643,9 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1 for reading visibility; 1.2 for setting it.]
          */
-        visibility: string;
+        visibility: Excel.SheetVisibility | "Visible" | "Hidden" | "VeryHidden";
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.WorksheetUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.WorksheetUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: Worksheet): void;
         /**
@@ -4134,7 +4668,14 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        copy(positionType?: string, relativeTo?: Excel.Worksheet): Excel.Worksheet;
+        copy(positionType?: Excel.WorksheetPositionType, relativeTo?: Excel.Worksheet): Excel.Worksheet;
+        /**
+         *
+         * Copy a worksheet and place it at the specified position. Return the copied worksheet.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        copy(positionType?: "None" | "Before" | "After" | "Beginning" | "End", relativeTo?: Excel.Worksheet): Excel.Worksheet;
         /**
          *
          * Deletes the worksheet from the workbook.
@@ -4262,7 +4803,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        readonly onDataChanged: OfficeExtension.EventHandlers<Excel.WorksheetDataChangedEventArgs>;
+        readonly onChanged: OfficeExtension.EventHandlers<Excel.WorksheetChangedEventArgs>;
         /**
          *
          * Occurs when the worksheet is deactivated.
@@ -4287,7 +4828,7 @@ declare namespace Excel {
      */
     class WorksheetCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: Array<Excel.Worksheet>;
+        readonly items: Excel.Worksheet[];
         /**
          *
          * Adds a new worksheet to the workbook. The worksheet will be added at the end of existing worksheets. If you wish to activate the newly added worksheet, call ".activate() on it.
@@ -4543,7 +5084,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        selectionMode?: string;
+        selectionMode?: Excel.ProtectionSelectionMode | "Normal" | "Unlocked" | "None";
     }
     /**
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
@@ -4678,6 +5219,7 @@ declare namespace Excel {
         /**
          *
          * Represents the total number of columns in the range. Read-only.
+            If the range has multiple areas, null will be returned.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -4702,21 +5244,21 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          */
-        formulas: Array<Array<any>>;
+        formulas: any[][];
         /**
          *
          * Represents the formula in A1-style notation, in the user's language and number-formatting locale.  For example, the English "=SUM(A1, 1.5)" formula would become "=SUMME(A1; 1,5)" in German.
          *
          * [Api set: ExcelApi 1.1]
          */
-        formulasLocal: Array<Array<any>>;
+        formulasLocal: any[][];
         /**
          *
          * Represents the formula in R1C1-style notation.
          *
          * [Api set: ExcelApi 1.2]
          */
-        formulasR1C1: Array<Array<any>>;
+        formulasR1C1: any[][];
         /**
          *
          * Represents if all cells of the current range are hidden.
@@ -4737,17 +5279,18 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          */
-        numberFormat: Array<Array<any>>;
+        numberFormat: any[][];
         /**
          *
          * Represents Excel's number format code for the given cell as a string in the language of the user.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        numberFormatLocal: Array<Array<any>>;
+        numberFormatLocal: any[][];
         /**
          *
          * Returns the total number of rows in the range. Read-only.
+            If the range has multiple areas, null will be returned.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -4781,21 +5324,21 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          */
-        readonly text: Array<Array<string>>;
+        readonly text: string[][];
         /**
          *
          * Represents the type of data of each cell. Read-only.
          *
          * [Api set: ExcelApi 1.1]
          */
-        readonly valueTypes: Array<Array<string>>;
+        readonly valueTypes: Excel.RangeValueType[][];
         /**
          *
          * Represents the raw values of the specified range. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
          *
          * [Api set: ExcelApi 1.1]
          */
-        values: Array<Array<any>>;
+        values: any[][];
         /**
          *
          * Represents if the current range is an entire column.
@@ -4811,12 +5354,7 @@ declare namespace Excel {
          */
         readonly isEntireRow: boolean;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.RangeUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.RangeUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: Range): void;
         /**
@@ -4834,7 +5372,16 @@ declare namespace Excel {
          *
          * @param applyTo Determines the type of clear action. See Excel.ClearApplyTo for details.
          */
-        clear(applyTo?: string): void;
+        clear(applyTo?: Excel.ClearApplyTo): void;
+        /**
+         *
+         * Clear range values, format, fill, border, etc.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param applyTo Determines the type of clear action. See Excel.ClearApplyTo for details.
+         */
+        clear(applyTo?: "All" | "Formats" | "Contents" | "Hyperlinks" | "RemoveHyperlinks"): void;
         /**
          *
          * Deletes the cells associated with the range.
@@ -4843,7 +5390,16 @@ declare namespace Excel {
          *
          * @param shift Specifies which way to shift the cells. See Excel.DeleteShiftDirection for details.
          */
-        delete(shift: string): void;
+        delete(shift: Excel.DeleteShiftDirection): void;
+        /**
+         *
+         * Deletes the cells associated with the range.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param shift Specifies which way to shift the cells. See Excel.DeleteShiftDirection for details.
+         */
+        delete(shift: "Up" | "Left"): void;
         /**
          *
          * Gets a Range object with the same top-left cell as the current Range object, but with the specified numbers of rows and columns.
@@ -5047,7 +5603,16 @@ declare namespace Excel {
          *
          * @param shift Specifies which way to shift the cells. See Excel.InsertShiftDirection for details.
          */
-        insert(shift: string): Excel.Range;
+        insert(shift: Excel.InsertShiftDirection): Excel.Range;
+        /**
+         *
+         * Inserts a cell or a range of cells into the worksheet in place of this range, and shifts the other cells to make space. Returns a new Range object at the now blank space.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param shift Specifies which way to shift the cells. See Excel.InsertShiftDirection for details.
+         */
+        insert(shift: "Down" | "Right"): Excel.Range;
         /**
          *
          * Merge the range cells into one region in the worksheet.
@@ -5162,7 +5727,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.3]
          */
-        readonly cellAddresses: Array<Array<any>>;
+        readonly cellAddresses: any[][];
         /**
          *
          * Returns the number of visible columns. Read-only.
@@ -5176,21 +5741,21 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.3]
          */
-        formulas: Array<Array<any>>;
+        formulas: any[][];
         /**
          *
          * Represents the formula in A1-style notation, in the user's language and number-formatting locale.  For example, the English "=SUM(A1, 1.5)" formula would become "=SUMME(A1; 1,5)" in German.
          *
          * [Api set: ExcelApi 1.3]
          */
-        formulasLocal: Array<Array<any>>;
+        formulasLocal: any[][];
         /**
          *
          * Represents the formula in R1C1-style notation.
          *
          * [Api set: ExcelApi 1.3]
          */
-        formulasR1C1: Array<Array<any>>;
+        formulasR1C1: any[][];
         /**
          *
          * Returns a value that represents the index of the RangeView. Read-only.
@@ -5204,7 +5769,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.3]
          */
-        numberFormat: Array<Array<any>>;
+        numberFormat: any[][];
         /**
          *
          * Returns the number of visible rows. Read-only.
@@ -5218,28 +5783,23 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.3]
          */
-        readonly text: Array<Array<string>>;
+        readonly text: string[][];
         /**
          *
          * Represents the type of data of each cell. Read-only.
          *
          * [Api set: ExcelApi 1.3]
          */
-        readonly valueTypes: Array<Array<string>>;
+        readonly valueTypes: Excel.RangeValueType[][];
         /**
          *
          * Represents the raw values of the specified range view. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
          *
          * [Api set: ExcelApi 1.3]
          */
-        values: Array<Array<any>>;
+        values: any[][];
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.RangeViewUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.RangeViewUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: RangeView): void;
         /**
@@ -5268,7 +5828,7 @@ declare namespace Excel {
      */
     class RangeViewCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: Array<Excel.RangeView>;
+        readonly items: Excel.RangeView[];
         /**
          *
          * Gets the number of RangeView objects in the collection.
@@ -5301,7 +5861,7 @@ declare namespace Excel {
      */
     class SettingCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: Array<Excel.Setting>;
+        readonly items: Excel.Setting[];
         /**
          *
          * Sets or adds the specified setting to the workbook.
@@ -5377,12 +5937,7 @@ declare namespace Excel {
          */
         value: any;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.SettingUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.SettingUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: Setting): void;
         /**
@@ -5411,7 +5966,7 @@ declare namespace Excel {
      */
     class NamedItemCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: Array<Excel.NamedItem>;
+        readonly items: Excel.NamedItem[];
         /**
          *
          * Adds a new name to the collection of the given scope.
@@ -5524,14 +6079,14 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.4]
          */
-        readonly scope: string;
+        readonly scope: Excel.NamedItemScope | "Worksheet" | "Workbook";
         /**
          *
          * Indicates the type of the value returned by the name's formula. See Excel.NamedItemType for details. Read-only.
          *
          * [Api set: ExcelApi 1.1 for String,Integer,Double,Boolean,Range,Error; 1.7 for Array]
          */
-        readonly type: string;
+        readonly type: Excel.NamedItemType | "String" | "Integer" | "Double" | "Boolean" | "Range" | "Error" | "Array";
         /**
          *
          * Represents the value computed by the name's formula. For a named range, will return the range address. Read-only.
@@ -5547,12 +6102,7 @@ declare namespace Excel {
          */
         visible: boolean;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.NamedItemUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.NamedItemUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: NamedItem): void;
         /**
@@ -5600,14 +6150,14 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        readonly types: Array<Array<string>>;
+        readonly types: Excel.RangeValueType[][];
         /**
          *
          * Represents the values of each item in the named item array.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        readonly values: Array<Array<any>>;
+        readonly values: any[][];
         /**
          * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
          */
@@ -5639,7 +6189,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          */
-        readonly type: string;
+        readonly type: Excel.BindingType | "Range" | "Table" | "Text";
         /**
          *
          * Deletes the binding.
@@ -5701,7 +6251,7 @@ declare namespace Excel {
      */
     class BindingCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: Array<Excel.Binding>;
+        readonly items: Excel.Binding[];
         /**
          *
          * Returns the number of bindings in the collection. Read-only.
@@ -5719,7 +6269,18 @@ declare namespace Excel {
          * @param bindingType Type of binding. See Excel.BindingType.
          * @param id Name of binding.
          */
-        add(range: Excel.Range | string, bindingType: string, id: string): Excel.Binding;
+        add(range: Excel.Range | string, bindingType: Excel.BindingType, id: string): Excel.Binding;
+        /**
+         *
+         * Add a new binding to a particular Range.
+         *
+         * [Api set: ExcelApi 1.3]
+         *
+         * @param range Range to bind the binding to. May be an Excel Range object, or a string. If string, must contain the full address, including the sheet name
+         * @param bindingType Type of binding. See Excel.BindingType.
+         * @param id Name of binding.
+         */
+        add(range: Excel.Range | string, bindingType: "Range" | "Table" | "Text", id: string): Excel.Binding;
         /**
          *
          * Add a new binding based on a named item in the workbook.
@@ -5730,7 +6291,18 @@ declare namespace Excel {
          * @param bindingType Type of binding. See Excel.BindingType.
          * @param id Name of binding.
          */
-        addFromNamedItem(name: string, bindingType: string, id: string): Excel.Binding;
+        addFromNamedItem(name: string, bindingType: Excel.BindingType, id: string): Excel.Binding;
+        /**
+         *
+         * Add a new binding based on a named item in the workbook.
+         *
+         * [Api set: ExcelApi 1.3]
+         *
+         * @param name Name from which to create binding.
+         * @param bindingType Type of binding. See Excel.BindingType.
+         * @param id Name of binding.
+         */
+        addFromNamedItem(name: string, bindingType: "Range" | "Table" | "Text", id: string): Excel.Binding;
         /**
          *
          * Add a new binding based on the current selection.
@@ -5740,7 +6312,17 @@ declare namespace Excel {
          * @param bindingType Type of binding. See Excel.BindingType.
          * @param id Name of binding.
          */
-        addFromSelection(bindingType: string, id: string): Excel.Binding;
+        addFromSelection(bindingType: Excel.BindingType, id: string): Excel.Binding;
+        /**
+         *
+         * Add a new binding based on the current selection.
+         *
+         * [Api set: ExcelApi 1.3]
+         *
+         * @param bindingType Type of binding. See Excel.BindingType.
+         * @param id Name of binding.
+         */
+        addFromSelection(bindingType: "Range" | "Table" | "Text", id: string): Excel.Binding;
         /**
          *
          * Gets the number of bindings in the collection.
@@ -5791,7 +6373,7 @@ declare namespace Excel {
      */
     class TableCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: Array<Excel.Table>;
+        readonly items: Excel.Table[];
         /**
          *
          * Returns the number of tables in the workbook. Read-only.
@@ -5855,7 +6437,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        readonly onDataChanged: OfficeExtension.EventHandlers<Excel.TableDataChangedEventArgs>;
+        readonly onChanged: OfficeExtension.EventHandlers<Excel.TableChangedEventArgs>;
         toJSON(): Excel.Interfaces.TableCollectionData;
     }
     /**
@@ -5964,12 +6546,7 @@ declare namespace Excel {
          */
         style: string;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.TableUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.TableUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: Table): void;
         /**
@@ -6043,7 +6620,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        readonly onDataChanged: OfficeExtension.EventHandlers<Excel.TableDataChangedEventArgs>;
+        readonly onChanged: OfficeExtension.EventHandlers<Excel.TableChangedEventArgs>;
         /**
          *
          * Occurs when the selection changed on a specific table.
@@ -6061,7 +6638,7 @@ declare namespace Excel {
      */
     class TableColumnCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: Array<Excel.TableColumn>;
+        readonly items: Excel.TableColumn[];
         /**
          *
          * Returns the number of columns in the table. Read-only.
@@ -6163,14 +6740,9 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          */
-        values: Array<Array<any>>;
+        values: any[][];
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.TableColumnUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.TableColumnUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: TableColumn): void;
         /**
@@ -6232,7 +6804,7 @@ declare namespace Excel {
      */
     class TableRowCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: Array<Excel.TableRow>;
+        readonly items: Excel.TableRow[];
         /**
          *
          * Returns the number of rows in the table. Read-only.
@@ -6309,14 +6881,9 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          */
-        values: Array<Array<any>>;
+        values: any[][];
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.TableRowUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.TableRowUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: TableRow): void;
         /**
@@ -6385,14 +6952,9 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        readonly type: string;
+        readonly type: Excel.DataValidationType | "Invalid" | "None" | "WholeNumber" | "Decimal" | "List" | "Date" | "Time" | "TextLength" | "Custom" | "Inconsistent" | "MixedCriteria";
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.DataValidationUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.DataValidationUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: DataValidation): void;
         /**
@@ -6501,7 +7063,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        operator: string;
+        operator: Excel.DataValidationOperator | "Invalid" | "Between" | "NotBetween" | "EqualTo" | "NotEqualTo" | "GreaterThan" | "LessThan" | "GreaterThanOrEqualTo" | "LessThanOrEqualTo";
     }
     /**
      *
@@ -6534,7 +7096,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        operator: string;
+        operator: Excel.DataValidationOperator | "Invalid" | "Between" | "NotBetween" | "EqualTo" | "NotEqualTo" | "GreaterThan" | "LessThan" | "GreaterThanOrEqualTo" | "LessThanOrEqualTo";
     }
     /**
      *
@@ -6601,7 +7163,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        style: string;
+        style: Excel.DataValidationAlertStyle | "Invalid" | "Stop" | "Warning" | "Information";
         /**
          *
          * Represents error alert dialog title.
@@ -6676,6 +7238,13 @@ declare namespace Excel {
         readonly protection: Excel.FormatProtection;
         /**
          *
+         * Indicates if text is automatically indented when text alignment is set to equal distribution.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        addIndent: boolean;
+        /**
+         *
          * Gets or sets the width of all colums within the range. If the column widths are not uniform, null will be returned.
          *
          * [Api set: ExcelApi 1.2]
@@ -6687,7 +7256,21 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          */
-        horizontalAlignment: string;
+        horizontalAlignment: Excel.HorizontalAlignment | "General" | "Left" | "Center" | "Right" | "Fill" | "Justify" | "CenterAcrossSelection" | "Distributed";
+        /**
+         *
+         * An integer from 0 to 250 that indicates the indent level.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        indentLevel: number;
+        /**
+         *
+         * The reading order for the range.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readingOrder: Excel.ReadingOrder | "Context" | "LeftToRight" | "RightToLeft";
         /**
          *
          * Gets or sets the height of all rows in the range. If the row heights are not uniform null will be returned.
@@ -6695,6 +7278,13 @@ declare namespace Excel {
          * [Api set: ExcelApi 1.2]
          */
         rowHeight: number;
+        /**
+         *
+         * Indicates if text automatically shrinks to fit in the available column width.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        shrinkToFit: boolean;
         /**
          *
          * Gets or sets the text orientation of all the cells within the range.
@@ -6730,7 +7320,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          */
-        verticalAlignment: string;
+        verticalAlignment: Excel.VerticalAlignment | "Top" | "Center" | "Bottom" | "Justify" | "Distributed";
         /**
          *
          * Indicates if Excel wraps the text in the object. A null value indicates that the entire range doesn't have uniform wrap setting
@@ -6739,12 +7329,7 @@ declare namespace Excel {
          */
         wrapText: boolean;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.RangeFormatUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.RangeFormatUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: RangeFormat): void;
         /**
@@ -6794,12 +7379,7 @@ declare namespace Excel {
          */
         locked: boolean;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.FormatProtectionUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.FormatProtectionUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: FormatProtection): void;
         /**
@@ -6828,12 +7408,7 @@ declare namespace Excel {
          */
         color: string;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.RangeFillUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.RangeFillUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: RangeFill): void;
         /**
@@ -6874,28 +7449,23 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          */
-        readonly sideIndex: string;
+        readonly sideIndex: Excel.BorderIndex | "EdgeTop" | "EdgeBottom" | "EdgeLeft" | "EdgeRight" | "InsideVertical" | "InsideHorizontal" | "DiagonalDown" | "DiagonalUp";
         /**
          *
          * One of the constants of line style specifying the line style for the border. See Excel.BorderLineStyle for details.
          *
          * [Api set: ExcelApi 1.1]
          */
-        style: string;
+        style: Excel.BorderLineStyle | "None" | "Continuous" | "Dash" | "DashDot" | "DashDotDot" | "Dot" | "Double" | "SlantDashDot";
         /**
          *
          * Specifies the weight of the border around a range. See Excel.BorderWeight for details.
          *
          * [Api set: ExcelApi 1.1]
          */
-        weight: string;
+        weight: Excel.BorderWeight | "Hairline" | "Thin" | "Medium" | "Thick";
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.RangeBorderUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.RangeBorderUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: RangeBorder): void;
         /**
@@ -6917,7 +7487,7 @@ declare namespace Excel {
      */
     class RangeBorderCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: Array<Excel.RangeBorder>;
+        readonly items: Excel.RangeBorder[];
         /**
          *
          * Number of border objects in the collection. Read-only.
@@ -6933,7 +7503,16 @@ declare namespace Excel {
          *
          * @param index Index value of the border object to be retrieved. See Excel.BorderIndex for details.
          */
-        getItem(index: string): Excel.RangeBorder;
+        getItem(index: Excel.BorderIndex): Excel.RangeBorder;
+        /**
+         *
+         * Gets a border object using its name
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param index Index value of the border object to be retrieved. See Excel.BorderIndex for details.
+         */
+        getItem(index: "EdgeTop" | "EdgeBottom" | "EdgeLeft" | "EdgeRight" | "InsideVertical" | "InsideHorizontal" | "DiagonalDown" | "DiagonalUp"): Excel.RangeBorder;
         /**
          *
          * Gets a border object using its index
@@ -6999,14 +7578,9 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          */
-        underline: string;
+        underline: Excel.RangeUnderlineStyle | "None" | "Single" | "Double" | "SingleAccountant" | "DoubleAccountant";
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.RangeFontUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.RangeFontUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: RangeFont): void;
         /**
@@ -7028,7 +7602,7 @@ declare namespace Excel {
      */
     class ChartCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: Array<Excel.Chart>;
+        readonly items: Excel.Chart[];
         /**
          *
          * Returns the number of charts in the worksheet. Read-only.
@@ -7046,7 +7620,18 @@ declare namespace Excel {
          * @param sourceData The Range object corresponding to the source data.
          * @param seriesBy Specifies the way columns or rows are used as data series on the chart. See Excel.ChartSeriesBy for details.
          */
-        add(type: string, sourceData: Excel.Range, seriesBy?: string): Excel.Chart;
+        add(type: Excel.ChartType, sourceData: Excel.Range, seriesBy?: Excel.ChartSeriesBy): Excel.Chart;
+        /**
+         *
+         * Creates a new chart.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param type Represents the type of a chart. See Excel.ChartType for details.
+         * @param sourceData The Range object corresponding to the source data.
+         * @param seriesBy Specifies the way columns or rows are used as data series on the chart. See Excel.ChartSeriesBy for details.
+         */
+        add(type: "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar", sourceData: Excel.Range, seriesBy?: "Auto" | "Columns" | "Rows"): Excel.Chart;
         /**
          *
          * Returns the number of charts in the worksheet.
@@ -7180,7 +7765,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        chartType: string;
+        chartType: Excel.ChartType | "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar";
         /**
          *
          * Represents the height, in points, of the chart object.
@@ -7231,12 +7816,7 @@ declare namespace Excel {
          */
         width: number;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ChartUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ChartUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: Chart): void;
         /**
@@ -7257,7 +7837,19 @@ declare namespace Excel {
          * @param width (Optional) The desired width of the resulting image.
          * @param fittingMode (Optional) The method used to scale the chart to the specified to the specified dimensions (if both height and width are set)."
          */
-        getImage(width?: number, height?: number, fittingMode?: string): OfficeExtension.ClientResult<string>;
+        getImage(width?: number, height?: number, fittingMode?: Excel.ImageFittingMode): OfficeExtension.ClientResult<string>;
+        /**
+         *
+         * Renders the chart as a base64-encoded image by scaling the chart to fit the specified dimensions.
+            The aspect ratio is preserved as part of the resizing.
+         *
+         * [Api set: ExcelApi 1.2]
+         *
+         * @param height (Optional) The desired height of the resulting image.
+         * @param width (Optional) The desired width of the resulting image.
+         * @param fittingMode (Optional) The method used to scale the chart to the specified to the specified dimensions (if both height and width are set)."
+         */
+        getImage(width?: number, height?: number, fittingMode?: "Fit" | "FitAndCenter" | "Fill"): OfficeExtension.ClientResult<string>;
         /**
          *
          * Resets the source data for the chart.
@@ -7267,7 +7859,17 @@ declare namespace Excel {
          * @param sourceData The Range object corresponding to the source data.
          * @param seriesBy Specifies the way columns or rows are used as data series on the chart. Can be one of the following: Auto (default), Rows, Columns. See Excel.ChartSeriesBy for details.
          */
-        setData(sourceData: Excel.Range, seriesBy?: string): void;
+        setData(sourceData: Excel.Range, seriesBy?: Excel.ChartSeriesBy): void;
+        /**
+         *
+         * Resets the source data for the chart.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param sourceData The Range object corresponding to the source data.
+         * @param seriesBy Specifies the way columns or rows are used as data series on the chart. Can be one of the following: Auto (default), Rows, Columns. See Excel.ChartSeriesBy for details.
+         */
+        setData(sourceData: Excel.Range, seriesBy?: "Auto" | "Columns" | "Rows"): void;
         /**
          *
          * Positions the chart relative to cells on the worksheet.
@@ -7332,12 +7934,7 @@ declare namespace Excel {
          */
         readonly font: Excel.ChartFont;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ChartAreaFormatUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ChartAreaFormatUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ChartAreaFormat): void;
         /**
@@ -7359,7 +7956,7 @@ declare namespace Excel {
      */
     class ChartSeriesCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: Array<Excel.ChartSeries>;
+        readonly items: Excel.ChartSeries[];
         /**
          *
          * Returns the number of series in the collection. Read-only.
@@ -7435,7 +8032,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        chartType: string;
+        chartType: Excel.ChartType | "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar";
         /**
          *
          * Represents the doughnut hole size of a chart series.  Only valid on doughnut and doughnutExploded charts.
@@ -7493,7 +8090,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        markerStyle: string;
+        markerStyle: Excel.ChartMarkerStyle | "Invalid" | "Automatic" | "None" | "Square" | "Diamond" | "Triangle" | "X" | "Star" | "Dot" | "Dash" | "Circle" | "Plus" | "Picture";
         /**
          *
          * Represents the name of a series in a chart.
@@ -7523,12 +8120,7 @@ declare namespace Excel {
          */
         smooth: boolean;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ChartSeriesUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ChartSeriesUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ChartSeries): void;
         /**
@@ -7598,12 +8190,7 @@ declare namespace Excel {
          */
         readonly line: Excel.ChartLineFormat;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ChartSeriesFormatUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ChartSeriesFormatUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ChartSeriesFormat): void;
         /**
@@ -7625,7 +8212,7 @@ declare namespace Excel {
      */
     class ChartPointsCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: Array<Excel.ChartPoint>;
+        readonly items: Excel.ChartPoint[];
         /**
          *
          * Returns the number of chart points in the series. Read-only.
@@ -7712,7 +8299,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        markerStyle: string;
+        markerStyle: Excel.ChartMarkerStyle | "Invalid" | "Automatic" | "None" | "Square" | "Diamond" | "Triangle" | "X" | "Star" | "Dot" | "Dash" | "Circle" | "Plus" | "Picture";
         /**
          *
          * Returns the value of a chart point. Read-only.
@@ -7721,12 +8308,7 @@ declare namespace Excel {
          */
         readonly value: any;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ChartPointUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ChartPointUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ChartPoint): void;
         /**
@@ -7762,12 +8344,7 @@ declare namespace Excel {
          */
         readonly fill: Excel.ChartFill;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ChartPointFormatUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ChartPointFormatUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ChartPointFormat): void;
         /**
@@ -7810,12 +8387,7 @@ declare namespace Excel {
          */
         readonly valueAxis: Excel.ChartAxis;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ChartAxesUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ChartAxesUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ChartAxes): void;
         /**
@@ -7827,7 +8399,17 @@ declare namespace Excel {
          * @param type Specifies the axis type. See Excel.ChartAxis for details.
          * @param group Specifies the axis group. See Excel.ChartAxis for details.
          */
-        getItem(type: string, group?: string): Excel.ChartAxis;
+        getItem(type: Excel.AxisType, group?: Excel.AxisGroup): Excel.ChartAxis;
+        /**
+         *
+         * Returns the specific axis identified by type and group.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param type Specifies the axis type. See Excel.ChartAxis for details.
+         * @param group Specifies the axis group. See Excel.ChartAxis for details.
+         */
+        getItem(type: "Invalid" | "Category" | "Value" | "Series", group?: "Primary" | "Secondary"): Excel.ChartAxis;
         /**
          * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
          */
@@ -7887,28 +8469,28 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        readonly axisGroup: string;
+        readonly axisGroup: Excel.AxisGroup | "Primary" | "Secondary";
         /**
          *
          * Returns or sets the base unit for the specified category axis.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        baseTimeUnit: string;
+        baseTimeUnit: Excel.ChartAxisTimeUnit | "Days" | "Months" | "Years";
         /**
          *
          * Returns or sets the category axis type.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        categoryType: string;
+        categoryType: Excel.ChartAxisCategoryType | "Automatic" | "TextAxis" | "DateAxis";
         /**
          *
          * Represents the specified axis where the other axis crosses. See Excel.AxisCrosses for details.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        crosses: string;
+        crosses: Excel.AxisCrosses | "Automatic" | "Maximum" | "Minimum" | "Custom";
         /**
          *
          * Represents the specified axis where the other axis crosses at. Read Only. Set to this property should use SetCrossesAt(double) method.
@@ -7929,7 +8511,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        displayUnit: string;
+        displayUnit: Excel.ChartAxisDisplayUnit | "None" | "Hundreds" | "Thousands" | "TenThousands" | "HundredThousands" | "Millions" | "TenMillions" | "HundredMillions" | "Billions" | "Trillions" | "Custom";
         /**
          *
          * Represents the height, in points, of the chart axis. Null if the axis's not visible.
@@ -7957,14 +8539,14 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        majorTickMark: string;
+        majorTickMark: Excel.AxisTickMark | "None" | "Cross" | "Inside" | "Outside";
         /**
          *
          * Returns or sets the major unit scale value for the category axis when the CategoryType property is set to TimeScale.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        majorTimeUnitScale: string;
+        majorTimeUnitScale: Excel.ChartAxisTimeUnit | "Days" | "Months" | "Years";
         /**
          *
          * Represents the interval between two major tick marks. Can be set to a numeric value or an empty string.  The returned value is always a number.
@@ -7992,14 +8574,14 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        minorTickMark: string;
+        minorTickMark: Excel.AxisTickMark | "None" | "Cross" | "Inside" | "Outside";
         /**
          *
          * Returns or sets the minor unit scale value for the category axis when the CategoryType property is set to TimeScale.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        minorTimeUnitScale: string;
+        minorTimeUnitScale: Excel.ChartAxisTimeUnit | "Days" | "Months" | "Years";
         /**
          *
          * Represents the interval between two minor tick marks. "Can be set to a numeric value or an empty string (for automatic axis values). The returned value is always a number.
@@ -8020,7 +8602,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        scaleType: string;
+        scaleType: Excel.AxisScaleType | "Linear" | "Logarithmic";
         /**
          *
          * Represents whether the axis display unit label is visible.
@@ -8034,7 +8616,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        tickLabelPosition: string;
+        tickLabelPosition: Excel.AxisTickLabelPosition | "NextToAxis" | "High" | "Low" | "None";
         /**
          *
          * Represents the number of categories or series between tick-mark labels. Can be a value from 1 through 31999 or an empty string for automatic setting. The returned value is always a number.
@@ -8062,7 +8644,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        readonly type: string;
+        readonly type: Excel.AxisType | "Invalid" | "Category" | "Value" | "Series";
         /**
          *
          * A boolean value represents the visibility of the axis.
@@ -8078,12 +8660,7 @@ declare namespace Excel {
          */
         readonly width: number;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ChartAxisUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ChartAxisUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ChartAxis): void;
         /**
@@ -8144,12 +8721,7 @@ declare namespace Excel {
          */
         readonly line: Excel.ChartLineFormat;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ChartAxisFormatUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ChartAxisFormatUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ChartAxisFormat): void;
         /**
@@ -8192,12 +8764,7 @@ declare namespace Excel {
          */
         visible: boolean;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ChartAxisTitleUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ChartAxisTitleUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ChartAxisTitle): void;
         /**
@@ -8226,12 +8793,7 @@ declare namespace Excel {
          */
         readonly font: Excel.ChartFont;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ChartAxisTitleFormatUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ChartAxisTitleFormatUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ChartAxisTitleFormat): void;
         /**
@@ -8265,7 +8827,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          */
-        position: string;
+        position: Excel.ChartDataLabelPosition | "Invalid" | "None" | "Center" | "InsideEnd" | "InsideBase" | "OutsideEnd" | "Left" | "Right" | "Top" | "Bottom" | "BestFit" | "Callout";
         /**
          *
          * String representing the separator used for the data labels on a chart.
@@ -8316,12 +8878,7 @@ declare namespace Excel {
          */
         showValue: boolean;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ChartDataLabelsUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ChartDataLabelsUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ChartDataLabels): void;
         /**
@@ -8344,11 +8901,61 @@ declare namespace Excel {
     class ChartDataLabel extends OfficeExtension.ClientObject {
         /**
          *
+         * Boolean value representing if data label automatically generates appropriate text based on context.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        autoText: boolean;
+        /**
+         *
+         * String value that represents the formula of chart data label using A1-style notation.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        formula: string;
+        /**
+         *
+         * Returns the height, in points, of the chart data label. Read-only. Null if chart data label is not visible.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly height: number;
+        /**
+         *
+         * Represents the horizontal alignment for chart data label. See Excel.ChartTextHorizontalAlignment for details.
+            This property is valid only when TextOrientation of data label is 90, -90 or 180.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        horizontalAlignment: Excel.ChartTextHorizontalAlignment | "Center" | "Left" | "Right" | "Justify" | "Distributed";
+        /**
+         *
+         * Represents the distance, in points, from the left edge of chart data label to the left edge of chart area. Null if chart data label is not visible.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        left: number;
+        /**
+         *
+         * String value that represents the format code for data label.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        numberFormat: string;
+        /**
+         *
+         * Boolean value representing if the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells).
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        numberFormatLinked: boolean;
+        /**
+         *
          * DataLabelPosition value that represents the position of the data label. See Excel.ChartDataLabelPosition for details.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        position: string;
+        position: Excel.ChartDataLabelPosition | "Invalid" | "None" | "Center" | "InsideEnd" | "InsideBase" | "OutsideEnd" | "Left" | "Right" | "Top" | "Bottom" | "BestFit" | "Callout";
         /**
          *
          * String representing the separator used for the data label on a chart.
@@ -8398,13 +9005,44 @@ declare namespace Excel {
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         showValue: boolean;
+        /**
+         *
+         * String representing the text of the data label on a chart.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        text: string;
+        /**
+         *
+         * Represents the text orientation of chart data label. The value should be an integer either from -90 to 90, or 180 for vertically-oriented text.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        textOrientation: number;
+        /**
+         *
+         * Represents the distance, in points, from the top edge of chart data label to the top of chart area. Null if chart data label is not visible.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        top: number;
+        /**
+         *
+         * Represents the vertical alignment of chart data label. See Excel.ChartTextVerticalAlignment for details.
+            This property is valid only when TextOrientation of data label is 0.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        verticalAlignment: Excel.ChartTextVerticalAlignment | "Center" | "Bottom" | "Top" | "Justify" | "Distributed";
+        /**
+         *
+         * Returns the width, in points, of the chart data label. Read-only. Null if chart data label is not visible.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly width: number;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ChartDataLabelUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ChartDataLabelUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ChartDataLabel): void;
         /**
@@ -8440,12 +9078,7 @@ declare namespace Excel {
          */
         readonly font: Excel.ChartFont;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ChartDataLabelFormatUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ChartDataLabelFormatUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ChartDataLabelFormat): void;
         /**
@@ -8481,12 +9114,7 @@ declare namespace Excel {
          */
         visible: boolean;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ChartGridlinesUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ChartGridlinesUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ChartGridlines): void;
         /**
@@ -8515,12 +9143,7 @@ declare namespace Excel {
          */
         readonly line: Excel.ChartLineFormat;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ChartGridlinesFormatUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ChartGridlinesFormatUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ChartGridlinesFormat): void;
         /**
@@ -8582,7 +9205,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          */
-        position: string;
+        position: Excel.ChartLegendPosition | "Invalid" | "Top" | "Bottom" | "Left" | "Right" | "Corner" | "Custom";
         /**
          *
          * Represents if the legend has shadow on the chart.
@@ -8612,12 +9235,7 @@ declare namespace Excel {
          */
         width: number;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ChartLegendUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ChartLegendUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ChartLegend): void;
         /**
@@ -8646,12 +9264,7 @@ declare namespace Excel {
          */
         visible: boolean;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ChartLegendEntryUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ChartLegendEntryUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ChartLegendEntry): void;
         /**
@@ -8673,7 +9286,7 @@ declare namespace Excel {
      */
     class ChartLegendEntryCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: Array<Excel.ChartLegendEntry>;
+        readonly items: Excel.ChartLegendEntry[];
         /**
          *
          * Returns the number of legendEntry in the collection.
@@ -8720,12 +9333,7 @@ declare namespace Excel {
          */
         readonly font: Excel.ChartFont;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ChartLegendFormatUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ChartLegendFormatUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ChartLegendFormat): void;
         /**
@@ -8766,7 +9374,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        horizontalAlignment: string;
+        horizontalAlignment: Excel.ChartTextHorizontalAlignment | "Center" | "Left" | "Right" | "Justify" | "Distributed";
         /**
          *
          * Represents the distance, in points, from the left edge of chart title to the left edge of chart area. Null if chart title's not visible.
@@ -8787,7 +9395,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        position: string;
+        position: Excel.ChartTitlePosition | "Automatic" | "Top" | "Bottom" | "Left" | "Right";
         /**
          *
          * Represents a boolean value that determines if the chart title has a shadow.
@@ -8822,7 +9430,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        verticalAlignment: string;
+        verticalAlignment: Excel.ChartTextVerticalAlignment | "Center" | "Bottom" | "Top" | "Justify" | "Distributed";
         /**
          *
          * A boolean value the represents the visibility of a chart title object.
@@ -8838,12 +9446,7 @@ declare namespace Excel {
          */
         readonly width: number;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ChartTitleUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ChartTitleUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ChartTitle): void;
         /**
@@ -8891,12 +9494,7 @@ declare namespace Excel {
          */
         readonly font: Excel.ChartFont;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ChartFormatStringUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ChartFormatStringUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ChartFormatString): void;
         /**
@@ -8939,12 +9537,7 @@ declare namespace Excel {
          */
         readonly font: Excel.ChartFont;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ChartTitleFormatUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ChartTitleFormatUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ChartTitleFormat): void;
         /**
@@ -9009,7 +9602,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        lineStyle: string;
+        lineStyle: Excel.ChartLineStyle | "None" | "Continuous" | "Dash" | "DashDot" | "DashDotDot" | "Dot" | "Grey25" | "Grey50" | "Grey75" | "Automatic";
         /**
          *
          * Represents weight of the border, in points.
@@ -9018,12 +9611,7 @@ declare namespace Excel {
          */
         weight: number;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ChartBorderUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ChartBorderUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ChartBorder): void;
         /**
@@ -9057,7 +9645,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        lineStyle: string;
+        lineStyle: Excel.ChartLineStyle | "None" | "Continuous" | "Dash" | "DashDot" | "DashDotDot" | "Dot" | "Grey25" | "Grey50" | "Grey75" | "Automatic";
         /**
          *
          * Represents weight of the line, in points.
@@ -9066,12 +9654,7 @@ declare namespace Excel {
          */
         weight: number;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ChartLineFormatUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ChartLineFormatUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ChartLineFormat): void;
         /**
@@ -9140,14 +9723,9 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          */
-        underline: string;
+        underline: Excel.ChartUnderlineStyle | "None" | "Single";
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ChartFontUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ChartFontUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ChartFont): void;
         /**
@@ -9237,14 +9815,9 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        type: string;
+        type: Excel.TrendlineType | "Linear" | "Exponential" | "Logarithmic" | "MovingAverage" | "Polynomial" | "Power";
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ChartTrendlineUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ChartTrendlineUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ChartTrendline): void;
         /**
@@ -9273,7 +9846,7 @@ declare namespace Excel {
      */
     class ChartTrendlineCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: Array<Excel.ChartTrendline>;
+        readonly items: Excel.ChartTrendline[];
         /**
          *
          * Adds a new trendline to trendline collection.
@@ -9282,7 +9855,16 @@ declare namespace Excel {
          *
          * @param type Specifies the trendline type. The default value is "Linear". See Excel.ChartTrendline for details.
          */
-        add(type?: string): Excel.ChartTrendline;
+        add(type?: Excel.TrendlineType): Excel.ChartTrendline;
+        /**
+         *
+         * Adds a new trendline to trendline collection.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param type Specifies the trendline type. The default value is "Linear". See Excel.ChartTrendline for details.
+         */
+        add(type?: "Linear" | "Exponential" | "Logarithmic" | "MovingAverage" | "Polynomial" | "Power"): Excel.ChartTrendline;
         /**
          *
          * Returns the number of trendlines in the collection.
@@ -9322,12 +9904,7 @@ declare namespace Excel {
          */
         readonly line: Excel.ChartLineFormat;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ChartTrendlineFormatUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ChartTrendlineFormatUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ChartTrendlineFormat): void;
         /**
@@ -9360,7 +9937,20 @@ declare namespace Excel {
          * @param orientation Whether the operation is sorting rows or columns.
          * @param method The ordering method used for Chinese characters.
          */
-        apply(fields: Array<Excel.SortField>, matchCase?: boolean, hasHeaders?: boolean, orientation?: string, method?: string): void;
+        apply(fields: Excel.SortField[], matchCase?: boolean, hasHeaders?: boolean, orientation?: Excel.SortOrientation, method?: Excel.SortMethod): void;
+        /**
+         *
+         * Perform a sort operation.
+         *
+         * [Api set: ExcelApi 1.2]
+         *
+         * @param fields The list of conditions to sort on.
+         * @param matchCase Whether to have the casing impact string ordering.
+         * @param hasHeaders Whether the range has a header.
+         * @param orientation Whether the operation is sorting rows or columns.
+         * @param method The ordering method used for Chinese characters.
+         */
+        apply(fields: Excel.SortField[], matchCase?: boolean, hasHeaders?: boolean, orientation?: "Rows" | "Columns", method?: "PinYin" | "StrokeCount"): void;
         toJSON(): {
             [key: string]: string;
         };
@@ -9378,7 +9968,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.2]
          */
-        readonly fields: Array<Excel.SortField>;
+        readonly fields: Excel.SortField[];
         /**
          *
          * Represents whether the casing impacted the last sort of the table.
@@ -9392,7 +9982,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.2]
          */
-        readonly method: string;
+        readonly method: Excel.SortMethod | "PinYin" | "StrokeCount";
         /**
          *
          * Perform a sort operation.
@@ -9403,7 +9993,18 @@ declare namespace Excel {
          * @param matchCase Whether to have the casing impact string ordering.
          * @param method The ordering method used for Chinese characters.
          */
-        apply(fields: Array<Excel.SortField>, matchCase?: boolean, method?: string): void;
+        apply(fields: Excel.SortField[], matchCase?: boolean, method?: Excel.SortMethod): void;
+        /**
+         *
+         * Perform a sort operation.
+         *
+         * [Api set: ExcelApi 1.2]
+         *
+         * @param fields The list of conditions to sort on.
+         * @param matchCase Whether to have the casing impact string ordering.
+         * @param method The ordering method used for Chinese characters.
+         */
+        apply(fields: Excel.SortField[], matchCase?: boolean, method?: "PinYin" | "StrokeCount"): void;
         /**
          *
          * Clears the sorting that is currently on the table. While this doesn't modify the table's ordering, it clears the state of the header buttons.
@@ -9456,7 +10057,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.2]
          */
-        dataOption?: string;
+        dataOption?: Excel.SortDataOption | "Normal" | "TextAsNumber";
         /**
          *
          * Represents the icon that is the target of the condition if the sorting is on the cell's icon.
@@ -9477,7 +10078,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.2]
          */
-        sortOn?: string;
+        sortOn?: Excel.SortOn | "Value" | "CellColor" | "FontColor" | "Icon";
     }
     /**
      *
@@ -9539,7 +10140,18 @@ declare namespace Excel {
          * @param criteria2 The second criteria string.
          * @param oper The operator that describes how the two criteria are joined.
          */
-        applyCustomFilter(criteria1: string, criteria2?: string, oper?: string): void;
+        applyCustomFilter(criteria1: string, criteria2?: string, oper?: Excel.FilterOperator): void;
+        /**
+         *
+         * Apply a "Icon" filter to the column for the given criteria strings.
+         *
+         * [Api set: ExcelApi 1.2]
+         *
+         * @param criteria1 The first criteria string.
+         * @param criteria2 The second criteria string.
+         * @param oper The operator that describes how the two criteria are joined.
+         */
+        applyCustomFilter(criteria1: string, criteria2?: string, oper?: "And" | "Or"): void;
         /**
          *
          * Apply a "Dynamic" filter to the column.
@@ -9548,7 +10160,16 @@ declare namespace Excel {
          *
          * @param criteria The dynamic criteria to apply.
          */
-        applyDynamicFilter(criteria: string): void;
+        applyDynamicFilter(criteria: Excel.DynamicFilterCriteria): void;
+        /**
+         *
+         * Apply a "Dynamic" filter to the column.
+         *
+         * [Api set: ExcelApi 1.2]
+         *
+         * @param criteria The dynamic criteria to apply.
+         */
+        applyDynamicFilter(criteria: "Unknown" | "AboveAverage" | "AllDatesInPeriodApril" | "AllDatesInPeriodAugust" | "AllDatesInPeriodDecember" | "AllDatesInPeriodFebruray" | "AllDatesInPeriodJanuary" | "AllDatesInPeriodJuly" | "AllDatesInPeriodJune" | "AllDatesInPeriodMarch" | "AllDatesInPeriodMay" | "AllDatesInPeriodNovember" | "AllDatesInPeriodOctober" | "AllDatesInPeriodQuarter1" | "AllDatesInPeriodQuarter2" | "AllDatesInPeriodQuarter3" | "AllDatesInPeriodQuarter4" | "AllDatesInPeriodSeptember" | "BelowAverage" | "LastMonth" | "LastQuarter" | "LastWeek" | "LastYear" | "NextMonth" | "NextQuarter" | "NextWeek" | "NextYear" | "ThisMonth" | "ThisQuarter" | "ThisWeek" | "ThisYear" | "Today" | "Tomorrow" | "YearToDate" | "Yesterday"): void;
         /**
          *
          * Apply a "Font Color" filter to the column for the given color.
@@ -9649,14 +10270,14 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.2]
          */
-        dynamicCriteria?: string;
+        dynamicCriteria?: Excel.DynamicFilterCriteria | "Unknown" | "AboveAverage" | "AllDatesInPeriodApril" | "AllDatesInPeriodAugust" | "AllDatesInPeriodDecember" | "AllDatesInPeriodFebruray" | "AllDatesInPeriodJanuary" | "AllDatesInPeriodJuly" | "AllDatesInPeriodJune" | "AllDatesInPeriodMarch" | "AllDatesInPeriodMay" | "AllDatesInPeriodNovember" | "AllDatesInPeriodOctober" | "AllDatesInPeriodQuarter1" | "AllDatesInPeriodQuarter2" | "AllDatesInPeriodQuarter3" | "AllDatesInPeriodQuarter4" | "AllDatesInPeriodSeptember" | "BelowAverage" | "LastMonth" | "LastQuarter" | "LastWeek" | "LastYear" | "NextMonth" | "NextQuarter" | "NextWeek" | "NextYear" | "ThisMonth" | "ThisQuarter" | "ThisWeek" | "ThisYear" | "Today" | "Tomorrow" | "YearToDate" | "Yesterday";
         /**
          *
          * The property used by the filter to determine whether the values should stay visible.
          *
          * [Api set: ExcelApi 1.2]
          */
-        filterOn: string;
+        filterOn: Excel.FilterOn | "BottomItems" | "BottomPercent" | "CellColor" | "Dynamic" | "FontColor" | "Values" | "TopItems" | "TopPercent" | "Icon" | "Custom";
         /**
          *
          * The icon used to filter cells. Used with "icon" filtering.
@@ -9670,7 +10291,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.2]
          */
-        operator?: string;
+        operator?: Excel.FilterOperator | "And" | "Or";
         /**
          *
          * The set of values to be used as part of "values" filtering.
@@ -9699,7 +10320,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.2]
          */
-        specificity: string;
+        specificity: Excel.FilterDatetimeSpecificity | "Year" | "Month" | "Day" | "Hour" | "Minute" | "Second";
     }
     /**
      *
@@ -9721,7 +10342,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.2]
          */
-        set: string;
+        set: Excel.IconSet | "Invalid" | "ThreeArrows" | "ThreeArrowsGray" | "ThreeFlags" | "ThreeTrafficLights1" | "ThreeTrafficLights2" | "ThreeSigns" | "ThreeSymbols" | "ThreeSymbols2" | "FourArrows" | "FourArrowsGray" | "FourRedToBlack" | "FourRating" | "FourTrafficLights" | "FiveArrows" | "FiveArrowsGray" | "FiveRating" | "FiveQuarters" | "ThreeStars" | "ThreeTriangles" | "FiveBoxes";
     }
     /**
      *
@@ -9733,7 +10354,7 @@ declare namespace Excel {
      */
     class CustomXmlPartScopedCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: Array<Excel.CustomXmlPart>;
+        readonly items: Excel.CustomXmlPart[];
         /**
          *
          * Gets the number of CustomXML parts in this collection.
@@ -9792,7 +10413,7 @@ declare namespace Excel {
      */
     class CustomXmlPartCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: Array<Excel.CustomXmlPart>;
+        readonly items: Excel.CustomXmlPart[];
         /**
          *
          * Adds a new custom XML part to the workbook.
@@ -9908,7 +10529,7 @@ declare namespace Excel {
      */
     class PivotTableCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: Array<Excel.PivotTable>;
+        readonly items: Excel.PivotTable[];
         /**
          *
          * Gets the number of pivot tables in the collection.
@@ -9941,7 +10562,6 @@ declare namespace Excel {
          * [Api set: ExcelApi 1.3]
          */
         refreshAll(): void;
-        add(name: string, address: Excel.Range, pivotCache: Excel.PivotCache): Excel.PivotTable;
         /**
          * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
          */
@@ -9964,10 +10584,6 @@ declare namespace Excel {
          * [Api set: ExcelApi 1.3]
          */
         readonly worksheet: Excel.Worksheet;
-        readonly calculatedFields: Excel.CalculatedFieldCollection;
-        readonly dataBodyRange: Excel.Range;
-        readonly dataLabelRange: Excel.Range;
-        readonly pivotFields: Excel.PivotFieldCollection;
         /**
          *
          * True if the PivotTable report shows grand totals for columns.
@@ -9996,62 +10612,8 @@ declare namespace Excel {
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         rowGrandTotals: boolean;
-        allowMultipleFilters: boolean;
-        alternativeText: string;
-        compactLayoutColumnHeader: string;
-        compactLayoutRowHeader: string;
-        compactRowIndent: number;
-        displayContextTooltips: boolean;
-        displayEmptyColumn: boolean;
-        displayEmptyRow: boolean;
-        displayErrorString: boolean;
-        displayFieldCaptions: boolean;
-        displayNullString: boolean;
-        enableDataValueEditing: boolean;
-        enableDrilldown: boolean;
-        enableFieldDialog: boolean;
-        enableFieldList: boolean;
-        enableWizard: boolean;
-        errorString: string;
-        fieldListSortAscending: boolean;
-        grandTotalName: string;
-        hasAutoFormat: boolean;
-        readonly hidden: boolean;
-        inGridDropZones: boolean;
-        innerDetail: string;
-        manualUpdate: boolean;
-        nullString: string;
-        preserveFormatting: boolean;
-        printDrillIndicators: boolean;
-        printTitles: boolean;
-        readonly refreshDate: Date;
-        readonly refreshName: string;
-        repeatItemsOnEachPrintedPage: boolean;
-        saveData: boolean;
-        showDrillIndicators: boolean;
-        showPageMultipleItemLabel: boolean;
-        showTableStyleColumnHeaders: boolean;
-        showTableStyleColumnStripes: boolean;
-        showTableStyleLastColumn: boolean;
-        showTableStyleRowHeaders: boolean;
-        showTableStyleRowStripes: boolean;
-        showValuesRow: boolean;
-        smallGrid: boolean;
-        sortUsingCustomLists: boolean;
-        subtotalHiddenPageItems: boolean;
-        summary: string;
-        tag: string;
-        totalsAnnotation: boolean;
-        vacatedStyle: string;
-        value: string;
-        readonly version: string;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.PivotTableUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.PivotTableUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: PivotTable): void;
         /**
@@ -10069,7 +10631,16 @@ declare namespace Excel {
          *
          * @param RowLayout Required LayoutRowType. See Excel.LayoutRowType for details.
          */
-        rowAxisLayout(RowLayout: string): void;
+        rowAxisLayout(RowLayout: Excel.LayoutRowType): void;
+        /**
+         *
+         * This method is used for simultaneously setting layout options for all existing PivotFields.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param RowLayout Required LayoutRowType. See Excel.LayoutRowType for details.
+         */
+        rowAxisLayout(RowLayout: "CompactRow" | "TabularRow" | "OutlineRow"): void;
         /**
          *
          * This method changes the subtotal location for all existing PivotFields. Changing the subtotal location has an immediate visual effect only for fields in outline form, but it will be set for fields in tabular form as well.
@@ -10078,23 +10649,16 @@ declare namespace Excel {
          *
          * @param Location Required SubtotalLocationType. See Excel.SubtotalLocationType for details.
          */
-        subtotalLocation(Location: string): void;
-        addChart(chartType: string, seriesBy?: string): Excel.Chart;
-        addDataField(field: Excel.PivotField, caption: string, func: string): Excel.PivotField;
-        clearTable(): void;
-        getColumnField(Index: number): Excel.PivotField;
-        getColumnRange(): Excel.Range;
-        getDataField(Index: number): Excel.PivotField;
-        getDataPivotField(): Excel.PivotField;
-        getEntireRange(): Excel.Range;
-        getHiddenField(Index: number): Excel.PivotField;
-        getPageRange(): Excel.Range;
-        getRowField(Index: number): Excel.PivotField;
-        getRowRange(): Excel.Range;
-        getVisibleFields(): Excel.PivotFieldCollection;
-        listFormulas(): void;
-        pivotSelect(Name: string, Mode: string, UseStandardName?: boolean): void;
-        refreshTable(): OfficeExtension.ClientResult<boolean>;
+        subtotalLocation(Location: Excel.SubtotalLocationType): void;
+        /**
+         *
+         * This method changes the subtotal location for all existing PivotFields. Changing the subtotal location has an immediate visual effect only for fields in outline form, but it will be set for fields in tabular form as well.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param Location Required SubtotalLocationType. See Excel.SubtotalLocationType for details.
+         */
+        subtotalLocation(Location: "AtTop" | "AtBottom"): void;
         /**
          * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
          */
@@ -10198,12 +10762,7 @@ declare namespace Excel {
          */
         title: string;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.DocumentPropertiesUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.DocumentPropertiesUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: DocumentProperties): void;
         /**
@@ -10237,7 +10796,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        readonly type: string;
+        readonly type: Excel.DocumentPropertyType | "Number" | "Boolean" | "Date" | "String" | "Float";
         /**
          *
          * Gets or sets the value of the custom property.
@@ -10246,12 +10805,7 @@ declare namespace Excel {
          */
         value: any;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.CustomPropertyUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.CustomPropertyUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: CustomProperty): void;
         /**
@@ -10280,7 +10834,7 @@ declare namespace Excel {
      */
     class CustomPropertyCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: Array<Excel.CustomProperty>;
+        readonly items: Excel.CustomProperty[];
         /**
          *
          * Creates a new or sets an existing custom property.
@@ -10339,7 +10893,7 @@ declare namespace Excel {
      */
     class ConditionalFormatCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: Array<Excel.ConditionalFormat>;
+        readonly items: Excel.ConditionalFormat[];
         /**
          *
          * Adds a new conditional format to the collection at the first/top priority.
@@ -10348,7 +10902,16 @@ declare namespace Excel {
          *
          * @param type The type of conditional format being added. See Excel.ConditionalFormatType for details.
          */
-        add(type: string): Excel.ConditionalFormat;
+        add(type: Excel.ConditionalFormatType): Excel.ConditionalFormat;
+        /**
+         *
+         * Adds a new conditional format to the collection at the first/top priority.
+         *
+         * [Api set: ExcelApi 1.6]
+         *
+         * @param type The type of conditional format being added. See Excel.ConditionalFormatType for details.
+         */
+        add(type: "Custom" | "DataBar" | "ColorScale" | "IconSet" | "TopBottom" | "PresetCriteria" | "ContainsText" | "CellValue"): Excel.ConditionalFormat;
         /**
          *
          * Clears all conditional formats active on the current specified range.
@@ -10547,14 +11110,9 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.6]
          */
-        readonly type: string;
+        readonly type: Excel.ConditionalFormatType | "Custom" | "DataBar" | "ColorScale" | "IconSet" | "TopBottom" | "PresetCriteria" | "ContainsText" | "CellValue";
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ConditionalFormatUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ConditionalFormatUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ConditionalFormat): void;
         /**
@@ -10624,14 +11182,14 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.6]
          */
-        axisFormat: string;
+        axisFormat: Excel.ConditionalDataBarAxisFormat | "Automatic" | "None" | "CellMidPoint";
         /**
          *
          * Represents the direction that the data bar graphic should be based on.
          *
          * [Api set: ExcelApi 1.6]
          */
-        barDirection: string;
+        barDirection: Excel.ConditionalDataBarDirection | "Context" | "LeftToRight" | "RightToLeft";
         /**
          *
          * The rule for what consistutes the lower bound (and how to calculate it, if applicable) for a data bar.
@@ -10654,12 +11212,7 @@ declare namespace Excel {
          */
         upperBoundRule: Excel.ConditionalDataBarRule;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.DataBarConditionalFormatUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.DataBarConditionalFormatUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: DataBarConditionalFormat): void;
         /**
@@ -10703,12 +11256,7 @@ declare namespace Excel {
          */
         gradientFill: boolean;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ConditionalDataBarPositiveFormatUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ConditionalDataBarPositiveFormatUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ConditionalDataBarPositiveFormat): void;
         /**
@@ -10759,12 +11307,7 @@ declare namespace Excel {
          */
         matchPositiveFillColor: boolean;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ConditionalDataBarNegativeFormatUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ConditionalDataBarNegativeFormatUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ConditionalDataBarNegativeFormat): void;
         /**
@@ -10798,7 +11341,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.6]
          */
-        type: string;
+        type: Excel.ConditionalFormatRuleType | "Invalid" | "Automatic" | "LowestValue" | "HighestValue" | "Number" | "Percent" | "Formula" | "Percentile";
     }
     /**
      *
@@ -10822,12 +11365,7 @@ declare namespace Excel {
          */
         readonly rule: Excel.ConditionalFormatRule;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.CustomConditionalFormatUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.CustomConditionalFormatUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: CustomConditionalFormat): void;
         /**
@@ -10870,12 +11408,7 @@ declare namespace Excel {
          */
         formulaR1C1: string;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ConditionalFormatRuleUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ConditionalFormatRuleUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ConditionalFormatRule): void;
         /**
@@ -10902,7 +11435,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.6]
          */
-        criteria: Array<Excel.ConditionalIconCriterion>;
+        criteria: Excel.ConditionalIconCriterion[];
         /**
          *
          * If true, reverses the icon orders for the IconSet. Note that this cannot be set if custom icons are used.
@@ -10923,14 +11456,9 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.6]
          */
-        style: string;
+        style: Excel.IconSet | "Invalid" | "ThreeArrows" | "ThreeArrowsGray" | "ThreeFlags" | "ThreeTrafficLights1" | "ThreeTrafficLights2" | "ThreeSigns" | "ThreeSymbols" | "ThreeSymbols2" | "FourArrows" | "FourArrowsGray" | "FourRedToBlack" | "FourRating" | "FourTrafficLights" | "FiveArrows" | "FiveArrowsGray" | "FiveRating" | "FiveQuarters" | "ThreeStars" | "ThreeTriangles" | "FiveBoxes";
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.IconSetConditionalFormatUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.IconSetConditionalFormatUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: IconSetConditionalFormat): void;
         /**
@@ -10971,14 +11499,14 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.6]
          */
-        operator: string;
+        operator: Excel.ConditionalIconCriterionOperator | "Invalid" | "GreaterThan" | "GreaterThanOrEqual";
         /**
          *
          * What the icon conditional formula should be based on.
          *
          * [Api set: ExcelApi 1.6]
          */
-        type: string;
+        type: Excel.ConditionalFormatIconRuleType | "Invalid" | "Number" | "Percent" | "Formula" | "Percentile";
     }
     /**
      *
@@ -11002,12 +11530,7 @@ declare namespace Excel {
          */
         readonly threeColorScale: boolean;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ColorScaleConditionalFormatUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ColorScaleConditionalFormatUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ColorScaleConditionalFormat): void;
         /**
@@ -11077,7 +11600,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.6]
          */
-        type: string;
+        type: Excel.ConditionalFormatColorCriterionType | "Invalid" | "LowestValue" | "HighestValue" | "Number" | "Percent" | "Formula" | "Percentile";
     }
     /**
      *
@@ -11101,12 +11624,7 @@ declare namespace Excel {
          */
         rule: Excel.ConditionalTopBottomRule;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.TopBottomConditionalFormatUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.TopBottomConditionalFormatUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: TopBottomConditionalFormat): void;
         /**
@@ -11140,7 +11658,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.6]
          */
-        type: string;
+        type: Excel.ConditionalTopBottomCriterionType | "Invalid" | "TopItems" | "TopPercent" | "BottomItems" | "BottomPercent";
     }
     /**
      *
@@ -11164,12 +11682,7 @@ declare namespace Excel {
          */
         rule: Excel.ConditionalPresetCriteriaRule;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.PresetCriteriaConditionalFormatUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.PresetCriteriaConditionalFormatUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: PresetCriteriaConditionalFormat): void;
         /**
@@ -11196,7 +11709,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.6]
          */
-        criterion: string;
+        criterion: Excel.ConditionalFormatPresetCriterion | "Invalid" | "Blanks" | "NonBlanks" | "Errors" | "NonErrors" | "Yesterday" | "Today" | "Tomorrow" | "LastSevenDays" | "LastWeek" | "ThisWeek" | "NextWeek" | "LastMonth" | "ThisMonth" | "NextMonth" | "AboveAverage" | "BelowAverage" | "EqualOrAboveAverage" | "EqualOrBelowAverage" | "OneStdDevAboveAverage" | "OneStdDevBelowAverage" | "TwoStdDevAboveAverage" | "TwoStdDevBelowAverage" | "ThreeStdDevAboveAverage" | "ThreeStdDevBelowAverage" | "UniqueValues" | "DuplicateValues";
     }
     /**
      *
@@ -11220,12 +11733,7 @@ declare namespace Excel {
          */
         rule: Excel.ConditionalTextComparisonRule;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.TextConditionalFormatUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.TextConditionalFormatUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: TextConditionalFormat): void;
         /**
@@ -11252,7 +11760,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.6]
          */
-        operator: string;
+        operator: Excel.ConditionalTextOperator | "Invalid" | "Contains" | "NotContains" | "BeginsWith" | "EndsWith";
         /**
          *
          * The Text value of conditional format.
@@ -11283,12 +11791,7 @@ declare namespace Excel {
          */
         rule: Excel.ConditionalCellValueRule;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.CellValueConditionalFormatUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.CellValueConditionalFormatUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: CellValueConditionalFormat): void;
         /**
@@ -11329,7 +11832,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.6]
          */
-        operator: string;
+        operator: Excel.ConditionalCellValueOperator | "Invalid" | "Between" | "NotBetween" | "EqualTo" | "NotEqualTo" | "GreaterThan" | "LessThan" | "GreaterThanOrEqual" | "LessThanOrEqual";
     }
     /**
      *
@@ -11367,12 +11870,7 @@ declare namespace Excel {
          */
         numberFormat: any;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ConditionalRangeFormatUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ConditionalRangeFormatUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ConditionalRangeFormat): void;
         /**
@@ -11427,14 +11925,9 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.6]
          */
-        underline: string;
+        underline: Excel.ConditionalRangeFontUnderlineStyle | "None" | "Single" | "Double";
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ConditionalRangeFontUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ConditionalRangeFontUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ConditionalRangeFont): void;
         /**
@@ -11470,12 +11963,7 @@ declare namespace Excel {
          */
         color: string;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ConditionalRangeFillUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ConditionalRangeFillUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ConditionalRangeFill): void;
         /**
@@ -11516,21 +12004,16 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.6]
          */
-        readonly sideIndex: string;
+        readonly sideIndex: Excel.ConditionalRangeBorderIndex | "EdgeTop" | "EdgeBottom" | "EdgeLeft" | "EdgeRight";
         /**
          *
          * One of the constants of line style specifying the line style for the border. See Excel.BorderLineStyle for details.
          *
          * [Api set: ExcelApi 1.6]
          */
-        style: string;
+        style: Excel.ConditionalRangeBorderLineStyle | "None" | "Continuous" | "Dash" | "DashDot" | "DashDotDot" | "Dot";
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ConditionalRangeBorderUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.ConditionalRangeBorderUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ConditionalRangeBorder): void;
         /**
@@ -11580,7 +12063,7 @@ declare namespace Excel {
          */
         readonly top: Excel.ConditionalRangeBorder;
         /** Gets the loaded child items in this collection. */
-        readonly items: Array<Excel.ConditionalRangeBorder>;
+        readonly items: Excel.ConditionalRangeBorder[];
         /**
          *
          * Number of border objects in the collection. Read-only.
@@ -11596,7 +12079,16 @@ declare namespace Excel {
          *
          * @param index Index value of the border object to be retrieved. See Excel.ConditionalRangeBorderIndex for details.
          */
-        getItem(index: string): Excel.ConditionalRangeBorder;
+        getItem(index: Excel.ConditionalRangeBorderIndex): Excel.ConditionalRangeBorder;
+        /**
+         *
+         * Gets a border object using its name
+         *
+         * [Api set: ExcelApi 1.6]
+         *
+         * @param index Index value of the border object to be retrieved. See Excel.ConditionalRangeBorderIndex for details.
+         */
+        getItem(index: "EdgeTop" | "EdgeBottom" | "EdgeLeft" | "EdgeRight"): Excel.ConditionalRangeBorder;
         /**
          *
          * Gets a border object using its index
@@ -11694,21 +12186,21 @@ declare namespace Excel {
          *
          * [Api set: CustomFunctions 1.1]
          */
-        readonly parameters: Array<Excel.CustomFunctionParameter>;
+        readonly parameters: Excel.CustomFunctionParameter[];
         /**
          *
          * The dimensionality of result values.
          *
          * [Api set: CustomFunctions 1.1]
          */
-        readonly resultDimensionality: string;
+        readonly resultDimensionality: Excel.CustomFunctionDimensionality | "Invalid" | "Scalar" | "Matrix";
         /**
          *
          * The type of result values.
          *
          * [Api set: CustomFunctions 1.1]
          */
-        readonly resultType: string;
+        readonly resultType: Excel.CustomFunctionValueType | "Invalid" | "Boolean" | "Number" | "String" | "ISODate";
         /**
          *
          * Represents whether the function supports returning results multiple times.
@@ -11722,7 +12214,7 @@ declare namespace Excel {
          *
          * [Api set: CustomFunctions 1.1]
          */
-        readonly type: string;
+        readonly type: Excel.CustomFunctionType | "Invalid" | "Script" | "WebService";
         /**
          *
          * Deletes this function from Excel.
@@ -11742,9 +12234,9 @@ declare namespace Excel {
         toJSON(): Excel.Interfaces.CustomFunctionData;
     }
     class InvocationContext {
-        constructor(setResultHandler: (any) => void);
-        onCanceled: () => void;
-        readonly setResult: (any) => void;
+        constructor(setResultHandler?: (result: any) => void);
+        onCanceled: (() => void) | undefined;
+        readonly setResult?: (result: any) => void;
     }
     interface InvocationContextMap {
         [key: number]: InvocationContext;
@@ -11783,7 +12275,7 @@ declare namespace Excel {
          */
         add(name: string): Excel.CustomFunction;
         /** Gets the loaded child items in this collection. */
-        readonly items: Array<Excel.CustomFunction>;
+        readonly items: Excel.CustomFunction[];
         /**
          *
          * Deletes all custom functions added by this add-in.
@@ -11827,7 +12319,18 @@ declare namespace Excel {
          * @param metadataUrl The URL from where the metadata could be downloaded.
          * @param name A new name to override the one from the metadata.
          */
-        importFromWeb(metadataFormat: string, metadataUrl: string, name: string): Excel.CustomFunction;
+        importFromWeb(metadataFormat: Excel.CustomFunctionMetadataFormat, metadataUrl: string, name: string): Excel.CustomFunction;
+        /**
+         *
+         * Imports a new custom function to the workbook from web service metadata.
+         *
+         * [Api set: CustomFunctions 1.1]
+         *
+         * @param metadataFormat The format of the metadata.
+         * @param metadataUrl The URL from where the metadata could be downloaded.
+         * @param name A new name to override the one from the metadata.
+         */
+        importFromWeb(metadataFormat: "Invalid" | "OpenApi", metadataUrl: string, name: string): Excel.CustomFunction;
         /**
          *
          * Sets the error from a given function invocation.
@@ -11871,14 +12374,14 @@ declare namespace Excel {
          *
          * [Api set: CustomFunctions 1.1]
          */
-        valueDimensionality: string;
+        valueDimensionality: Excel.CustomFunctionDimensionality | "Invalid" | "Scalar" | "Matrix";
         /**
          *
          * The type of parameter value.
          *
          * [Api set: CustomFunctions 1.1]
          */
-        valueType: string;
+        valueType: Excel.CustomFunctionValueType | "Invalid" | "Boolean" | "Number" | "String" | "ISODate";
     }
     /**
      *
@@ -11907,7 +12410,7 @@ declare namespace Excel {
          *
          * [Api set: CustomFunctions 1.1]
          */
-        parameterValues: Array<any>;
+        parameterValues: any[];
     }
     /**
      * [Api set: CustomFunctions 1.1]
@@ -11986,10 +12489,10 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        horizontalAlignment: string;
+        horizontalAlignment: Excel.HorizontalAlignment | "General" | "Left" | "Center" | "Right" | "Fill" | "Justify" | "CenterAcrossSelection" | "Distributed";
         /**
          *
-         * Indicates if the style includes the AddIndent, HorizontalAlignment, VerticalAlignment, WrapText, IndentLevel, and Orientation properties.
+         * Indicates if the style includes the AddIndent, HorizontalAlignment, VerticalAlignment, WrapText, IndentLevel, and TextOrientation properties.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
@@ -12031,7 +12534,7 @@ declare namespace Excel {
         includeProtection: boolean;
         /**
          *
-         * An integer from 0 to 15 that indicates the indent level for the style.
+         * An integer from 0 to 250 that indicates the indent level for the style.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
@@ -12066,18 +12569,11 @@ declare namespace Excel {
         numberFormatLocal: string;
         /**
          *
-         * The text orientation for the style.
-         *
-         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-         */
-        orientation: number;
-        /**
-         *
          * The reading order for the style.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        readingOrder: string;
+        readingOrder: Excel.ReadingOrder | "Context" | "LeftToRight" | "RightToLeft";
         /**
          *
          * Indicates if text automatically shrinks to fit in the available column width.
@@ -12087,11 +12583,18 @@ declare namespace Excel {
         shrinkToFit: boolean;
         /**
          *
+         * The text orientation for the style.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        textOrientation: number;
+        /**
+         *
          * Represents the vertical alignment for the style. See Excel.VerticalAlignment for details.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        verticalAlignment: string;
+        verticalAlignment: Excel.VerticalAlignment | "Top" | "Center" | "Bottom" | "Justify" | "Distributed";
         /**
          *
          * Indicates if Microsoft Excel wraps the text in the object.
@@ -12100,12 +12603,7 @@ declare namespace Excel {
          */
         wrapText: boolean;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.StyleUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.StyleUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: Style): void;
         /**
@@ -12134,7 +12632,7 @@ declare namespace Excel {
      */
     class StyleCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: Array<Excel.Style>;
+        readonly items: Excel.Style[];
         /**
          *
          * Adds a new style to the collection.
@@ -12178,28 +12676,23 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        orientation: string;
+        orientation: Excel.PageOrientation | "Portrait" | "Landscape";
         /**
          *
          * Gets or sets the paper size of the page.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        paperSize: string;
+        paperSize: Excel.PaperType | "Letter" | "LetterSmall" | "Tabloid" | "Ledger" | "Legal" | "Statement" | "Executive" | "A3" | "A4" | "A4Small" | "A5" | "B4" | "B5" | "Folio" | "Quatro" | "Paper10x14" | "Paper11x17" | "Note" | "Envelope9" | "Envelope10" | "Envelope11" | "Envelope12" | "Envelope14" | "Csheet" | "Dsheet" | "Esheet" | "EnvelopeDL" | "EnvelopeC5" | "EnvelopeC3" | "EnvelopeC4" | "EnvelopeC6" | "EnvelopeC65" | "EnvelopeB4" | "EnvelopeB5" | "EnvelopeB6" | "EnvelopeItaly" | "EnvelopeMonarch" | "EnvelopePersonal" | "FanfoldUS" | "FanfoldStdGerman" | "FanfoldLegalGerman";
         /**
          *
          * Gets or sets the print errors option.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        printErrors: string;
+        printErrors: Excel.PrintErrorType | "ErrorsDisplayed" | "ErrorsBlank" | "ErrorsDash" | "ErrorsNotAvailable";
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.PageLayoutUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
+        set(properties: Interfaces.PageLayoutUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: PageLayout): void;
         /**
@@ -12236,7 +12729,7 @@ declare namespace Excel {
      */
     class AreaCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: Array<Excel.Range>;
+        readonly items: Excel.Range[];
         /**
          *
          * Gets the number of contiguous areas in a range.
@@ -12255,242 +12748,242 @@ declare namespace Excel {
     /**
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    namespace AxisType {
-        var invalid: string;
+    enum AxisType {
+        invalid = "Invalid",
         /**
          *
          * Axis displays categories.
          *
          */
-        var category: string;
+        category = "Category",
         /**
          *
          * Axis displays values.
          *
          */
-        var value: string;
+        value = "Value",
         /**
          *
          * Axis displays data series.
          *
          */
-        var series: string;
+        series = "Series",
     }
     /**
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    namespace AxisGroup {
-        var primary: string;
-        var secondary: string;
+    enum AxisGroup {
+        primary = "Primary",
+        secondary = "Secondary",
     }
     /**
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    namespace AxisScaleType {
-        var linear: string;
-        var logarithmic: string;
+    enum AxisScaleType {
+        linear = "Linear",
+        logarithmic = "Logarithmic",
     }
     /**
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    namespace AxisCrosses {
-        var automatic: string;
-        var maximum: string;
-        var minimum: string;
-        var custom: string;
+    enum AxisCrosses {
+        automatic = "Automatic",
+        maximum = "Maximum",
+        minimum = "Minimum",
+        custom = "Custom",
     }
     /**
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    namespace AxisTickMark {
-        var none: string;
-        var cross: string;
-        var inside: string;
-        var outside: string;
+    enum AxisTickMark {
+        none = "None",
+        cross = "Cross",
+        inside = "Inside",
+        outside = "Outside",
     }
     /**
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    namespace AxisTickLabelPosition {
-        var nextToAxis: string;
-        var high: string;
-        var low: string;
-        var none: string;
+    enum AxisTickLabelPosition {
+        nextToAxis = "NextToAxis",
+        high = "High",
+        low = "Low",
+        none = "None",
     }
     /**
      * [Api set: ExcelApi 1.1]
      */
-    namespace BindingType {
-        var range: string;
-        var table: string;
-        var text: string;
+    enum BindingType {
+        range = "Range",
+        table = "Table",
+        text = "Text",
     }
     /**
      * [Api set: ExcelApi 1.1]
      */
-    namespace BorderIndex {
-        var edgeTop: string;
-        var edgeBottom: string;
-        var edgeLeft: string;
-        var edgeRight: string;
-        var insideVertical: string;
-        var insideHorizontal: string;
-        var diagonalDown: string;
-        var diagonalUp: string;
+    enum BorderIndex {
+        edgeTop = "EdgeTop",
+        edgeBottom = "EdgeBottom",
+        edgeLeft = "EdgeLeft",
+        edgeRight = "EdgeRight",
+        insideVertical = "InsideVertical",
+        insideHorizontal = "InsideHorizontal",
+        diagonalDown = "DiagonalDown",
+        diagonalUp = "DiagonalUp",
     }
     /**
      * [Api set: ExcelApi 1.1]
      */
-    namespace BorderLineStyle {
-        var none: string;
-        var continuous: string;
-        var dash: string;
-        var dashDot: string;
-        var dashDotDot: string;
-        var dot: string;
-        var double: string;
-        var slantDashDot: string;
+    enum BorderLineStyle {
+        none = "None",
+        continuous = "Continuous",
+        dash = "Dash",
+        dashDot = "DashDot",
+        dashDotDot = "DashDotDot",
+        dot = "Dot",
+        double = "Double",
+        slantDashDot = "SlantDashDot",
     }
     /**
      * [Api set: ExcelApi 1.1]
      */
-    namespace BorderWeight {
-        var hairline: string;
-        var thin: string;
-        var medium: string;
-        var thick: string;
+    enum BorderWeight {
+        hairline = "Hairline",
+        thin = "Thin",
+        medium = "Medium",
+        thick = "Thick",
     }
     /**
      * [Api set: ExcelApi 1.1]
      */
-    namespace CalculationMode {
-        var automatic: string;
-        var automaticExceptTables: string;
-        var manual: string;
+    enum CalculationMode {
+        automatic = "Automatic",
+        automaticExceptTables = "AutomaticExceptTables",
+        manual = "Manual",
     }
     /**
      * [Api set: ExcelApi 1.1]
      */
-    namespace CalculationType {
+    enum CalculationType {
         /**
          *
          * Recalculates all cells that Excel has marked as dirty, that is, dependents of volatile or changed data, and cells programmatically marked as dirty.
          *
          */
-        var recalculate: string;
+        recalculate = "Recalculate",
         /**
          *
          * This will mark all cells as dirty and then recalculate them.
          *
          */
-        var full: string;
+        full = "Full",
         /**
          *
          * This will rebuild the full dependency chain, mark all cells as dirty and then recalculate them.
          *
          */
-        var fullRebuild: string;
+        fullRebuild = "FullRebuild",
     }
     /**
      * [Api set: ExcelApi 1.1 for All/Formats/Contents, 1.7 for Hyperlinks & HyperlinksAndFormats.]
      */
-    namespace ClearApplyTo {
-        var all: string;
+    enum ClearApplyTo {
+        all = "All",
         /**
          *
          * Clears all formatting for the range.
          *
          */
-        var formats: string;
+        formats = "Formats",
         /**
          *
          * Clears the contents of the range.
          *
          */
-        var contents: string;
+        contents = "Contents",
         /**
          *
          * Clears all hyperlinks, but leaves all content and formatting intact.
          *
          */
-        var hyperlinks: string;
+        hyperlinks = "Hyperlinks",
         /**
          *
          * Removes hyperlinks and formatting for the cell but leaves content, conditional formats and data validation intact.
          *
          */
-        var removeHyperlinks: string;
+        removeHyperlinks = "RemoveHyperlinks",
     }
     /**
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    namespace ChartAxisDisplayUnit {
+    enum ChartAxisDisplayUnit {
         /**
          *
          * Default option. This will reset display unit to the axis, and set unit label invisible.
          *
          */
-        var none: string;
+        none = "None",
         /**
          *
          * This will set the axis in units of hundreds.
          *
          */
-        var hundreds: string;
+        hundreds = "Hundreds",
         /**
          *
          * This will set the axis in units of thousands.
          *
          */
-        var thousands: string;
+        thousands = "Thousands",
         /**
          *
          * This will set the axis in units of tens of thousands.
          *
          */
-        var tenThousands: string;
+        tenThousands = "TenThousands",
         /**
          *
          * This will set the axis in units of hundreds of thousands.
          *
          */
-        var hundredThousands: string;
+        hundredThousands = "HundredThousands",
         /**
          *
          * This will set the axis in units of millions.
          *
          */
-        var millions: string;
+        millions = "Millions",
         /**
          *
          * This will set the axis in units of tens of millions.
          *
          */
-        var tenMillions: string;
+        tenMillions = "TenMillions",
         /**
          *
          * This will set the axis in units of hundreds of millions.
          *
          */
-        var hundredMillions: string;
+        hundredMillions = "HundredMillions",
         /**
          *
          * This will set the axis in units of billions.
          *
          */
-        var billions: string;
+        billions = "Billions",
         /**
          *
          * This will set the axis in units of trillions.
          *
          */
-        var trillions: string;
+        trillions = "Trillions",
         /**
          *
          * This will set the axis in units of custom value.
          *
          */
-        var custom: string;
+        custom = "Custom",
     }
     /**
      *
@@ -12498,10 +12991,10 @@ declare namespace Excel {
      *
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    namespace ChartAxisTimeUnit {
-        var days: string;
-        var months: string;
-        var years: string;
+    enum ChartAxisTimeUnit {
+        days = "Days",
+        months = "Months",
+        years = "Years",
     }
     /**
      *
@@ -12509,57 +13002,57 @@ declare namespace Excel {
      *
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    namespace ChartAxisCategoryType {
+    enum ChartAxisCategoryType {
         /**
          *
          * Excel controls the axis type.
          *
          */
-        var automatic: string;
+        automatic = "Automatic",
         /**
          *
          * Axis groups data by an arbitrary set of categories.
          *
          */
-        var textAxis: string;
+        textAxis = "TextAxis",
         /**
          *
          * Axis groups data on a time scale.
          *
          */
-        var dateAxis: string;
+        dateAxis = "DateAxis",
     }
     /**
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    namespace ChartLineStyle {
-        var none: string;
-        var continuous: string;
-        var dash: string;
-        var dashDot: string;
-        var dashDotDot: string;
-        var dot: string;
-        var grey25: string;
-        var grey50: string;
-        var grey75: string;
-        var automatic: string;
+    enum ChartLineStyle {
+        none = "None",
+        continuous = "Continuous",
+        dash = "Dash",
+        dashDot = "DashDot",
+        dashDotDot = "DashDotDot",
+        dot = "Dot",
+        grey25 = "Grey25",
+        grey50 = "Grey50",
+        grey75 = "Grey75",
+        automatic = "Automatic",
     }
     /**
      * [Api set: ExcelApi 1.1]
      */
-    namespace ChartDataLabelPosition {
-        var invalid: string;
-        var none: string;
-        var center: string;
-        var insideEnd: string;
-        var insideBase: string;
-        var outsideEnd: string;
-        var left: string;
-        var right: string;
-        var top: string;
-        var bottom: string;
-        var bestFit: string;
-        var callout: string;
+    enum ChartDataLabelPosition {
+        invalid = "Invalid",
+        none = "None",
+        center = "Center",
+        insideEnd = "InsideEnd",
+        insideBase = "InsideBase",
+        outsideEnd = "OutsideEnd",
+        left = "Left",
+        right = "Right",
+        top = "Top",
+        bottom = "Bottom",
+        bestFit = "BestFit",
+        callout = "Callout",
     }
     /**
      *
@@ -12567,42 +13060,42 @@ declare namespace Excel {
      *
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    namespace ChartTitlePosition {
-        var automatic: string;
-        var top: string;
-        var bottom: string;
-        var left: string;
-        var right: string;
+    enum ChartTitlePosition {
+        automatic = "Automatic",
+        top = "Top",
+        bottom = "Bottom",
+        left = "Left",
+        right = "Right",
     }
     /**
      * [Api set: ExcelApi 1.1]
      */
-    namespace ChartLegendPosition {
-        var invalid: string;
-        var top: string;
-        var bottom: string;
-        var left: string;
-        var right: string;
-        var corner: string;
-        var custom: string;
+    enum ChartLegendPosition {
+        invalid = "Invalid",
+        top = "Top",
+        bottom = "Bottom",
+        left = "Left",
+        right = "Right",
+        corner = "Corner",
+        custom = "Custom",
     }
     /**
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    namespace ChartMarkerStyle {
-        var invalid: string;
-        var automatic: string;
-        var none: string;
-        var square: string;
-        var diamond: string;
-        var triangle: string;
-        var x: string;
-        var star: string;
-        var dot: string;
-        var dash: string;
-        var circle: string;
-        var plus: string;
-        var picture: string;
+    enum ChartMarkerStyle {
+        invalid = "Invalid",
+        automatic = "Automatic",
+        none = "None",
+        square = "Square",
+        diamond = "Diamond",
+        triangle = "Triangle",
+        x = "X",
+        star = "Star",
+        dot = "Dot",
+        dash = "Dash",
+        circle = "Circle",
+        plus = "Plus",
+        picture = "Picture",
     }
     /**
      *
@@ -12610,15 +13103,15 @@ declare namespace Excel {
      *
      * [Api set: ExcelApi 1.1]
      */
-    namespace ChartSeriesBy {
+    enum ChartSeriesBy {
         /**
          *
          * On Desktop, the "auto" option will inspect the source data shape to automatically guess whether the data is by rows or columns; on Excel Online, "auto" will simply default to "columns".
          *
          */
-        var auto: string;
-        var columns: string;
-        var rows: string;
+        auto = "Auto",
+        columns = "Columns",
+        rows = "Rows",
     }
     /**
      *
@@ -12626,12 +13119,12 @@ declare namespace Excel {
      *
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    namespace ChartTextHorizontalAlignment {
-        var center: string;
-        var left: string;
-        var right: string;
-        var justify: string;
-        var distributed: string;
+    enum ChartTextHorizontalAlignment {
+        center = "Center",
+        left = "Left",
+        right = "Right",
+        justify = "Justify",
+        distributed = "Distributed",
     }
     /**
      *
@@ -12639,98 +13132,85 @@ declare namespace Excel {
      *
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    namespace ChartTextVerticalAlignment {
-        var center: string;
-        var bottom: string;
-        var top: string;
-        var justify: string;
-        var distributed: string;
+    enum ChartTextVerticalAlignment {
+        center = "Center",
+        bottom = "Bottom",
+        top = "Top",
+        justify = "Justify",
+        distributed = "Distributed",
     }
     /**
      * [Api set: ExcelApi 1.1]
      */
-    namespace ChartType {
-        var invalid: string;
-        var columnClustered: string;
-        var columnStacked: string;
-        var columnStacked100: string;
-        var _3DColumnClustered: string;
-        var _3DColumnStacked: string;
-        var _3DColumnStacked100: string;
-        var barClustered: string;
-        var barStacked: string;
-        var barStacked100: string;
-        var _3DBarClustered: string;
-        var _3DBarStacked: string;
-        var _3DBarStacked100: string;
-        var lineStacked: string;
-        var lineStacked100: string;
-        var lineMarkers: string;
-        var lineMarkersStacked: string;
-        var lineMarkersStacked100: string;
-        var pieOfPie: string;
-        var pieExploded: string;
-        var _3DPieExploded: string;
-        var barOfPie: string;
-        var xyscatterSmooth: string;
-        var xyscatterSmoothNoMarkers: string;
-        var xyscatterLines: string;
-        var xyscatterLinesNoMarkers: string;
-        var areaStacked: string;
-        var areaStacked100: string;
-        var _3DAreaStacked: string;
-        var _3DAreaStacked100: string;
-        var doughnutExploded: string;
-        var radarMarkers: string;
-        var radarFilled: string;
-        var surface: string;
-        var surfaceWireframe: string;
-        var surfaceTopView: string;
-        var surfaceTopViewWireframe: string;
-        var bubble: string;
-        var bubble3DEffect: string;
-        var stockHLC: string;
-        var stockOHLC: string;
-        var stockVHLC: string;
-        var stockVOHLC: string;
-        var cylinderColClustered: string;
-        var cylinderColStacked: string;
-        var cylinderColStacked100: string;
-        var cylinderBarClustered: string;
-        var cylinderBarStacked: string;
-        var cylinderBarStacked100: string;
-        var cylinderCol: string;
-        var coneColClustered: string;
-        var coneColStacked: string;
-        var coneColStacked100: string;
-        var coneBarClustered: string;
-        var coneBarStacked: string;
-        var coneBarStacked100: string;
-        var coneCol: string;
-        var pyramidColClustered: string;
-        var pyramidColStacked: string;
-        var pyramidColStacked100: string;
-        var pyramidBarClustered: string;
-        var pyramidBarStacked: string;
-        var pyramidBarStacked100: string;
-        var pyramidCol: string;
-        var _3DColumn: string;
-        var line: string;
-        var _3DLine: string;
-        var _3DPie: string;
-        var pie: string;
-        var xyscatter: string;
-        var _3DArea: string;
-        var area: string;
-        var doughnut: string;
-        var radar: string;
+    enum ChartType {
+        invalid = "Invalid",
+        columnClustered = "ColumnClustered",
+        columnStacked = "ColumnStacked",
+        columnStacked100 = "ColumnStacked100",
+        barClustered = "BarClustered",
+        barStacked = "BarStacked",
+        barStacked100 = "BarStacked100",
+        lineStacked = "LineStacked",
+        lineStacked100 = "LineStacked100",
+        lineMarkers = "LineMarkers",
+        lineMarkersStacked = "LineMarkersStacked",
+        lineMarkersStacked100 = "LineMarkersStacked100",
+        pieOfPie = "PieOfPie",
+        pieExploded = "PieExploded",
+        barOfPie = "BarOfPie",
+        xyscatterSmooth = "XYScatterSmooth",
+        xyscatterSmoothNoMarkers = "XYScatterSmoothNoMarkers",
+        xyscatterLines = "XYScatterLines",
+        xyscatterLinesNoMarkers = "XYScatterLinesNoMarkers",
+        areaStacked = "AreaStacked",
+        areaStacked100 = "AreaStacked100",
+        doughnutExploded = "DoughnutExploded",
+        radarMarkers = "RadarMarkers",
+        radarFilled = "RadarFilled",
+        surface = "Surface",
+        surfaceWireframe = "SurfaceWireframe",
+        surfaceTopView = "SurfaceTopView",
+        surfaceTopViewWireframe = "SurfaceTopViewWireframe",
+        bubble = "Bubble",
+        bubble3DEffect = "Bubble3DEffect",
+        stockHLC = "StockHLC",
+        stockOHLC = "StockOHLC",
+        stockVHLC = "StockVHLC",
+        stockVOHLC = "StockVOHLC",
+        cylinderColClustered = "CylinderColClustered",
+        cylinderColStacked = "CylinderColStacked",
+        cylinderColStacked100 = "CylinderColStacked100",
+        cylinderBarClustered = "CylinderBarClustered",
+        cylinderBarStacked = "CylinderBarStacked",
+        cylinderBarStacked100 = "CylinderBarStacked100",
+        cylinderCol = "CylinderCol",
+        coneColClustered = "ConeColClustered",
+        coneColStacked = "ConeColStacked",
+        coneColStacked100 = "ConeColStacked100",
+        coneBarClustered = "ConeBarClustered",
+        coneBarStacked = "ConeBarStacked",
+        coneBarStacked100 = "ConeBarStacked100",
+        coneCol = "ConeCol",
+        pyramidColClustered = "PyramidColClustered",
+        pyramidColStacked = "PyramidColStacked",
+        pyramidColStacked100 = "PyramidColStacked100",
+        pyramidBarClustered = "PyramidBarClustered",
+        pyramidBarStacked = "PyramidBarStacked",
+        pyramidBarStacked100 = "PyramidBarStacked100",
+        pyramidCol = "PyramidCol",
+        line = "Line",
+        pie = "Pie",
+        xyscatter = "XYScatter",
+        area = "Area",
+        doughnut = "Doughnut",
+        radar = "Radar",
     }
     /**
      * [Api set: ExcelApi 1.1]
      */
-    namespace ChartUnderlineStyle {
-        var none: string;
-        var single: string;
+    enum ChartUnderlineStyle {
+        none = "None",
+        single = "Single",
     }
     /**
      *
@@ -12738,10 +13218,10 @@ declare namespace Excel {
      *
      * [Api set: ExcelApi 1.6]
      */
-    namespace ConditionalDataBarAxisFormat {
-        var automatic: string;
-        var none: string;
-        var cellMidPoint: string;
+    enum ConditionalDataBarAxisFormat {
+        automatic = "Automatic",
+        none = "None",
+        cellMidPoint = "CellMidPoint",
     }
     /**
      *
@@ -12749,10 +13229,10 @@ declare namespace Excel {
      *
      * [Api set: ExcelApi 1.6]
      */
-    namespace ConditionalDataBarDirection {
-        var context: string;
-        var leftToRight: string;
-        var rightToLeft: string;
+    enum ConditionalDataBarDirection {
+        context = "Context",
+        leftToRight = "LeftToRight",
+        rightToLeft = "RightToLeft",
     }
     /**
      *
@@ -12760,38 +13240,22 @@ declare namespace Excel {
      *
      * [Api set: ExcelApi 1.6]
      */
-    namespace ConditionalFormatDirection {
-        var top: string;
-        var bottom: string;
+    enum ConditionalFormatDirection {
+        top = "Top",
+        bottom = "Bottom",
     }
     /**
      * [Api set: ExcelApi 1.6]
      */
-    namespace ConditionalFormatType {
-        var custom: string;
-        var dataBar: string;
-        var colorScale: string;
-        var iconSet: string;
-        var topBottom: string;
-        var presetCriteria: string;
-        var containsText: string;
-        var cellValue: string;
-    }
-    /**
-     *
-     * Represents the types of conditional format values.
-     *
-     * [Api set: ExcelApi 1.6]
-     */
-    namespace ConditionalFormatRuleType {
-        var invalid: string;
-        var automatic: string;
-        var lowestValue: string;
-        var highestValue: string;
-        var number: string;
-        var percent: string;
-        var formula: string;
-        var percentile: string;
+    enum ConditionalFormatType {
+        custom = "Custom",
+        dataBar = "DataBar",
+        colorScale = "ColorScale",
+        iconSet = "IconSet",
+        topBottom = "TopBottom",
+        presetCriteria = "PresetCriteria",
+        containsText = "ContainsText",
+        cellValue = "CellValue",
     }
     /**
      *
@@ -12799,12 +13263,15 @@ declare namespace Excel {
      *
      * [Api set: ExcelApi 1.6]
      */
-    namespace ConditionalFormatIconRuleType {
-        var invalid: string;
-        var number: string;
-        var percent: string;
-        var formula: string;
-        var percentile: string;
+    enum ConditionalFormatRuleType {
+        invalid = "Invalid",
+        automatic = "Automatic",
+        lowestValue = "LowestValue",
+        highestValue = "HighestValue",
+        number = "Number",
+        percent = "Percent",
+        formula = "Formula",
+        percentile = "Percentile",
     }
     /**
      *
@@ -12812,14 +13279,27 @@ declare namespace Excel {
      *
      * [Api set: ExcelApi 1.6]
      */
-    namespace ConditionalFormatColorCriterionType {
-        var invalid: string;
-        var lowestValue: string;
-        var highestValue: string;
-        var number: string;
-        var percent: string;
-        var formula: string;
-        var percentile: string;
+    enum ConditionalFormatIconRuleType {
+        invalid = "Invalid",
+        number = "Number",
+        percent = "Percent",
+        formula = "Formula",
+        percentile = "Percentile",
+    }
+    /**
+     *
+     * Represents the types of conditional format values.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    enum ConditionalFormatColorCriterionType {
+        invalid = "Invalid",
+        lowestValue = "LowestValue",
+        highestValue = "HighestValue",
+        number = "Number",
+        percent = "Percent",
+        formula = "Formula",
+        percentile = "Percentile",
     }
     /**
      *
@@ -12827,12 +13307,12 @@ declare namespace Excel {
      *
      * [Api set: ExcelApi 1.6]
      */
-    namespace ConditionalTopBottomCriterionType {
-        var invalid: string;
-        var topItems: string;
-        var topPercent: string;
-        var bottomItems: string;
-        var bottomPercent: string;
+    enum ConditionalTopBottomCriterionType {
+        invalid = "Invalid",
+        topItems = "TopItems",
+        topPercent = "TopPercent",
+        bottomItems = "BottomItems",
+        bottomPercent = "BottomPercent",
     }
     /**
      *
@@ -12840,34 +13320,34 @@ declare namespace Excel {
      *
      * [Api set: ExcelApi 1.6]
      */
-    namespace ConditionalFormatPresetCriterion {
-        var invalid: string;
-        var blanks: string;
-        var nonBlanks: string;
-        var errors: string;
-        var nonErrors: string;
-        var yesterday: string;
-        var today: string;
-        var tomorrow: string;
-        var lastSevenDays: string;
-        var lastWeek: string;
-        var thisWeek: string;
-        var nextWeek: string;
-        var lastMonth: string;
-        var thisMonth: string;
-        var nextMonth: string;
-        var aboveAverage: string;
-        var belowAverage: string;
-        var equalOrAboveAverage: string;
-        var equalOrBelowAverage: string;
-        var oneStdDevAboveAverage: string;
-        var oneStdDevBelowAverage: string;
-        var twoStdDevAboveAverage: string;
-        var twoStdDevBelowAverage: string;
-        var threeStdDevAboveAverage: string;
-        var threeStdDevBelowAverage: string;
-        var uniqueValues: string;
-        var duplicateValues: string;
+    enum ConditionalFormatPresetCriterion {
+        invalid = "Invalid",
+        blanks = "Blanks",
+        nonBlanks = "NonBlanks",
+        errors = "Errors",
+        nonErrors = "NonErrors",
+        yesterday = "Yesterday",
+        today = "Today",
+        tomorrow = "Tomorrow",
+        lastSevenDays = "LastSevenDays",
+        lastWeek = "LastWeek",
+        thisWeek = "ThisWeek",
+        nextWeek = "NextWeek",
+        lastMonth = "LastMonth",
+        thisMonth = "ThisMonth",
+        nextMonth = "NextMonth",
+        aboveAverage = "AboveAverage",
+        belowAverage = "BelowAverage",
+        equalOrAboveAverage = "EqualOrAboveAverage",
+        equalOrBelowAverage = "EqualOrBelowAverage",
+        oneStdDevAboveAverage = "OneStdDevAboveAverage",
+        oneStdDevBelowAverage = "OneStdDevBelowAverage",
+        twoStdDevAboveAverage = "TwoStdDevAboveAverage",
+        twoStdDevBelowAverage = "TwoStdDevBelowAverage",
+        threeStdDevAboveAverage = "ThreeStdDevAboveAverage",
+        threeStdDevBelowAverage = "ThreeStdDevBelowAverage",
+        uniqueValues = "UniqueValues",
+        duplicateValues = "DuplicateValues",
     }
     /**
      *
@@ -12875,12 +13355,12 @@ declare namespace Excel {
      *
      * [Api set: ExcelApi 1.6]
      */
-    namespace ConditionalTextOperator {
-        var invalid: string;
-        var contains: string;
-        var notContains: string;
-        var beginsWith: string;
-        var endsWith: string;
+    enum ConditionalTextOperator {
+        invalid = "Invalid",
+        contains = "Contains",
+        notContains = "NotContains",
+        beginsWith = "BeginsWith",
+        endsWith = "EndsWith",
     }
     /**
      *
@@ -12888,16 +13368,16 @@ declare namespace Excel {
      *
      * [Api set: ExcelApi 1.6]
      */
-    namespace ConditionalCellValueOperator {
-        var invalid: string;
-        var between: string;
-        var notBetween: string;
-        var equalTo: string;
-        var notEqualTo: string;
-        var greaterThan: string;
-        var lessThan: string;
-        var greaterThanOrEqual: string;
-        var lessThanOrEqual: string;
+    enum ConditionalCellValueOperator {
+        invalid = "Invalid",
+        between = "Between",
+        notBetween = "NotBetween",
+        equalTo = "EqualTo",
+        notEqualTo = "NotEqualTo",
+        greaterThan = "GreaterThan",
+        lessThan = "LessThan",
+        greaterThanOrEqual = "GreaterThanOrEqual",
+        lessThanOrEqual = "LessThanOrEqual",
     }
     /**
      *
@@ -12905,71 +13385,71 @@ declare namespace Excel {
      *
      * [Api set: ExcelApi 1.6]
      */
-    namespace ConditionalIconCriterionOperator {
-        var invalid: string;
-        var greaterThan: string;
-        var greaterThanOrEqual: string;
+    enum ConditionalIconCriterionOperator {
+        invalid = "Invalid",
+        greaterThan = "GreaterThan",
+        greaterThanOrEqual = "GreaterThanOrEqual",
     }
     /**
      * [Api set: ExcelApi 1.6]
      */
-    namespace ConditionalRangeBorderIndex {
-        var edgeTop: string;
-        var edgeBottom: string;
-        var edgeLeft: string;
-        var edgeRight: string;
+    enum ConditionalRangeBorderIndex {
+        edgeTop = "EdgeTop",
+        edgeBottom = "EdgeBottom",
+        edgeLeft = "EdgeLeft",
+        edgeRight = "EdgeRight",
     }
     /**
      * [Api set: ExcelApi 1.6]
      */
-    namespace ConditionalRangeBorderLineStyle {
-        var none: string;
-        var continuous: string;
-        var dash: string;
-        var dashDot: string;
-        var dashDotDot: string;
-        var dot: string;
+    enum ConditionalRangeBorderLineStyle {
+        none = "None",
+        continuous = "Continuous",
+        dash = "Dash",
+        dashDot = "DashDot",
+        dashDotDot = "DashDotDot",
+        dot = "Dot",
     }
     /**
      * [Api set: ExcelApi 1.6]
      */
-    namespace ConditionalRangeFontUnderlineStyle {
-        var none: string;
-        var single: string;
-        var double: string;
+    enum ConditionalRangeFontUnderlineStyle {
+        none = "None",
+        single = "Single",
+        double = "Double",
     }
     /**
      * [Api set: CustomFunctions 1.1]
      */
-    namespace CustomFunctionType {
-        var invalid: string;
-        var script: string;
-        var webService: string;
+    enum CustomFunctionType {
+        invalid = "Invalid",
+        script = "Script",
+        webService = "WebService",
     }
     /**
      * [Api set: CustomFunctions 1.1]
      */
-    namespace CustomFunctionMetadataFormat {
-        var invalid: string;
-        var openApi: string;
+    enum CustomFunctionMetadataFormat {
+        invalid = "Invalid",
+        openApi = "OpenApi",
     }
     /**
      * [Api set: CustomFunctions 1.1]
      */
-    namespace CustomFunctionValueType {
-        var invalid: string;
-        var boolean: string;
-        var number: string;
-        var string: string;
-        var isodate: string;
+    enum CustomFunctionValueType {
+        invalid = "Invalid",
+        boolean = "Boolean",
+        number = "Number",
+        string = "String",
+        isodate = "ISODate",
     }
     /**
      * [Api set: CustomFunctions 1.1]
      */
-    namespace CustomFunctionDimensionality {
-        var invalid: string;
-        var scalar: string;
-        var matrix: string;
+    enum CustomFunctionDimensionality {
+        invalid = "Invalid",
+        scalar = "Scalar",
+        matrix = "Matrix",
     }
     /**
      *
@@ -12977,68 +13457,68 @@ declare namespace Excel {
      *
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    namespace DataValidationType {
-        var invalid: string;
+    enum DataValidationType {
+        invalid = "Invalid",
         /**
          *
          * None means allow any value and so there is no data validation in the range.
          *
          */
-        var none: string;
+        none = "None",
         /**
          *
          * Whole number data validation type
          *
          */
-        var wholeNumber: string;
+        wholeNumber = "WholeNumber",
         /**
          *
          * Decimal data validation type
          *
          */
-        var decimal: string;
+        decimal = "Decimal",
         /**
          *
          * List data validation type
          *
          */
-        var list: string;
+        list = "List",
         /**
          *
          * Date data validation type
          *
          */
-        var date: string;
+        date = "Date",
         /**
          *
          * Time data validation type
          *
          */
-        var time: string;
+        time = "Time",
         /**
          *
          * Text length data validation type
          *
          */
-        var textLength: string;
+        textLength = "TextLength",
         /**
          *
          * Custom data validation type
          *
          */
-        var custom: string;
+        custom = "Custom",
         /**
          *
          * Inconsistent means that the range has inconsistent data validation (there are different rules on different cells)
          *
          */
-        var inconsistent: string;
+        inconsistent = "Inconsistent",
         /**
          *
          * MixedCriteria means that the range has data validation present on some but not all cells
          *
          */
-        var mixedCriteria: string;
+        mixedCriteria = "MixedCriteria",
     }
     /**
      *
@@ -13046,16 +13526,16 @@ declare namespace Excel {
      *
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    namespace DataValidationOperator {
-        var invalid: string;
-        var between: string;
-        var notBetween: string;
-        var equalTo: string;
-        var notEqualTo: string;
-        var greaterThan: string;
-        var lessThan: string;
-        var greaterThanOrEqualTo: string;
-        var lessThanOrEqualTo: string;
+    enum DataValidationOperator {
+        invalid = "Invalid",
+        between = "Between",
+        notBetween = "NotBetween",
+        equalTo = "EqualTo",
+        notEqualTo = "NotEqualTo",
+        greaterThan = "GreaterThan",
+        lessThan = "LessThan",
+        greaterThanOrEqualTo = "GreaterThanOrEqualTo",
+        lessThanOrEqualTo = "LessThanOrEqualTo",
     }
     /**
      *
@@ -13063,235 +13543,235 @@ declare namespace Excel {
      *
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    namespace DataValidationAlertStyle {
-        var invalid: string;
-        var stop: string;
-        var warning: string;
-        var information: string;
+    enum DataValidationAlertStyle {
+        invalid = "Invalid",
+        stop = "Stop",
+        warning = "Warning",
+        information = "Information",
     }
     /**
      * [Api set: ExcelApi 1.1]
      */
-    namespace DeleteShiftDirection {
-        var up: string;
-        var left: string;
+    enum DeleteShiftDirection {
+        up = "Up",
+        left = "Left",
     }
     /**
      * [Api set: ExcelApi 1.2]
      */
-    namespace DynamicFilterCriteria {
-        var unknown: string;
-        var aboveAverage: string;
-        var allDatesInPeriodApril: string;
-        var allDatesInPeriodAugust: string;
-        var allDatesInPeriodDecember: string;
-        var allDatesInPeriodFebruray: string;
-        var allDatesInPeriodJanuary: string;
-        var allDatesInPeriodJuly: string;
-        var allDatesInPeriodJune: string;
-        var allDatesInPeriodMarch: string;
-        var allDatesInPeriodMay: string;
-        var allDatesInPeriodNovember: string;
-        var allDatesInPeriodOctober: string;
-        var allDatesInPeriodQuarter1: string;
-        var allDatesInPeriodQuarter2: string;
-        var allDatesInPeriodQuarter3: string;
-        var allDatesInPeriodQuarter4: string;
-        var allDatesInPeriodSeptember: string;
-        var belowAverage: string;
-        var lastMonth: string;
-        var lastQuarter: string;
-        var lastWeek: string;
-        var lastYear: string;
-        var nextMonth: string;
-        var nextQuarter: string;
-        var nextWeek: string;
-        var nextYear: string;
-        var thisMonth: string;
-        var thisQuarter: string;
-        var thisWeek: string;
-        var thisYear: string;
-        var today: string;
-        var tomorrow: string;
-        var yearToDate: string;
-        var yesterday: string;
+    enum DynamicFilterCriteria {
+        unknown = "Unknown",
+        aboveAverage = "AboveAverage",
+        allDatesInPeriodApril = "AllDatesInPeriodApril",
+        allDatesInPeriodAugust = "AllDatesInPeriodAugust",
+        allDatesInPeriodDecember = "AllDatesInPeriodDecember",
+        allDatesInPeriodFebruray = "AllDatesInPeriodFebruray",
+        allDatesInPeriodJanuary = "AllDatesInPeriodJanuary",
+        allDatesInPeriodJuly = "AllDatesInPeriodJuly",
+        allDatesInPeriodJune = "AllDatesInPeriodJune",
+        allDatesInPeriodMarch = "AllDatesInPeriodMarch",
+        allDatesInPeriodMay = "AllDatesInPeriodMay",
+        allDatesInPeriodNovember = "AllDatesInPeriodNovember",
+        allDatesInPeriodOctober = "AllDatesInPeriodOctober",
+        allDatesInPeriodQuarter1 = "AllDatesInPeriodQuarter1",
+        allDatesInPeriodQuarter2 = "AllDatesInPeriodQuarter2",
+        allDatesInPeriodQuarter3 = "AllDatesInPeriodQuarter3",
+        allDatesInPeriodQuarter4 = "AllDatesInPeriodQuarter4",
+        allDatesInPeriodSeptember = "AllDatesInPeriodSeptember",
+        belowAverage = "BelowAverage",
+        lastMonth = "LastMonth",
+        lastQuarter = "LastQuarter",
+        lastWeek = "LastWeek",
+        lastYear = "LastYear",
+        nextMonth = "NextMonth",
+        nextQuarter = "NextQuarter",
+        nextWeek = "NextWeek",
+        nextYear = "NextYear",
+        thisMonth = "ThisMonth",
+        thisQuarter = "ThisQuarter",
+        thisWeek = "ThisWeek",
+        thisYear = "ThisYear",
+        today = "Today",
+        tomorrow = "Tomorrow",
+        yearToDate = "YearToDate",
+        yesterday = "Yesterday",
     }
     /**
      * [Api set: ExcelApi 1.2]
      */
-    namespace FilterDatetimeSpecificity {
-        var year: string;
-        var month: string;
-        var day: string;
-        var hour: string;
-        var minute: string;
-        var second: string;
+    enum FilterDatetimeSpecificity {
+        year = "Year",
+        month = "Month",
+        day = "Day",
+        hour = "Hour",
+        minute = "Minute",
+        second = "Second",
     }
     /**
      * [Api set: ExcelApi 1.2]
      */
-    namespace FilterOn {
-        var bottomItems: string;
-        var bottomPercent: string;
-        var cellColor: string;
-        var dynamic: string;
-        var fontColor: string;
-        var values: string;
-        var topItems: string;
-        var topPercent: string;
-        var icon: string;
-        var custom: string;
+    enum FilterOn {
+        bottomItems = "BottomItems",
+        bottomPercent = "BottomPercent",
+        cellColor = "CellColor",
+        dynamic = "Dynamic",
+        fontColor = "FontColor",
+        values = "Values",
+        topItems = "TopItems",
+        topPercent = "TopPercent",
+        icon = "Icon",
+        custom = "Custom",
     }
     /**
      * [Api set: ExcelApi 1.2]
      */
-    namespace FilterOperator {
-        var and: string;
-        var or: string;
+    enum FilterOperator {
+        and = "And",
+        or = "Or",
     }
     /**
      * [Api set: ExcelApi 1.1]
      */
-    namespace HorizontalAlignment {
-        var general: string;
-        var left: string;
-        var center: string;
-        var right: string;
-        var fill: string;
-        var justify: string;
-        var centerAcrossSelection: string;
-        var distributed: string;
+    enum HorizontalAlignment {
+        general = "General",
+        left = "Left",
+        center = "Center",
+        right = "Right",
+        fill = "Fill",
+        justify = "Justify",
+        centerAcrossSelection = "CenterAcrossSelection",
+        distributed = "Distributed",
     }
     /**
      * [Api set: ExcelApi 1.2]
      */
-    namespace IconSet {
-        var invalid: string;
-        var threeArrows: string;
-        var threeArrowsGray: string;
-        var threeFlags: string;
-        var threeTrafficLights1: string;
-        var threeTrafficLights2: string;
-        var threeSigns: string;
-        var threeSymbols: string;
-        var threeSymbols2: string;
-        var fourArrows: string;
-        var fourArrowsGray: string;
-        var fourRedToBlack: string;
-        var fourRating: string;
-        var fourTrafficLights: string;
-        var fiveArrows: string;
-        var fiveArrowsGray: string;
-        var fiveRating: string;
-        var fiveQuarters: string;
-        var threeStars: string;
-        var threeTriangles: string;
-        var fiveBoxes: string;
+    enum IconSet {
+        invalid = "Invalid",
+        threeArrows = "ThreeArrows",
+        threeArrowsGray = "ThreeArrowsGray",
+        threeFlags = "ThreeFlags",
+        threeTrafficLights1 = "ThreeTrafficLights1",
+        threeTrafficLights2 = "ThreeTrafficLights2",
+        threeSigns = "ThreeSigns",
+        threeSymbols = "ThreeSymbols",
+        threeSymbols2 = "ThreeSymbols2",
+        fourArrows = "FourArrows",
+        fourArrowsGray = "FourArrowsGray",
+        fourRedToBlack = "FourRedToBlack",
+        fourRating = "FourRating",
+        fourTrafficLights = "FourTrafficLights",
+        fiveArrows = "FiveArrows",
+        fiveArrowsGray = "FiveArrowsGray",
+        fiveRating = "FiveRating",
+        fiveQuarters = "FiveQuarters",
+        threeStars = "ThreeStars",
+        threeTriangles = "ThreeTriangles",
+        fiveBoxes = "FiveBoxes",
     }
     /**
      * [Api set: ExcelApi 1.2]
      */
-    namespace ImageFittingMode {
-        var fit: string;
-        var fitAndCenter: string;
-        var fill: string;
+    enum ImageFittingMode {
+        fit = "Fit",
+        fitAndCenter = "FitAndCenter",
+        fill = "Fill",
     }
     /**
      * [Api set: ExcelApi 1.1]
      */
-    namespace InsertShiftDirection {
-        var down: string;
-        var right: string;
+    enum InsertShiftDirection {
+        down = "Down",
+        right = "Right",
     }
     /**
      * [Api set: ExcelApi 1.4]
      */
-    namespace NamedItemScope {
-        var worksheet: string;
-        var workbook: string;
+    enum NamedItemScope {
+        worksheet = "Worksheet",
+        workbook = "Workbook",
     }
     /**
      * [Api set: ExcelApi 1.1 for String,Integer,Double,Boolean,Range,Error; 1.7 for Array]
      */
-    namespace NamedItemType {
-        var string: string;
-        var integer: string;
-        var double: string;
-        var boolean: string;
-        var range: string;
-        var error: string;
-        var array: string;
+    enum NamedItemType {
+        string = "String",
+        integer = "Integer",
+        double = "Double",
+        boolean = "Boolean",
+        range = "Range",
+        error = "Error",
+        array = "Array",
     }
     /**
      * [Api set: ExcelApi 1.1]
      */
-    namespace RangeUnderlineStyle {
-        var none: string;
-        var single: string;
-        var double: string;
-        var singleAccountant: string;
-        var doubleAccountant: string;
+    enum RangeUnderlineStyle {
+        none = "None",
+        single = "Single",
+        double = "Double",
+        singleAccountant = "SingleAccountant",
+        doubleAccountant = "DoubleAccountant",
     }
     /**
      * [Api set: ExcelApi 1.1]
      */
-    namespace SheetVisibility {
-        var visible: string;
-        var hidden: string;
-        var veryHidden: string;
+    enum SheetVisibility {
+        visible = "Visible",
+        hidden = "Hidden",
+        veryHidden = "VeryHidden",
     }
     /**
      * [Api set: ExcelApi 1.1 for Unknown, Empty, String, Integer, Double, Boolean, Error. 1.7 for RichValue]
      */
-    namespace RangeValueType {
-        var unknown: string;
-        var empty: string;
-        var string: string;
-        var integer: string;
-        var double: string;
-        var boolean: string;
-        var error: string;
-        var richValue: string;
+    enum RangeValueType {
+        unknown = "Unknown",
+        empty = "Empty",
+        string = "String",
+        integer = "Integer",
+        double = "Double",
+        boolean = "Boolean",
+        error = "Error",
+        richValue = "RichValue",
     }
     /**
      * [Api set: ExcelApi 1.2]
      */
-    namespace SortOrientation {
-        var rows: string;
-        var columns: string;
+    enum SortOrientation {
+        rows = "Rows",
+        columns = "Columns",
     }
     /**
      * [Api set: ExcelApi 1.2]
      */
-    namespace SortOn {
-        var value: string;
-        var cellColor: string;
-        var fontColor: string;
-        var icon: string;
+    enum SortOn {
+        value = "Value",
+        cellColor = "CellColor",
+        fontColor = "FontColor",
+        icon = "Icon",
     }
     /**
      * [Api set: ExcelApi 1.2]
      */
-    namespace SortDataOption {
-        var normal: string;
-        var textAsNumber: string;
+    enum SortDataOption {
+        normal = "Normal",
+        textAsNumber = "TextAsNumber",
     }
     /**
      * [Api set: ExcelApi 1.2]
      */
-    namespace SortMethod {
-        var pinYin: string;
-        var strokeCount: string;
+    enum SortMethod {
+        pinYin = "PinYin",
+        strokeCount = "StrokeCount",
     }
     /**
      * [Api set: ExcelApi 1.1]
      */
-    namespace VerticalAlignment {
-        var top: string;
-        var center: string;
-        var bottom: string;
-        var justify: string;
-        var distributed: string;
+    enum VerticalAlignment {
+        top = "Top",
+        center = "Center",
+        bottom = "Bottom",
+        justify = "Justify",
+        distributed = "Distributed",
     }
     /**
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
@@ -13329,357 +13809,389 @@ declare namespace Excel {
     /**
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    namespace DocumentPropertyType {
-        var number: string;
-        var boolean: string;
-        var date: string;
-        var string: string;
-        var float: string;
+    enum DocumentPropertyType {
+        number = "Number",
+        boolean = "Boolean",
+        date = "Date",
+        string = "String",
+        float = "Float",
     }
     /**
      * [Api set: ExcelApi BETA (PREVIEW ONLY) for Local, Remote]
      */
-    namespace EventSource {
+    enum EventSource {
         /**
          *
          * Local means event comes from local user session.
          *
          */
-        var local: string;
+        local = "Local",
         /**
          *
          * Remote means event comes from remote user session.
          *
          */
-        var remote: string;
+        remote = "Remote",
     }
     /**
      * [Api set: ExcelApi BETA (PREVIEW ONLY) for Others, RangeEdited, RowInserted, RowDeleted, ColumnInserted, ColumnDeleted, CellInserted, CellDeleted]
      */
-    namespace DataChangeType {
+    enum DataChangeType {
         /**
          *
          * Others represents the type of data change is not the listed types.
          *
          */
-        var others: string;
+        others = "Others",
         /**
          *
          * RangeEdited represents the data change event is triggered by range being edited.
          *
          */
-        var rangeEdited: string;
+        rangeEdited = "RangeEdited",
         /**
          *
          * RowInserted represents the data change event is triggered by inserting new rows.
          *
          */
-        var rowInserted: string;
+        rowInserted = "RowInserted",
         /**
          *
          * RowDeleted represents the data change event is triggered by deleting rows.
          *
          */
-        var rowDeleted: string;
+        rowDeleted = "RowDeleted",
         /**
          *
          * ColumnInserted represents the data change event is triggered by inserting new columns.
          *
          */
-        var columnInserted: string;
+        columnInserted = "ColumnInserted",
         /**
          *
          * ColumnDeleted represents the data change event is triggered by deleting columns.
          *
          */
-        var columnDeleted: string;
+        columnDeleted = "ColumnDeleted",
         /**
          *
          * CellInserted represents the data change event is triggered by inserting new cells.
          *
          */
-        var cellInserted: string;
+        cellInserted = "CellInserted",
         /**
          *
          * CellDeleted represents the data change event is triggered by deleting cells.
          *
          */
-        var cellDeleted: string;
+        cellDeleted = "CellDeleted",
     }
     /**
-     * [Api set: ExcelApi BETA (PREVIEW ONLY) for WorksheetDataChanged, WorksheetSelectionChanged, WorksheetAdded, WorksheetActivated, WorksheetDeactivated, TableDataChanged, TableSelectionChanged]
+     * [Api set: ExcelApi BETA (PREVIEW ONLY) for WorksheetChanged, WorksheetSelectionChanged, WorksheetAdded, WorksheetActivated, WorksheetDeactivated, TableChanged, TableSelectionChanged]
      */
-    namespace EventType {
+    enum EventType {
         /**
          *
-         * WorksheetDataChanged represents the type of event that is registered on Worksheet or WorksheetCollection, and occurs when data changes.
+         * WorksheetChanged represents the type of event that is registered on Worksheet or WorksheetCollection, and occurs when data changes.
          *
          */
-        var worksheetDataChanged: string;
+        worksheetChanged = "WorksheetChanged",
         /**
          *
          * WorksheetSelectionChanged represents the type of event that is registered on Worksheet, and occurs when selection changes.
          *
          */
-        var worksheetSelectionChanged: string;
+        worksheetSelectionChanged = "WorksheetSelectionChanged",
         /**
          *
          * WorksheetAdded represents the type of event that is registered on WorksheetCollection, and occurs when a new worksheet is added to the workbook.
          *
          */
-        var worksheetAdded: string;
+        worksheetAdded = "WorksheetAdded",
         /**
          *
          * WorksheetActivated represents the type of event that is registered on Worksheet or WorksheetCollection, and occurs when worksheet activates.
          *
          */
-        var worksheetActivated: string;
+        worksheetActivated = "WorksheetActivated",
         /**
          *
          * WorksheetDeactivated represents the type of event that is registered on Worksheet or WorksheetCollection, and occurs when worksheet deactivates.
          *
          */
-        var worksheetDeactivated: string;
+        worksheetDeactivated = "WorksheetDeactivated",
         /**
          *
-         * TableDataChanged represents the type of event that is registered on Table, and occurs when data changes.
+         * TableChanged represents the type of event that is registered on Table, and occurs when data changes.
          *
          */
-        var tableDataChanged: string;
+        tableChanged = "TableChanged",
         /**
          *
          * TableSelectionChanged represents the type of event that is registered on Table, and occurs when selection changes.
          *
          */
-        var tableSelectionChanged: string;
+        tableSelectionChanged = "TableSelectionChanged",
         /**
          *
          * WorksheetDeleted represents the type of event that is registered on WorksheetCollection, and occurs when a worksheet is deleted from the workbook.
          *
          */
-        var worksheetDeleted: string;
+        worksheetDeleted = "WorksheetDeleted",
         /**
          *
          * ChartAdded represents the type of event that is registered on ChartCollection, and occurs when a new chart is added to the worksheet.
          *
          */
-        var chartAdded: string;
+        chartAdded = "ChartAdded",
         /**
          *
          * ChartActivated represents the type of event that is registered on Chart or ChartCollection, and occurs when chart activates.
          *
          */
-        var chartActivated: string;
+        chartActivated = "ChartActivated",
         /**
          *
          * ChartDeactivated represents the type of event that is registered on Chart or ChartCollection, and occurs when chart deactivates.
          *
          */
-        var chartDeactivated: string;
+        chartDeactivated = "ChartDeactivated",
         /**
          *
          * ChartDeleted represents the type of event that is registered on ChartCollection, and occurs when a chart is deleted from the worksheet.
          *
          */
-        var chartDeleted: string;
+        chartDeleted = "ChartDeleted",
         /**
          *
          * WorksheetCalculated represents the type of event that is registered on Worksheet or WorksheetCollection, and occurs when a worksheet is calculated.
          *
          */
-        var worksheetCalculated: string;
+        worksheetCalculated = "WorksheetCalculated",
     }
     /**
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    namespace DocumentPropertyItem {
-        var title: string;
-        var subject: string;
-        var author: string;
-        var keywords: string;
-        var comments: string;
-        var template: string;
-        var lastAuth: string;
-        var revision: string;
-        var appName: string;
-        var lastPrint: string;
-        var creation: string;
-        var lastSave: string;
-        var category: string;
-        var format: string;
-        var manager: string;
-        var company: string;
+    enum DocumentPropertyItem {
+        title = "Title",
+        subject = "Subject",
+        author = "Author",
+        keywords = "Keywords",
+        comments = "Comments",
+        template = "Template",
+        lastAuth = "LastAuth",
+        revision = "Revision",
+        appName = "AppName",
+        lastPrint = "LastPrint",
+        creation = "Creation",
+        lastSave = "LastSave",
+        category = "Category",
+        format = "Format",
+        manager = "Manager",
+        company = "Company",
     }
     /**
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    namespace TrendlineType {
-        var linear: string;
-        var exponential: string;
-        var logarithmic: string;
-        var movingAverage: string;
-        var polynomial: string;
-        var power: string;
+    enum TrendlineType {
+        linear = "Linear",
+        exponential = "Exponential",
+        logarithmic = "Logarithmic",
+        movingAverage = "MovingAverage",
+        polynomial = "Polynomial",
+        power = "Power",
     }
     /**
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    namespace SubtotalLocationType {
-        var atTop: string;
-        var atBottom: string;
+    enum SubtotalLocationType {
+        atTop = "AtTop",
+        atBottom = "AtBottom",
     }
     /**
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    namespace LayoutRowType {
-        var compactRow: string;
-        var tabularRow: string;
-        var outlineRow: string;
+    enum LayoutRowType {
+        compactRow = "CompactRow",
+        tabularRow = "TabularRow",
+        outlineRow = "OutlineRow",
     }
     /**
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    namespace ProtectionSelectionMode {
-        var normal: string;
-        var unlocked: string;
-        var none: string;
+    enum ProtectionSelectionMode {
+        /**
+         *
+         * Selection is allowed for all cells.
+         *
+         */
+        normal = "Normal",
+        /**
+         *
+         * Selection is allowed only for cells that are not locked.
+         *
+         */
+        unlocked = "Unlocked",
+        /**
+         *
+         * Selection is not allowed for all cells.
+         *
+         */
+        none = "None",
     }
     /**
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    namespace PageOrientation {
-        var portrait: string;
-        var landscape: string;
+    enum PageOrientation {
+        portrait = "Portrait",
+        landscape = "Landscape",
     }
     /**
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    namespace PaperType {
-        var letter: string;
-        var letterSmall: string;
-        var tabloid: string;
-        var ledger: string;
-        var legal: string;
-        var statement: string;
-        var executive: string;
-        var a3: string;
-        var a4: string;
-        var a4Small: string;
-        var a5: string;
-        var b4: string;
-        var b5: string;
-        var folio: string;
-        var quatro: string;
-        var paper10x14: string;
-        var paper11x17: string;
-        var note: string;
-        var envelope9: string;
-        var envelope10: string;
-        var envelope11: string;
-        var envelope12: string;
-        var envelope14: string;
-        var csheet: string;
-        var dsheet: string;
-        var esheet: string;
-        var envelopeDL: string;
-        var envelopeC5: string;
-        var envelopeC3: string;
-        var envelopeC4: string;
-        var envelopeC6: string;
-        var envelopeC65: string;
-        var envelopeB4: string;
-        var envelopeB5: string;
-        var envelopeB6: string;
-        var envelopeItaly: string;
-        var envelopeMonarch: string;
-        var envelopePersonal: string;
-        var fanfoldUS: string;
-        var fanfoldStdGerman: string;
-        var fanfoldLegalGerman: string;
+    enum PaperType {
+        letter = "Letter",
+        letterSmall = "LetterSmall",
+        tabloid = "Tabloid",
+        ledger = "Ledger",
+        legal = "Legal",
+        statement = "Statement",
+        executive = "Executive",
+        a3 = "A3",
+        a4 = "A4",
+        a4Small = "A4Small",
+        a5 = "A5",
+        b4 = "B4",
+        b5 = "B5",
+        folio = "Folio",
+        quatro = "Quatro",
+        paper10x14 = "Paper10x14",
+        paper11x17 = "Paper11x17",
+        note = "Note",
+        envelope9 = "Envelope9",
+        envelope10 = "Envelope10",
+        envelope11 = "Envelope11",
+        envelope12 = "Envelope12",
+        envelope14 = "Envelope14",
+        csheet = "Csheet",
+        dsheet = "Dsheet",
+        esheet = "Esheet",
+        envelopeDL = "EnvelopeDL",
+        envelopeC5 = "EnvelopeC5",
+        envelopeC3 = "EnvelopeC3",
+        envelopeC4 = "EnvelopeC4",
+        envelopeC6 = "EnvelopeC6",
+        envelopeC65 = "EnvelopeC65",
+        envelopeB4 = "EnvelopeB4",
+        envelopeB5 = "EnvelopeB5",
+        envelopeB6 = "EnvelopeB6",
+        envelopeItaly = "EnvelopeItaly",
+        envelopeMonarch = "EnvelopeMonarch",
+        envelopePersonal = "EnvelopePersonal",
+        fanfoldUS = "FanfoldUS",
+        fanfoldStdGerman = "FanfoldStdGerman",
+        fanfoldLegalGerman = "FanfoldLegalGerman",
     }
     /**
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    namespace ReadingOrder {
-        var context: string;
-        var leftToRight: string;
-        var rightToLeft: string;
+    enum ReadingOrder {
+        /**
+         *
+         * Reading order is determined by the language of the first character entered.
+            If a right-to-left language character is entered first, reading order is right to left.
+            If a left-to-right language character is entered first, reading order is left to right.
+         *
+         */
+        context = "Context",
+        /**
+         *
+         * Left to right reading order
+         *
+         */
+        leftToRight = "LeftToRight",
+        /**
+         *
+         * Right to left reading order
+         *
+         */
+        rightToLeft = "RightToLeft",
     }
     /**
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    namespace BuiltInStyle {
-        var normal: string;
-        var comma: string;
-        var currency: string;
-        var percent: string;
-        var wholeComma: string;
-        var wholeDollar: string;
-        var hlink: string;
-        var hlinkTrav: string;
-        var note: string;
-        var warningText: string;
-        var emphasis1: string;
-        var emphasis2: string;
-        var emphasis3: string;
-        var sheetTitle: string;
-        var heading1: string;
-        var heading2: string;
-        var heading3: string;
-        var heading4: string;
-        var input: string;
-        var output: string;
-        var calculation: string;
-        var checkCell: string;
-        var linkedCell: string;
-        var total: string;
-        var good: string;
-        var bad: string;
-        var neutral: string;
-        var accent1: string;
-        var accent1_20: string;
-        var accent1_40: string;
-        var accent1_60: string;
-        var accent2: string;
-        var accent2_20: string;
-        var accent2_40: string;
-        var accent2_60: string;
-        var accent3: string;
-        var accent3_20: string;
-        var accent3_40: string;
-        var accent3_60: string;
-        var accent4: string;
-        var accent4_20: string;
-        var accent4_40: string;
-        var accent4_60: string;
-        var accent5: string;
-        var accent5_20: string;
-        var accent5_40: string;
-        var accent5_60: string;
-        var accent6: string;
-        var accent6_20: string;
-        var accent6_40: string;
-        var accent6_60: string;
-        var explanatoryText: string;
+    enum BuiltInStyle {
+        normal = "Normal",
+        comma = "Comma",
+        currency = "Currency",
+        percent = "Percent",
+        wholeComma = "WholeComma",
+        wholeDollar = "WholeDollar",
+        hlink = "Hlink",
+        hlinkTrav = "HlinkTrav",
+        note = "Note",
+        warningText = "WarningText",
+        emphasis1 = "Emphasis1",
+        emphasis2 = "Emphasis2",
+        emphasis3 = "Emphasis3",
+        sheetTitle = "SheetTitle",
+        heading1 = "Heading1",
+        heading2 = "Heading2",
+        heading3 = "Heading3",
+        heading4 = "Heading4",
+        input = "Input",
+        output = "Output",
+        calculation = "Calculation",
+        checkCell = "CheckCell",
+        linkedCell = "LinkedCell",
+        total = "Total",
+        good = "Good",
+        bad = "Bad",
+        neutral = "Neutral",
+        accent1 = "Accent1",
+        accent1_20 = "Accent1_20",
+        accent1_40 = "Accent1_40",
+        accent1_60 = "Accent1_60",
+        accent2 = "Accent2",
+        accent2_20 = "Accent2_20",
+        accent2_40 = "Accent2_40",
+        accent2_60 = "Accent2_60",
+        accent3 = "Accent3",
+        accent3_20 = "Accent3_20",
+        accent3_40 = "Accent3_40",
+        accent3_60 = "Accent3_60",
+        accent4 = "Accent4",
+        accent4_20 = "Accent4_20",
+        accent4_40 = "Accent4_40",
+        accent4_60 = "Accent4_60",
+        accent5 = "Accent5",
+        accent5_20 = "Accent5_20",
+        accent5_40 = "Accent5_40",
+        accent5_60 = "Accent5_60",
+        accent6 = "Accent6",
+        accent6_20 = "Accent6_20",
+        accent6_40 = "Accent6_40",
+        accent6_60 = "Accent6_60",
+        explanatoryText = "ExplanatoryText",
     }
     /**
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    namespace PrintErrorType {
-        var errorsDisplayed: string;
-        var errorsBlank: string;
-        var errorsDash: string;
-        var errorsNotAvailable: string;
+    enum PrintErrorType {
+        errorsDisplayed = "ErrorsDisplayed",
+        errorsBlank = "ErrorsBlank",
+        errorsDash = "ErrorsDash",
+        errorsNotAvailable = "ErrorsNotAvailable",
     }
     /**
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    namespace WorksheetPositionType {
-        var none: string;
-        var before: string;
-        var after: string;
-        var beginning: string;
-        var end: string;
+    enum WorksheetPositionType {
+        none = "None",
+        before = "Before",
+        after = "After",
+        beginning = "Beginning",
+        end = "End",
     }
     /**
      *
@@ -17460,319 +17972,22 @@ declare namespace Excel {
             [key: string]: string;
         };
     }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    interface Subtotals {
-        automatic?: boolean;
-        average?: boolean;
-        count?: boolean;
-        countNumbers?: boolean;
-        max?: boolean;
-        min?: boolean;
-        product?: boolean;
-        standardDeviation?: boolean;
-        standardDeviationP?: boolean;
-        sum?: boolean;
-        variation?: boolean;
-        variationP?: boolean;
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    class CalculatedFieldCollection extends OfficeExtension.ClientObject {
-        /** Gets the loaded child items in this collection. */
-        readonly items: Array<Excel.PivotField>;
-        add(Name: string, Formula: string, UseStandardFormula?: boolean): Excel.PivotField;
-        getCount(): OfficeExtension.ClientResult<number>;
-        getItem(nameOrIndex: any): Excel.PivotField;
-        getItemAt(index: number): Excel.PivotField;
-        /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         */
-        load(option?: Excel.Interfaces.CalculatedFieldCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.CalculatedFieldCollection;
-        load(option?: string | string[]): Excel.CalculatedFieldCollection;
-        load(option?: OfficeExtension.LoadOption): Excel.CalculatedFieldCollection;
-        toJSON(): Excel.Interfaces.CalculatedFieldCollectionData;
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    class PivotCache extends OfficeExtension.ClientObject {
-        readonly id: number;
-        readonly index: number;
-        readonly sourceData: any;
-        readonly version: string;
-        refresh(): void;
-        /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         */
-        load(option?: Excel.Interfaces.PivotCacheLoadOptions): Excel.PivotCache;
-        load(option?: string | string[]): Excel.PivotCache;
-        load(option?: {
-            select?: string;
-            expand?: string;
-        }): Excel.PivotCache;
-        toJSON(): Excel.Interfaces.PivotCacheData;
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    class PivotCacheCollection extends OfficeExtension.ClientObject {
-        /** Gets the loaded child items in this collection. */
-        readonly items: Array<Excel.PivotCache>;
-        add(sourceType: string, address: Excel.Range): Excel.PivotCache;
-        getCount(): OfficeExtension.ClientResult<number>;
-        getItem(index: number): Excel.PivotCache;
-        getItemAt(index: number): Excel.PivotCache;
-        /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         */
-        load(option?: Excel.Interfaces.PivotCacheCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.PivotCacheCollection;
-        load(option?: string | string[]): Excel.PivotCacheCollection;
-        load(option?: OfficeExtension.LoadOption): Excel.PivotCacheCollection;
-        toJSON(): Excel.Interfaces.PivotCacheCollectionData;
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    class PivotField extends OfficeExtension.ClientObject {
-        currentPage: Excel.PivotItem;
-        readonly hiddenItems: Excel.PivotItemCollection;
-        readonly pivotItems: Excel.PivotItemCollection;
-        readonly visiblePivotItems: Excel.PivotItemCollection;
-        aggregationFunction: string;
-        readonly allItemsVisible: boolean;
-        readonly autoSortField: string;
-        readonly autoSortOrder: string;
-        readonly calculated: boolean;
-        calculation: string;
-        caption: string;
-        readonly dataType: string;
-        drilledDown: boolean;
-        enableMultiplePageItems: boolean;
-        formula: string;
-        name: string;
-        numberFormat: string;
-        orientation: string;
-        position: number;
-        showDetail: boolean;
-        readonly sourceName: string;
-        subtotals: Excel.Subtotals;
-        /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.PivotFieldUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
-        /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
-        set(properties: PivotField): void;
-        autoGroup(): void;
-        autoSort(sortOrder: string, Field: string): void;
-        clearAllFilters(): void;
-        getChildField(): Excel.PivotField;
-        getChildItems(): Excel.PivotItemCollection;
-        getDataRange(): Excel.Range;
-        /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         */
-        load(option?: Excel.Interfaces.PivotFieldLoadOptions): Excel.PivotField;
-        load(option?: string | string[]): Excel.PivotField;
-        load(option?: {
-            select?: string;
-            expand?: string;
-        }): Excel.PivotField;
-        toJSON(): Excel.Interfaces.PivotFieldData;
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    class PivotFieldCollection extends OfficeExtension.ClientObject {
-        /** Gets the loaded child items in this collection. */
-        readonly items: Array<Excel.PivotField>;
-        getCount(): OfficeExtension.ClientResult<number>;
-        getItem(nameOrIndex: any): Excel.PivotField;
-        getItemAt(index: number): Excel.PivotField;
-        /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         */
-        load(option?: Excel.Interfaces.PivotFieldCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.PivotFieldCollection;
-        load(option?: string | string[]): Excel.PivotFieldCollection;
-        load(option?: OfficeExtension.LoadOption): Excel.PivotFieldCollection;
-        toJSON(): Excel.Interfaces.PivotFieldCollectionData;
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    class PivotItem extends OfficeExtension.ClientObject {
-        readonly pivotField: Excel.PivotField;
-        readonly calculated: boolean;
-        drilledDown: boolean;
-        name: string;
-        position: number;
-        readonly recordCount: number;
-        showDetail: boolean;
-        readonly sourceName: string;
-        value: string;
-        visible: boolean;
-        /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.PivotItemUpdateData, options?: {
-            /**
-             * Throw an error if the passed-in property list includes read-only properties (default = true).
-             */
-            throwOnReadOnly?: boolean;
-        }): void;
-        /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
-        set(properties: PivotItem): void;
-        getDataRange(): Excel.Range;
-        /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         */
-        load(option?: Excel.Interfaces.PivotItemLoadOptions): Excel.PivotItem;
-        load(option?: string | string[]): Excel.PivotItem;
-        load(option?: {
-            select?: string;
-            expand?: string;
-        }): Excel.PivotItem;
-        toJSON(): Excel.Interfaces.PivotItemData;
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    class PivotItemCollection extends OfficeExtension.ClientObject {
-        /** Gets the loaded child items in this collection. */
-        readonly items: Array<Excel.PivotItem>;
-        getCount(): OfficeExtension.ClientResult<number>;
-        getItem(nameOrIndex: any): Excel.PivotItem;
-        getItemAt(index: number): Excel.PivotItem;
-        /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         */
-        load(option?: Excel.Interfaces.PivotItemCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.PivotItemCollection;
-        load(option?: string | string[]): Excel.PivotItemCollection;
-        load(option?: OfficeExtension.LoadOption): Excel.PivotItemCollection;
-        toJSON(): Excel.Interfaces.PivotItemCollectionData;
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    namespace ConsolidationFunction {
-        var varP: string;
-        var _Var: string;
-        var sum: string;
-        var stDevP: string;
-        var stDev: string;
-        var product: string;
-        var min: string;
-        var max: string;
-        var countNums: string;
-        var count: string;
-        var average: string;
-        var distinctCount: string;
-        var unknown: string;
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    namespace PivotFieldCalculation {
-        var noAdditionalCalculation: string;
-        var differenceFrom: string;
-        var percentOf: string;
-        var percentDifferenceFrom: string;
-        var runningTotal: string;
-        var percentOfRow: string;
-        var percentOfColumn: string;
-        var percentOfTotal: string;
-        var index: string;
-        var percentOfParentRow: string;
-        var percentOfParentColumn: string;
-        var percentOfParent: string;
-        var percentRunningTotal: string;
-        var rankAscending: string;
-        var rankDecending: string;
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    namespace PivotFieldDataType {
-        var text: string;
-        var number: string;
-        var date: string;
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    namespace PivotFieldOrientation {
-        var hidden: string;
-        var rowField: string;
-        var columnField: string;
-        var pageField: string;
-        var dataField: string;
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    namespace PivotFieldRepeatLabels {
-        var doNotRepeatLabels: string;
-        var repeatLabels: string;
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    namespace PivotTableSourceType {
-        var database: string;
-        var external: string;
-        var consolidation: string;
-        var scenario: string;
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    namespace PivotTableVersion {
-        var pivotTableVersionCurrent: string;
-        var pivotTableVersion2000: string;
-        var pivotTableVersion10: string;
-        var pivotTableVersion11: string;
-        var pivotTableVersion12: string;
-        var pivotTableVersion14: string;
-        var pivotTableVersion15: string;
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    namespace PivotTableSelectionMode {
-        var dataAndLabel: string;
-        var labelOnly: string;
-        var dataOnly: string;
-        var origin: string;
-        var blanks: string;
-        var button: string;
-        var firstRow: string;
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    namespace SortOrder {
-        var ascending: string;
-        var descending: string;
-    }
-    namespace ErrorCodes {
-        var accessDenied: string;
-        var apiNotFound: string;
-        var conflict: string;
-        var generalException: string;
-        var insertDeleteConflict: string;
-        var invalidArgument: string;
-        var invalidBinding: string;
-        var invalidOperation: string;
-        var invalidReference: string;
-        var invalidSelection: string;
-        var itemAlreadyExists: string;
-        var itemNotFound: string;
-        var notImplemented: string;
-        var unsupportedOperation: string;
-        var invalidOperationInCellEditMode: string;
+    enum ErrorCodes {
+        accessDenied = "AccessDenied",
+        apiNotFound = "ApiNotFound",
+        conflict = "Conflict",
+        generalException = "GeneralException",
+        insertDeleteConflict = "InsertDeleteConflict",
+        invalidArgument = "InvalidArgument",
+        invalidBinding = "InvalidBinding",
+        invalidOperation = "InvalidOperation",
+        invalidReference = "InvalidReference",
+        invalidSelection = "InvalidSelection",
+        itemAlreadyExists = "ItemAlreadyExists",
+        itemNotFound = "ItemNotFound",
+        notImplemented = "NotImplemented",
+        unsupportedOperation = "UnsupportedOperation",
+        invalidOperationInCellEditMode = "InvalidOperationInCellEditMode",
     }
     module Interfaces {
         interface CollectionLoadOptions {
@@ -17788,6 +18003,16 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             enableEvents?: boolean;
+        }
+        /** An interface for updating data on the Application object, for use in "application.set({ ... })". */
+        interface ApplicationUpdateData {
+            /**
+             *
+             * Returns the calculation mode used in the workbook. See Excel.CalculationMode for details.
+             *
+             * [Api set: ExcelApi 1.1 for get, 1.8 for set]
+             */
+            calculationMode?: Excel.CalculationMode | "Automatic" | "AutomaticExceptTables" | "Manual";
         }
         /** An interface for updating data on the Workbook object, for use in "workbook.set({ ... })". */
         interface WorkbookUpdateData {
@@ -17869,7 +18094,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1 for reading visibility; 1.2 for setting it.]
              */
-            visibility?: string;
+            visibility?: Excel.SheetVisibility | "Visible" | "Hidden" | "VeryHidden";
         }
         /** An interface for updating data on the WorksheetCollection object, for use in "worksheetCollection.set({ ... })". */
         interface WorksheetCollectionUpdateData {
@@ -17904,21 +18129,21 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            formulas?: Array<Array<any>>;
+            formulas?: any[][];
             /**
              *
              * Represents the formula in A1-style notation, in the user's language and number-formatting locale.  For example, the English "=SUM(A1, 1.5)" formula would become "=SUMME(A1; 1,5)" in German.
              *
              * [Api set: ExcelApi 1.1]
              */
-            formulasLocal?: Array<Array<any>>;
+            formulasLocal?: any[][];
             /**
              *
              * Represents the formula in R1C1-style notation.
              *
              * [Api set: ExcelApi 1.2]
              */
-            formulasR1C1?: Array<Array<any>>;
+            formulasR1C1?: any[][];
             /**
              *
              * Represents the hyperlink set for the current range.
@@ -17932,14 +18157,14 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            numberFormat?: Array<Array<any>>;
+            numberFormat?: any[][];
             /**
              *
              * Represents Excel's number format code for the given cell as a string in the language of the user.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            numberFormatLocal?: Array<Array<any>>;
+            numberFormatLocal?: any[][];
             /**
              *
              * Represents if all rows of the current range are hidden.
@@ -17962,7 +18187,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            values?: Array<Array<any>>;
+            values?: any[][];
         }
         /** An interface for updating data on the RangeView object, for use in "rangeView.set({ ... })". */
         interface RangeViewUpdateData {
@@ -17972,35 +18197,35 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.3]
              */
-            formulas?: Array<Array<any>>;
+            formulas?: any[][];
             /**
              *
              * Represents the formula in A1-style notation, in the user's language and number-formatting locale.  For example, the English "=SUM(A1, 1.5)" formula would become "=SUMME(A1; 1,5)" in German.
              *
              * [Api set: ExcelApi 1.3]
              */
-            formulasLocal?: Array<Array<any>>;
+            formulasLocal?: any[][];
             /**
              *
              * Represents the formula in R1C1-style notation.
              *
              * [Api set: ExcelApi 1.3]
              */
-            formulasR1C1?: Array<Array<any>>;
+            formulasR1C1?: any[][];
             /**
              *
              * Represents Excel's number format code for the given cell.
              *
              * [Api set: ExcelApi 1.3]
              */
-            numberFormat?: Array<Array<any>>;
+            numberFormat?: any[][];
             /**
              *
              * Represents the raw values of the specified range view. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
              *
              * [Api set: ExcelApi 1.3]
              */
-            values?: Array<Array<any>>;
+            values?: any[][];
         }
         /** An interface for updating data on the RangeViewCollection object, for use in "rangeViewCollection.set({ ... })". */
         interface RangeViewCollectionUpdateData {
@@ -18141,7 +18366,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            values?: Array<Array<any>>;
+            values?: any[][];
         }
         /** An interface for updating data on the TableRowCollection object, for use in "tableRowCollection.set({ ... })". */
         interface TableRowCollectionUpdateData {
@@ -18155,7 +18380,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            values?: Array<Array<any>>;
+            values?: any[][];
         }
         /** An interface for updating data on the DataValidation object, for use in "dataValidation.set({ ... })". */
         interface DataValidationUpdateData {
@@ -18213,6 +18438,13 @@ declare namespace Excel {
             protection?: Excel.Interfaces.FormatProtectionUpdateData;
             /**
              *
+             * Indicates if text is automatically indented when text alignment is set to equal distribution.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            addIndent?: boolean;
+            /**
+             *
              * Gets or sets the width of all colums within the range. If the column widths are not uniform, null will be returned.
              *
              * [Api set: ExcelApi 1.2]
@@ -18224,7 +18456,21 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            horizontalAlignment?: string;
+            horizontalAlignment?: Excel.HorizontalAlignment | "General" | "Left" | "Center" | "Right" | "Fill" | "Justify" | "CenterAcrossSelection" | "Distributed";
+            /**
+             *
+             * An integer from 0 to 250 that indicates the indent level.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            indentLevel?: number;
+            /**
+             *
+             * The reading order for the range.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            readingOrder?: Excel.ReadingOrder | "Context" | "LeftToRight" | "RightToLeft";
             /**
              *
              * Gets or sets the height of all rows in the range. If the row heights are not uniform null will be returned.
@@ -18232,6 +18478,13 @@ declare namespace Excel {
              * [Api set: ExcelApi 1.2]
              */
             rowHeight?: number;
+            /**
+             *
+             * Indicates if text automatically shrinks to fit in the available column width.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            shrinkToFit?: boolean;
             /**
              *
              * Gets or sets the text orientation of all the cells within the range.
@@ -18267,7 +18520,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            verticalAlignment?: string;
+            verticalAlignment?: Excel.VerticalAlignment | "Top" | "Center" | "Bottom" | "Justify" | "Distributed";
             /**
              *
              * Indicates if Excel wraps the text in the object. A null value indicates that the entire range doesn't have uniform wrap setting
@@ -18318,14 +18571,14 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            style?: string;
+            style?: Excel.BorderLineStyle | "None" | "Continuous" | "Dash" | "DashDot" | "DashDotDot" | "Dot" | "Double" | "SlantDashDot";
             /**
              *
              * Specifies the weight of the border around a range. See Excel.BorderWeight for details.
              *
              * [Api set: ExcelApi 1.1]
              */
-            weight?: string;
+            weight?: Excel.BorderWeight | "Hairline" | "Thin" | "Medium" | "Thick";
         }
         /** An interface for updating data on the RangeBorderCollection object, for use in "rangeBorderCollection.set({ ... })". */
         interface RangeBorderCollectionUpdateData {
@@ -18374,7 +18627,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            underline?: string;
+            underline?: Excel.RangeUnderlineStyle | "None" | "Single" | "Double" | "SingleAccountant" | "DoubleAccountant";
         }
         /** An interface for updating data on the ChartCollection object, for use in "chartCollection.set({ ... })". */
         interface ChartCollectionUpdateData {
@@ -18423,7 +18676,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            chartType?: string;
+            chartType?: Excel.ChartType | "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar";
             /**
              *
              * Represents the height, in points, of the chart object.
@@ -18503,7 +18756,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            chartType?: string;
+            chartType?: Excel.ChartType | "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar";
             /**
              *
              * Represents the doughnut hole size of a chart series.  Only valid on doughnut and doughnutExploded charts.
@@ -18561,7 +18814,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            markerStyle?: string;
+            markerStyle?: Excel.ChartMarkerStyle | "Invalid" | "Automatic" | "None" | "Square" | "Diamond" | "Triangle" | "X" | "Star" | "Dot" | "Dash" | "Circle" | "Plus" | "Picture";
             /**
              *
              * Represents the name of a series in a chart.
@@ -18655,7 +18908,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            markerStyle?: string;
+            markerStyle?: Excel.ChartMarkerStyle | "Invalid" | "Automatic" | "None" | "Square" | "Diamond" | "Triangle" | "X" | "Star" | "Dot" | "Dash" | "Circle" | "Plus" | "Picture";
         }
         /** An interface for updating data on the ChartPointFormat object, for use in "chartPointFormat.set({ ... })". */
         interface ChartPointFormatUpdateData {
@@ -18734,28 +18987,28 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            baseTimeUnit?: string;
+            baseTimeUnit?: Excel.ChartAxisTimeUnit | "Days" | "Months" | "Years";
             /**
              *
              * Returns or sets the category axis type.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            categoryType?: string;
+            categoryType?: Excel.ChartAxisCategoryType | "Automatic" | "TextAxis" | "DateAxis";
             /**
              *
              * Represents the specified axis where the other axis crosses. See Excel.AxisCrosses for details.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            crosses?: string;
+            crosses?: Excel.AxisCrosses | "Automatic" | "Maximum" | "Minimum" | "Custom";
             /**
              *
              * Represents the axis display unit. See Excel.ChartAxisDisplayUnit for details.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            displayUnit?: string;
+            displayUnit?: Excel.ChartAxisDisplayUnit | "None" | "Hundreds" | "Thousands" | "TenThousands" | "HundredThousands" | "Millions" | "TenMillions" | "HundredMillions" | "Billions" | "Trillions" | "Custom";
             /**
              *
              * Represents the base of the logarithm when using logarithmic scales.
@@ -18769,14 +19022,14 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            majorTickMark?: string;
+            majorTickMark?: Excel.AxisTickMark | "None" | "Cross" | "Inside" | "Outside";
             /**
              *
              * Returns or sets the major unit scale value for the category axis when the CategoryType property is set to TimeScale.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            majorTimeUnitScale?: string;
+            majorTimeUnitScale?: Excel.ChartAxisTimeUnit | "Days" | "Months" | "Years";
             /**
              *
              * Represents the interval between two major tick marks. Can be set to a numeric value or an empty string.  The returned value is always a number.
@@ -18804,14 +19057,14 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            minorTickMark?: string;
+            minorTickMark?: Excel.AxisTickMark | "None" | "Cross" | "Inside" | "Outside";
             /**
              *
              * Returns or sets the minor unit scale value for the category axis when the CategoryType property is set to TimeScale.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            minorTimeUnitScale?: string;
+            minorTimeUnitScale?: Excel.ChartAxisTimeUnit | "Days" | "Months" | "Years";
             /**
              *
              * Represents the interval between two minor tick marks. "Can be set to a numeric value or an empty string (for automatic axis values). The returned value is always a number.
@@ -18832,7 +19085,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            scaleType?: string;
+            scaleType?: Excel.AxisScaleType | "Linear" | "Logarithmic";
             /**
              *
              * Represents whether the axis display unit label is visible.
@@ -18846,7 +19099,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            tickLabelPosition?: string;
+            tickLabelPosition?: Excel.AxisTickLabelPosition | "NextToAxis" | "High" | "Low" | "None";
             /**
              *
              * Represents the number of categories or series between tick-mark labels. Can be a value from 1 through 31999 or an empty string for automatic setting. The returned value is always a number.
@@ -18935,7 +19188,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            position?: string;
+            position?: Excel.ChartDataLabelPosition | "Invalid" | "None" | "Center" | "InsideEnd" | "InsideBase" | "OutsideEnd" | "Left" | "Right" | "Top" | "Bottom" | "BestFit" | "Callout";
             /**
              *
              * String representing the separator used for the data labels on a chart.
@@ -18990,11 +19243,54 @@ declare namespace Excel {
         interface ChartDataLabelUpdateData {
             /**
              *
+             * Boolean value representing if data label automatically generates appropriate text based on context.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            autoText?: boolean;
+            /**
+             *
+             * String value that represents the formula of chart data label using A1-style notation.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            formula?: string;
+            /**
+             *
+             * Represents the horizontal alignment for chart data label. See Excel.ChartTextHorizontalAlignment for details.
+            This property is valid only when TextOrientation of data label is 90, -90 or 180.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            horizontalAlignment?: Excel.ChartTextHorizontalAlignment | "Center" | "Left" | "Right" | "Justify" | "Distributed";
+            /**
+             *
+             * Represents the distance, in points, from the left edge of chart data label to the left edge of chart area. Null if chart data label is not visible.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            left?: number;
+            /**
+             *
+             * String value that represents the format code for data label.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormat?: string;
+            /**
+             *
+             * Boolean value representing if the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells).
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormatLinked?: boolean;
+            /**
+             *
              * DataLabelPosition value that represents the position of the data label. See Excel.ChartDataLabelPosition for details.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            position?: string;
+            position?: Excel.ChartDataLabelPosition | "Invalid" | "None" | "Center" | "InsideEnd" | "InsideBase" | "OutsideEnd" | "Left" | "Right" | "Top" | "Bottom" | "BestFit" | "Callout";
             /**
              *
              * String representing the separator used for the data label on a chart.
@@ -19044,6 +19340,35 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             showValue?: boolean;
+            /**
+             *
+             * String representing the text of the data label on a chart.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            text?: string;
+            /**
+             *
+             * Represents the text orientation of chart data label. The value should be an integer either from -90 to 90, or 180 for vertically-oriented text.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            textOrientation?: number;
+            /**
+             *
+             * Represents the distance, in points, from the top edge of chart data label to the top of chart area. Null if chart data label is not visible.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            top?: number;
+            /**
+             *
+             * Represents the vertical alignment of chart data label. See Excel.ChartTextVerticalAlignment for details.
+            This property is valid only when TextOrientation of data label is 0.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            verticalAlignment?: Excel.ChartTextVerticalAlignment | "Center" | "Bottom" | "Top" | "Justify" | "Distributed";
         }
         /** An interface for updating data on the ChartDataLabelFormat object, for use in "chartDataLabelFormat.set({ ... })". */
         interface ChartDataLabelFormatUpdateData {
@@ -19118,7 +19443,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            position?: string;
+            position?: Excel.ChartLegendPosition | "Invalid" | "Top" | "Bottom" | "Left" | "Right" | "Corner" | "Custom";
             /**
              *
              * Represents if the legend has shadow on the chart.
@@ -19187,7 +19512,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            horizontalAlignment?: string;
+            horizontalAlignment?: Excel.ChartTextHorizontalAlignment | "Center" | "Left" | "Right" | "Justify" | "Distributed";
             /**
              *
              * Represents the distance, in points, from the left edge of chart title to the left edge of chart area. Null if chart title's not visible.
@@ -19208,7 +19533,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            position?: string;
+            position?: Excel.ChartTitlePosition | "Automatic" | "Top" | "Bottom" | "Left" | "Right";
             /**
              *
              * Represents a boolean value that determines if the chart title has a shadow.
@@ -19243,7 +19568,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            verticalAlignment?: string;
+            verticalAlignment?: Excel.ChartTextVerticalAlignment | "Center" | "Bottom" | "Top" | "Justify" | "Distributed";
             /**
              *
              * A boolean value the represents the visibility of a chart title object.
@@ -19294,7 +19619,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            lineStyle?: string;
+            lineStyle?: Excel.ChartLineStyle | "None" | "Continuous" | "Dash" | "DashDot" | "DashDotDot" | "Dot" | "Grey25" | "Grey50" | "Grey75" | "Automatic";
             /**
              *
              * Represents weight of the border, in points.
@@ -19318,7 +19643,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            lineStyle?: string;
+            lineStyle?: Excel.ChartLineStyle | "None" | "Continuous" | "Dash" | "DashDot" | "DashDotDot" | "Dot" | "Grey25" | "Grey50" | "Grey75" | "Automatic";
             /**
              *
              * Represents weight of the line, in points.
@@ -19370,7 +19695,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            underline?: string;
+            underline?: Excel.ChartUnderlineStyle | "None" | "Single";
         }
         /** An interface for updating data on the ChartTrendline object, for use in "chartTrendline.set({ ... })". */
         interface ChartTrendlineUpdateData {
@@ -19443,7 +19768,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            type?: string;
+            type?: Excel.TrendlineType | "Linear" | "Exponential" | "Logarithmic" | "MovingAverage" | "Polynomial" | "Power";
         }
         /** An interface for updating data on the ChartTrendlineCollection object, for use in "chartTrendlineCollection.set({ ... })". */
         interface ChartTrendlineCollectionUpdateData {
@@ -19473,8 +19798,6 @@ declare namespace Excel {
         }
         /** An interface for updating data on the PivotTable object, for use in "pivotTable.set({ ... })". */
         interface PivotTableUpdateData {
-            dataBodyRange?: Excel.Interfaces.RangeUpdateData;
-            dataLabelRange?: Excel.Interfaces.RangeUpdateData;
             /**
              *
              * True if the PivotTable report shows grand totals for columns.
@@ -19496,51 +19819,6 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             rowGrandTotals?: boolean;
-            allowMultipleFilters?: boolean;
-            alternativeText?: string;
-            compactLayoutColumnHeader?: string;
-            compactLayoutRowHeader?: string;
-            compactRowIndent?: number;
-            displayContextTooltips?: boolean;
-            displayEmptyColumn?: boolean;
-            displayEmptyRow?: boolean;
-            displayErrorString?: boolean;
-            displayFieldCaptions?: boolean;
-            displayNullString?: boolean;
-            enableDataValueEditing?: boolean;
-            enableDrilldown?: boolean;
-            enableFieldDialog?: boolean;
-            enableFieldList?: boolean;
-            enableWizard?: boolean;
-            errorString?: string;
-            fieldListSortAscending?: boolean;
-            grandTotalName?: string;
-            hasAutoFormat?: boolean;
-            inGridDropZones?: boolean;
-            innerDetail?: string;
-            manualUpdate?: boolean;
-            nullString?: string;
-            preserveFormatting?: boolean;
-            printDrillIndicators?: boolean;
-            printTitles?: boolean;
-            repeatItemsOnEachPrintedPage?: boolean;
-            saveData?: boolean;
-            showDrillIndicators?: boolean;
-            showPageMultipleItemLabel?: boolean;
-            showTableStyleColumnHeaders?: boolean;
-            showTableStyleColumnStripes?: boolean;
-            showTableStyleLastColumn?: boolean;
-            showTableStyleRowHeaders?: boolean;
-            showTableStyleRowStripes?: boolean;
-            showValuesRow?: boolean;
-            smallGrid?: boolean;
-            sortUsingCustomLists?: boolean;
-            subtotalHiddenPageItems?: boolean;
-            summary?: string;
-            tag?: string;
-            totalsAnnotation?: boolean;
-            vacatedStyle?: string;
-            value?: string;
         }
         /** An interface for updating data on the DocumentProperties object, for use in "documentProperties.set({ ... })". */
         interface DocumentPropertiesUpdateData {
@@ -19796,14 +20074,14 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.6]
              */
-            axisFormat?: string;
+            axisFormat?: Excel.ConditionalDataBarAxisFormat | "Automatic" | "None" | "CellMidPoint";
             /**
              *
              * Represents the direction that the data bar graphic should be based on.
              *
              * [Api set: ExcelApi 1.6]
              */
-            barDirection?: string;
+            barDirection?: Excel.ConditionalDataBarDirection | "Context" | "LeftToRight" | "RightToLeft";
             /**
              *
              * The rule for what consistutes the lower bound (and how to calculate it, if applicable) for a data bar.
@@ -19932,7 +20210,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.6]
              */
-            criteria?: Array<Excel.ConditionalIconCriterion>;
+            criteria?: Excel.ConditionalIconCriterion[];
             /**
              *
              * If true, reverses the icon orders for the IconSet. Note that this cannot be set if custom icons are used.
@@ -19953,7 +20231,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.6]
              */
-            style?: string;
+            style?: Excel.IconSet | "Invalid" | "ThreeArrows" | "ThreeArrowsGray" | "ThreeFlags" | "ThreeTrafficLights1" | "ThreeTrafficLights2" | "ThreeSigns" | "ThreeSymbols" | "ThreeSymbols2" | "FourArrows" | "FourArrowsGray" | "FourRedToBlack" | "FourRating" | "FourTrafficLights" | "FiveArrows" | "FiveArrowsGray" | "FiveRating" | "FiveQuarters" | "ThreeStars" | "ThreeTriangles" | "FiveBoxes";
         }
         /** An interface for updating data on the ColorScaleConditionalFormat object, for use in "colorScaleConditionalFormat.set({ ... })". */
         interface ColorScaleConditionalFormatUpdateData {
@@ -20100,7 +20378,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.6]
              */
-            underline?: string;
+            underline?: Excel.ConditionalRangeFontUnderlineStyle | "None" | "Single" | "Double";
         }
         /** An interface for updating data on the ConditionalRangeFill object, for use in "conditionalRangeFill.set({ ... })". */
         interface ConditionalRangeFillUpdateData {
@@ -20127,7 +20405,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.6]
              */
-            style?: string;
+            style?: Excel.ConditionalRangeBorderLineStyle | "None" | "Continuous" | "Dash" | "DashDot" | "DashDotDot" | "Dot";
         }
         /** An interface for updating data on the ConditionalRangeBorderCollection object, for use in "conditionalRangeBorderCollection.set({ ... })". */
         interface ConditionalRangeBorderCollectionUpdateData {
@@ -20201,10 +20479,10 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            horizontalAlignment?: string;
+            horizontalAlignment?: Excel.HorizontalAlignment | "General" | "Left" | "Center" | "Right" | "Fill" | "Justify" | "CenterAcrossSelection" | "Distributed";
             /**
              *
-             * Indicates if the style includes the AddIndent, HorizontalAlignment, VerticalAlignment, WrapText, IndentLevel, and Orientation properties.
+             * Indicates if the style includes the AddIndent, HorizontalAlignment, VerticalAlignment, WrapText, IndentLevel, and TextOrientation properties.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -20246,7 +20524,7 @@ declare namespace Excel {
             includeProtection?: boolean;
             /**
              *
-             * An integer from 0 to 15 that indicates the indent level for the style.
+             * An integer from 0 to 250 that indicates the indent level for the style.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -20274,18 +20552,11 @@ declare namespace Excel {
             numberFormatLocal?: string;
             /**
              *
-             * The text orientation for the style.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            orientation?: number;
-            /**
-             *
              * The reading order for the style.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            readingOrder?: string;
+            readingOrder?: Excel.ReadingOrder | "Context" | "LeftToRight" | "RightToLeft";
             /**
              *
              * Indicates if text automatically shrinks to fit in the available column width.
@@ -20295,11 +20566,18 @@ declare namespace Excel {
             shrinkToFit?: boolean;
             /**
              *
+             * The text orientation for the style.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            textOrientation?: number;
+            /**
+             *
              * Represents the vertical alignment for the style. See Excel.VerticalAlignment for details.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            verticalAlignment?: string;
+            verticalAlignment?: Excel.VerticalAlignment | "Top" | "Center" | "Bottom" | "Justify" | "Distributed";
             /**
              *
              * Indicates if Microsoft Excel wraps the text in the object.
@@ -20327,67 +20605,25 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            orientation?: string;
+            orientation?: Excel.PageOrientation | "Portrait" | "Landscape";
             /**
              *
              * Gets or sets the paper size of the page.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            paperSize?: string;
+            paperSize?: Excel.PaperType | "Letter" | "LetterSmall" | "Tabloid" | "Ledger" | "Legal" | "Statement" | "Executive" | "A3" | "A4" | "A4Small" | "A5" | "B4" | "B5" | "Folio" | "Quatro" | "Paper10x14" | "Paper11x17" | "Note" | "Envelope9" | "Envelope10" | "Envelope11" | "Envelope12" | "Envelope14" | "Csheet" | "Dsheet" | "Esheet" | "EnvelopeDL" | "EnvelopeC5" | "EnvelopeC3" | "EnvelopeC4" | "EnvelopeC6" | "EnvelopeC65" | "EnvelopeB4" | "EnvelopeB5" | "EnvelopeB6" | "EnvelopeItaly" | "EnvelopeMonarch" | "EnvelopePersonal" | "FanfoldUS" | "FanfoldStdGerman" | "FanfoldLegalGerman";
             /**
              *
              * Gets or sets the print errors option.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            printErrors?: string;
+            printErrors?: Excel.PrintErrorType | "ErrorsDisplayed" | "ErrorsBlank" | "ErrorsDash" | "ErrorsNotAvailable";
         }
         /** An interface for updating data on the AreaCollection object, for use in "areaCollection.set({ ... })". */
         interface AreaCollectionUpdateData {
             items?: Excel.Interfaces.RangeData[];
-        }
-        /** An interface for updating data on the CalculatedFieldCollection object, for use in "calculatedFieldCollection.set({ ... })". */
-        interface CalculatedFieldCollectionUpdateData {
-            items?: Excel.Interfaces.PivotFieldData[];
-        }
-        /** An interface for updating data on the PivotCacheCollection object, for use in "pivotCacheCollection.set({ ... })". */
-        interface PivotCacheCollectionUpdateData {
-            items?: Excel.Interfaces.PivotCacheData[];
-        }
-        /** An interface for updating data on the PivotField object, for use in "pivotField.set({ ... })". */
-        interface PivotFieldUpdateData {
-            currentPage?: Excel.Interfaces.PivotItemUpdateData;
-            aggregationFunction?: string;
-            calculation?: string;
-            caption?: string;
-            drilledDown?: boolean;
-            enableMultiplePageItems?: boolean;
-            formula?: string;
-            name?: string;
-            numberFormat?: string;
-            orientation?: string;
-            position?: number;
-            showDetail?: boolean;
-            subtotals?: Excel.Subtotals;
-        }
-        /** An interface for updating data on the PivotFieldCollection object, for use in "pivotFieldCollection.set({ ... })". */
-        interface PivotFieldCollectionUpdateData {
-            items?: Excel.Interfaces.PivotFieldData[];
-        }
-        /** An interface for updating data on the PivotItem object, for use in "pivotItem.set({ ... })". */
-        interface PivotItemUpdateData {
-            pivotField?: Excel.Interfaces.PivotFieldUpdateData;
-            drilledDown?: boolean;
-            name?: string;
-            position?: number;
-            showDetail?: boolean;
-            value?: string;
-            visible?: boolean;
-        }
-        /** An interface for updating data on the PivotItemCollection object, for use in "pivotItemCollection.set({ ... })". */
-        interface PivotItemCollectionUpdateData {
-            items?: Excel.Interfaces.PivotItemData[];
         }
         /** An interface describing the data returned by calling "runtime.toJSON()". */
         interface RuntimeData {
@@ -20403,11 +20639,11 @@ declare namespace Excel {
         interface ApplicationData {
             /**
              *
-             * Returns the calculation mode used in the workbook. See Excel.CalculationMode for details. Read-only.
+             * Returns the calculation mode used in the workbook. See Excel.CalculationMode for details.
              *
-             * [Api set: ExcelApi 1.1]
+             * [Api set: ExcelApi 1.1 for get, 1.8 for set]
              */
-            calculationMode?: string;
+            calculationMode?: Excel.CalculationMode | "Automatic" | "AutomaticExceptTables" | "Manual";
         }
         /** An interface describing the data returned by calling "workbook.toJSON()". */
         interface WorkbookData {
@@ -20495,7 +20731,6 @@ declare namespace Excel {
             * [Api set: ExcelApi 1.1]
             */
             worksheets?: Excel.Interfaces.WorksheetData[];
-            pivotCaches?: Excel.Interfaces.PivotCacheData[];
             /**
              *
              * Gets the workbook name.
@@ -20528,6 +20763,16 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             protected?: boolean;
+        }
+        /** An interface describing the data returned by calling "workbookCreated.toJSON()". */
+        interface WorkbookCreatedData {
+            /**
+             *
+             * Returns a value that uniquely identifies the WorkbookCreated object.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            id?: string;
         }
         /** An interface describing the data returned by calling "worksheet.toJSON()". */
         interface WorksheetData {
@@ -20640,7 +20885,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1 for reading visibility; 1.2 for setting it.]
              */
-            visibility?: string;
+            visibility?: Excel.SheetVisibility | "Visible" | "Hidden" | "VeryHidden";
         }
         /** An interface describing the data returned by calling "worksheetCollection.toJSON()". */
         interface WorksheetCollectionData {
@@ -20724,6 +20969,7 @@ declare namespace Excel {
             /**
              *
              * Represents the total number of columns in the range. Read-only.
+            If the range has multiple areas, null will be returned.
              *
              * [Api set: ExcelApi 1.1]
              */
@@ -20748,21 +20994,21 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            formulas?: Array<Array<any>>;
+            formulas?: any[][];
             /**
              *
              * Represents the formula in A1-style notation, in the user's language and number-formatting locale.  For example, the English "=SUM(A1, 1.5)" formula would become "=SUMME(A1; 1,5)" in German.
              *
              * [Api set: ExcelApi 1.1]
              */
-            formulasLocal?: Array<Array<any>>;
+            formulasLocal?: any[][];
             /**
              *
              * Represents the formula in R1C1-style notation.
              *
              * [Api set: ExcelApi 1.2]
              */
-            formulasR1C1?: Array<Array<any>>;
+            formulasR1C1?: any[][];
             /**
              *
              * Represents if all cells of the current range are hidden.
@@ -20783,17 +21029,18 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            numberFormat?: Array<Array<any>>;
+            numberFormat?: any[][];
             /**
              *
              * Represents Excel's number format code for the given cell as a string in the language of the user.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            numberFormatLocal?: Array<Array<any>>;
+            numberFormatLocal?: any[][];
             /**
              *
              * Returns the total number of rows in the range. Read-only.
+            If the range has multiple areas, null will be returned.
              *
              * [Api set: ExcelApi 1.1]
              */
@@ -20827,21 +21074,21 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            text?: Array<Array<string>>;
+            text?: string[][];
             /**
              *
              * Represents the type of data of each cell. Read-only.
              *
              * [Api set: ExcelApi 1.1]
              */
-            valueTypes?: Array<Array<string>>;
+            valueTypes?: Excel.RangeValueType[][];
             /**
              *
              * Represents the raw values of the specified range. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
              *
              * [Api set: ExcelApi 1.1]
              */
-            values?: Array<Array<any>>;
+            values?: any[][];
             /**
              *
              * Represents if the current range is an entire column.
@@ -20872,7 +21119,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.3]
              */
-            cellAddresses?: Array<Array<any>>;
+            cellAddresses?: any[][];
             /**
              *
              * Returns the number of visible columns. Read-only.
@@ -20886,21 +21133,21 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.3]
              */
-            formulas?: Array<Array<any>>;
+            formulas?: any[][];
             /**
              *
              * Represents the formula in A1-style notation, in the user's language and number-formatting locale.  For example, the English "=SUM(A1, 1.5)" formula would become "=SUMME(A1; 1,5)" in German.
              *
              * [Api set: ExcelApi 1.3]
              */
-            formulasLocal?: Array<Array<any>>;
+            formulasLocal?: any[][];
             /**
              *
              * Represents the formula in R1C1-style notation.
              *
              * [Api set: ExcelApi 1.3]
              */
-            formulasR1C1?: Array<Array<any>>;
+            formulasR1C1?: any[][];
             /**
              *
              * Returns a value that represents the index of the RangeView. Read-only.
@@ -20914,7 +21161,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.3]
              */
-            numberFormat?: Array<Array<any>>;
+            numberFormat?: any[][];
             /**
              *
              * Returns the number of visible rows. Read-only.
@@ -20928,21 +21175,21 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.3]
              */
-            text?: Array<Array<string>>;
+            text?: string[][];
             /**
              *
              * Represents the type of data of each cell. Read-only.
              *
              * [Api set: ExcelApi 1.3]
              */
-            valueTypes?: Array<Array<string>>;
+            valueTypes?: Excel.RangeValueType[][];
             /**
              *
              * Represents the raw values of the specified range view. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
              *
              * [Api set: ExcelApi 1.3]
              */
-            values?: Array<Array<any>>;
+            values?: any[][];
         }
         /** An interface describing the data returned by calling "rangeViewCollection.toJSON()". */
         interface RangeViewCollectionData {
@@ -21023,14 +21270,14 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.4]
              */
-            scope?: string;
+            scope?: Excel.NamedItemScope | "Worksheet" | "Workbook";
             /**
              *
              * Indicates the type of the value returned by the name's formula. See Excel.NamedItemType for details. Read-only.
              *
              * [Api set: ExcelApi 1.1 for String,Integer,Double,Boolean,Range,Error; 1.7 for Array]
              */
-            type?: string;
+            type?: Excel.NamedItemType | "String" | "Integer" | "Double" | "Boolean" | "Range" | "Error" | "Array";
             /**
              *
              * Represents the value computed by the name's formula. For a named range, will return the range address. Read-only.
@@ -21054,14 +21301,14 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            types?: Array<Array<string>>;
+            types?: Excel.RangeValueType[][];
             /**
              *
              * Represents the values of each item in the named item array.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            values?: Array<Array<any>>;
+            values?: any[][];
         }
         /** An interface describing the data returned by calling "binding.toJSON()". */
         interface BindingData {
@@ -21078,7 +21325,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            type?: string;
+            type?: Excel.BindingType | "Range" | "Table" | "Text";
         }
         /** An interface describing the data returned by calling "bindingCollection.toJSON()". */
         interface BindingCollectionData {
@@ -21229,7 +21476,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            values?: Array<Array<any>>;
+            values?: any[][];
         }
         /** An interface describing the data returned by calling "tableRowCollection.toJSON()". */
         interface TableRowCollectionData {
@@ -21250,7 +21497,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            values?: Array<Array<any>>;
+            values?: any[][];
         }
         /** An interface describing the data returned by calling "dataValidation.toJSON()". */
         interface DataValidationData {
@@ -21288,7 +21535,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            type?: string;
+            type?: Excel.DataValidationType | "Invalid" | "None" | "WholeNumber" | "Decimal" | "List" | "Date" | "Time" | "TextLength" | "Custom" | "Inconsistent" | "MixedCriteria";
         }
         /** An interface describing the data returned by calling "rangeFormat.toJSON()". */
         interface RangeFormatData {
@@ -21322,6 +21569,13 @@ declare namespace Excel {
             protection?: Excel.Interfaces.FormatProtectionData;
             /**
              *
+             * Indicates if text is automatically indented when text alignment is set to equal distribution.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            addIndent?: boolean;
+            /**
+             *
              * Gets or sets the width of all colums within the range. If the column widths are not uniform, null will be returned.
              *
              * [Api set: ExcelApi 1.2]
@@ -21333,7 +21587,21 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            horizontalAlignment?: string;
+            horizontalAlignment?: Excel.HorizontalAlignment | "General" | "Left" | "Center" | "Right" | "Fill" | "Justify" | "CenterAcrossSelection" | "Distributed";
+            /**
+             *
+             * An integer from 0 to 250 that indicates the indent level.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            indentLevel?: number;
+            /**
+             *
+             * The reading order for the range.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            readingOrder?: Excel.ReadingOrder | "Context" | "LeftToRight" | "RightToLeft";
             /**
              *
              * Gets or sets the height of all rows in the range. If the row heights are not uniform null will be returned.
@@ -21341,6 +21609,13 @@ declare namespace Excel {
              * [Api set: ExcelApi 1.2]
              */
             rowHeight?: number;
+            /**
+             *
+             * Indicates if text automatically shrinks to fit in the available column width.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            shrinkToFit?: boolean;
             /**
              *
              * Gets or sets the text orientation of all the cells within the range.
@@ -21376,7 +21651,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            verticalAlignment?: string;
+            verticalAlignment?: Excel.VerticalAlignment | "Top" | "Center" | "Bottom" | "Justify" | "Distributed";
             /**
              *
              * Indicates if Excel wraps the text in the object. A null value indicates that the entire range doesn't have uniform wrap setting
@@ -21427,21 +21702,21 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            sideIndex?: string;
+            sideIndex?: Excel.BorderIndex | "EdgeTop" | "EdgeBottom" | "EdgeLeft" | "EdgeRight" | "InsideVertical" | "InsideHorizontal" | "DiagonalDown" | "DiagonalUp";
             /**
              *
              * One of the constants of line style specifying the line style for the border. See Excel.BorderLineStyle for details.
              *
              * [Api set: ExcelApi 1.1]
              */
-            style?: string;
+            style?: Excel.BorderLineStyle | "None" | "Continuous" | "Dash" | "DashDot" | "DashDotDot" | "Dot" | "Double" | "SlantDashDot";
             /**
              *
              * Specifies the weight of the border around a range. See Excel.BorderWeight for details.
              *
              * [Api set: ExcelApi 1.1]
              */
-            weight?: string;
+            weight?: Excel.BorderWeight | "Hairline" | "Thin" | "Medium" | "Thick";
         }
         /** An interface describing the data returned by calling "rangeBorderCollection.toJSON()". */
         interface RangeBorderCollectionData {
@@ -21490,7 +21765,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            underline?: string;
+            underline?: Excel.RangeUnderlineStyle | "None" | "Single" | "Double" | "SingleAccountant" | "DoubleAccountant";
         }
         /** An interface describing the data returned by calling "chartCollection.toJSON()". */
         interface ChartCollectionData {
@@ -21553,7 +21828,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            chartType?: string;
+            chartType?: Excel.ChartType | "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar";
             /**
              *
              * Represents the height, in points, of the chart object.
@@ -21654,7 +21929,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            chartType?: string;
+            chartType?: Excel.ChartType | "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar";
             /**
              *
              * Represents the doughnut hole size of a chart series.  Only valid on doughnut and doughnutExploded charts.
@@ -21712,7 +21987,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            markerStyle?: string;
+            markerStyle?: Excel.ChartMarkerStyle | "Invalid" | "Automatic" | "None" | "Square" | "Diamond" | "Triangle" | "X" | "Star" | "Dot" | "Dash" | "Circle" | "Plus" | "Picture";
             /**
              *
              * Represents the name of a series in a chart.
@@ -21806,7 +22081,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            markerStyle?: string;
+            markerStyle?: Excel.ChartMarkerStyle | "Invalid" | "Automatic" | "None" | "Square" | "Diamond" | "Triangle" | "X" | "Star" | "Dot" | "Dash" | "Circle" | "Plus" | "Picture";
             /**
              *
              * Returns the value of a chart point. Read-only.
@@ -21892,28 +22167,28 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            axisGroup?: string;
+            axisGroup?: Excel.AxisGroup | "Primary" | "Secondary";
             /**
              *
              * Returns or sets the base unit for the specified category axis.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            baseTimeUnit?: string;
+            baseTimeUnit?: Excel.ChartAxisTimeUnit | "Days" | "Months" | "Years";
             /**
              *
              * Returns or sets the category axis type.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            categoryType?: string;
+            categoryType?: Excel.ChartAxisCategoryType | "Automatic" | "TextAxis" | "DateAxis";
             /**
              *
              * Represents the specified axis where the other axis crosses. See Excel.AxisCrosses for details.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            crosses?: string;
+            crosses?: Excel.AxisCrosses | "Automatic" | "Maximum" | "Minimum" | "Custom";
             /**
              *
              * Represents the specified axis where the other axis crosses at. Read Only. Set to this property should use SetCrossesAt(double) method.
@@ -21934,7 +22209,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            displayUnit?: string;
+            displayUnit?: Excel.ChartAxisDisplayUnit | "None" | "Hundreds" | "Thousands" | "TenThousands" | "HundredThousands" | "Millions" | "TenMillions" | "HundredMillions" | "Billions" | "Trillions" | "Custom";
             /**
              *
              * Represents the height, in points, of the chart axis. Null if the axis's not visible.
@@ -21962,14 +22237,14 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            majorTickMark?: string;
+            majorTickMark?: Excel.AxisTickMark | "None" | "Cross" | "Inside" | "Outside";
             /**
              *
              * Returns or sets the major unit scale value for the category axis when the CategoryType property is set to TimeScale.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            majorTimeUnitScale?: string;
+            majorTimeUnitScale?: Excel.ChartAxisTimeUnit | "Days" | "Months" | "Years";
             /**
              *
              * Represents the interval between two major tick marks. Can be set to a numeric value or an empty string.  The returned value is always a number.
@@ -21997,14 +22272,14 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            minorTickMark?: string;
+            minorTickMark?: Excel.AxisTickMark | "None" | "Cross" | "Inside" | "Outside";
             /**
              *
              * Returns or sets the minor unit scale value for the category axis when the CategoryType property is set to TimeScale.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            minorTimeUnitScale?: string;
+            minorTimeUnitScale?: Excel.ChartAxisTimeUnit | "Days" | "Months" | "Years";
             /**
              *
              * Represents the interval between two minor tick marks. "Can be set to a numeric value or an empty string (for automatic axis values). The returned value is always a number.
@@ -22025,7 +22300,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            scaleType?: string;
+            scaleType?: Excel.AxisScaleType | "Linear" | "Logarithmic";
             /**
              *
              * Represents whether the axis display unit label is visible.
@@ -22039,7 +22314,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            tickLabelPosition?: string;
+            tickLabelPosition?: Excel.AxisTickLabelPosition | "NextToAxis" | "High" | "Low" | "None";
             /**
              *
              * Represents the number of categories or series between tick-mark labels. Can be a value from 1 through 31999 or an empty string for automatic setting. The returned value is always a number.
@@ -22067,7 +22342,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            type?: string;
+            type?: Excel.AxisType | "Invalid" | "Category" | "Value" | "Series";
             /**
              *
              * A boolean value represents the visibility of the axis.
@@ -22149,7 +22424,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            position?: string;
+            position?: Excel.ChartDataLabelPosition | "Invalid" | "None" | "Center" | "InsideEnd" | "InsideBase" | "OutsideEnd" | "Left" | "Right" | "Top" | "Bottom" | "BestFit" | "Callout";
             /**
              *
              * String representing the separator used for the data labels on a chart.
@@ -22204,11 +22479,61 @@ declare namespace Excel {
         interface ChartDataLabelData {
             /**
              *
+             * Boolean value representing if data label automatically generates appropriate text based on context.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            autoText?: boolean;
+            /**
+             *
+             * String value that represents the formula of chart data label using A1-style notation.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            formula?: string;
+            /**
+             *
+             * Returns the height, in points, of the chart data label. Read-only. Null if chart data label is not visible.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            height?: number;
+            /**
+             *
+             * Represents the horizontal alignment for chart data label. See Excel.ChartTextHorizontalAlignment for details.
+            This property is valid only when TextOrientation of data label is 90, -90 or 180.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            horizontalAlignment?: Excel.ChartTextHorizontalAlignment | "Center" | "Left" | "Right" | "Justify" | "Distributed";
+            /**
+             *
+             * Represents the distance, in points, from the left edge of chart data label to the left edge of chart area. Null if chart data label is not visible.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            left?: number;
+            /**
+             *
+             * String value that represents the format code for data label.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormat?: string;
+            /**
+             *
+             * Boolean value representing if the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells).
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormatLinked?: boolean;
+            /**
+             *
              * DataLabelPosition value that represents the position of the data label. See Excel.ChartDataLabelPosition for details.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            position?: string;
+            position?: Excel.ChartDataLabelPosition | "Invalid" | "None" | "Center" | "InsideEnd" | "InsideBase" | "OutsideEnd" | "Left" | "Right" | "Top" | "Bottom" | "BestFit" | "Callout";
             /**
              *
              * String representing the separator used for the data label on a chart.
@@ -22258,6 +22583,42 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             showValue?: boolean;
+            /**
+             *
+             * String representing the text of the data label on a chart.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            text?: string;
+            /**
+             *
+             * Represents the text orientation of chart data label. The value should be an integer either from -90 to 90, or 180 for vertically-oriented text.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            textOrientation?: number;
+            /**
+             *
+             * Represents the distance, in points, from the top edge of chart data label to the top of chart area. Null if chart data label is not visible.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            top?: number;
+            /**
+             *
+             * Represents the vertical alignment of chart data label. See Excel.ChartTextVerticalAlignment for details.
+            This property is valid only when TextOrientation of data label is 0.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            verticalAlignment?: Excel.ChartTextVerticalAlignment | "Center" | "Bottom" | "Top" | "Justify" | "Distributed";
+            /**
+             *
+             * Returns the width, in points, of the chart data label. Read-only. Null if chart data label is not visible.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            width?: number;
         }
         /** An interface describing the data returned by calling "chartDataLabelFormat.toJSON()". */
         interface ChartDataLabelFormatData {
@@ -22339,7 +22700,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            position?: string;
+            position?: Excel.ChartLegendPosition | "Invalid" | "Top" | "Bottom" | "Left" | "Right" | "Corner" | "Custom";
             /**
              *
              * Represents if the legend has shadow on the chart.
@@ -22415,7 +22776,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            horizontalAlignment?: string;
+            horizontalAlignment?: Excel.ChartTextHorizontalAlignment | "Center" | "Left" | "Right" | "Justify" | "Distributed";
             /**
              *
              * Represents the distance, in points, from the left edge of chart title to the left edge of chart area. Null if chart title's not visible.
@@ -22436,7 +22797,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            position?: string;
+            position?: Excel.ChartTitlePosition | "Automatic" | "Top" | "Bottom" | "Left" | "Right";
             /**
              *
              * Represents a boolean value that determines if the chart title has a shadow.
@@ -22471,7 +22832,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            verticalAlignment?: string;
+            verticalAlignment?: Excel.ChartTextVerticalAlignment | "Center" | "Bottom" | "Top" | "Justify" | "Distributed";
             /**
              *
              * A boolean value the represents the visibility of a chart title object.
@@ -22529,7 +22890,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            lineStyle?: string;
+            lineStyle?: Excel.ChartLineStyle | "None" | "Continuous" | "Dash" | "DashDot" | "DashDotDot" | "Dot" | "Grey25" | "Grey50" | "Grey75" | "Automatic";
             /**
              *
              * Represents weight of the border, in points.
@@ -22553,7 +22914,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            lineStyle?: string;
+            lineStyle?: Excel.ChartLineStyle | "None" | "Continuous" | "Dash" | "DashDot" | "DashDotDot" | "Dot" | "Grey25" | "Grey50" | "Grey75" | "Automatic";
             /**
              *
              * Represents weight of the line, in points.
@@ -22605,7 +22966,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            underline?: string;
+            underline?: Excel.ChartUnderlineStyle | "None" | "Single";
         }
         /** An interface describing the data returned by calling "chartTrendline.toJSON()". */
         interface ChartTrendlineData {
@@ -22678,7 +23039,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            type?: string;
+            type?: Excel.TrendlineType | "Linear" | "Exponential" | "Logarithmic" | "MovingAverage" | "Polynomial" | "Power";
         }
         /** An interface describing the data returned by calling "chartTrendlineCollection.toJSON()". */
         interface ChartTrendlineCollectionData {
@@ -22702,7 +23063,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.2]
              */
-            fields?: Array<Excel.SortField>;
+            fields?: Excel.SortField[];
             /**
              *
              * Represents whether the casing impacted the last sort of the table.
@@ -22716,7 +23077,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.2]
              */
-            method?: string;
+            method?: Excel.SortMethod | "PinYin" | "StrokeCount";
         }
         /** An interface describing the data returned by calling "filter.toJSON()". */
         interface FilterData {
@@ -22766,10 +23127,6 @@ declare namespace Excel {
             * [Api set: ExcelApi 1.3]
             */
             worksheet?: Excel.Interfaces.WorksheetData;
-            calculatedFields?: Excel.Interfaces.PivotFieldData[];
-            dataBodyRange?: Excel.Interfaces.RangeData;
-            dataLabelRange?: Excel.Interfaces.RangeData;
-            pivotFields?: Excel.Interfaces.PivotFieldData[];
             /**
              *
              * True if the PivotTable report shows grand totals for columns.
@@ -22798,55 +23155,6 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             rowGrandTotals?: boolean;
-            allowMultipleFilters?: boolean;
-            alternativeText?: string;
-            compactLayoutColumnHeader?: string;
-            compactLayoutRowHeader?: string;
-            compactRowIndent?: number;
-            displayContextTooltips?: boolean;
-            displayEmptyColumn?: boolean;
-            displayEmptyRow?: boolean;
-            displayErrorString?: boolean;
-            displayFieldCaptions?: boolean;
-            displayNullString?: boolean;
-            enableDataValueEditing?: boolean;
-            enableDrilldown?: boolean;
-            enableFieldDialog?: boolean;
-            enableFieldList?: boolean;
-            enableWizard?: boolean;
-            errorString?: string;
-            fieldListSortAscending?: boolean;
-            grandTotalName?: string;
-            hasAutoFormat?: boolean;
-            hidden?: boolean;
-            inGridDropZones?: boolean;
-            innerDetail?: string;
-            manualUpdate?: boolean;
-            nullString?: string;
-            preserveFormatting?: boolean;
-            printDrillIndicators?: boolean;
-            printTitles?: boolean;
-            refreshDate?: Date;
-            refreshName?: string;
-            repeatItemsOnEachPrintedPage?: boolean;
-            saveData?: boolean;
-            showDrillIndicators?: boolean;
-            showPageMultipleItemLabel?: boolean;
-            showTableStyleColumnHeaders?: boolean;
-            showTableStyleColumnStripes?: boolean;
-            showTableStyleLastColumn?: boolean;
-            showTableStyleRowHeaders?: boolean;
-            showTableStyleRowStripes?: boolean;
-            showValuesRow?: boolean;
-            smallGrid?: boolean;
-            sortUsingCustomLists?: boolean;
-            subtotalHiddenPageItems?: boolean;
-            summary?: string;
-            tag?: string;
-            totalsAnnotation?: boolean;
-            vacatedStyle?: string;
-            value?: string;
-            version?: string;
         }
         /** An interface describing the data returned by calling "documentProperties.toJSON()". */
         interface DocumentPropertiesData {
@@ -22950,7 +23258,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            type?: string;
+            type?: Excel.DocumentPropertyType | "Number" | "Boolean" | "Date" | "String" | "Float";
             /**
              *
              * Gets or sets the value of the custom property.
@@ -23119,7 +23427,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.6]
              */
-            type?: string;
+            type?: Excel.ConditionalFormatType | "Custom" | "DataBar" | "ColorScale" | "IconSet" | "TopBottom" | "PresetCriteria" | "ContainsText" | "CellValue";
         }
         /** An interface describing the data returned by calling "dataBarConditionalFormat.toJSON()". */
         interface DataBarConditionalFormatData {
@@ -23151,14 +23459,14 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.6]
              */
-            axisFormat?: string;
+            axisFormat?: Excel.ConditionalDataBarAxisFormat | "Automatic" | "None" | "CellMidPoint";
             /**
              *
              * Represents the direction that the data bar graphic should be based on.
              *
              * [Api set: ExcelApi 1.6]
              */
-            barDirection?: string;
+            barDirection?: Excel.ConditionalDataBarDirection | "Context" | "LeftToRight" | "RightToLeft";
             /**
              *
              * The rule for what consistutes the lower bound (and how to calculate it, if applicable) for a data bar.
@@ -23287,7 +23595,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.6]
              */
-            criteria?: Array<Excel.ConditionalIconCriterion>;
+            criteria?: Excel.ConditionalIconCriterion[];
             /**
              *
              * If true, reverses the icon orders for the IconSet. Note that this cannot be set if custom icons are used.
@@ -23308,7 +23616,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.6]
              */
-            style?: string;
+            style?: Excel.IconSet | "Invalid" | "ThreeArrows" | "ThreeArrowsGray" | "ThreeFlags" | "ThreeTrafficLights1" | "ThreeTrafficLights2" | "ThreeSigns" | "ThreeSymbols" | "ThreeSymbols2" | "FourArrows" | "FourArrowsGray" | "FourRedToBlack" | "FourRating" | "FourTrafficLights" | "FiveArrows" | "FiveArrowsGray" | "FiveRating" | "FiveQuarters" | "ThreeStars" | "ThreeTriangles" | "FiveBoxes";
         }
         /** An interface describing the data returned by calling "colorScaleConditionalFormat.toJSON()". */
         interface ColorScaleConditionalFormatData {
@@ -23462,7 +23770,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.6]
              */
-            underline?: string;
+            underline?: Excel.ConditionalRangeFontUnderlineStyle | "None" | "Single" | "Double";
         }
         /** An interface describing the data returned by calling "conditionalRangeFill.toJSON()". */
         interface ConditionalRangeFillData {
@@ -23489,14 +23797,14 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.6]
              */
-            sideIndex?: string;
+            sideIndex?: Excel.ConditionalRangeBorderIndex | "EdgeTop" | "EdgeBottom" | "EdgeLeft" | "EdgeRight";
             /**
              *
              * One of the constants of line style specifying the line style for the border. See Excel.BorderLineStyle for details.
              *
              * [Api set: ExcelApi 1.6]
              */
-            style?: string;
+            style?: Excel.ConditionalRangeBorderLineStyle | "None" | "Continuous" | "Dash" | "DashDot" | "DashDotDot" | "Dot";
         }
         /** An interface describing the data returned by calling "conditionalRangeBorderCollection.toJSON()". */
         interface ConditionalRangeBorderCollectionData {
@@ -23545,21 +23853,21 @@ declare namespace Excel {
              *
              * [Api set: CustomFunctions 1.1]
              */
-            parameters?: Array<Excel.CustomFunctionParameter>;
+            parameters?: Excel.CustomFunctionParameter[];
             /**
              *
              * The dimensionality of result values.
              *
              * [Api set: CustomFunctions 1.1]
              */
-            resultDimensionality?: string;
+            resultDimensionality?: Excel.CustomFunctionDimensionality | "Invalid" | "Scalar" | "Matrix";
             /**
              *
              * The type of result values.
              *
              * [Api set: CustomFunctions 1.1]
              */
-            resultType?: string;
+            resultType?: Excel.CustomFunctionValueType | "Invalid" | "Boolean" | "Number" | "String" | "ISODate";
             /**
              *
              * Represents whether the function supports returning results multiple times.
@@ -23573,7 +23881,7 @@ declare namespace Excel {
              *
              * [Api set: CustomFunctions 1.1]
              */
-            type?: string;
+            type?: Excel.CustomFunctionType | "Invalid" | "Script" | "WebService";
         }
         /** An interface describing the data returned by calling "customFunctionCollection.toJSON()". */
         interface CustomFunctionCollectionData {
@@ -23629,10 +23937,10 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            horizontalAlignment?: string;
+            horizontalAlignment?: Excel.HorizontalAlignment | "General" | "Left" | "Center" | "Right" | "Fill" | "Justify" | "CenterAcrossSelection" | "Distributed";
             /**
              *
-             * Indicates if the style includes the AddIndent, HorizontalAlignment, VerticalAlignment, WrapText, IndentLevel, and Orientation properties.
+             * Indicates if the style includes the AddIndent, HorizontalAlignment, VerticalAlignment, WrapText, IndentLevel, and TextOrientation properties.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -23674,7 +23982,7 @@ declare namespace Excel {
             includeProtection?: boolean;
             /**
              *
-             * An integer from 0 to 15 that indicates the indent level for the style.
+             * An integer from 0 to 250 that indicates the indent level for the style.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -23709,18 +24017,11 @@ declare namespace Excel {
             numberFormatLocal?: string;
             /**
              *
-             * The text orientation for the style.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            orientation?: number;
-            /**
-             *
              * The reading order for the style.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            readingOrder?: string;
+            readingOrder?: Excel.ReadingOrder | "Context" | "LeftToRight" | "RightToLeft";
             /**
              *
              * Indicates if text automatically shrinks to fit in the available column width.
@@ -23730,11 +24031,18 @@ declare namespace Excel {
             shrinkToFit?: boolean;
             /**
              *
+             * The text orientation for the style.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            textOrientation?: number;
+            /**
+             *
              * Represents the vertical alignment for the style. See Excel.VerticalAlignment for details.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            verticalAlignment?: string;
+            verticalAlignment?: Excel.VerticalAlignment | "Top" | "Center" | "Bottom" | "Justify" | "Distributed";
             /**
              *
              * Indicates if Microsoft Excel wraps the text in the object.
@@ -23762,21 +24070,21 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            orientation?: string;
+            orientation?: Excel.PageOrientation | "Portrait" | "Landscape";
             /**
              *
              * Gets or sets the paper size of the page.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            paperSize?: string;
+            paperSize?: Excel.PaperType | "Letter" | "LetterSmall" | "Tabloid" | "Ledger" | "Legal" | "Statement" | "Executive" | "A3" | "A4" | "A4Small" | "A5" | "B4" | "B5" | "Folio" | "Quatro" | "Paper10x14" | "Paper11x17" | "Note" | "Envelope9" | "Envelope10" | "Envelope11" | "Envelope12" | "Envelope14" | "Csheet" | "Dsheet" | "Esheet" | "EnvelopeDL" | "EnvelopeC5" | "EnvelopeC3" | "EnvelopeC4" | "EnvelopeC6" | "EnvelopeC65" | "EnvelopeB4" | "EnvelopeB5" | "EnvelopeB6" | "EnvelopeItaly" | "EnvelopeMonarch" | "EnvelopePersonal" | "FanfoldUS" | "FanfoldStdGerman" | "FanfoldLegalGerman";
             /**
              *
              * Gets or sets the print errors option.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
-            printErrors?: string;
+            printErrors?: Excel.PrintErrorType | "ErrorsDisplayed" | "ErrorsBlank" | "ErrorsDash" | "ErrorsNotAvailable";
         }
         /** An interface describing the data returned by calling "areaCollection.toJSON()". */
         interface AreaCollectionData {
@@ -23799,72 +24107,11 @@ declare namespace Excel {
              */
             value?: T;
         }
-        /** An interface describing the data returned by calling "calculatedFieldCollection.toJSON()". */
-        interface CalculatedFieldCollectionData {
-            items?: Excel.Interfaces.PivotFieldData[];
-        }
-        /** An interface describing the data returned by calling "pivotCache.toJSON()". */
-        interface PivotCacheData {
-            id?: number;
-            index?: number;
-            sourceData?: any;
-            version?: string;
-        }
-        /** An interface describing the data returned by calling "pivotCacheCollection.toJSON()". */
-        interface PivotCacheCollectionData {
-            items?: Excel.Interfaces.PivotCacheData[];
-        }
-        /** An interface describing the data returned by calling "pivotField.toJSON()". */
-        interface PivotFieldData {
-            currentPage?: Excel.Interfaces.PivotItemData;
-            hiddenItems?: Excel.Interfaces.PivotItemData[];
-            pivotItems?: Excel.Interfaces.PivotItemData[];
-            visiblePivotItems?: Excel.Interfaces.PivotItemData[];
-            aggregationFunction?: string;
-            allItemsVisible?: boolean;
-            autoSortField?: string;
-            autoSortOrder?: string;
-            calculated?: boolean;
-            calculation?: string;
-            caption?: string;
-            dataType?: string;
-            drilledDown?: boolean;
-            enableMultiplePageItems?: boolean;
-            formula?: string;
-            name?: string;
-            numberFormat?: string;
-            orientation?: string;
-            position?: number;
-            showDetail?: boolean;
-            sourceName?: string;
-            subtotals?: Excel.Subtotals;
-        }
-        /** An interface describing the data returned by calling "pivotFieldCollection.toJSON()". */
-        interface PivotFieldCollectionData {
-            items?: Excel.Interfaces.PivotFieldData[];
-        }
-        /** An interface describing the data returned by calling "pivotItem.toJSON()". */
-        interface PivotItemData {
-            pivotField?: Excel.Interfaces.PivotFieldData;
-            calculated?: boolean;
-            drilledDown?: boolean;
-            name?: string;
-            position?: number;
-            recordCount?: number;
-            showDetail?: boolean;
-            sourceName?: string;
-            value?: string;
-            visible?: boolean;
-        }
-        /** An interface describing the data returned by calling "pivotItemCollection.toJSON()". */
-        interface PivotItemCollectionData {
-            items?: Excel.Interfaces.PivotItemData[];
-        }
         /**
          *
          * Represents the Excel Runtime class.
          *
-         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         * [Api set: ExcelApi 1.5]
          */
         interface RuntimeLoadOptions {
             $all?: boolean;
@@ -23886,9 +24133,9 @@ declare namespace Excel {
             $all?: boolean;
             /**
              *
-             * Returns the calculation mode used in the workbook. See Excel.CalculationMode for details. Read-only.
+             * Returns the calculation mode used in the workbook. See Excel.CalculationMode for details.
              *
-             * [Api set: ExcelApi 1.1]
+             * [Api set: ExcelApi 1.1 for get, 1.8 for set]
              */
             calculationMode?: boolean;
         }
@@ -23973,6 +24220,22 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             protected?: boolean;
+        }
+        /**
+         *
+         * The WorkbookCreated object is the top level object created by Application.CreateWorkbook. A WorkbookCreated object is a special Workbook object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        interface WorkbookCreatedLoadOptions {
+            $all?: boolean;
+            /**
+             *
+             * Returns a value that uniquely identifies the WorkbookCreated object.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            id?: boolean;
         }
         /**
          *
@@ -24260,6 +24523,7 @@ declare namespace Excel {
             /**
              *
              * Represents the total number of columns in the range. Read-only.
+                If the range has multiple areas, null will be returned.
              *
              * [Api set: ExcelApi 1.1]
              */
@@ -24330,6 +24594,7 @@ declare namespace Excel {
             /**
              *
              * Returns the total number of rows in the range. Read-only.
+                If the range has multiple areas, null will be returned.
              *
              * [Api set: ExcelApi 1.1]
              */
@@ -25278,6 +25543,13 @@ declare namespace Excel {
             protection?: Excel.Interfaces.FormatProtectionLoadOptions;
             /**
              *
+             * Indicates if text is automatically indented when text alignment is set to equal distribution.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            addIndent?: boolean;
+            /**
+             *
              * Gets or sets the width of all colums within the range. If the column widths are not uniform, null will be returned.
              *
              * [Api set: ExcelApi 1.2]
@@ -25292,11 +25564,32 @@ declare namespace Excel {
             horizontalAlignment?: boolean;
             /**
              *
+             * An integer from 0 to 250 that indicates the indent level.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            indentLevel?: boolean;
+            /**
+             *
+             * The reading order for the range.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            readingOrder?: boolean;
+            /**
+             *
              * Gets or sets the height of all rows in the range. If the row heights are not uniform null will be returned.
              *
              * [Api set: ExcelApi 1.2]
              */
             rowHeight?: boolean;
+            /**
+             *
+             * Indicates if text automatically shrinks to fit in the available column width.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            shrinkToFit?: boolean;
             /**
              *
              * Gets or sets the text orientation of all the cells within the range.
@@ -26571,6 +26864,56 @@ declare namespace Excel {
             $all?: boolean;
             /**
              *
+             * Boolean value representing if data label automatically generates appropriate text based on context.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            autoText?: boolean;
+            /**
+             *
+             * String value that represents the formula of chart data label using A1-style notation.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            formula?: boolean;
+            /**
+             *
+             * Returns the height, in points, of the chart data label. Read-only. Null if chart data label is not visible.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            height?: boolean;
+            /**
+             *
+             * Represents the horizontal alignment for chart data label. See Excel.ChartTextHorizontalAlignment for details.
+                This property is valid only when TextOrientation of data label is 90, -90 or 180.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            horizontalAlignment?: boolean;
+            /**
+             *
+             * Represents the distance, in points, from the left edge of chart data label to the left edge of chart area. Null if chart data label is not visible.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            left?: boolean;
+            /**
+             *
+             * String value that represents the format code for data label.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormat?: boolean;
+            /**
+             *
+             * Boolean value representing if the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells).
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormatLinked?: boolean;
+            /**
+             *
              * DataLabelPosition value that represents the position of the data label. See Excel.ChartDataLabelPosition for details.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
@@ -26625,6 +26968,42 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             showValue?: boolean;
+            /**
+             *
+             * String representing the text of the data label on a chart.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            text?: boolean;
+            /**
+             *
+             * Represents the text orientation of chart data label. The value should be an integer either from -90 to 90, or 180 for vertically-oriented text.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            textOrientation?: boolean;
+            /**
+             *
+             * Represents the distance, in points, from the top edge of chart data label to the top of chart area. Null if chart data label is not visible.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            top?: boolean;
+            /**
+             *
+             * Represents the vertical alignment of chart data label. See Excel.ChartTextVerticalAlignment for details.
+                This property is valid only when TextOrientation of data label is 0.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            verticalAlignment?: boolean;
+            /**
+             *
+             * Returns the width, in points, of the chart data label. Read-only. Null if chart data label is not visible.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            width?: boolean;
         }
         /**
          *
@@ -27358,14 +27737,6 @@ declare namespace Excel {
             */
             worksheet?: Excel.Interfaces.WorksheetLoadOptions;
             /**
-            For EACH ITEM in the collection: DataBodyRange
-            */
-            dataBodyRange?: Excel.Interfaces.RangeLoadOptions;
-            /**
-            For EACH ITEM in the collection: DataLabelRange
-            */
-            dataLabelRange?: Excel.Interfaces.RangeLoadOptions;
-            /**
              *
              * For EACH ITEM in the collection: True if the PivotTable report shows grand totals for columns.
              *
@@ -27393,202 +27764,6 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             rowGrandTotals?: boolean;
-            /**
-            For EACH ITEM in the collection: AllowMultipleFilters
-             */
-            allowMultipleFilters?: boolean;
-            /**
-            For EACH ITEM in the collection: AlternativeText
-             */
-            alternativeText?: boolean;
-            /**
-            For EACH ITEM in the collection: CompactLayoutColumnHeader
-             */
-            compactLayoutColumnHeader?: boolean;
-            /**
-            For EACH ITEM in the collection: CompactLayoutRowHeader
-             */
-            compactLayoutRowHeader?: boolean;
-            /**
-            For EACH ITEM in the collection: CompactRowIndent
-             */
-            compactRowIndent?: boolean;
-            /**
-            For EACH ITEM in the collection: DisplayContextTooltips
-             */
-            displayContextTooltips?: boolean;
-            /**
-            For EACH ITEM in the collection: DisplayEmptyColumn
-             */
-            displayEmptyColumn?: boolean;
-            /**
-            For EACH ITEM in the collection: DisplayEmptyRow
-             */
-            displayEmptyRow?: boolean;
-            /**
-            For EACH ITEM in the collection: DisplayErrorString
-             */
-            displayErrorString?: boolean;
-            /**
-            For EACH ITEM in the collection: DisplayFieldCaptions
-             */
-            displayFieldCaptions?: boolean;
-            /**
-            For EACH ITEM in the collection: DisplayNullString
-             */
-            displayNullString?: boolean;
-            /**
-            For EACH ITEM in the collection: EnableDataValueEditing
-             */
-            enableDataValueEditing?: boolean;
-            /**
-            For EACH ITEM in the collection: EnableDrilldown
-             */
-            enableDrilldown?: boolean;
-            /**
-            For EACH ITEM in the collection: EnableFieldDialog
-             */
-            enableFieldDialog?: boolean;
-            /**
-            For EACH ITEM in the collection: EnableFieldList
-             */
-            enableFieldList?: boolean;
-            /**
-            For EACH ITEM in the collection: EnableWizard
-             */
-            enableWizard?: boolean;
-            /**
-            For EACH ITEM in the collection: ErrorString
-             */
-            errorString?: boolean;
-            /**
-            For EACH ITEM in the collection: FieldListSortAscending
-             */
-            fieldListSortAscending?: boolean;
-            /**
-            For EACH ITEM in the collection: GrandTotalName
-             */
-            grandTotalName?: boolean;
-            /**
-            For EACH ITEM in the collection: HasAutoFormat
-             */
-            hasAutoFormat?: boolean;
-            /**
-            For EACH ITEM in the collection: Hidden
-             */
-            hidden?: boolean;
-            /**
-            For EACH ITEM in the collection: InGridDropZones
-             */
-            inGridDropZones?: boolean;
-            /**
-            For EACH ITEM in the collection: InnerDetail
-             */
-            innerDetail?: boolean;
-            /**
-            For EACH ITEM in the collection: ManualUpdate
-             */
-            manualUpdate?: boolean;
-            /**
-            For EACH ITEM in the collection: NullString
-             */
-            nullString?: boolean;
-            /**
-            For EACH ITEM in the collection: PreserveFormatting
-             */
-            preserveFormatting?: boolean;
-            /**
-            For EACH ITEM in the collection: PrintDrillIndicators
-             */
-            printDrillIndicators?: boolean;
-            /**
-            For EACH ITEM in the collection: PrintTitles
-             */
-            printTitles?: boolean;
-            /**
-            For EACH ITEM in the collection: RefreshDate
-             */
-            refreshDate?: boolean;
-            /**
-            For EACH ITEM in the collection: RefreshName
-             */
-            refreshName?: boolean;
-            /**
-            For EACH ITEM in the collection: RepeatItemsOnEachPrintedPage
-             */
-            repeatItemsOnEachPrintedPage?: boolean;
-            /**
-            For EACH ITEM in the collection: SaveData
-             */
-            saveData?: boolean;
-            /**
-            For EACH ITEM in the collection: ShowDrillIndicators
-             */
-            showDrillIndicators?: boolean;
-            /**
-            For EACH ITEM in the collection: ShowPageMultipleItemLabel
-             */
-            showPageMultipleItemLabel?: boolean;
-            /**
-            For EACH ITEM in the collection: ShowTableStyleColumnHeaders
-             */
-            showTableStyleColumnHeaders?: boolean;
-            /**
-            For EACH ITEM in the collection: ShowTableStyleColumnStripes
-             */
-            showTableStyleColumnStripes?: boolean;
-            /**
-            For EACH ITEM in the collection: ShowTableStyleLastColumn
-             */
-            showTableStyleLastColumn?: boolean;
-            /**
-            For EACH ITEM in the collection: ShowTableStyleRowHeaders
-             */
-            showTableStyleRowHeaders?: boolean;
-            /**
-            For EACH ITEM in the collection: ShowTableStyleRowStripes
-             */
-            showTableStyleRowStripes?: boolean;
-            /**
-            For EACH ITEM in the collection: ShowValuesRow
-             */
-            showValuesRow?: boolean;
-            /**
-            For EACH ITEM in the collection: SmallGrid
-             */
-            smallGrid?: boolean;
-            /**
-            For EACH ITEM in the collection: SortUsingCustomLists
-             */
-            sortUsingCustomLists?: boolean;
-            /**
-            For EACH ITEM in the collection: SubtotalHiddenPageItems
-             */
-            subtotalHiddenPageItems?: boolean;
-            /**
-            For EACH ITEM in the collection: Summary
-             */
-            summary?: boolean;
-            /**
-            For EACH ITEM in the collection: Tag
-             */
-            tag?: boolean;
-            /**
-            For EACH ITEM in the collection: TotalsAnnotation
-             */
-            totalsAnnotation?: boolean;
-            /**
-            For EACH ITEM in the collection: VacatedStyle
-             */
-            vacatedStyle?: boolean;
-            /**
-            For EACH ITEM in the collection: Value
-             */
-            value?: boolean;
-            /**
-            For EACH ITEM in the collection: Version
-             */
-            version?: boolean;
         }
         /**
          *
@@ -27605,8 +27780,6 @@ declare namespace Excel {
             * [Api set: ExcelApi 1.3]
             */
             worksheet?: Excel.Interfaces.WorksheetLoadOptions;
-            dataBodyRange?: Excel.Interfaces.RangeLoadOptions;
-            dataLabelRange?: Excel.Interfaces.RangeLoadOptions;
             /**
              *
              * True if the PivotTable report shows grand totals for columns.
@@ -27635,55 +27808,6 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             rowGrandTotals?: boolean;
-            allowMultipleFilters?: boolean;
-            alternativeText?: boolean;
-            compactLayoutColumnHeader?: boolean;
-            compactLayoutRowHeader?: boolean;
-            compactRowIndent?: boolean;
-            displayContextTooltips?: boolean;
-            displayEmptyColumn?: boolean;
-            displayEmptyRow?: boolean;
-            displayErrorString?: boolean;
-            displayFieldCaptions?: boolean;
-            displayNullString?: boolean;
-            enableDataValueEditing?: boolean;
-            enableDrilldown?: boolean;
-            enableFieldDialog?: boolean;
-            enableFieldList?: boolean;
-            enableWizard?: boolean;
-            errorString?: boolean;
-            fieldListSortAscending?: boolean;
-            grandTotalName?: boolean;
-            hasAutoFormat?: boolean;
-            hidden?: boolean;
-            inGridDropZones?: boolean;
-            innerDetail?: boolean;
-            manualUpdate?: boolean;
-            nullString?: boolean;
-            preserveFormatting?: boolean;
-            printDrillIndicators?: boolean;
-            printTitles?: boolean;
-            refreshDate?: boolean;
-            refreshName?: boolean;
-            repeatItemsOnEachPrintedPage?: boolean;
-            saveData?: boolean;
-            showDrillIndicators?: boolean;
-            showPageMultipleItemLabel?: boolean;
-            showTableStyleColumnHeaders?: boolean;
-            showTableStyleColumnStripes?: boolean;
-            showTableStyleLastColumn?: boolean;
-            showTableStyleRowHeaders?: boolean;
-            showTableStyleRowStripes?: boolean;
-            showValuesRow?: boolean;
-            smallGrid?: boolean;
-            sortUsingCustomLists?: boolean;
-            subtotalHiddenPageItems?: boolean;
-            summary?: boolean;
-            tag?: boolean;
-            totalsAnnotation?: boolean;
-            vacatedStyle?: boolean;
-            value?: boolean;
-            version?: boolean;
         }
         /**
          *
@@ -28865,7 +28989,7 @@ declare namespace Excel {
             horizontalAlignment?: boolean;
             /**
              *
-             * Indicates if the style includes the AddIndent, HorizontalAlignment, VerticalAlignment, WrapText, IndentLevel, and Orientation properties.
+             * Indicates if the style includes the AddIndent, HorizontalAlignment, VerticalAlignment, WrapText, IndentLevel, and TextOrientation properties.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -28907,7 +29031,7 @@ declare namespace Excel {
             includeProtection?: boolean;
             /**
              *
-             * An integer from 0 to 15 that indicates the indent level for the style.
+             * An integer from 0 to 250 that indicates the indent level for the style.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -28942,13 +29066,6 @@ declare namespace Excel {
             numberFormatLocal?: boolean;
             /**
              *
-             * The text orientation for the style.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            orientation?: boolean;
-            /**
-             *
              * The reading order for the style.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
@@ -28961,6 +29078,13 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             shrinkToFit?: boolean;
+            /**
+             *
+             * The text orientation for the style.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            textOrientation?: boolean;
             /**
              *
              * Represents the vertical alignment for the style. See Excel.VerticalAlignment for details.
@@ -29035,7 +29159,7 @@ declare namespace Excel {
             horizontalAlignment?: boolean;
             /**
              *
-             * For EACH ITEM in the collection: Indicates if the style includes the AddIndent, HorizontalAlignment, VerticalAlignment, WrapText, IndentLevel, and Orientation properties.
+             * For EACH ITEM in the collection: Indicates if the style includes the AddIndent, HorizontalAlignment, VerticalAlignment, WrapText, IndentLevel, and TextOrientation properties.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -29077,7 +29201,7 @@ declare namespace Excel {
             includeProtection?: boolean;
             /**
              *
-             * For EACH ITEM in the collection: An integer from 0 to 15 that indicates the indent level for the style.
+             * For EACH ITEM in the collection: An integer from 0 to 250 that indicates the indent level for the style.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -29112,13 +29236,6 @@ declare namespace Excel {
             numberFormatLocal?: boolean;
             /**
              *
-             * For EACH ITEM in the collection: The text orientation for the style.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            orientation?: boolean;
-            /**
-             *
              * For EACH ITEM in the collection: The reading order for the style.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
@@ -29131,6 +29248,13 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             shrinkToFit?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: The text orientation for the style.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            textOrientation?: boolean;
             /**
              *
              * For EACH ITEM in the collection: Represents the vertical alignment for the style. See Excel.VerticalAlignment for details.
@@ -29230,6 +29354,7 @@ declare namespace Excel {
             /**
              *
              * For EACH ITEM in the collection: Represents the total number of columns in the range. Read-only.
+                If the range has multiple areas, null will be returned.
              *
              * [Api set: ExcelApi 1.1]
              */
@@ -29300,6 +29425,7 @@ declare namespace Excel {
             /**
              *
              * For EACH ITEM in the collection: Returns the total number of rows in the range. Read-only.
+                If the range has multiple areas, null will be returned.
              *
              * [Api set: ExcelApi 1.1]
              */
@@ -29385,289 +29511,6 @@ declare namespace Excel {
              * [Api set: ExcelApi 1.2]
              */
             value?: boolean;
-        }
-        /**
-         * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-         */
-        interface CalculatedFieldCollectionLoadOptions {
-            $all?: boolean;
-            /**
-            For EACH ITEM in the collection: CurrentPage
-            */
-            currentPage?: Excel.Interfaces.PivotItemLoadOptions;
-            /**
-            For EACH ITEM in the collection: AggregationFunction
-             */
-            aggregationFunction?: boolean;
-            /**
-            For EACH ITEM in the collection: AllItemsVisible
-             */
-            allItemsVisible?: boolean;
-            /**
-            For EACH ITEM in the collection: AutoSortField
-             */
-            autoSortField?: boolean;
-            /**
-            For EACH ITEM in the collection: AutoSortOrder
-             */
-            autoSortOrder?: boolean;
-            /**
-            For EACH ITEM in the collection: Calculated
-             */
-            calculated?: boolean;
-            /**
-            For EACH ITEM in the collection: Calculation
-             */
-            calculation?: boolean;
-            /**
-            For EACH ITEM in the collection: Caption
-             */
-            caption?: boolean;
-            /**
-            For EACH ITEM in the collection: DataType
-             */
-            dataType?: boolean;
-            /**
-            For EACH ITEM in the collection: DrilledDown
-             */
-            drilledDown?: boolean;
-            /**
-            For EACH ITEM in the collection: EnableMultiplePageItems
-             */
-            enableMultiplePageItems?: boolean;
-            /**
-            For EACH ITEM in the collection: Formula
-             */
-            formula?: boolean;
-            /**
-            For EACH ITEM in the collection: Name
-             */
-            name?: boolean;
-            /**
-            For EACH ITEM in the collection: NumberFormat
-             */
-            numberFormat?: boolean;
-            /**
-            For EACH ITEM in the collection: Orientation
-             */
-            orientation?: boolean;
-            /**
-            For EACH ITEM in the collection: Position
-             */
-            position?: boolean;
-            /**
-            For EACH ITEM in the collection: ShowDetail
-             */
-            showDetail?: boolean;
-            /**
-            For EACH ITEM in the collection: SourceName
-             */
-            sourceName?: boolean;
-            /**
-            For EACH ITEM in the collection: Subtotals
-             */
-            subtotals?: boolean;
-        }
-        /**
-         * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-         */
-        interface PivotCacheLoadOptions {
-            $all?: boolean;
-            id?: boolean;
-            index?: boolean;
-            sourceData?: boolean;
-            version?: boolean;
-        }
-        /**
-         * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-         */
-        interface PivotCacheCollectionLoadOptions {
-            $all?: boolean;
-            /**
-            For EACH ITEM in the collection: Id
-             */
-            id?: boolean;
-            /**
-            For EACH ITEM in the collection: Index
-             */
-            index?: boolean;
-            /**
-            For EACH ITEM in the collection: SourceData
-             */
-            sourceData?: boolean;
-            /**
-            For EACH ITEM in the collection: Version
-             */
-            version?: boolean;
-        }
-        /**
-         * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-         */
-        interface PivotFieldLoadOptions {
-            $all?: boolean;
-            currentPage?: Excel.Interfaces.PivotItemLoadOptions;
-            aggregationFunction?: boolean;
-            allItemsVisible?: boolean;
-            autoSortField?: boolean;
-            autoSortOrder?: boolean;
-            calculated?: boolean;
-            calculation?: boolean;
-            caption?: boolean;
-            dataType?: boolean;
-            drilledDown?: boolean;
-            enableMultiplePageItems?: boolean;
-            formula?: boolean;
-            name?: boolean;
-            numberFormat?: boolean;
-            orientation?: boolean;
-            position?: boolean;
-            showDetail?: boolean;
-            sourceName?: boolean;
-            subtotals?: boolean;
-        }
-        /**
-         * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-         */
-        interface PivotFieldCollectionLoadOptions {
-            $all?: boolean;
-            /**
-            For EACH ITEM in the collection: CurrentPage
-            */
-            currentPage?: Excel.Interfaces.PivotItemLoadOptions;
-            /**
-            For EACH ITEM in the collection: AggregationFunction
-             */
-            aggregationFunction?: boolean;
-            /**
-            For EACH ITEM in the collection: AllItemsVisible
-             */
-            allItemsVisible?: boolean;
-            /**
-            For EACH ITEM in the collection: AutoSortField
-             */
-            autoSortField?: boolean;
-            /**
-            For EACH ITEM in the collection: AutoSortOrder
-             */
-            autoSortOrder?: boolean;
-            /**
-            For EACH ITEM in the collection: Calculated
-             */
-            calculated?: boolean;
-            /**
-            For EACH ITEM in the collection: Calculation
-             */
-            calculation?: boolean;
-            /**
-            For EACH ITEM in the collection: Caption
-             */
-            caption?: boolean;
-            /**
-            For EACH ITEM in the collection: DataType
-             */
-            dataType?: boolean;
-            /**
-            For EACH ITEM in the collection: DrilledDown
-             */
-            drilledDown?: boolean;
-            /**
-            For EACH ITEM in the collection: EnableMultiplePageItems
-             */
-            enableMultiplePageItems?: boolean;
-            /**
-            For EACH ITEM in the collection: Formula
-             */
-            formula?: boolean;
-            /**
-            For EACH ITEM in the collection: Name
-             */
-            name?: boolean;
-            /**
-            For EACH ITEM in the collection: NumberFormat
-             */
-            numberFormat?: boolean;
-            /**
-            For EACH ITEM in the collection: Orientation
-             */
-            orientation?: boolean;
-            /**
-            For EACH ITEM in the collection: Position
-             */
-            position?: boolean;
-            /**
-            For EACH ITEM in the collection: ShowDetail
-             */
-            showDetail?: boolean;
-            /**
-            For EACH ITEM in the collection: SourceName
-             */
-            sourceName?: boolean;
-            /**
-            For EACH ITEM in the collection: Subtotals
-             */
-            subtotals?: boolean;
-        }
-        /**
-         * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-         */
-        interface PivotItemLoadOptions {
-            $all?: boolean;
-            pivotField?: Excel.Interfaces.PivotFieldLoadOptions;
-            calculated?: boolean;
-            drilledDown?: boolean;
-            name?: boolean;
-            position?: boolean;
-            recordCount?: boolean;
-            showDetail?: boolean;
-            sourceName?: boolean;
-            value?: boolean;
-            visible?: boolean;
-        }
-        /**
-         * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-         */
-        interface PivotItemCollectionLoadOptions {
-            $all?: boolean;
-            /**
-            For EACH ITEM in the collection: PivotField
-            */
-            pivotField?: Excel.Interfaces.PivotFieldLoadOptions;
-            /**
-            For EACH ITEM in the collection: Calculated
-             */
-            calculated?: boolean;
-            /**
-            For EACH ITEM in the collection: DrilledDown
-             */
-            drilledDown?: boolean;
-            /**
-            For EACH ITEM in the collection: Name
-             */
-            name?: boolean;
-            /**
-            For EACH ITEM in the collection: Position
-             */
-            position?: boolean;
-            /**
-            For EACH ITEM in the collection: RecordCount
-             */
-            recordCount?: boolean;
-            /**
-            For EACH ITEM in the collection: ShowDetail
-             */
-            showDetail?: boolean;
-            /**
-            For EACH ITEM in the collection: SourceName
-             */
-            sourceName?: boolean;
-            /**
-            For EACH ITEM in the collection: Value
-             */
-            value?: boolean;
-            /**
-            For EACH ITEM in the collection: Visible
-             */
-            visible?: boolean;
         }
     }
 }
