@@ -1,5 +1,5 @@
 /* PowerPointer web application specific API library */
-/* Version: 16.0.8916.1000 */
+/* Version: 16.0.9025.1000 */
 /*
 	Copyright (c) Microsoft Corporation.  All rights reserved.
 */
@@ -1260,7 +1260,8 @@ Microsoft.Office.WebExtension.Parameters = {
     HideTitle: "hideTitle",
     UseDeviceIndependentPixels: "useDeviceIndependentPixels",
     AppCommandInvocationCompletedData: "appCommandInvocationCompletedData",
-    Base64: "base64"
+    Base64: "base64",
+    FormId: "formId"
 };
 OSF.OUtil.setNamespace("DDA", OSF);
 OSF.DDA.DocumentMode = {
@@ -1319,6 +1320,7 @@ OSF.DDA.MethodDispId = {
     dispidGetAccessTokenMethod: 98,
     dispidOpenBrowserWindow: 102,
     dispidCreateDocumentMethod: 105,
+    dispidInsertFormMethod: 106,
     dispidGetSelectedTaskMethod: 110,
     dispidGetSelectedResourceMethod: 111,
     dispidGetTaskMethod: 112,
@@ -1379,6 +1381,7 @@ OSF.DDA.EventDispId = {
     dispidOlkItemSelectedChangedEvent: 46,
     dispidOlkRecipientsChangedEvent: 47,
     dispidOlkAppointmentTimeChangedEvent: 48,
+    dispidOlkRecurrenceChangedEvent: 49,
     dispidTaskSelectionChangedEvent: 56,
     dispidResourceSelectionChangedEvent: 57,
     dispidViewSelectionChangedEvent: 58,
@@ -1466,6 +1469,7 @@ OSF.DDA.ErrorCodeManager = (function () {
             ooeRequestTimeout: 5011,
             ooeInvalidOrTimedOutSession: 5012,
             ooeInvalidApiArguments: 5013,
+            ooeOperationCancelled: 5014,
             ooeTooManyIncompleteRequests: 5100,
             ooeRequestTokenUnavailable: 5101,
             ooeActivityLimitReached: 5102,
@@ -1612,6 +1616,7 @@ OSF.DDA.ErrorCodeManager = (function () {
             _errorMappings[OSF.DDA.ErrorCodeManager.errorCodes.ooeAddinIsAlreadyRequestingToken] = { name: stringNS.L_AddinIsAlreadyRequestingToken, message: stringNS.L_AddinIsAlreadyRequestingTokenMessage };
             _errorMappings[OSF.DDA.ErrorCodeManager.errorCodes.ooeSSOUserConsentNotSupportedByCurrentAddinCategory] = { name: stringNS.L_SSOUserConsentNotSupportedByCurrentAddinCategory, message: stringNS.L_SSOUserConsentNotSupportedByCurrentAddinCategoryMessage };
             _errorMappings[OSF.DDA.ErrorCodeManager.errorCodes.ooeSSOConnectionLost] = { name: stringNS.L_SSOConnectionLostError, message: stringNS.L_SSOConnectionLostErrorMessage };
+            _errorMappings[OSF.DDA.ErrorCodeManager.errorCodes.ooeOperationCancelled] = { name: stringNS.L_OperationCancelledError, message: stringNS.L_OperationCancelledErrorMessage };
         }
     };
 })();
@@ -3100,6 +3105,7 @@ OSF.DDA.DispIdHost.Facade = function OSF_DDA_DispIdHost_Facade(getDelegateMethod
         "CloseContainerAsync": did.dispidCloseContainerMethod,
         "OpenBrowserWindow": did.dispidOpenBrowserWindow,
         "CreateDocumentAsync": did.dispidCreateDocumentMethod,
+        "InsertFormAsync": did.dispidInsertFormMethod,
         "AddDataPartAsync": did.dispidAddDataPartMethod,
         "GetDataPartByIdAsync": did.dispidGetDataPartByIdMethod,
         "GetDataPartsByNameSpaceAsync": did.dispidGetDataPartsByNamespaceMethod,
@@ -3169,6 +3175,7 @@ OSF.DDA.DispIdHost.Facade = function OSF_DDA_DispIdHost_Facade(getDelegateMethod
         "ItemChanged": did.dispidOlkItemSelectedChangedEvent,
         "RecipientsChanged": did.dispidOlkRecipientsChangedEvent,
         "AppointmentTimeChanged": did.dispidOlkAppointmentTimeChangedEvent,
+        "RecurrenceChanged": did.dispidOlkRecurrenceChangedEvent,
         "TaskSelectionChanged": did.dispidTaskSelectionChangedEvent,
         "ResourceSelectionChanged": did.dispidResourceSelectionChangedEvent,
         "ViewSelectionChanged": did.dispidViewSelectionChangedEvent,
@@ -3692,6 +3699,29 @@ var OfficeExt;
             }
         }
         WACUtils.isInternetExplorer = isInternetExplorer;
+        function removeMatchesFromLocalStorage(regexPatterns) {
+            var _localStorage = OSF.OUtil.getLocalStorage();
+            var keys = _localStorage.getKeysWithPrefix("");
+            for (var i = 0, len = keys.length; i < len; i++) {
+                var key = keys[i];
+                for (var j = 0, lenRegex = regexPatterns.length; j < lenRegex; j++) {
+                    if (regexPatterns[j].test(key)) {
+                        _localStorage.removeItem(key);
+                        break;
+                    }
+                }
+            }
+        }
+        WACUtils.removeMatchesFromLocalStorage = removeMatchesFromLocalStorage;
+        var CacheConstants = (function () {
+            function CacheConstants() {
+            }
+            CacheConstants.GatedCacheKeyPrefix = "__OSF_GATED_OMEX.";
+            CacheConstants.AuthenticatedAppInstallInfoCacheKey = CacheConstants.GatedCacheKeyPrefix + "appinstall_authenticated.{0}.{1}.{2}.{3}";
+            CacheConstants.EntitlementsKey = "entitle.{0}.{1}";
+            return CacheConstants;
+        })();
+        WACUtils.CacheConstants = CacheConstants;
     })(WACUtils = OfficeExt.WACUtils || (OfficeExt.WACUtils = {}));
 })(OfficeExt || (OfficeExt = {}));
 var OfficeExt;
@@ -6159,7 +6189,7 @@ var OSFAppTelemetry;
         }
         appInfo.message = context.get_hostCustomMessage();
         appInfo.officeJSVersion = OSF.ConstantNames.FileVersion;
-        appInfo.hostJSVersion = "16.0.8916.1000";
+        appInfo.hostJSVersion = "16.0.9025.1000";
         if (context._wacHostEnvironment) {
             appInfo.wacHostEnvironment = context._wacHostEnvironment;
         }
@@ -7712,6 +7742,14 @@ OSF.DDA.OMFactory.manufactureEventArgs = function OSF_DDA_OMFactory$manufactureE
         case Microsoft.Office.WebExtension.EventType.AppointmentTimeChanged:
             if (OSF._OfficeAppFactory.getHostInfo()["hostType"] == "outlook") {
                 args = new OSF.DDA.OlkAppointmentTimeChangedEventArgs(eventProperties);
+            }
+            else {
+                throw OsfMsAjaxFactory.msAjaxError.argument(Microsoft.Office.WebExtension.Parameters.EventType, OSF.OUtil.formatString(Strings.OfficeOM.L_NotSupportedEventType, eventType));
+            }
+            break;
+        case Microsoft.Office.WebExtension.EventType.RecurrenceChanged:
+            if (OSF._OfficeAppFactory.getHostInfo()["hostType"] == "outlook") {
+                args = new OSF.DDA.OlkRecurrenceChangedEventArgs(eventProperties);
             }
             else {
                 throw OsfMsAjaxFactory.msAjaxError.argument(Microsoft.Office.WebExtension.Parameters.EventType, OSF.OUtil.formatString(Strings.OfficeOM.L_NotSupportedEventType, eventType));
@@ -10137,6 +10175,32 @@ OSF.DDA.WAC.Delegate.ParameterMap.define({
         { name: Microsoft.Office.WebExtension.Parameters.Data, value: OSF.DDA.Marshaling.SingleSignOn.AccessTokenResultKeys.AccessToken }
     ]
 });
+OSF.DDA.AsyncMethodNames.addNames({
+    CreateDocumentAsync: "createDocumentAsync"
+});
+OSF.DDA.AsyncMethodCalls.define({
+    method: OSF.DDA.AsyncMethodNames.CreateDocumentAsync,
+    supportedOptions: [
+        {
+            name: Microsoft.Office.WebExtension.Parameters.Base64,
+            value: {
+                "types": ["string"],
+                "defaultValue": ""
+            }
+        }
+    ],
+    privateStateCallbacks: []
+});
+OSF.OUtil.setNamespace("Marshaling", OSF.DDA);
+OSF.DDA.Marshaling.CreateDocument = {
+    Base64: "base64"
+};
+OSF.DDA.WAC.Delegate.ParameterMap.define({
+    type: OSF.DDA.MethodDispId.dispidCreateDocumentMethod,
+    toHost: [
+        { name: Microsoft.Office.WebExtension.Parameters.Base64, value: OSF.DDA.Marshaling.CreateDocument.Base64 }
+    ]
+});
 var OSFPPTWAC;
 (function (OSFPPTWAC) {
     var PowerPointDocument = (function () {
@@ -10174,6 +10238,11 @@ OSF.InitializationHelper.prototype.prepareRightBeforeWebExtensionInitialize = fu
     var license = new OSF.DDA.License(appContext.get_eToken());
     this.initWebDialog(appContext);
     this.initWebAuth(appContext);
+    if (OSF.DDA.Application) {
+        appContext.application = new OSF.DDA.Application(appContext);
+        OSF.DDA.DispIdHost.addAsyncMethods(appContext.application, [OSF.DDA.AsyncMethodNames.CreateDocumentAsync]);
+        OSF.OUtil.finalizeProperties(appContext.application);
+    }
     OSF._OfficeAppFactory.setContext(new OSF.DDA.Context(appContext, appContext.doc, license));
     var getActivationCompletedStatusCallback;
     OSF._OfficeAppFactory.setHostFacade(new OSF.DDA.DispIdHost.Facade(OSF.DDA.WAC.getDelegateMethods, OSF.DDA.WAC.Delegate.ParameterMap));

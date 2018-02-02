@@ -1,5 +1,5 @@
 /* PowerPoint Mac specific API library */
-/* Version: 16.0.8916.1000 */
+/* Version: 16.0.8908.1000 */
 /*
 	Copyright (c) Microsoft Corporation.  All rights reserved.
 */
@@ -1054,9 +1054,7 @@ OSF.AppName = {
     OneNoteWinRT: 8388608,
     ExcelAndroid: 8388609,
     VisioWebApp: 8388610,
-    OneNoteIOS: 8388611,
-    WordAndroid: 8388613,
-    PowerpointAndroid: 8388614
+    OneNoteIOS: 8388611
 };
 OSF.InternalPerfMarker = {
     DataCoercionBegin: "Agave.HostCall.CoerceDataStart",
@@ -1259,8 +1257,7 @@ Microsoft.Office.WebExtension.Parameters = {
     MessageContent: "messageContent",
     HideTitle: "hideTitle",
     UseDeviceIndependentPixels: "useDeviceIndependentPixels",
-    AppCommandInvocationCompletedData: "appCommandInvocationCompletedData",
-    Base64: "base64"
+    AppCommandInvocationCompletedData: "appCommandInvocationCompletedData"
 };
 OSF.OUtil.setNamespace("DDA", OSF);
 OSF.DDA.DocumentMode = {
@@ -1318,7 +1315,6 @@ OSF.DDA.MethodDispId = {
     dispidCloseContainerMethod: 97,
     dispidGetAccessTokenMethod: 98,
     dispidOpenBrowserWindow: 102,
-    dispidCreateDocumentMethod: 105,
     dispidGetSelectedTaskMethod: 110,
     dispidGetSelectedResourceMethod: 111,
     dispidGetTaskMethod: 112,
@@ -2313,11 +2309,6 @@ OSF.DDA.Context = function OSF_DDA_Context(officeAppContext, document, license, 
             value: officeAppContext.auth
         });
     }
-    if (officeAppContext.application) {
-        OSF.OUtil.defineEnumerableProperty(this, "application", {
-            value: officeAppContext.application
-        });
-    }
     if (officeAppContext.get_isDialog()) {
         var requirements = OfficeExt.Requirement.RequirementsMatrixFactory.getDefaultDialogRequirementMatrix(officeAppContext);
         OSF.OUtil.defineEnumerableProperty(this, "requirements", {
@@ -2360,8 +2351,6 @@ OSF.DDA.OutlookContext = function OSF_DDA_OutlookContext(appContext, settings, l
 };
 OSF.OUtil.extend(OSF.DDA.OutlookContext, OSF.DDA.Context);
 OSF.DDA.OutlookAppOm = function OSF_DDA_OutlookAppOm(appContext, window, appReady) { };
-OSF.DDA.Application = function OSF_DDA_Application(officeAppContext) {
-};
 OSF.DDA.Document = function OSF_DDA_Document(officeAppContext, settings) {
     var mode;
     switch (officeAppContext.get_clientMode()) {
@@ -3099,7 +3088,6 @@ OSF.DDA.DispIdHost.Facade = function OSF_DDA_DispIdHost_Facade(getDelegateMethod
         "AppCommandInvocationCompletedAsync": did.dispidAppCommandInvocationCompletedMethod,
         "CloseContainerAsync": did.dispidCloseContainerMethod,
         "OpenBrowserWindow": did.dispidOpenBrowserWindow,
-        "CreateDocumentAsync": did.dispidCreateDocumentMethod,
         "AddDataPartAsync": did.dispidAddDataPartMethod,
         "GetDataPartByIdAsync": did.dispidGetDataPartByIdMethod,
         "GetDataPartsByNameSpaceAsync": did.dispidGetDataPartsByNamespaceMethod,
@@ -5286,7 +5274,7 @@ var OSFAppTelemetry;
         }
         appInfo.message = context.get_hostCustomMessage();
         appInfo.officeJSVersion = OSF.ConstantNames.FileVersion;
-        appInfo.hostJSVersion = "16.0.8916.1000";
+        appInfo.hostJSVersion = "16.0.8908.1000";
         if (context._wacHostEnvironment) {
             appInfo.wacHostEnvironment = context._wacHostEnvironment;
         }
@@ -5517,16 +5505,14 @@ OSF.EventDispatch = function OSF_EventDispatch(eventTypes) {
     this._eventHandlers = {};
     this._objectEventHandlers = {};
     this._queuedEventsArgs = {};
-    if (eventTypes != null) {
-        for (var i = 0; i < eventTypes.length; i++) {
-            var eventType = eventTypes[i];
-            var isObjectEvent = (eventType == "objectDeleted" || eventType == "objectSelectionChanged" || eventType == "objectDataChanged" || eventType == "contentControlAdded");
-            if (!isObjectEvent)
-                this._eventHandlers[eventType] = [];
-            else
-                this._objectEventHandlers[eventType] = {};
-            this._queuedEventsArgs[eventType] = [];
-        }
+    for (var entry in eventTypes) {
+        var eventType = eventTypes[entry];
+        var isObjectEvent = (eventType == "objectDeleted" || eventType == "objectSelectionChanged" || eventType == "objectDataChanged" || eventType == "contentControlAdded");
+        if (!isObjectEvent)
+            this._eventHandlers[eventType] = [];
+        else
+            this._objectEventHandlers[eventType] = {};
+        this._queuedEventsArgs[eventType] = [];
     }
 };
 OSF.EventDispatch.prototype = {
@@ -5552,8 +5538,8 @@ OSF.EventDispatch.prototype = {
     hasEventHandler: function OSF_EventDispatch$hasEventHandler(eventType, handler) {
         var handlers = this._eventHandlers[eventType];
         if (handlers && handlers.length > 0) {
-            for (var i = 0; i < handlers.length; i++) {
-                if (handlers[i] === handler)
+            for (var h in handlers) {
+                if (handlers[h] === handler)
                     return true;
             }
         }
@@ -5658,9 +5644,8 @@ OSF.EventDispatch.prototype = {
         var eventType = eventArgs.type;
         if (eventType && this._eventHandlers[eventType]) {
             var eventHandlers = this._eventHandlers[eventType];
-            for (var i = 0; i < eventHandlers.length; i++) {
-                eventHandlers[i](eventArgs);
-            }
+            for (var handler in eventHandlers)
+                eventHandlers[handler](eventArgs);
             return true;
         }
         else {
@@ -5788,7 +5773,7 @@ OSF.DDA.OMFactory.manufactureEventArgs = function OSF_DDA_OMFactory$manufactureE
             if (OSF._OfficeAppFactory.getHostInfo()["hostType"] == "outlook") {
                 args = new OSF.DDA.OlkItemSelectedChangedEventArgs(eventProperties);
                 target.initialize(args["initialData"]);
-                if (OSF._OfficeAppFactory.getHostInfo()["hostPlatform"] == "win32" || OSF._OfficeAppFactory.getHostInfo()["hostPlatform"] == "mac") {
+                if (OSF._OfficeAppFactory.getHostInfo()["hostPlatform"] == "win32") {
                     target.setCurrentItemNumber(args["itemNumber"].itemNumber);
                 }
             }
