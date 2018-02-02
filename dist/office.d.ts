@@ -4387,7 +4387,6 @@ declare namespace Excel {
          * [Api set: ExcelApi 1.1]
          */
         readonly worksheets: Excel.WorksheetCollection;
-        readonly pivotCaches: Excel.PivotCacheCollection;
         /**
          *
          * Gets the workbook name.
@@ -10692,7 +10691,6 @@ declare namespace Excel {
          * [Api set: ExcelApi 1.3]
          */
         refreshAll(): void;
-        add(name: string, address: Excel.Range, pivotCache: Excel.PivotCache): Excel.PivotTable;
         /**
          * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
          */
@@ -10715,10 +10713,6 @@ declare namespace Excel {
          * [Api set: ExcelApi 1.3]
          */
         readonly worksheet: Excel.Worksheet;
-        readonly calculatedFields: Excel.CalculatedFieldCollection;
-        readonly dataBodyRange: Excel.Range;
-        readonly dataLabelRange: Excel.Range;
-        readonly pivotFields: Excel.PivotFieldCollection;
         /**
          *
          * True if the PivotTable report shows grand totals for columns.
@@ -10747,55 +10741,6 @@ declare namespace Excel {
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         rowGrandTotals: boolean;
-        allowMultipleFilters: boolean;
-        alternativeText: string;
-        compactLayoutColumnHeader: string;
-        compactLayoutRowHeader: string;
-        compactRowIndent: number;
-        displayContextTooltips: boolean;
-        displayEmptyColumn: boolean;
-        displayEmptyRow: boolean;
-        displayErrorString: boolean;
-        displayFieldCaptions: boolean;
-        displayNullString: boolean;
-        enableDataValueEditing: boolean;
-        enableDrilldown: boolean;
-        enableFieldDialog: boolean;
-        enableFieldList: boolean;
-        enableWizard: boolean;
-        errorString: string;
-        fieldListSortAscending: boolean;
-        grandTotalName: string;
-        hasAutoFormat: boolean;
-        readonly hidden: boolean;
-        inGridDropZones: boolean;
-        innerDetail: string;
-        manualUpdate: boolean;
-        nullString: string;
-        preserveFormatting: boolean;
-        printDrillIndicators: boolean;
-        printTitles: boolean;
-        readonly refreshDate: Date;
-        readonly refreshName: string;
-        repeatItemsOnEachPrintedPage: boolean;
-        saveData: boolean;
-        showDrillIndicators: boolean;
-        showPageMultipleItemLabel: boolean;
-        showTableStyleColumnHeaders: boolean;
-        showTableStyleColumnStripes: boolean;
-        showTableStyleLastColumn: boolean;
-        showTableStyleRowHeaders: boolean;
-        showTableStyleRowStripes: boolean;
-        showValuesRow: boolean;
-        smallGrid: boolean;
-        sortUsingCustomLists: boolean;
-        subtotalHiddenPageItems: boolean;
-        summary: string;
-        tag: string;
-        totalsAnnotation: boolean;
-        vacatedStyle: string;
-        value: string;
-        readonly version: Excel.PivotTableVersion | "PivotTableVersionCurrent" | "PivotTableVersion2000" | "PivotTableVersion10" | "PivotTableVersion11" | "PivotTableVersion12" | "PivotTableVersion14" | "PivotTableVersion15";
         /** Sets multiple properties on the object at the same time, based on JSON input. */
         set(properties: Interfaces.PivotTableUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
@@ -10843,26 +10788,6 @@ declare namespace Excel {
          * @param Location Required SubtotalLocationType. See Excel.SubtotalLocationType for details.
          */
         subtotalLocation(Location: "AtTop" | "AtBottom"): void;
-        addChart(chartType: Excel.ChartType, seriesBy?: Excel.ChartSeriesBy): Excel.Chart;
-        addChart(chartType: "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar", seriesBy?: "Auto" | "Columns" | "Rows"): Excel.Chart;
-        addDataField(field: Excel.PivotField, caption: string, func: Excel.ConsolidationFunction): Excel.PivotField;
-        addDataField(field: Excel.PivotField, caption: string, func: "VarP" | "Var" | "Sum" | "StDevP" | "StDev" | "Product" | "Min" | "Max" | "CountNums" | "Count" | "Average" | "DistinctCount" | "Unknown"): Excel.PivotField;
-        clearTable(): void;
-        getColumnField(Index: number): Excel.PivotField;
-        getColumnRange(): Excel.Range;
-        getDataField(Index: number): Excel.PivotField;
-        getDataPivotField(): Excel.PivotField;
-        getEntireRange(): Excel.Range;
-        getHiddenField(Index: number): Excel.PivotField;
-        getPageRange(): Excel.Range;
-        getRowField(Index: number): Excel.PivotField;
-        getRowRange(): Excel.Range;
-        getVisibleFields(): Excel.PivotFieldCollection;
-        listFormulas(): void;
-        pivotSelect(Name: string, Mode: Excel.PivotTableSelectionMode, UseStandardName?: boolean): void;
-        pivotSelect(Name: string, Mode: "DataAndLabel" | "LabelOnly" | "DataOnly" | "Origin" | "Blanks" | "Button" | "FirstRow", UseStandardName?: boolean): void;
-        refreshTable(): OfficeExtension.ClientResult<boolean>;
-        repeatAllLabels(Repeat: Excel.PivotFieldRepeatLabels): void;
         /**
          * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
          */
@@ -18200,294 +18125,6 @@ declare namespace Excel {
             [key: string]: string;
         };
     }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    interface Subtotals {
-        automatic?: boolean;
-        average?: boolean;
-        count?: boolean;
-        countNumbers?: boolean;
-        max?: boolean;
-        min?: boolean;
-        product?: boolean;
-        standardDeviation?: boolean;
-        standardDeviationP?: boolean;
-        sum?: boolean;
-        variation?: boolean;
-        variationP?: boolean;
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    class CalculatedFieldCollection extends OfficeExtension.ClientObject {
-        /** Gets the loaded child items in this collection. */
-        readonly items: Excel.PivotField[];
-        add(Name: string, Formula: string, UseStandardFormula?: boolean): Excel.PivotField;
-        getCount(): OfficeExtension.ClientResult<number>;
-        getItem(nameOrIndex: any): Excel.PivotField;
-        getItemAt(index: number): Excel.PivotField;
-        /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         */
-        load(option?: Excel.Interfaces.CalculatedFieldCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.CalculatedFieldCollection;
-        load(option?: string | string[]): Excel.CalculatedFieldCollection;
-        load(option?: OfficeExtension.LoadOption): Excel.CalculatedFieldCollection;
-        toJSON(): Excel.Interfaces.CalculatedFieldCollectionData;
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    class PivotCache extends OfficeExtension.ClientObject {
-        readonly id: number;
-        readonly index: number;
-        readonly sourceData: any;
-        readonly version: Excel.PivotTableVersion | "PivotTableVersionCurrent" | "PivotTableVersion2000" | "PivotTableVersion10" | "PivotTableVersion11" | "PivotTableVersion12" | "PivotTableVersion14" | "PivotTableVersion15";
-        refresh(): void;
-        /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         */
-        load(option?: Excel.Interfaces.PivotCacheLoadOptions): Excel.PivotCache;
-        load(option?: string | string[]): Excel.PivotCache;
-        load(option?: {
-            select?: string;
-            expand?: string;
-        }): Excel.PivotCache;
-        toJSON(): Excel.Interfaces.PivotCacheData;
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    class PivotCacheCollection extends OfficeExtension.ClientObject {
-        /** Gets the loaded child items in this collection. */
-        readonly items: Excel.PivotCache[];
-        add(sourceType: Excel.PivotTableSourceType, address: Excel.Range): Excel.PivotCache;
-        add(sourceType: "Database" | "External" | "Consolidation" | "Scenario", address: Excel.Range): Excel.PivotCache;
-        getCount(): OfficeExtension.ClientResult<number>;
-        getItem(index: number): Excel.PivotCache;
-        getItemAt(index: number): Excel.PivotCache;
-        /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         */
-        load(option?: Excel.Interfaces.PivotCacheCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.PivotCacheCollection;
-        load(option?: string | string[]): Excel.PivotCacheCollection;
-        load(option?: OfficeExtension.LoadOption): Excel.PivotCacheCollection;
-        toJSON(): Excel.Interfaces.PivotCacheCollectionData;
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    class PivotField extends OfficeExtension.ClientObject {
-        currentPage: Excel.PivotItem;
-        readonly hiddenItems: Excel.PivotItemCollection;
-        readonly pivotItems: Excel.PivotItemCollection;
-        readonly visiblePivotItems: Excel.PivotItemCollection;
-        aggregationFunction: Excel.ConsolidationFunction | "VarP" | "Var" | "Sum" | "StDevP" | "StDev" | "Product" | "Min" | "Max" | "CountNums" | "Count" | "Average" | "DistinctCount" | "Unknown";
-        readonly allItemsVisible: boolean;
-        readonly autoSortField: string;
-        readonly autoSortOrder: Excel.SortOrder | "Ascending" | "Descending";
-        readonly calculated: boolean;
-        calculation: Excel.PivotFieldCalculation | "NoAdditionalCalculation" | "DifferenceFrom" | "PercentOf" | "PercentDifferenceFrom" | "RunningTotal" | "PercentOfRow" | "PercentOfColumn" | "PercentOfTotal" | "Index" | "PercentOfParentRow" | "PercentOfParentColumn" | "PercentOfParent" | "PercentRunningTotal" | "RankAscending" | "RankDecending";
-        caption: string;
-        readonly dataType: Excel.PivotFieldDataType | "Text" | "Number" | "Date";
-        drilledDown: boolean;
-        enableMultiplePageItems: boolean;
-        formula: string;
-        name: string;
-        numberFormat: string;
-        orientation: Excel.PivotFieldOrientation | "Hidden" | "RowField" | "ColumnField" | "PageField" | "DataField";
-        position: number;
-        showDetail: boolean;
-        readonly sourceName: string;
-        subtotals: Excel.Subtotals;
-        /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.PivotFieldUpdateData, options?: OfficeExtension.UpdateOptions): void;
-        /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
-        set(properties: PivotField): void;
-        autoGroup(): void;
-        autoSort(sortOrder: Excel.SortOrder, Field: string): void;
-        autoSort(sortOrder: "Ascending" | "Descending", Field: string): void;
-        clearAllFilters(): void;
-        getChildField(): Excel.PivotField;
-        getChildItems(): Excel.PivotItemCollection;
-        getDataRange(): Excel.Range;
-        /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         */
-        load(option?: Excel.Interfaces.PivotFieldLoadOptions): Excel.PivotField;
-        load(option?: string | string[]): Excel.PivotField;
-        load(option?: {
-            select?: string;
-            expand?: string;
-        }): Excel.PivotField;
-        toJSON(): Excel.Interfaces.PivotFieldData;
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    class PivotFieldCollection extends OfficeExtension.ClientObject {
-        /** Gets the loaded child items in this collection. */
-        readonly items: Excel.PivotField[];
-        getCount(): OfficeExtension.ClientResult<number>;
-        getItem(nameOrIndex: any): Excel.PivotField;
-        getItemAt(index: number): Excel.PivotField;
-        /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         */
-        load(option?: Excel.Interfaces.PivotFieldCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.PivotFieldCollection;
-        load(option?: string | string[]): Excel.PivotFieldCollection;
-        load(option?: OfficeExtension.LoadOption): Excel.PivotFieldCollection;
-        toJSON(): Excel.Interfaces.PivotFieldCollectionData;
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    class PivotItem extends OfficeExtension.ClientObject {
-        readonly pivotField: Excel.PivotField;
-        readonly calculated: boolean;
-        drilledDown: boolean;
-        name: string;
-        position: number;
-        readonly recordCount: number;
-        showDetail: boolean;
-        readonly sourceName: string;
-        value: string;
-        visible: boolean;
-        /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.PivotItemUpdateData, options?: OfficeExtension.UpdateOptions): void;
-        /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
-        set(properties: PivotItem): void;
-        getDataRange(): Excel.Range;
-        /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         */
-        load(option?: Excel.Interfaces.PivotItemLoadOptions): Excel.PivotItem;
-        load(option?: string | string[]): Excel.PivotItem;
-        load(option?: {
-            select?: string;
-            expand?: string;
-        }): Excel.PivotItem;
-        toJSON(): Excel.Interfaces.PivotItemData;
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    class PivotItemCollection extends OfficeExtension.ClientObject {
-        /** Gets the loaded child items in this collection. */
-        readonly items: Excel.PivotItem[];
-        getCount(): OfficeExtension.ClientResult<number>;
-        getItem(nameOrIndex: any): Excel.PivotItem;
-        getItemAt(index: number): Excel.PivotItem;
-        /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         */
-        load(option?: Excel.Interfaces.PivotItemCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.PivotItemCollection;
-        load(option?: string | string[]): Excel.PivotItemCollection;
-        load(option?: OfficeExtension.LoadOption): Excel.PivotItemCollection;
-        toJSON(): Excel.Interfaces.PivotItemCollectionData;
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    enum ConsolidationFunction {
-        varP = "VarP",
-        sum = "Sum",
-        stDevP = "StDevP",
-        stDev = "StDev",
-        product = "Product",
-        min = "Min",
-        max = "Max",
-        countNums = "CountNums",
-        count = "Count",
-        average = "Average",
-        distinctCount = "DistinctCount",
-        unknown = "Unknown",
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    enum PivotFieldCalculation {
-        noAdditionalCalculation = "NoAdditionalCalculation",
-        differenceFrom = "DifferenceFrom",
-        percentOf = "PercentOf",
-        percentDifferenceFrom = "PercentDifferenceFrom",
-        runningTotal = "RunningTotal",
-        percentOfRow = "PercentOfRow",
-        percentOfColumn = "PercentOfColumn",
-        percentOfTotal = "PercentOfTotal",
-        index = "Index",
-        percentOfParentRow = "PercentOfParentRow",
-        percentOfParentColumn = "PercentOfParentColumn",
-        percentOfParent = "PercentOfParent",
-        percentRunningTotal = "PercentRunningTotal",
-        rankAscending = "RankAscending",
-        rankDecending = "RankDecending",
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    enum PivotFieldDataType {
-        text = "Text",
-        number = "Number",
-        date = "Date",
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    enum PivotFieldOrientation {
-        hidden = "Hidden",
-        rowField = "RowField",
-        columnField = "ColumnField",
-        pageField = "PageField",
-        dataField = "DataField",
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    enum PivotFieldRepeatLabels {
-        doNotRepeatLabels = "DoNotRepeatLabels",
-        repeatLabels = "RepeatLabels",
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    enum PivotTableSourceType {
-        database = "Database",
-        external = "External",
-        consolidation = "Consolidation",
-        scenario = "Scenario",
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    enum PivotTableVersion {
-        pivotTableVersionCurrent = "PivotTableVersionCurrent",
-        pivotTableVersion2000 = "PivotTableVersion2000",
-        pivotTableVersion10 = "PivotTableVersion10",
-        pivotTableVersion11 = "PivotTableVersion11",
-        pivotTableVersion12 = "PivotTableVersion12",
-        pivotTableVersion14 = "PivotTableVersion14",
-        pivotTableVersion15 = "PivotTableVersion15",
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    enum PivotTableSelectionMode {
-        dataAndLabel = "DataAndLabel",
-        labelOnly = "LabelOnly",
-        dataOnly = "DataOnly",
-        origin = "Origin",
-        blanks = "Blanks",
-        button = "Button",
-        firstRow = "FirstRow",
-    }
-    /**
-     * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-     */
-    enum SortOrder {
-        ascending = "Ascending",
-        descending = "Descending",
-    }
     enum ErrorCodes {
         accessDenied = "AccessDenied",
         apiNotFound = "ApiNotFound",
@@ -20318,8 +19955,6 @@ declare namespace Excel {
         }
         /** An interface for updating data on the PivotTable object, for use in "pivotTable.set({ ... })". */
         interface PivotTableUpdateData {
-            dataBodyRange?: Excel.Interfaces.RangeUpdateData;
-            dataLabelRange?: Excel.Interfaces.RangeUpdateData;
             /**
              *
              * True if the PivotTable report shows grand totals for columns.
@@ -20341,51 +19976,6 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             rowGrandTotals?: boolean;
-            allowMultipleFilters?: boolean;
-            alternativeText?: string;
-            compactLayoutColumnHeader?: string;
-            compactLayoutRowHeader?: string;
-            compactRowIndent?: number;
-            displayContextTooltips?: boolean;
-            displayEmptyColumn?: boolean;
-            displayEmptyRow?: boolean;
-            displayErrorString?: boolean;
-            displayFieldCaptions?: boolean;
-            displayNullString?: boolean;
-            enableDataValueEditing?: boolean;
-            enableDrilldown?: boolean;
-            enableFieldDialog?: boolean;
-            enableFieldList?: boolean;
-            enableWizard?: boolean;
-            errorString?: string;
-            fieldListSortAscending?: boolean;
-            grandTotalName?: string;
-            hasAutoFormat?: boolean;
-            inGridDropZones?: boolean;
-            innerDetail?: string;
-            manualUpdate?: boolean;
-            nullString?: string;
-            preserveFormatting?: boolean;
-            printDrillIndicators?: boolean;
-            printTitles?: boolean;
-            repeatItemsOnEachPrintedPage?: boolean;
-            saveData?: boolean;
-            showDrillIndicators?: boolean;
-            showPageMultipleItemLabel?: boolean;
-            showTableStyleColumnHeaders?: boolean;
-            showTableStyleColumnStripes?: boolean;
-            showTableStyleLastColumn?: boolean;
-            showTableStyleRowHeaders?: boolean;
-            showTableStyleRowStripes?: boolean;
-            showValuesRow?: boolean;
-            smallGrid?: boolean;
-            sortUsingCustomLists?: boolean;
-            subtotalHiddenPageItems?: boolean;
-            summary?: string;
-            tag?: string;
-            totalsAnnotation?: boolean;
-            vacatedStyle?: string;
-            value?: string;
         }
         /** An interface for updating data on the DocumentProperties object, for use in "documentProperties.set({ ... })". */
         interface DocumentPropertiesUpdateData {
@@ -21192,48 +20782,6 @@ declare namespace Excel {
         interface AreaCollectionUpdateData {
             items?: Excel.Interfaces.RangeData[];
         }
-        /** An interface for updating data on the CalculatedFieldCollection object, for use in "calculatedFieldCollection.set({ ... })". */
-        interface CalculatedFieldCollectionUpdateData {
-            items?: Excel.Interfaces.PivotFieldData[];
-        }
-        /** An interface for updating data on the PivotCacheCollection object, for use in "pivotCacheCollection.set({ ... })". */
-        interface PivotCacheCollectionUpdateData {
-            items?: Excel.Interfaces.PivotCacheData[];
-        }
-        /** An interface for updating data on the PivotField object, for use in "pivotField.set({ ... })". */
-        interface PivotFieldUpdateData {
-            currentPage?: Excel.Interfaces.PivotItemUpdateData;
-            aggregationFunction?: Excel.ConsolidationFunction | "VarP" | "Var" | "Sum" | "StDevP" | "StDev" | "Product" | "Min" | "Max" | "CountNums" | "Count" | "Average" | "DistinctCount" | "Unknown";
-            calculation?: Excel.PivotFieldCalculation | "NoAdditionalCalculation" | "DifferenceFrom" | "PercentOf" | "PercentDifferenceFrom" | "RunningTotal" | "PercentOfRow" | "PercentOfColumn" | "PercentOfTotal" | "Index" | "PercentOfParentRow" | "PercentOfParentColumn" | "PercentOfParent" | "PercentRunningTotal" | "RankAscending" | "RankDecending";
-            caption?: string;
-            drilledDown?: boolean;
-            enableMultiplePageItems?: boolean;
-            formula?: string;
-            name?: string;
-            numberFormat?: string;
-            orientation?: Excel.PivotFieldOrientation | "Hidden" | "RowField" | "ColumnField" | "PageField" | "DataField";
-            position?: number;
-            showDetail?: boolean;
-            subtotals?: Excel.Subtotals;
-        }
-        /** An interface for updating data on the PivotFieldCollection object, for use in "pivotFieldCollection.set({ ... })". */
-        interface PivotFieldCollectionUpdateData {
-            items?: Excel.Interfaces.PivotFieldData[];
-        }
-        /** An interface for updating data on the PivotItem object, for use in "pivotItem.set({ ... })". */
-        interface PivotItemUpdateData {
-            pivotField?: Excel.Interfaces.PivotFieldUpdateData;
-            drilledDown?: boolean;
-            name?: string;
-            position?: number;
-            showDetail?: boolean;
-            value?: string;
-            visible?: boolean;
-        }
-        /** An interface for updating data on the PivotItemCollection object, for use in "pivotItemCollection.set({ ... })". */
-        interface PivotItemCollectionUpdateData {
-            items?: Excel.Interfaces.PivotItemData[];
-        }
         /** An interface describing the data returned by calling "runtime.toJSON()". */
         interface RuntimeData {
             /**
@@ -21340,7 +20888,6 @@ declare namespace Excel {
             * [Api set: ExcelApi 1.1]
             */
             worksheets?: Excel.Interfaces.WorksheetData[];
-            pivotCaches?: Excel.Interfaces.PivotCacheData[];
             /**
              *
              * Gets the workbook name.
@@ -23758,10 +23305,6 @@ declare namespace Excel {
             * [Api set: ExcelApi 1.3]
             */
             worksheet?: Excel.Interfaces.WorksheetData;
-            calculatedFields?: Excel.Interfaces.PivotFieldData[];
-            dataBodyRange?: Excel.Interfaces.RangeData;
-            dataLabelRange?: Excel.Interfaces.RangeData;
-            pivotFields?: Excel.Interfaces.PivotFieldData[];
             /**
              *
              * True if the PivotTable report shows grand totals for columns.
@@ -23790,55 +23333,6 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             rowGrandTotals?: boolean;
-            allowMultipleFilters?: boolean;
-            alternativeText?: string;
-            compactLayoutColumnHeader?: string;
-            compactLayoutRowHeader?: string;
-            compactRowIndent?: number;
-            displayContextTooltips?: boolean;
-            displayEmptyColumn?: boolean;
-            displayEmptyRow?: boolean;
-            displayErrorString?: boolean;
-            displayFieldCaptions?: boolean;
-            displayNullString?: boolean;
-            enableDataValueEditing?: boolean;
-            enableDrilldown?: boolean;
-            enableFieldDialog?: boolean;
-            enableFieldList?: boolean;
-            enableWizard?: boolean;
-            errorString?: string;
-            fieldListSortAscending?: boolean;
-            grandTotalName?: string;
-            hasAutoFormat?: boolean;
-            hidden?: boolean;
-            inGridDropZones?: boolean;
-            innerDetail?: string;
-            manualUpdate?: boolean;
-            nullString?: string;
-            preserveFormatting?: boolean;
-            printDrillIndicators?: boolean;
-            printTitles?: boolean;
-            refreshDate?: Date;
-            refreshName?: string;
-            repeatItemsOnEachPrintedPage?: boolean;
-            saveData?: boolean;
-            showDrillIndicators?: boolean;
-            showPageMultipleItemLabel?: boolean;
-            showTableStyleColumnHeaders?: boolean;
-            showTableStyleColumnStripes?: boolean;
-            showTableStyleLastColumn?: boolean;
-            showTableStyleRowHeaders?: boolean;
-            showTableStyleRowStripes?: boolean;
-            showValuesRow?: boolean;
-            smallGrid?: boolean;
-            sortUsingCustomLists?: boolean;
-            subtotalHiddenPageItems?: boolean;
-            summary?: string;
-            tag?: string;
-            totalsAnnotation?: boolean;
-            vacatedStyle?: string;
-            value?: string;
-            version?: Excel.PivotTableVersion | "PivotTableVersionCurrent" | "PivotTableVersion2000" | "PivotTableVersion10" | "PivotTableVersion11" | "PivotTableVersion12" | "PivotTableVersion14" | "PivotTableVersion15";
         }
         /** An interface describing the data returned by calling "documentProperties.toJSON()". */
         interface DocumentPropertiesData {
@@ -24790,67 +24284,6 @@ declare namespace Excel {
              * [Api set: ExcelApi 1.2]
              */
             value?: T;
-        }
-        /** An interface describing the data returned by calling "calculatedFieldCollection.toJSON()". */
-        interface CalculatedFieldCollectionData {
-            items?: Excel.Interfaces.PivotFieldData[];
-        }
-        /** An interface describing the data returned by calling "pivotCache.toJSON()". */
-        interface PivotCacheData {
-            id?: number;
-            index?: number;
-            sourceData?: any;
-            version?: Excel.PivotTableVersion | "PivotTableVersionCurrent" | "PivotTableVersion2000" | "PivotTableVersion10" | "PivotTableVersion11" | "PivotTableVersion12" | "PivotTableVersion14" | "PivotTableVersion15";
-        }
-        /** An interface describing the data returned by calling "pivotCacheCollection.toJSON()". */
-        interface PivotCacheCollectionData {
-            items?: Excel.Interfaces.PivotCacheData[];
-        }
-        /** An interface describing the data returned by calling "pivotField.toJSON()". */
-        interface PivotFieldData {
-            currentPage?: Excel.Interfaces.PivotItemData;
-            hiddenItems?: Excel.Interfaces.PivotItemData[];
-            pivotItems?: Excel.Interfaces.PivotItemData[];
-            visiblePivotItems?: Excel.Interfaces.PivotItemData[];
-            aggregationFunction?: Excel.ConsolidationFunction | "VarP" | "Var" | "Sum" | "StDevP" | "StDev" | "Product" | "Min" | "Max" | "CountNums" | "Count" | "Average" | "DistinctCount" | "Unknown";
-            allItemsVisible?: boolean;
-            autoSortField?: string;
-            autoSortOrder?: Excel.SortOrder | "Ascending" | "Descending";
-            calculated?: boolean;
-            calculation?: Excel.PivotFieldCalculation | "NoAdditionalCalculation" | "DifferenceFrom" | "PercentOf" | "PercentDifferenceFrom" | "RunningTotal" | "PercentOfRow" | "PercentOfColumn" | "PercentOfTotal" | "Index" | "PercentOfParentRow" | "PercentOfParentColumn" | "PercentOfParent" | "PercentRunningTotal" | "RankAscending" | "RankDecending";
-            caption?: string;
-            dataType?: Excel.PivotFieldDataType | "Text" | "Number" | "Date";
-            drilledDown?: boolean;
-            enableMultiplePageItems?: boolean;
-            formula?: string;
-            name?: string;
-            numberFormat?: string;
-            orientation?: Excel.PivotFieldOrientation | "Hidden" | "RowField" | "ColumnField" | "PageField" | "DataField";
-            position?: number;
-            showDetail?: boolean;
-            sourceName?: string;
-            subtotals?: Excel.Subtotals;
-        }
-        /** An interface describing the data returned by calling "pivotFieldCollection.toJSON()". */
-        interface PivotFieldCollectionData {
-            items?: Excel.Interfaces.PivotFieldData[];
-        }
-        /** An interface describing the data returned by calling "pivotItem.toJSON()". */
-        interface PivotItemData {
-            pivotField?: Excel.Interfaces.PivotFieldData;
-            calculated?: boolean;
-            drilledDown?: boolean;
-            name?: string;
-            position?: number;
-            recordCount?: number;
-            showDetail?: boolean;
-            sourceName?: string;
-            value?: string;
-            visible?: boolean;
-        }
-        /** An interface describing the data returned by calling "pivotItemCollection.toJSON()". */
-        interface PivotItemCollectionData {
-            items?: Excel.Interfaces.PivotItemData[];
         }
         /**
          *
@@ -28514,14 +27947,6 @@ declare namespace Excel {
             */
             worksheet?: Excel.Interfaces.WorksheetLoadOptions;
             /**
-            For EACH ITEM in the collection: DataBodyRange
-            */
-            dataBodyRange?: Excel.Interfaces.RangeLoadOptions;
-            /**
-            For EACH ITEM in the collection: DataLabelRange
-            */
-            dataLabelRange?: Excel.Interfaces.RangeLoadOptions;
-            /**
              *
              * For EACH ITEM in the collection: True if the PivotTable report shows grand totals for columns.
              *
@@ -28549,202 +27974,6 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             rowGrandTotals?: boolean;
-            /**
-            For EACH ITEM in the collection: AllowMultipleFilters
-             */
-            allowMultipleFilters?: boolean;
-            /**
-            For EACH ITEM in the collection: AlternativeText
-             */
-            alternativeText?: boolean;
-            /**
-            For EACH ITEM in the collection: CompactLayoutColumnHeader
-             */
-            compactLayoutColumnHeader?: boolean;
-            /**
-            For EACH ITEM in the collection: CompactLayoutRowHeader
-             */
-            compactLayoutRowHeader?: boolean;
-            /**
-            For EACH ITEM in the collection: CompactRowIndent
-             */
-            compactRowIndent?: boolean;
-            /**
-            For EACH ITEM in the collection: DisplayContextTooltips
-             */
-            displayContextTooltips?: boolean;
-            /**
-            For EACH ITEM in the collection: DisplayEmptyColumn
-             */
-            displayEmptyColumn?: boolean;
-            /**
-            For EACH ITEM in the collection: DisplayEmptyRow
-             */
-            displayEmptyRow?: boolean;
-            /**
-            For EACH ITEM in the collection: DisplayErrorString
-             */
-            displayErrorString?: boolean;
-            /**
-            For EACH ITEM in the collection: DisplayFieldCaptions
-             */
-            displayFieldCaptions?: boolean;
-            /**
-            For EACH ITEM in the collection: DisplayNullString
-             */
-            displayNullString?: boolean;
-            /**
-            For EACH ITEM in the collection: EnableDataValueEditing
-             */
-            enableDataValueEditing?: boolean;
-            /**
-            For EACH ITEM in the collection: EnableDrilldown
-             */
-            enableDrilldown?: boolean;
-            /**
-            For EACH ITEM in the collection: EnableFieldDialog
-             */
-            enableFieldDialog?: boolean;
-            /**
-            For EACH ITEM in the collection: EnableFieldList
-             */
-            enableFieldList?: boolean;
-            /**
-            For EACH ITEM in the collection: EnableWizard
-             */
-            enableWizard?: boolean;
-            /**
-            For EACH ITEM in the collection: ErrorString
-             */
-            errorString?: boolean;
-            /**
-            For EACH ITEM in the collection: FieldListSortAscending
-             */
-            fieldListSortAscending?: boolean;
-            /**
-            For EACH ITEM in the collection: GrandTotalName
-             */
-            grandTotalName?: boolean;
-            /**
-            For EACH ITEM in the collection: HasAutoFormat
-             */
-            hasAutoFormat?: boolean;
-            /**
-            For EACH ITEM in the collection: Hidden
-             */
-            hidden?: boolean;
-            /**
-            For EACH ITEM in the collection: InGridDropZones
-             */
-            inGridDropZones?: boolean;
-            /**
-            For EACH ITEM in the collection: InnerDetail
-             */
-            innerDetail?: boolean;
-            /**
-            For EACH ITEM in the collection: ManualUpdate
-             */
-            manualUpdate?: boolean;
-            /**
-            For EACH ITEM in the collection: NullString
-             */
-            nullString?: boolean;
-            /**
-            For EACH ITEM in the collection: PreserveFormatting
-             */
-            preserveFormatting?: boolean;
-            /**
-            For EACH ITEM in the collection: PrintDrillIndicators
-             */
-            printDrillIndicators?: boolean;
-            /**
-            For EACH ITEM in the collection: PrintTitles
-             */
-            printTitles?: boolean;
-            /**
-            For EACH ITEM in the collection: RefreshDate
-             */
-            refreshDate?: boolean;
-            /**
-            For EACH ITEM in the collection: RefreshName
-             */
-            refreshName?: boolean;
-            /**
-            For EACH ITEM in the collection: RepeatItemsOnEachPrintedPage
-             */
-            repeatItemsOnEachPrintedPage?: boolean;
-            /**
-            For EACH ITEM in the collection: SaveData
-             */
-            saveData?: boolean;
-            /**
-            For EACH ITEM in the collection: ShowDrillIndicators
-             */
-            showDrillIndicators?: boolean;
-            /**
-            For EACH ITEM in the collection: ShowPageMultipleItemLabel
-             */
-            showPageMultipleItemLabel?: boolean;
-            /**
-            For EACH ITEM in the collection: ShowTableStyleColumnHeaders
-             */
-            showTableStyleColumnHeaders?: boolean;
-            /**
-            For EACH ITEM in the collection: ShowTableStyleColumnStripes
-             */
-            showTableStyleColumnStripes?: boolean;
-            /**
-            For EACH ITEM in the collection: ShowTableStyleLastColumn
-             */
-            showTableStyleLastColumn?: boolean;
-            /**
-            For EACH ITEM in the collection: ShowTableStyleRowHeaders
-             */
-            showTableStyleRowHeaders?: boolean;
-            /**
-            For EACH ITEM in the collection: ShowTableStyleRowStripes
-             */
-            showTableStyleRowStripes?: boolean;
-            /**
-            For EACH ITEM in the collection: ShowValuesRow
-             */
-            showValuesRow?: boolean;
-            /**
-            For EACH ITEM in the collection: SmallGrid
-             */
-            smallGrid?: boolean;
-            /**
-            For EACH ITEM in the collection: SortUsingCustomLists
-             */
-            sortUsingCustomLists?: boolean;
-            /**
-            For EACH ITEM in the collection: SubtotalHiddenPageItems
-             */
-            subtotalHiddenPageItems?: boolean;
-            /**
-            For EACH ITEM in the collection: Summary
-             */
-            summary?: boolean;
-            /**
-            For EACH ITEM in the collection: Tag
-             */
-            tag?: boolean;
-            /**
-            For EACH ITEM in the collection: TotalsAnnotation
-             */
-            totalsAnnotation?: boolean;
-            /**
-            For EACH ITEM in the collection: VacatedStyle
-             */
-            vacatedStyle?: boolean;
-            /**
-            For EACH ITEM in the collection: Value
-             */
-            value?: boolean;
-            /**
-            For EACH ITEM in the collection: Version
-             */
-            version?: boolean;
         }
         /**
          *
@@ -28761,8 +27990,6 @@ declare namespace Excel {
             * [Api set: ExcelApi 1.3]
             */
             worksheet?: Excel.Interfaces.WorksheetLoadOptions;
-            dataBodyRange?: Excel.Interfaces.RangeLoadOptions;
-            dataLabelRange?: Excel.Interfaces.RangeLoadOptions;
             /**
              *
              * True if the PivotTable report shows grand totals for columns.
@@ -28791,55 +28018,6 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             rowGrandTotals?: boolean;
-            allowMultipleFilters?: boolean;
-            alternativeText?: boolean;
-            compactLayoutColumnHeader?: boolean;
-            compactLayoutRowHeader?: boolean;
-            compactRowIndent?: boolean;
-            displayContextTooltips?: boolean;
-            displayEmptyColumn?: boolean;
-            displayEmptyRow?: boolean;
-            displayErrorString?: boolean;
-            displayFieldCaptions?: boolean;
-            displayNullString?: boolean;
-            enableDataValueEditing?: boolean;
-            enableDrilldown?: boolean;
-            enableFieldDialog?: boolean;
-            enableFieldList?: boolean;
-            enableWizard?: boolean;
-            errorString?: boolean;
-            fieldListSortAscending?: boolean;
-            grandTotalName?: boolean;
-            hasAutoFormat?: boolean;
-            hidden?: boolean;
-            inGridDropZones?: boolean;
-            innerDetail?: boolean;
-            manualUpdate?: boolean;
-            nullString?: boolean;
-            preserveFormatting?: boolean;
-            printDrillIndicators?: boolean;
-            printTitles?: boolean;
-            refreshDate?: boolean;
-            refreshName?: boolean;
-            repeatItemsOnEachPrintedPage?: boolean;
-            saveData?: boolean;
-            showDrillIndicators?: boolean;
-            showPageMultipleItemLabel?: boolean;
-            showTableStyleColumnHeaders?: boolean;
-            showTableStyleColumnStripes?: boolean;
-            showTableStyleLastColumn?: boolean;
-            showTableStyleRowHeaders?: boolean;
-            showTableStyleRowStripes?: boolean;
-            showValuesRow?: boolean;
-            smallGrid?: boolean;
-            sortUsingCustomLists?: boolean;
-            subtotalHiddenPageItems?: boolean;
-            summary?: boolean;
-            tag?: boolean;
-            totalsAnnotation?: boolean;
-            vacatedStyle?: boolean;
-            value?: boolean;
-            version?: boolean;
         }
         /**
          *
@@ -30543,289 +29721,6 @@ declare namespace Excel {
              * [Api set: ExcelApi 1.2]
              */
             value?: boolean;
-        }
-        /**
-         * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-         */
-        interface CalculatedFieldCollectionLoadOptions {
-            $all?: boolean;
-            /**
-            For EACH ITEM in the collection: CurrentPage
-            */
-            currentPage?: Excel.Interfaces.PivotItemLoadOptions;
-            /**
-            For EACH ITEM in the collection: AggregationFunction
-             */
-            aggregationFunction?: boolean;
-            /**
-            For EACH ITEM in the collection: AllItemsVisible
-             */
-            allItemsVisible?: boolean;
-            /**
-            For EACH ITEM in the collection: AutoSortField
-             */
-            autoSortField?: boolean;
-            /**
-            For EACH ITEM in the collection: AutoSortOrder
-             */
-            autoSortOrder?: boolean;
-            /**
-            For EACH ITEM in the collection: Calculated
-             */
-            calculated?: boolean;
-            /**
-            For EACH ITEM in the collection: Calculation
-             */
-            calculation?: boolean;
-            /**
-            For EACH ITEM in the collection: Caption
-             */
-            caption?: boolean;
-            /**
-            For EACH ITEM in the collection: DataType
-             */
-            dataType?: boolean;
-            /**
-            For EACH ITEM in the collection: DrilledDown
-             */
-            drilledDown?: boolean;
-            /**
-            For EACH ITEM in the collection: EnableMultiplePageItems
-             */
-            enableMultiplePageItems?: boolean;
-            /**
-            For EACH ITEM in the collection: Formula
-             */
-            formula?: boolean;
-            /**
-            For EACH ITEM in the collection: Name
-             */
-            name?: boolean;
-            /**
-            For EACH ITEM in the collection: NumberFormat
-             */
-            numberFormat?: boolean;
-            /**
-            For EACH ITEM in the collection: Orientation
-             */
-            orientation?: boolean;
-            /**
-            For EACH ITEM in the collection: Position
-             */
-            position?: boolean;
-            /**
-            For EACH ITEM in the collection: ShowDetail
-             */
-            showDetail?: boolean;
-            /**
-            For EACH ITEM in the collection: SourceName
-             */
-            sourceName?: boolean;
-            /**
-            For EACH ITEM in the collection: Subtotals
-             */
-            subtotals?: boolean;
-        }
-        /**
-         * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-         */
-        interface PivotCacheLoadOptions {
-            $all?: boolean;
-            id?: boolean;
-            index?: boolean;
-            sourceData?: boolean;
-            version?: boolean;
-        }
-        /**
-         * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-         */
-        interface PivotCacheCollectionLoadOptions {
-            $all?: boolean;
-            /**
-            For EACH ITEM in the collection: Id
-             */
-            id?: boolean;
-            /**
-            For EACH ITEM in the collection: Index
-             */
-            index?: boolean;
-            /**
-            For EACH ITEM in the collection: SourceData
-             */
-            sourceData?: boolean;
-            /**
-            For EACH ITEM in the collection: Version
-             */
-            version?: boolean;
-        }
-        /**
-         * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-         */
-        interface PivotFieldLoadOptions {
-            $all?: boolean;
-            currentPage?: Excel.Interfaces.PivotItemLoadOptions;
-            aggregationFunction?: boolean;
-            allItemsVisible?: boolean;
-            autoSortField?: boolean;
-            autoSortOrder?: boolean;
-            calculated?: boolean;
-            calculation?: boolean;
-            caption?: boolean;
-            dataType?: boolean;
-            drilledDown?: boolean;
-            enableMultiplePageItems?: boolean;
-            formula?: boolean;
-            name?: boolean;
-            numberFormat?: boolean;
-            orientation?: boolean;
-            position?: boolean;
-            showDetail?: boolean;
-            sourceName?: boolean;
-            subtotals?: boolean;
-        }
-        /**
-         * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-         */
-        interface PivotFieldCollectionLoadOptions {
-            $all?: boolean;
-            /**
-            For EACH ITEM in the collection: CurrentPage
-            */
-            currentPage?: Excel.Interfaces.PivotItemLoadOptions;
-            /**
-            For EACH ITEM in the collection: AggregationFunction
-             */
-            aggregationFunction?: boolean;
-            /**
-            For EACH ITEM in the collection: AllItemsVisible
-             */
-            allItemsVisible?: boolean;
-            /**
-            For EACH ITEM in the collection: AutoSortField
-             */
-            autoSortField?: boolean;
-            /**
-            For EACH ITEM in the collection: AutoSortOrder
-             */
-            autoSortOrder?: boolean;
-            /**
-            For EACH ITEM in the collection: Calculated
-             */
-            calculated?: boolean;
-            /**
-            For EACH ITEM in the collection: Calculation
-             */
-            calculation?: boolean;
-            /**
-            For EACH ITEM in the collection: Caption
-             */
-            caption?: boolean;
-            /**
-            For EACH ITEM in the collection: DataType
-             */
-            dataType?: boolean;
-            /**
-            For EACH ITEM in the collection: DrilledDown
-             */
-            drilledDown?: boolean;
-            /**
-            For EACH ITEM in the collection: EnableMultiplePageItems
-             */
-            enableMultiplePageItems?: boolean;
-            /**
-            For EACH ITEM in the collection: Formula
-             */
-            formula?: boolean;
-            /**
-            For EACH ITEM in the collection: Name
-             */
-            name?: boolean;
-            /**
-            For EACH ITEM in the collection: NumberFormat
-             */
-            numberFormat?: boolean;
-            /**
-            For EACH ITEM in the collection: Orientation
-             */
-            orientation?: boolean;
-            /**
-            For EACH ITEM in the collection: Position
-             */
-            position?: boolean;
-            /**
-            For EACH ITEM in the collection: ShowDetail
-             */
-            showDetail?: boolean;
-            /**
-            For EACH ITEM in the collection: SourceName
-             */
-            sourceName?: boolean;
-            /**
-            For EACH ITEM in the collection: Subtotals
-             */
-            subtotals?: boolean;
-        }
-        /**
-         * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-         */
-        interface PivotItemLoadOptions {
-            $all?: boolean;
-            pivotField?: Excel.Interfaces.PivotFieldLoadOptions;
-            calculated?: boolean;
-            drilledDown?: boolean;
-            name?: boolean;
-            position?: boolean;
-            recordCount?: boolean;
-            showDetail?: boolean;
-            sourceName?: boolean;
-            value?: boolean;
-            visible?: boolean;
-        }
-        /**
-         * [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]
-         */
-        interface PivotItemCollectionLoadOptions {
-            $all?: boolean;
-            /**
-            For EACH ITEM in the collection: PivotField
-            */
-            pivotField?: Excel.Interfaces.PivotFieldLoadOptions;
-            /**
-            For EACH ITEM in the collection: Calculated
-             */
-            calculated?: boolean;
-            /**
-            For EACH ITEM in the collection: DrilledDown
-             */
-            drilledDown?: boolean;
-            /**
-            For EACH ITEM in the collection: Name
-             */
-            name?: boolean;
-            /**
-            For EACH ITEM in the collection: Position
-             */
-            position?: boolean;
-            /**
-            For EACH ITEM in the collection: RecordCount
-             */
-            recordCount?: boolean;
-            /**
-            For EACH ITEM in the collection: ShowDetail
-             */
-            showDetail?: boolean;
-            /**
-            For EACH ITEM in the collection: SourceName
-             */
-            sourceName?: boolean;
-            /**
-            For EACH ITEM in the collection: Value
-             */
-            value?: boolean;
-            /**
-            For EACH ITEM in the collection: Visible
-             */
-            visible?: boolean;
         }
     }
 }

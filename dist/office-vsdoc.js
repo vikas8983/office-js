@@ -3762,46 +3762,6 @@ var Excel;
 
 var Excel;
 (function (Excel) {
-	var CalculatedFieldCollection = (function(_super) {
-		__extends(CalculatedFieldCollection, _super);
-		function CalculatedFieldCollection() {
-			/// <summary> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)] </summary>
-			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
-			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
-			/// <field name="items" type="Array" elementType="Excel.PivotField">Gets the loaded child items in this collection.</field>
-		}
-
-		CalculatedFieldCollection.prototype.load = function(option) {
-			/// <summary>
-			/// Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-			/// </summary>
-			/// <param name="option" type="string | string[] | OfficeExtension.LoadOption"/>
-			/// <returns type="Excel.CalculatedFieldCollection"/>
-		}
-		CalculatedFieldCollection.prototype.add = function(Name, Formula, UseStandardFormula) {
-			/// <returns type="Excel.PivotField"></returns>
-		}
-		CalculatedFieldCollection.prototype.getCount = function() {
-			/// <returns type="OfficeExtension.ClientResult&lt;number&gt;"></returns>
-			var result = new OfficeExtension.ClientResult();
-			result.__proto__ = null;
-			result.value = 0;
-			return result;
-		}
-		CalculatedFieldCollection.prototype.getItem = function(nameOrIndex) {
-			/// <returns type="Excel.PivotField"></returns>
-		}
-		CalculatedFieldCollection.prototype.getItemAt = function(index) {
-			/// <returns type="Excel.PivotField"></returns>
-		}
-
-		return CalculatedFieldCollection;
-	})(OfficeExtension.ClientObject);
-	Excel.CalculatedFieldCollection = CalculatedFieldCollection;
-})(Excel || (Excel = {__proto__: null}));
-
-var Excel;
-(function (Excel) {
 	/// <summary> [Api set: ExcelApi 1.1] </summary>
 	var CalculationMode = {
 		__proto__: null,
@@ -6819,28 +6779,6 @@ var Excel;
 		Interfaces.ConditionalTopBottomRule.__proto__ = null;
 		Interfaces.ConditionalTopBottomRule = ConditionalTopBottomRule;
 	})(Interfaces = Excel.Interfaces || (Excel.Interfaces = { __proto__: null}));
-})(Excel || (Excel = {__proto__: null}));
-
-var Excel;
-(function (Excel) {
-	/// <summary> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)] </summary>
-	var ConsolidationFunction = {
-		__proto__: null,
-		"varP": "varP",
-		"_Var": "_Var",
-		"sum": "sum",
-		"stDevP": "stDevP",
-		"stDev": "stDev",
-		"product": "product",
-		"min": "min",
-		"max": "max",
-		"countNums": "countNums",
-		"count": "count",
-		"average": "average",
-		"distinctCount": "distinctCount",
-		"unknown": "unknown",
-	}
-	Excel.ConsolidationFunction = ConsolidationFunction;
 })(Excel || (Excel = {__proto__: null}));
 
 var Excel;
@@ -11626,340 +11564,6 @@ var Excel;
 
 var Excel;
 (function (Excel) {
-	var PivotCache = (function(_super) {
-		__extends(PivotCache, _super);
-		function PivotCache() {
-			/// <summary> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)] </summary>
-			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
-			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
-			/// <field name="id" type="Number"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="index" type="Number"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="sourceData" > [Api set: Pivot 1.2]</field>
-			/// <field name="version" type="String"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-		}
-
-		PivotCache.prototype.load = function(option) {
-			/// <summary>
-			/// Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-			/// </summary>
-			/// <param name="option" type="string | string[] | OfficeExtension.LoadOption"/>
-			/// <returns type="Excel.PivotCache"/>
-		}
-		PivotCache.prototype.refresh = function() {
-			/// <returns ></returns>
-		}
-
-		return PivotCache;
-	})(OfficeExtension.ClientObject);
-	Excel.PivotCache = PivotCache;
-})(Excel || (Excel = {__proto__: null}));
-
-var Excel;
-(function (Excel) {
-	var PivotCacheCollection = (function(_super) {
-		__extends(PivotCacheCollection, _super);
-		function PivotCacheCollection() {
-			/// <summary> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)] </summary>
-			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
-			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
-			/// <field name="items" type="Array" elementType="Excel.PivotCache">Gets the loaded child items in this collection.</field>
-		}
-
-		PivotCacheCollection.prototype.load = function(option) {
-			/// <summary>
-			/// Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-			/// </summary>
-			/// <param name="option" type="string | string[] | OfficeExtension.LoadOption"/>
-			/// <returns type="Excel.PivotCacheCollection"/>
-		}
-		PivotCacheCollection.prototype.add = function(sourceType, address) {
-			/// <returns type="Excel.PivotCache"></returns>
-		}
-		PivotCacheCollection.prototype.getCount = function() {
-			/// <returns type="OfficeExtension.ClientResult&lt;number&gt;"></returns>
-			var result = new OfficeExtension.ClientResult();
-			result.__proto__ = null;
-			result.value = 0;
-			return result;
-		}
-		PivotCacheCollection.prototype.getItem = function(index) {
-			/// <returns type="Excel.PivotCache"></returns>
-		}
-		PivotCacheCollection.prototype.getItemAt = function(index) {
-			/// <returns type="Excel.PivotCache"></returns>
-		}
-
-		return PivotCacheCollection;
-	})(OfficeExtension.ClientObject);
-	Excel.PivotCacheCollection = PivotCacheCollection;
-})(Excel || (Excel = {__proto__: null}));
-
-var Excel;
-(function (Excel) {
-	var PivotField = (function(_super) {
-		__extends(PivotField, _super);
-		function PivotField() {
-			/// <summary> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)] </summary>
-			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
-			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
-			/// <field name="aggregationFunction" type="String"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="allItemsVisible" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="autoSortField" type="String"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="autoSortOrder" type="String"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="calculated" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="calculation" type="String"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="caption" type="String"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="currentPage" type="Excel.PivotItem"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="dataType" type="String"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="drilledDown" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="enableMultiplePageItems" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="formula" type="String"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="hiddenItems" type="Excel.PivotItemCollection"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="name" type="String"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="numberFormat" type="String"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="orientation" type="String"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="pivotItems" type="Excel.PivotItemCollection"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="position" type="Number"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="showDetail" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="sourceName" type="String"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="subtotals" type="Excel.Interfaces.Subtotals"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="visiblePivotItems" type="Excel.PivotItemCollection"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-		}
-
-		PivotField.prototype.load = function(option) {
-			/// <summary>
-			/// Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-			/// </summary>
-			/// <param name="option" type="string | string[] | OfficeExtension.LoadOption"/>
-			/// <returns type="Excel.PivotField"/>
-		}
-
-		PivotField.prototype.set = function() {
-			/// <signature>
-			/// <summary>Sets multiple properties on the object at the same time, based on JSON input.</summary>
-			/// <param name="properties" type="Excel.Interfaces.PivotFieldUpdateData">Properties described by the Excel.Interfaces.PivotFieldUpdateData interface.</param>
-			/// <param name="options" type="string">Options of the form { throwOnReadOnly?: boolean }
-			/// <br />
-			/// * throwOnReadOnly: Throw an error if the passed-in property list includes read-only properties (default = true).
-			/// </param>
-			/// </signature>
-			/// <signature>
-			/// <summary>Sets multiple properties on the object at the same time, based on an existing loaded object.</summary>
-			/// <param name="properties" type="PivotField">An existing PivotField object, with properties that have already been loaded and synced.</param>
-			/// </signature>
-		}
-		PivotField.prototype.autoGroup = function() {
-			/// <returns ></returns>
-		}
-		PivotField.prototype.autoSort = function(sortOrder, Field) {
-			/// <returns ></returns>
-		}
-		PivotField.prototype.clearAllFilters = function() {
-			/// <returns ></returns>
-		}
-		PivotField.prototype.getChildField = function() {
-			/// <returns type="Excel.PivotField"></returns>
-		}
-		PivotField.prototype.getChildItems = function() {
-			/// <returns type="Excel.PivotItemCollection"></returns>
-		}
-		PivotField.prototype.getDataRange = function() {
-			/// <returns type="Excel.Range"></returns>
-		}
-
-		return PivotField;
-	})(OfficeExtension.ClientObject);
-	Excel.PivotField = PivotField;
-})(Excel || (Excel = {__proto__: null}));
-
-var Excel;
-(function (Excel) {
-	/// <summary> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)] </summary>
-	var PivotFieldCalculation = {
-		__proto__: null,
-		"noAdditionalCalculation": "noAdditionalCalculation",
-		"differenceFrom": "differenceFrom",
-		"percentOf": "percentOf",
-		"percentDifferenceFrom": "percentDifferenceFrom",
-		"runningTotal": "runningTotal",
-		"percentOfRow": "percentOfRow",
-		"percentOfColumn": "percentOfColumn",
-		"percentOfTotal": "percentOfTotal",
-		"index": "index",
-		"percentOfParentRow": "percentOfParentRow",
-		"percentOfParentColumn": "percentOfParentColumn",
-		"percentOfParent": "percentOfParent",
-		"percentRunningTotal": "percentRunningTotal",
-		"rankAscending": "rankAscending",
-		"rankDecending": "rankDecending",
-	}
-	Excel.PivotFieldCalculation = PivotFieldCalculation;
-})(Excel || (Excel = {__proto__: null}));
-
-var Excel;
-(function (Excel) {
-	var PivotFieldCollection = (function(_super) {
-		__extends(PivotFieldCollection, _super);
-		function PivotFieldCollection() {
-			/// <summary> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)] </summary>
-			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
-			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
-			/// <field name="items" type="Array" elementType="Excel.PivotField">Gets the loaded child items in this collection.</field>
-		}
-
-		PivotFieldCollection.prototype.load = function(option) {
-			/// <summary>
-			/// Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-			/// </summary>
-			/// <param name="option" type="string | string[] | OfficeExtension.LoadOption"/>
-			/// <returns type="Excel.PivotFieldCollection"/>
-		}
-		PivotFieldCollection.prototype.getCount = function() {
-			/// <returns type="OfficeExtension.ClientResult&lt;number&gt;"></returns>
-			var result = new OfficeExtension.ClientResult();
-			result.__proto__ = null;
-			result.value = 0;
-			return result;
-		}
-		PivotFieldCollection.prototype.getItem = function(nameOrIndex) {
-			/// <returns type="Excel.PivotField"></returns>
-		}
-		PivotFieldCollection.prototype.getItemAt = function(index) {
-			/// <returns type="Excel.PivotField"></returns>
-		}
-
-		return PivotFieldCollection;
-	})(OfficeExtension.ClientObject);
-	Excel.PivotFieldCollection = PivotFieldCollection;
-})(Excel || (Excel = {__proto__: null}));
-
-var Excel;
-(function (Excel) {
-	/// <summary> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)] </summary>
-	var PivotFieldDataType = {
-		__proto__: null,
-		"text": "text",
-		"number": "number",
-		"date": "date",
-	}
-	Excel.PivotFieldDataType = PivotFieldDataType;
-})(Excel || (Excel = {__proto__: null}));
-
-var Excel;
-(function (Excel) {
-	/// <summary> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)] </summary>
-	var PivotFieldOrientation = {
-		__proto__: null,
-		"hidden": "hidden",
-		"rowField": "rowField",
-		"columnField": "columnField",
-		"pageField": "pageField",
-		"dataField": "dataField",
-	}
-	Excel.PivotFieldOrientation = PivotFieldOrientation;
-})(Excel || (Excel = {__proto__: null}));
-
-var Excel;
-(function (Excel) {
-	/// <summary> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)] </summary>
-	var PivotFieldRepeatLabels = {
-		__proto__: null,
-		"doNotRepeatLabels": "doNotRepeatLabels",
-		"repeatLabels": "repeatLabels",
-	}
-	Excel.PivotFieldRepeatLabels = PivotFieldRepeatLabels;
-})(Excel || (Excel = {__proto__: null}));
-
-var Excel;
-(function (Excel) {
-	var PivotItem = (function(_super) {
-		__extends(PivotItem, _super);
-		function PivotItem() {
-			/// <summary> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)] </summary>
-			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
-			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
-			/// <field name="calculated" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="drilledDown" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="name" type="String"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="pivotField" type="Excel.PivotField"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="position" type="Number"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="recordCount" type="Number"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="showDetail" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="sourceName" type="String"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="value" type="String"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="visible" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-		}
-
-		PivotItem.prototype.load = function(option) {
-			/// <summary>
-			/// Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-			/// </summary>
-			/// <param name="option" type="string | string[] | OfficeExtension.LoadOption"/>
-			/// <returns type="Excel.PivotItem"/>
-		}
-
-		PivotItem.prototype.set = function() {
-			/// <signature>
-			/// <summary>Sets multiple properties on the object at the same time, based on JSON input.</summary>
-			/// <param name="properties" type="Excel.Interfaces.PivotItemUpdateData">Properties described by the Excel.Interfaces.PivotItemUpdateData interface.</param>
-			/// <param name="options" type="string">Options of the form { throwOnReadOnly?: boolean }
-			/// <br />
-			/// * throwOnReadOnly: Throw an error if the passed-in property list includes read-only properties (default = true).
-			/// </param>
-			/// </signature>
-			/// <signature>
-			/// <summary>Sets multiple properties on the object at the same time, based on an existing loaded object.</summary>
-			/// <param name="properties" type="PivotItem">An existing PivotItem object, with properties that have already been loaded and synced.</param>
-			/// </signature>
-		}
-		PivotItem.prototype.getDataRange = function() {
-			/// <returns type="Excel.Range"></returns>
-		}
-
-		return PivotItem;
-	})(OfficeExtension.ClientObject);
-	Excel.PivotItem = PivotItem;
-})(Excel || (Excel = {__proto__: null}));
-
-var Excel;
-(function (Excel) {
-	var PivotItemCollection = (function(_super) {
-		__extends(PivotItemCollection, _super);
-		function PivotItemCollection() {
-			/// <summary> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)] </summary>
-			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
-			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
-			/// <field name="items" type="Array" elementType="Excel.PivotItem">Gets the loaded child items in this collection.</field>
-		}
-
-		PivotItemCollection.prototype.load = function(option) {
-			/// <summary>
-			/// Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-			/// </summary>
-			/// <param name="option" type="string | string[] | OfficeExtension.LoadOption"/>
-			/// <returns type="Excel.PivotItemCollection"/>
-		}
-		PivotItemCollection.prototype.getCount = function() {
-			/// <returns type="OfficeExtension.ClientResult&lt;number&gt;"></returns>
-			var result = new OfficeExtension.ClientResult();
-			result.__proto__ = null;
-			result.value = 0;
-			return result;
-		}
-		PivotItemCollection.prototype.getItem = function(nameOrIndex) {
-			/// <returns type="Excel.PivotItem"></returns>
-		}
-		PivotItemCollection.prototype.getItemAt = function(index) {
-			/// <returns type="Excel.PivotItem"></returns>
-		}
-
-		return PivotItemCollection;
-	})(OfficeExtension.ClientObject);
-	Excel.PivotItemCollection = PivotItemCollection;
-})(Excel || (Excel = {__proto__: null}));
-
-var Excel;
-(function (Excel) {
 	var PivotTable = (function(_super) {
 		__extends(PivotTable, _super);
 		function PivotTable() {
@@ -11971,59 +11575,6 @@ var Excel;
 			/// <field name="name" type="String">Name of the PivotTable. [Api set: ExcelApi 1.3]</field>
 			/// <field name="rowGrandTotals" type="Boolean">True if the PivotTable report shows grand totals for rows. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="worksheet" type="Excel.Worksheet">The worksheet containing the current PivotTable. Read-only. [Api set: ExcelApi 1.3]</field>
-			/// <field name="allowMultipleFilters" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="alternativeText" type="String"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="calculatedFields" type="Excel.CalculatedFieldCollection"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="compactLayoutColumnHeader" type="String"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="compactLayoutRowHeader" type="String"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="compactRowIndent" type="Number"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="dataBodyRange" type="Excel.Range"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="dataLabelRange" type="Excel.Range"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="displayContextTooltips" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="displayEmptyColumn" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="displayEmptyRow" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="displayErrorString" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="displayFieldCaptions" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="displayNullString" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="enableDataValueEditing" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="enableDrilldown" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="enableFieldDialog" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="enableFieldList" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="enableWizard" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="errorString" type="String"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="fieldListSortAscending" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="grandTotalName" type="String"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="hasAutoFormat" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="hidden" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="inGridDropZones" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="innerDetail" type="String"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="manualUpdate" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="nullString" type="String"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="pivotFields" type="Excel.PivotFieldCollection"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="preserveFormatting" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="printDrillIndicators" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="printTitles" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="refreshDate" type="Date"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="refreshName" type="String"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="repeatItemsOnEachPrintedPage" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="saveData" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="showDrillIndicators" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="showPageMultipleItemLabel" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="showTableStyleColumnHeaders" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="showTableStyleColumnStripes" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="showTableStyleLastColumn" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="showTableStyleRowHeaders" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="showTableStyleRowStripes" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="showValuesRow" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="smallGrid" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="sortUsingCustomLists" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="subtotalHiddenPageItems" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="summary" type="String"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="tag" type="String"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="totalsAnnotation" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="vacatedStyle" type="String"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="value" type="String"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			/// <field name="version" type="String"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
 		}
 
 		PivotTable.prototype.load = function(option) {
@@ -12066,64 +11617,6 @@ var Excel;
 			/// This method changes the subtotal location for all existing PivotFields. Changing the subtotal location has an immediate visual effect only for fields in outline form, but it will be set for fields in tabular form as well. [Api set: ExcelApi BETA (PREVIEW ONLY)]
 			/// </summary>
 			/// <param name="Location" type="String">Required SubtotalLocationType. See Excel.SubtotalLocationType for details.</param>
-			/// <returns ></returns>
-		}
-		PivotTable.prototype.addChart = function(chartType, seriesBy) {
-			/// <returns type="Excel.Chart"></returns>
-		}
-		PivotTable.prototype.addDataField = function(field, caption, func) {
-			/// <returns type="Excel.PivotField"></returns>
-		}
-		PivotTable.prototype.clearTable = function() {
-			/// <returns ></returns>
-		}
-		PivotTable.prototype.getColumnField = function(Index) {
-			/// <returns type="Excel.PivotField"></returns>
-		}
-		PivotTable.prototype.getColumnRange = function() {
-			/// <returns type="Excel.Range"></returns>
-		}
-		PivotTable.prototype.getDataField = function(Index) {
-			/// <returns type="Excel.PivotField"></returns>
-		}
-		PivotTable.prototype.getDataPivotField = function() {
-			/// <returns type="Excel.PivotField"></returns>
-		}
-		PivotTable.prototype.getEntireRange = function() {
-			/// <returns type="Excel.Range"></returns>
-		}
-		PivotTable.prototype.getHiddenField = function(Index) {
-			/// <returns type="Excel.PivotField"></returns>
-		}
-		PivotTable.prototype.getPageRange = function() {
-			/// <returns type="Excel.Range"></returns>
-		}
-		PivotTable.prototype.getRowField = function(Index) {
-			/// <returns type="Excel.PivotField"></returns>
-		}
-		PivotTable.prototype.getRowRange = function() {
-			/// <returns type="Excel.Range"></returns>
-		}
-		PivotTable.prototype.getVisibleFields = function() {
-			/// <returns type="Excel.PivotFieldCollection"></returns>
-		}
-		PivotTable.prototype.listFormulas = function() {
-			/// <returns ></returns>
-		}
-		PivotTable.prototype.pivotSelect = function(Name, Mode, UseStandardName) {
-			/// <returns ></returns>
-		}
-		PivotTable.prototype.refreshTable = function() {
-			/// <returns type="OfficeExtension.ClientResult&lt;boolean&gt;"></returns>
-			var result = new OfficeExtension.ClientResult();
-			result.__proto__ = null;
-			result.value = false;
-			return result;
-		}
-		PivotTable.prototype.repeatAllLabels = function(Repeat) {
-			/// <returns ></returns>
-		}
-		PivotTable.prototype.update = function() {
 			/// <returns ></returns>
 		}
 
@@ -12180,58 +11673,10 @@ var Excel;
 			/// </summary>
 			/// <returns ></returns>
 		}
-		PivotTableCollection.prototype.add = function(name, address, pivotCache) {
-			/// <returns type="Excel.PivotTable"></returns>
-		}
 
 		return PivotTableCollection;
 	})(OfficeExtension.ClientObject);
 	Excel.PivotTableCollection = PivotTableCollection;
-})(Excel || (Excel = {__proto__: null}));
-
-var Excel;
-(function (Excel) {
-	/// <summary> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)] </summary>
-	var PivotTableSelectionMode = {
-		__proto__: null,
-		"dataAndLabel": "dataAndLabel",
-		"labelOnly": "labelOnly",
-		"dataOnly": "dataOnly",
-		"origin": "origin",
-		"blanks": "blanks",
-		"button": "button",
-		"firstRow": "firstRow",
-	}
-	Excel.PivotTableSelectionMode = PivotTableSelectionMode;
-})(Excel || (Excel = {__proto__: null}));
-
-var Excel;
-(function (Excel) {
-	/// <summary> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)] </summary>
-	var PivotTableSourceType = {
-		__proto__: null,
-		"database": "database",
-		"external": "external",
-		"consolidation": "consolidation",
-		"scenario": "scenario",
-	}
-	Excel.PivotTableSourceType = PivotTableSourceType;
-})(Excel || (Excel = {__proto__: null}));
-
-var Excel;
-(function (Excel) {
-	/// <summary> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)] </summary>
-	var PivotTableVersion = {
-		__proto__: null,
-		"pivotTableVersionCurrent": "pivotTableVersionCurrent",
-		"pivotTableVersion2000": "pivotTableVersion2000",
-		"pivotTableVersion10": "pivotTableVersion10",
-		"pivotTableVersion11": "pivotTableVersion11",
-		"pivotTableVersion12": "pivotTableVersion12",
-		"pivotTableVersion14": "pivotTableVersion14",
-		"pivotTableVersion15": "pivotTableVersion15",
-	}
-	Excel.PivotTableVersion = PivotTableVersion;
 })(Excel || (Excel = {__proto__: null}));
 
 var Excel;
@@ -13295,17 +12740,6 @@ var Excel;
 
 var Excel;
 (function (Excel) {
-	/// <summary> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)] </summary>
-	var SortOrder = {
-		__proto__: null,
-		"ascending": "ascending",
-		"descending": "descending",
-	}
-	Excel.SortOrder = SortOrder;
-})(Excel || (Excel = {__proto__: null}));
-
-var Excel;
-(function (Excel) {
 	/// <summary> [Api set: ExcelApi 1.2] </summary>
 	var SortOrientation = {
 		__proto__: null,
@@ -13429,33 +12863,6 @@ var Excel;
 		"atBottom": "atBottom",
 	}
 	Excel.SubtotalLocationType = SubtotalLocationType;
-})(Excel || (Excel = {__proto__: null}));
-
-var Excel;
-(function (Excel) {
-	var Interfaces;
-	(function (Interfaces) {
-		var Subtotals = (function() {
-			function Subtotals() {
-				/// <summary> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)] </summary>
-				/// <field name="automatic" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-				/// <field name="average" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-				/// <field name="count" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-				/// <field name="countNumbers" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-				/// <field name="max" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-				/// <field name="min" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-				/// <field name="product" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-				/// <field name="standardDeviation" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-				/// <field name="standardDeviationP" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-				/// <field name="sum" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-				/// <field name="variation" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-				/// <field name="variationP" type="Boolean"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
-			}
-			return Subtotals;
-		})();
-		Interfaces.Subtotals.__proto__ = null;
-		Interfaces.Subtotals = Subtotals;
-	})(Interfaces = Excel.Interfaces || (Excel.Interfaces = { __proto__: null}));
 })(Excel || (Excel = {__proto__: null}));
 
 var Excel;
@@ -14289,7 +13696,6 @@ var Excel;
 			/// <field name="styles" type="Excel.StyleCollection">Represents a collection of styles associated with the workbook. Read-only. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="tables" type="Excel.TableCollection">Represents a collection of tables associated with the workbook. Read-only. [Api set: ExcelApi 1.1]</field>
 			/// <field name="worksheets" type="Excel.WorksheetCollection">Represents a collection of worksheets associated with the workbook. Read-only. [Api set: ExcelApi 1.1]</field>
-			/// <field name="pivotCaches" type="Excel.PivotCacheCollection"> [Api set: ExcelApi.Pivot 1.1 (PREVIEW)]</field>
 			/// <field name="onSelectionChanged" type="OfficeExtension.EventHandlers">Occurs when the selection in the document is changed. [Api set: ExcelApi 1.2]</field>
 		}
 
@@ -15947,6 +15353,16 @@ var Excel;
 		var PivotTableUpdateData = (function() {
 			function PivotTableUpdateData() {
 				/// <summary>An interface for updating data on the PivotTable object, for use in "pivotTable.set({ ... })".</summary>
+				/// <field name="columnGrandTotals" type="Boolean">True if the PivotTable report shows grand totals for columns. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="name" type="String">Name of the PivotTable. [Api set: ExcelApi 1.3]</field>;
+				/// <field name="rowGrandTotals" type="Boolean">True if the PivotTable report shows grand totals for rows. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+			}
+			return PivotTableUpdateData;
+		})();
+		Interfaces.PivotTableUpdateData.__proto__ = null;
+		Interfaces.PivotTableUpdateData = PivotTableUpdateData;
+	})(Interfaces = Excel.Interfaces || (Excel.Interfaces = { __proto__: null}));
+})(Excel || (Excel = {__proto__: null}));
 
 var Excel;
 (function (Excel) {
@@ -16363,22 +15779,6 @@ var Excel;
 		Interfaces.PageLayoutUpdateData = PageLayoutUpdateData;
 	})(Interfaces = Excel.Interfaces || (Excel.Interfaces = { __proto__: null}));
 })(Excel || (Excel = {__proto__: null}));
-
-var Excel;
-(function (Excel) {
-	var Interfaces;
-	(function (Interfaces) {
-		var PivotFieldUpdateData = (function() {
-			function PivotFieldUpdateData() {
-				/// <summary>An interface for updating data on the PivotField object, for use in "pivotField.set({ ... })".</summary>
-
-var Excel;
-(function (Excel) {
-	var Interfaces;
-	(function (Interfaces) {
-		var PivotItemUpdateData = (function() {
-			function PivotItemUpdateData() {
-				/// <summary>An interface for updating data on the PivotItem object, for use in "pivotItem.set({ ... })".</summary>
 var Excel;
 (function (Excel) {
 	var RequestContext = (function (_super) {
