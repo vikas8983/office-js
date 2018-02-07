@@ -2981,9 +2981,14 @@ declare namespace OfficeCore {
     }
 }
 declare namespace OfficeCore {
+    class FirstPartyApis {
+        private context;
+        constructor(context: RequestContext);
+        readonly authentication: AuthenticationService;
+    }
     class RequestContext extends OfficeExtension.ClientRequestContext {
         constructor(url?: string | OfficeExtension.RequestUrlAndHeaderInfo | any);
-        readonly authentication: AuthenticationService;
+        readonly firstParty: FirstPartyApis;
         readonly flighting: FlightingService;
         readonly telemetry: TelemetryService;
         readonly bi: BiShim;
@@ -3032,18 +3037,41 @@ declare namespace OfficeCore {
 }
 declare namespace OfficeCore {
     /**
-     * [Api set: Authentication 1]
+     * [Api set: FirstPartyAuthentication 1.1]
      */
     namespace IdentityType {
         var organizationAccount: string;
         var microsoftAccount: string;
     }
     /**
-     * [Api set: Authentication 1]
+     * [Api set: FirstPartyAuthentication 1.1]
      */
     class AuthenticationService extends OfficeExtension.ClientObject {
+        /**
+         *
+         * Get the access token for the current primary identity.
+         *
+         * [Api set: FirstPartyAuthentication 1.1]
+         *
+         * @param tokenParameters The parameter for the required access token.
+         * @returns The access token object.
+         */
         getAccessToken(tokenParameters: OfficeCore.TokenParameters): OfficeExtension.ClientResult<OfficeCore.SingleSignOnToken>;
+        /**
+         *
+         * Get the information of the primary identity (in rich client, it's the active profile).
+         *
+         * [Api set: FirstPartyAuthentication 1.1]
+         * @returns The primary identity type.
+         */
         getPrimaryIdentityType(): OfficeExtension.ClientResult<string>;
+        /**
+         *
+         * Check whether there is any user has signed-in.
+         *
+         * [Api set: FirstPartyAuthentication 1.1]
+         * @returns A boolean that tells  whether there is any user has signed-in.
+         */
         hasUserSignin(): OfficeExtension.ClientResult<boolean>;
         /**
          * Create a new instance of OfficeCore.AuthenticationService object
@@ -3054,18 +3082,48 @@ declare namespace OfficeCore {
         };
     }
     /**
-     * [Api set: Authentication 1]
+     * [Api set: FirstPartyAuthentication 1.1]
      */
     interface TokenParameters {
+        /**
+         *
+         * The auth challenge string.
+         *
+         * [Api set: FirstPartyAuthentication 1.1]
+         */
         authChallenge?: string;
+        /**
+         *
+         * The auth policy string.
+         *
+         * [Api set: FirstPartyAuthentication 1.1]
+         */
         policy?: string;
+        /**
+         *
+         * The resource URL (or target)
+         *
+         * [Api set: FirstPartyAuthentication 1.1]
+         */
         resource?: string;
     }
     /**
-     * [Api set: Authentication 1]
+     * [Api set: FirstPartyAuthentication 1.1]
      */
     interface SingleSignOnToken {
+        /**
+         *
+         * The access token for the primary identity.
+         *
+         * [Api set: FirstPartyAuthentication 1.1]
+         */
         accessToken: string;
+        /**
+         *
+         * The identity type associated with the access token
+         *
+         * [Api set: FirstPartyAuthentication 1.1]
+         */
         tokenIdenityType: string;
     }
     /**

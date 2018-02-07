@@ -2907,6 +2907,11 @@ declare namespace OfficeCore {
     }
 }
 declare namespace OfficeCore {
+    class FirstPartyApis {
+        private context;
+        constructor(context: RequestContext);
+        readonly authentication: AuthenticationService;
+    }
     class RequestContext extends OfficeExtension.ClientRequestContext {
         constructor(url?: string | OfficeExtension.RequestUrlAndHeaderInfo | any);
     }
