@@ -1,49 +1,33 @@
-version: 1.1.4
-tag: release
-githubReleaseUrl: https://github.com/OfficeDev/office-js/releases/tag/v1.1.4
-githubViewUrl: https://github.com/OfficeDev/office-js/tree/v1.1.4
-deployedAt: 2018-01-19 3:43 am UTC  (2018-01-18 7:43 pm Pacific Time)
-
+tag: adhoc
 history:
-    adhocBranchName: __adhoc--release--16.0.8918.5450--2018-01-18--7.40pm
-    commitMessage: __adhoc--release--16.0.8918.5450--2018-01-18--7.40pm
+    adhocBranchName: __adhoc--current--local--2018-02-07--2.32pm--insights-sso-pivotbridge
+    commitMessage: __adhoc--current--local--2018-02-07--2.32pm--insights-sso-pivotbridge
     fullCommitHistory:
         - 
             sha: >-
-                https://github.com/OfficeDev/office-js/commits/2d55b49b6036ffa0ab627c0a48c88944b78df295
+                https://github.com/OfficeDev/office-js/commits/2f87740ed8b7e532c43019b1279c9a0e88ccfdfb
             message: >-
                 JS dist files --
-                __adhoc--release--16.0.8918.5450--2018-01-18--7.40pm
+                __adhoc--current--local--2018-02-07--2.32pm--insights-sso-pivotbridge
         - 
             sha: >-
-                https://github.com/OfficeDev/office-js/commits/9a7cfe25657e961d55037dda8aa8647be4f758e7
+                https://github.com/OfficeDev/office-js/commits/a01dd0ba871b6b0a30ad227a4373ecdb5b573316
             message: >-
                 Localized strings --
-                __adhoc--release--16.0.8918.5450--2018-01-18--7.40pm
+                __adhoc--current--local--2018-02-07--2.32pm--insights-sso-pivotbridge
         - 
             sha: >-
-                https://github.com/OfficeDev/office-js/commits/c1ca4a4bc0fb1d76196cc2a5c0aaef0e14e91f77
+                https://github.com/OfficeDev/office-js/commits/3cff29721387767a36dd2776be586b0655419c00
             message: Copying other assets from the release branch of the repo
         - 
             sha: >-
-                https://github.com/OfficeDev/office-js/commits/1fcdb88523d7d61000e4577f144bbcb790f8ba85
+                https://github.com/OfficeDev/office-js/commits/9bfed396c3161135509785755d01b1537a001cc8
             message: >-
                 [PUBLISH TOOL] Add deployment infrastructure for adhoc NPM
                 publish
         - 
             sha: >-
-                https://github.com/OfficeDev/office-js/commits/69ab6ab8ff4adc022298c8c3f66a069cd6b38d96
+                https://github.com/OfficeDev/office-js/commits/c2af81c3f5120866c20c95c87c6bbe188f3b6261
             message: >-
                 [BEGIN PUBLISH UPDATES] --
-                __adhoc--release--16.0.8918.5450--2018-01-18--7.40pm
-
-
-unpkgUrls: |-
-    this specific build number:
-        https://unpkg.com/@microsoft/office-js@1.1.4/dist/office.js
-        https://unpkg.com/@microsoft/office-js@1.1.4/dist/office.d.ts
-    builds using this same tag ("release"):
-        https://unpkg.com/@microsoft/office-js@release/dist/office.js
-        https://unpkg.com/@microsoft/office-js@release/dist/office.d.ts
-
-buildLog: https://travis-ci.org/OfficeDev/office-js/builds/330655521
+                __adhoc--current--local--2018-02-07--2.32pm--insights-sso-pivotbridge
