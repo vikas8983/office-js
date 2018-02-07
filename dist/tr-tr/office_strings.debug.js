@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -95,7 +95,7 @@ Strings.OfficeOM.L_InvalidFormatValue = "Bir veya daha fazla biçim parametresi 
 Strings.OfficeOM.L_InvalidGetColumns = "Belirtilen sütunlar geçersiz.";
 Strings.OfficeOM.L_InvalidGetRowColumnCounts = "Belirtilen satırSayısı veya sütunSayısı değerleri geçersiz.";
 Strings.OfficeOM.L_InvalidGetRows = "Belirtilen satırlar geçersiz.";
-Strings.OfficeOM.L_InvalidGetStartRowColumn = "Belirtilen satırBaşlat veya sütunBaşlat değerleri geçersiz.";
+Strings.OfficeOM.L_InvalidGetStartRowColumn = "Belirtilen satırBaşlat veya sütunBaşlat değerleri geçersiz."
 Strings.OfficeOM.L_InvalidGrant = "Ön onay yok.";
 Strings.OfficeOM.L_InvalidGrantMessage = "Bu eklenti için izin verilmedi.";
 Strings.OfficeOM.L_InvalidNamedItemForBindingType = "Belirtilen bağlama türü sağlanan adlandırılmış öğe ile uyumlu değil.";
@@ -188,5 +188,5 @@ Strings.OfficeOM.L_UnsupportedUserIdentityMessage = "Kullanıcının kimlik tür
 Strings.OfficeOM.L_UserAborted = "Kullanıcı, onay isteğini iptal etti.";
 Strings.OfficeOM.L_UserAbortedMessage = "Kullanıcı, eklenti izinlerini onaylamadı.";
 Strings.OfficeOM.L_UserClickIgnore = "Kullanıcı iletişim kutusunu yoksaymayı seçti.";
-Strings.OfficeOM.L_UserNotSignedIn = "Office oturumu açmış kullanıcı yok."
+Strings.OfficeOM.L_UserNotSignedIn = "Office oturumu açmış kullanıcı yok.";
 Strings.OfficeOM.L_ValueNotLoaded = 'Sonuç nesnesinin değeri henüz yüklenmedi. Değer özelliğini okumadan önce ilişkili istek bağlamında "context.sync()" öğesini çağırın.';

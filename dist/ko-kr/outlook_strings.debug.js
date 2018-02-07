@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -9,7 +9,7 @@ _u.ExtensibilityStrings.l_APICallFailedDueToItemChange_Text = "선택한 항목�
 _u.ExtensibilityStrings.l_AttachmentDeleteGeneralFailure_Text = "항목에서 첨부 파일을 삭제할 수 없습니다.";
 _u.ExtensibilityStrings.l_AttachmentDeletedBeforeUploadCompletes_Text = "업로드가 완료되기 전 사용자가 첨부 파일을 제거했습니다.";
 _u.ExtensibilityStrings.l_AttachmentErrorName_Text = "첨부 파일 오류";
-_u.ExtensibilityStrings.l_AttachmentExceededSize_Text = "첨부 파일이 너무 커서 추가할 수 없습니다."
+_u.ExtensibilityStrings.l_AttachmentExceededSize_Text = "첨부 파일이 너무 커서 추가할 수 없습니다.";
 _u.ExtensibilityStrings.l_AttachmentUploadGeneralFailure_Text = "항목에 첨부 파일을 추가할 수 없습니다.";
 _u.ExtensibilityStrings.l_CannotAddAttachmentBeforeUpgrade_Text = "서버에서 전체 회신 또는 전달을 검색하는 중에는 첨부 파일을 추가할 수 없습니다.";
 _u.ExtensibilityStrings.l_CursorPositionChanged_Text = "데이터를 삽입하던 중 사용자가 커서의 위치를 변경했습니다.";
@@ -21,7 +21,7 @@ _u.ExtensibilityStrings.l_ElevatedPermissionNeeded_Text = "JavaScript API for Of
 _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "하나 이상의 제공된 전자 메일 주소가 너무 깁니다.";
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "요청이 제한 크기 1MB를 초과합니다. EWS 요청을 수정하십시오.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "메시지에 이미 최대 개수의 첨부 파일이 있으므로 첨부 파일을 추가할 수 없습니다.";
-_u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "HTML 삭제가 실패했습니다.";
+_u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "HTML 삭제가 실패했습니다."
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "내부 형식 오류가 발생했습니다.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "내부 프로토콜 오류입니다. {0}";
 _u.ExtensibilityStrings.l_InvalidAttachmentId_Text = "첨부 파일 ID가 잘못되었습니다.";

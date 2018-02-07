@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -46,11 +46,11 @@ Strings.OfficeOM.L_CustomXmlOutOfDateName = "داده‌ها به‌روز نی�
 Strings.OfficeOM.L_DataNotMatchBindingSize = "شیء داده تأمینی با اندازه مورد انتخابی فعلی مطابقت ندارد.";
 Strings.OfficeOM.L_DataNotMatchBindingType = "شیء داده معین شده با این نوع پیوستگی سازگار نیست.";
 Strings.OfficeOM.L_DataNotMatchCoercionType = "نوع شیء داده معین شده با مورد انتخابی فعلی سازگار نیست.";
-Strings.OfficeOM.L_DataNotMatchSelection = "شیء داده تأمینی با شکل و ابعاد مورد انتخابی فعلی مطابقت ندارد.";
+Strings.OfficeOM.L_DataNotMatchSelection = "شیء داده تأمینی با شکل و ابعاد مورد انتخابی فعلی مطابقت ندارد."
 Strings.OfficeOM.L_DataReadError = "خطای خواندن داده";
 Strings.OfficeOM.L_DataStale = "داد به روز نیست";
 Strings.OfficeOM.L_DataWriteError = "خطای نوشتن داده";
-Strings.OfficeOM.L_DataWriteReminder = "یادآور نوشتن داده"
+Strings.OfficeOM.L_DataWriteReminder = "یادآور نوشتن داده";
 Strings.OfficeOM.L_DialogAddressNotTrusted = "دامنه آدرس اینترنتی در عنصر AppDomains در مانیفست گنجانده نشده است.";
 Strings.OfficeOM.L_DialogAlreadyOpened = "عملیات ناموفق بود زیرا افزونه از قبل پنجره فعال دارد.";
 Strings.OfficeOM.L_DialogInvalidScheme = "طرح نشانی اینترنتی پشتیبانی نمی‌شود. به جای آن، از HTTPS استفاده کنید.";

@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -61,7 +61,7 @@ Strings.OfficeOM.L_DisplayDialogError = "Display Dialog Error";
 Strings.OfficeOM.L_DocumentReadOnly = "Zahtevana operacija nije dozvoljena u trenutnom režimu dokumenta.";
 Strings.OfficeOM.L_ElementMissing = "Nismo mogli da oblikujemo ćeliju tabele zato što nedostaju neke vrednosti parametara. Proverite parametre još jednom i probajte ponovo.";
 Strings.OfficeOM.L_EventHandlerAdditionFailed = "Dodavanje rukovaoca događajem nije uspelo.";
-Strings.OfficeOM.L_EventHandlerNotExist = "Navedeni tip događaja nije podržan na ovom objektu.";
+Strings.OfficeOM.L_EventHandlerNotExist = "Navedeni tip događaja nije podržan na ovom objektu."
 Strings.OfficeOM.L_EventHandlerRemovalFailed = "Uklanjanje rukovaoca događajem nije uspelo.";
 Strings.OfficeOM.L_EventRegistrationError = "Greška pri registraciji događaja";
 Strings.OfficeOM.L_FileTypeNotSupported = "Navedeni tip datoteke nije podržan.";
@@ -110,7 +110,7 @@ Strings.OfficeOM.L_InvalidRequestContext = "Cannot use the object across differe
 Strings.OfficeOM.L_InvalidResourceUrl = "Invalid application resource Url provided.";
 Strings.OfficeOM.L_InvalidResourceUrlMessage = "Invalid resource Url specified in the manifest.";
 Strings.OfficeOM.L_InvalidSSOAddinMessage = "The identity API is not supported for this add-in.";
-Strings.OfficeOM.L_InvalidSelectionForBindingType = "Nije moguće kreirati povezivanje sa trenutnom selekcijom i navedenim tipom povezivanja."
+Strings.OfficeOM.L_InvalidSelectionForBindingType = "Nije moguće kreirati povezivanje sa trenutnom selekcijom i navedenim tipom povezivanja.";
 Strings.OfficeOM.L_InvalidSetColumns = "Navedene kolone su nevažeće.";
 Strings.OfficeOM.L_InvalidSetRows = "Navedeni redovi su nevažeći.";
 Strings.OfficeOM.L_InvalidSetStartRowColumn = "Navedene vrednosti za početni red ili početnu kolonu nisu važeće.";

@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -59,7 +59,7 @@ Strings.OfficeOM.L_DialogOK = "OK";
 Strings.OfficeOM.L_DialogRequireHTTPS = "HTTP-protokolli ei toetata. Kasutage selle asemel HTTPS-i.";
 Strings.OfficeOM.L_DisplayDialogError = "Kuva dialoogitõrge";
 Strings.OfficeOM.L_DocumentReadOnly = "Nõutud toiming pole praeguses dokumendirežiimis lubatud.";
-Strings.OfficeOM.L_ElementMissing = "Tabelilahtrit ei saanud vormindada, kuna mõni parameetriväärtus on puudu. Kontrollige parameetreid ja proovige uuesti."
+Strings.OfficeOM.L_ElementMissing = "Tabelilahtrit ei saanud vormindada, kuna mõni parameetriväärtus on puudu. Kontrollige parameetreid ja proovige uuesti.";
 Strings.OfficeOM.L_EventHandlerAdditionFailed = "Sündmuseohjurit ei saanud lisada.";
 Strings.OfficeOM.L_EventHandlerNotExist = "Määratud sündmuseohjurit ei leitud selle sidumise jaoks.";
 Strings.OfficeOM.L_EventHandlerRemovalFailed = "Sündmuseohjurit ei saanud eemaldada.";
@@ -160,7 +160,7 @@ Strings.OfficeOM.L_SSOServerErrorMessage = "Serveris ilmnes ootamatu tõrge.";
 Strings.OfficeOM.L_SSOUserConsentNotSupportedByCurrentAddinCategory = "See lisandmoodul ei toeta kasutaja nõusolekut.";
 Strings.OfficeOM.L_SSOUserConsentNotSupportedByCurrentAddinCategoryMessage = "Toiming nurjus, kuna see lisandmoodul ei toeta kasutaja nõusolekut selles kategoorias";
 Strings.OfficeOM.L_SaveSettingsError = "Sätete salvestamise tõrge";
-Strings.OfficeOM.L_SelectionCannotBound = "Praeguse valikuga ei saa siduda.";
+Strings.OfficeOM.L_SelectionCannotBound = "Praeguse valikuga ei saa siduda."
 Strings.OfficeOM.L_SelectionNotSupportCoercionType = "Praegune valik ei ühildu määratud kooshoidmistüübiga.";
 Strings.OfficeOM.L_SetDataIsTooLarge = "Määratud andmeobjekt on liiga suur.";
 Strings.OfficeOM.L_SetDataParametersConflict = "Määratud parameetrid on vastuolus.";

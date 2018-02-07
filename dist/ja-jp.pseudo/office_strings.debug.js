@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -51,7 +51,7 @@ Strings.OfficeOM.L_DataReadError = "[:Ðâtà Rèàð Èrrör瑞갂偁略థ్�
 Strings.OfficeOM.L_DataStale = "[:Ðætã Ñõt Çûrrëñt瑞갂偁略థ్క لإَّ'Ii.]";
 Strings.OfficeOM.L_DataWriteError = "[:Ðªtª Wrìtè Èrrór瑞갂偁略థ్క لإَّ'Ii.]";
 Strings.OfficeOM.L_DataWriteReminder = "[OG:Ðátã Wríté Rëmìñðêr瑞갂偁略 థ్క لإَّ'Ii.]";
-Strings.OfficeOM.L_DialogAddressNotTrusted = "[OG:Thë ðømåïñ öf thê ÚR£ ìs ñót íñçlûðèð îñ thé ÆppÐòmäîñs ëlèmëñt ìñ thë måñîfést.瑞갂偁略 яšæẤßソ瑞갂偁略 яšæథ్క لإَّ'Ii.]";
+Strings.OfficeOM.L_DialogAddressNotTrusted = "[OG:Thë ðømåïñ öf thê ÚR£ ìs ñót íñçlûðèð îñ thé ÆppÐòmäîñs ëlèmëñt ìñ thë måñîfést.瑞갂偁略 яšæẤßソ瑞갂偁略 яšæథ్క لإَّ'Ii.]"
 Strings.OfficeOM.L_DialogAlreadyOpened = "[OG:Thê ôpërátìôñ fåílêð þéçåµsê thìs åðð-ìñ ålréæðÿ hás åñ ªçtîvë ðíælôg.瑞갂偁略 яšæẤßソ瑞갂偁略 яథ్క لإَّ'Ii.]";
 Strings.OfficeOM.L_DialogInvalidScheme = "[OG:Thë ÚR£ sçhëmè ís ñöt súppõrtéð. Úsé HTTP§ ìñstëáð.瑞갂偁略 яšæẤßソ瑞థ్క لإَّ'Ii.]";
 Strings.OfficeOM.L_DialogNavigateError = "[OG:Ðîælõg Ñãvígàtîôñ Èrrõr瑞갂偁略 яథ్క لإَّ'Ii.]";
@@ -174,7 +174,7 @@ Strings.OfficeOM.L_ShowWindowDialogNotificationIgnore = "[OG:Îgñørê瑞갂థ
 Strings.OfficeOM.L_ShuttingDown = "[:Øpëràtîöñ fàìlêð þéçàúsè thê ðåtä ïs ñøt ¢ûrrëñt öñ thê sêrvèr.瑞갂偁略 яšæẤßソ瑞갂偁略థ్క لإَّ'Ii.]";
 Strings.OfficeOM.L_SliceSizeNotSupported = "[OG:Thé spèçìfîèð slî¢ë sîzë îs ñõt sµppórtéð.瑞갂偁略 яšæẤథ్క لإَّ'Ii.]";
 Strings.OfficeOM.L_SpecifiedIdNotExist = "[OG:Thé spê¢ïfïêð ÌÐ ðôés ñõt éxïst.瑞갂偁略 яšæథ్క لإَّ'Ii.]";
-Strings.OfficeOM.L_Timeout = "[OG:Thë õpërætíóñ hàs tíméð ôùt.瑞갂偁略 яšథ్క لإَّ'Ii.]"
+Strings.OfficeOM.L_Timeout = "[OG:Thë õpërætíóñ hàs tíméð ôùt.瑞갂偁略 яšథ్క لإَّ'Ii.]";
 Strings.OfficeOM.L_TooManyArguments = "[:tôô mäñÿ ªrgúméñts瑞갂偁略థ్క لإَّ'Ii.]";
 Strings.OfficeOM.L_TooManyIncompleteRequests = "[OG:Wäít µñtïl thë prêvîöüs ¢àll ¢ômplétés.瑞갂偁略 яšæẤథ్క لإَّ'Ii.]";
 Strings.OfficeOM.L_TooManyOptionalFunction = "[:múltïplë õptìøñãl fûñ¢tîõñs ïñ pärãmêtér lïst瑞갂偁略 яšæẤßథ్క لإَّ'Ii.]";

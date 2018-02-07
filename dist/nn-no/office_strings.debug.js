@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -23,7 +23,7 @@ Strings.OfficeOM.L_BrowserAPINotSupported = "Denne nettlesaren støttar ikkje de
 Strings.OfficeOM.L_CallbackNotAFunction = "Tilbakekall må vere av typen function, men var av typen {0}.";
 Strings.OfficeOM.L_CannotApplyPropertyThroughSetMethod = "Endringar på eigenskapen {0} kan ikkje bli brukt gjennom ein objekt.set-metode.";
 Strings.OfficeOM.L_CannotNavigateTo = "Objektet er plassert på ein stad der navigasjon ikkje blir støtta.";
-Strings.OfficeOM.L_CannotRegisterEvent = "Hendingshandsaminga kan ikkje bli registrert."
+Strings.OfficeOM.L_CannotRegisterEvent = "Hendingshandsaminga kan ikkje bli registrert.";
 Strings.OfficeOM.L_CannotWriteToSelection = "Kan ikkje skrive til gjeldande utval.";
 Strings.OfficeOM.L_CellDataAmountBeyondLimits = "Obs!  Talet på celler i ein tabell er foreslått å vere mindre enn 20 000 celler.";
 Strings.OfficeOM.L_CellFormatAmountBeyondLimits = "Obs!  Formatet som er oppgitt av eit API-kall for formatering, er foreslått å vere under 100.";
@@ -41,7 +41,7 @@ Strings.OfficeOM.L_CustomXmlError = "Egendefinert XML-feil.";
 Strings.OfficeOM.L_CustomXmlExceedQuotaMessage = "XPath avgrensar valet til 1024 element.";
 Strings.OfficeOM.L_CustomXmlExceedQuotaName = "Grensa for val er nådd";
 Strings.OfficeOM.L_CustomXmlNodeNotFound = "Finn ikkje den oppgitte noden.";
-Strings.OfficeOM.L_CustomXmlOutOfDateMessage = "Dataa er forelda. Hent objektet på nytt.";
+Strings.OfficeOM.L_CustomXmlOutOfDateMessage = "Dataa er forelda. Hent objektet på nytt."
 Strings.OfficeOM.L_CustomXmlOutOfDateName = "Dataa er ikkje oppdaterte";
 Strings.OfficeOM.L_DataNotMatchBindingSize = "Det oppgitte dataobjektet samsvarer ikkje med storleiken til gjeldande utval.";
 Strings.OfficeOM.L_DataNotMatchBindingType = "Det oppgitte dataobjektet er ikkje kompatibelt med bindingstypen.";

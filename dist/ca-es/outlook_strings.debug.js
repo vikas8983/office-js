@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -24,11 +24,11 @@ _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "No s’han pogu
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "El sanejament d'HTML ha fallat.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "S'ha produït un error de format intern.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "Error de protocol intern: '{0}'.";
-_u.ExtensibilityStrings.l_InvalidAttachmentId_Text = "L'identificador del fitxer adjunt no era vàlid.";
+_u.ExtensibilityStrings.l_InvalidAttachmentId_Text = "L'identificador del fitxer adjunt no era vàlid."
 _u.ExtensibilityStrings.l_InvalidAttachmentPath_Text = "El camí del fitxer adjunt no era vàlid.";
 _u.ExtensibilityStrings.l_InvalidDate_Text = "L'entrada no es resol en una data vàlida.";
 _u.ExtensibilityStrings.l_InvalidEndTime_Text = "L'hora de finalització no pot ser anterior a l'hora d'inici.";
-_u.ExtensibilityStrings.l_InvalidEventDates_Text = "La data de finalització és anterior a la data d'inici."
+_u.ExtensibilityStrings.l_InvalidEventDates_Text = "La data de finalització és anterior a la data d'inici.";
 _u.ExtensibilityStrings.l_NoValidRecipientsProvided_Text = "No s'han subministrat destinataris vàlids.";
 _u.ExtensibilityStrings.l_NumberOfRecipientsExceeded_Text = "El nombre total de destinataris al camp no pot superar els {0}.";
 _u.ExtensibilityStrings.l_OffsetNotfound_Text = "No s'ha pogut trobar cap desplaçament per a aquesta marca d'hora.";

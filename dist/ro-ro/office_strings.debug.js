@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -49,7 +49,7 @@ Strings.OfficeOM.L_DataNotMatchCoercionType = "Tipul de obiect de date specifica
 Strings.OfficeOM.L_DataNotMatchSelection = "Obiectul de date furnizat nu este compatibil cu forma sau dimensiunile selecției curente.";
 Strings.OfficeOM.L_DataReadError = "Eroare de citire a datelor";
 Strings.OfficeOM.L_DataStale = "Date neactuale";
-Strings.OfficeOM.L_DataWriteError = "Eroare de scriere a datelor"
+Strings.OfficeOM.L_DataWriteError = "Eroare de scriere a datelor";
 Strings.OfficeOM.L_DataWriteReminder = "Memento de scriere a datelor";
 Strings.OfficeOM.L_DialogAddressNotTrusted = "Domeniul adresei URL nu este inclus în elementul AppDomains din manifest.";
 Strings.OfficeOM.L_DialogAlreadyOpened = "Operațiunea nu a reușit, deoarece acest program de completare are deja un dialog activ.";
@@ -81,7 +81,7 @@ Strings.OfficeOM.L_InvalidAPICall = "Apel API nevalid";
 Strings.OfficeOM.L_InvalidApiArgumentsMessage = "Argumente de intrare nevalide.";
 Strings.OfficeOM.L_InvalidApiCallInContext = "Apel API nevalid în contextul curent.";
 Strings.OfficeOM.L_InvalidArgument = "Argumentul „{0}” nu funcționează pentru această situație, lipsește sau nu este în formatul corect.";
-Strings.OfficeOM.L_InvalidArgumentGeneric = "Argumentele transmise funcției nu funcționează pentru această situație, lipsesc sau nu sunt în formatul corect.";
+Strings.OfficeOM.L_InvalidArgumentGeneric = "Argumentele transmise funcției nu funcționează pentru această situație, lipsesc sau nu sunt în formatul corect."
 Strings.OfficeOM.L_InvalidBinding = "Legare nevalidă";
 Strings.OfficeOM.L_InvalidBindingError = "Eroare de legare nevalidă";
 Strings.OfficeOM.L_InvalidBindingOperation = "Operația de legare nu este validă";

@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -126,7 +126,7 @@ Strings.OfficeOM.L_NetworkProblem = "مشكلة في الشبكة";
 Strings.OfficeOM.L_NetworkProblemRetrieveFile = "حالت مشكلة في الشبكة دون استرداد الملف.";
 Strings.OfficeOM.L_NewWindowCrossZone = "إعدادات الأمان في المستعرض تحول دون إنشاء مربع حوار. حاول استخدام مستعرض مختلف، أو {0} وبذلك يكونا '{1}' والمجال المعروض في شريط العنوان في نفس منطقة الأمان.";
 Strings.OfficeOM.L_NewWindowCrossZoneConfigureBrowserLink = "تكوين المستعرض";
-Strings.OfficeOM.L_NewWindowCrossZoneErrorString = "منعتنا قيود المستعرض من إنشاء مربع الحوار. مجال مربع الحوار ومجال مضيف الوظيفة الإضافية ليسا في نفس منطقة الأمان."
+Strings.OfficeOM.L_NewWindowCrossZoneErrorString = "منعتنا قيود المستعرض من إنشاء مربع الحوار. مجال مربع الحوار ومجال مضيف الوظيفة الإضافية ليسا في نفس منطقة الأمان.";
 Strings.OfficeOM.L_NoCapability = "لا تملك الأذونات الكافية لهذا الإجراء.";
 Strings.OfficeOM.L_NonUniformPartialGetNotSupported = 'لا يمكن استخدام معلمات الإحداثيات مع "جدول" بنوع الاندماج عندما يحتوي الجدول على خلايا مدمجة.';
 Strings.OfficeOM.L_NonUniformPartialSetNotSupported = 'لا يمكن استخدام معلمات الإحداثيات مع "جدول" بنوع الاندماج عندما يحتوي الجدول على خلايا مدمجة.';
@@ -184,7 +184,7 @@ Strings.OfficeOM.L_UnsupportedDataObject = "نوع عنصر البيانات ا�
 Strings.OfficeOM.L_UnsupportedEnumeration = "قائمة تعداد غير معتمدة";
 Strings.OfficeOM.L_UnsupportedEnumerationMessage = "قائمة التعداد غير معتمدة في تطبيق المضيف الحالي.";
 Strings.OfficeOM.L_UnsupportedUserIdentity = "نوع هوية المستخدم غير مدعم.";
-Strings.OfficeOM.L_UnsupportedUserIdentityMessage = "نوع هوية المستخدم غير مدعم.";
+Strings.OfficeOM.L_UnsupportedUserIdentityMessage = "نوع هوية المستخدم غير مدعم."
 Strings.OfficeOM.L_UserAborted = "أوقف المستخدم طلب الموافقة قبل اكتماله.";
 Strings.OfficeOM.L_UserAbortedMessage = "لم يوافق المستخدم على أذونات الوظيفة الإضافية.";
 Strings.OfficeOM.L_UserClickIgnore = "اختار المستخدم تجاهل مربع الحوار.";

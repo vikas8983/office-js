@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -39,7 +39,7 @@ Strings.OfficeOM.L_CustomFunctionNameCannotSplit = "Funktionsnamnet måste inneh
 Strings.OfficeOM.L_CustomFunctionNameContainsBadChars = "Funktionsnamnet får bara innehålla bokstäver, siffror, understreck och punkter.";
 Strings.OfficeOM.L_CustomXmlError = "Anpassat XML-fel.";
 Strings.OfficeOM.L_CustomXmlExceedQuotaMessage = "XPath begränsar urvalet till 1024 artiklar.";
-Strings.OfficeOM.L_CustomXmlExceedQuotaName = "Markeringsgränsen har uppnåtts"
+Strings.OfficeOM.L_CustomXmlExceedQuotaName = "Markeringsgränsen har uppnåtts";
 Strings.OfficeOM.L_CustomXmlNodeNotFound = "Den angivna noden hittades inte.";
 Strings.OfficeOM.L_CustomXmlOutOfDateMessage = "Data är inaktuella. Hämta objektet igen.";
 Strings.OfficeOM.L_CustomXmlOutOfDateName = "Data är inte aktuella";
@@ -77,7 +77,7 @@ Strings.OfficeOM.L_IndexOutOfRange = "Index är utanför intervallet.";
 Strings.OfficeOM.L_InitializeNotReady = "Office.js har inte lästs in helt ännu. Försök igen senare eller lägg till din initieringskod för funktionen Office.initialize.";
 Strings.OfficeOM.L_InternalError = "Internt fel";
 Strings.OfficeOM.L_InternalErrorDescription = "Ett internt fel har uppstått.";
-Strings.OfficeOM.L_InvalidAPICall = "Ogiltigt API-anrop";
+Strings.OfficeOM.L_InvalidAPICall = "Ogiltigt API-anrop"
 Strings.OfficeOM.L_InvalidApiArgumentsMessage = "Ogiltiga indataargument.";
 Strings.OfficeOM.L_InvalidApiCallInContext = "Ogiltigt API-anrop i den aktuella kontexten.";
 Strings.OfficeOM.L_InvalidArgument = "Argumentet {0} fungerar inte för den här situationen, saknas eller har felaktigt format.";

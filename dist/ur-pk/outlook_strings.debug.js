@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -11,7 +11,7 @@ _u.ExtensibilityStrings.l_AttachmentDeletedBeforeUploadCompletes_Text = "اپ ل
 _u.ExtensibilityStrings.l_AttachmentErrorName_Text = "منسلکہ نقص";
 _u.ExtensibilityStrings.l_AttachmentExceededSize_Text = "منسلکہ کو بہت بڑی ہونے کی وجہ سے شامل نہیں کیا جاسکتا۔";
 _u.ExtensibilityStrings.l_AttachmentUploadGeneralFailure_Text = "منسلکہ اس آئٹم کو شامل نہیں کیا جاسکتا۔";
-_u.ExtensibilityStrings.l_CannotAddAttachmentBeforeUpgrade_Text = "مکمل جواب کے دوران منسلکات کا اضافہ نہیں کیا جا سکتا یا آگے پیش کار سے باز گیر کیا جا رہا ہے۔";
+_u.ExtensibilityStrings.l_CannotAddAttachmentBeforeUpgrade_Text = "مکمل جواب کے دوران منسلکات کا اضافہ نہیں کیا جا سکتا یا آگے پیش کار سے باز گیر کیا جا رہا ہے۔"
 _u.ExtensibilityStrings.l_CursorPositionChanged_Text = "کوائف کے داخل کئے جانے کے دوران صارف کرسر کی پوزیشن کو تبدیل کردیا گیا۔";
 _u.ExtensibilityStrings.l_DataWriteErrorName_Text = "نقص کوائف کی تحریر";
 _u.ExtensibilityStrings.l_DeleteAttachmentDoesNotExist_Text = "منسلکہ حذف نہیں کیا جاسکتا کیونکہ منسلکہ اشاریہ کے ساتھ منسلکہ نہیں ڈھونڈا جا سکتا۔";
@@ -31,5 +31,5 @@ _u.ExtensibilityStrings.l_InvalidEndTime_Text = "اختتام وقت ابتدا�
 _u.ExtensibilityStrings.l_InvalidEventDates_Text = "اختتام تاریخ آغاز تاریخ سے قبل آتی ہے۔";
 _u.ExtensibilityStrings.l_NoValidRecipientsProvided_Text = "کوئی اچھا وصول کنندگان فراہم نہیں کیا گیا۔";
 _u.ExtensibilityStrings.l_NumberOfRecipientsExceeded_Text = "میدان میں وصول کنندگان کی کل تعداد {0} کی حد سے تجاوز نہیں کر سکتا۔";
-_u.ExtensibilityStrings.l_OffsetNotfound_Text = "اس ثبت وقت کے لئے ایک آفسٹ نہ مل سکا۔"
+_u.ExtensibilityStrings.l_OffsetNotfound_Text = "اس ثبت وقت کے لئے ایک آفسٹ نہ مل سکا۔";
 _u.ExtensibilityStrings.l_ParametersNotAsExpected_Text = "دیئے گئے پیرامیٹرز متوقع وضع کے مشابہ نہیں ہے۔";

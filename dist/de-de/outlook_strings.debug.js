@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -27,9 +27,9 @@ _u.ExtensibilityStrings.l_InternalProtocolError_Text = "Interner Protokollfehler
 _u.ExtensibilityStrings.l_InvalidAttachmentId_Text = "Die Anlage-ID war ungültig.";
 _u.ExtensibilityStrings.l_InvalidAttachmentPath_Text = "Der Pfad zur Anlage war ungültig.";
 _u.ExtensibilityStrings.l_InvalidDate_Text = "Die Eingabe kann nicht zu einem gültigen Datum aufgelöst werden.";
-_u.ExtensibilityStrings.l_InvalidEndTime_Text = "Der Endzeitpunkt kann nicht vor dem Anfangszeitpunkt liegen.";
+_u.ExtensibilityStrings.l_InvalidEndTime_Text = "Der Endzeitpunkt kann nicht vor dem Anfangszeitpunkt liegen."
 _u.ExtensibilityStrings.l_InvalidEventDates_Text = "Das Ende liegt vor dem Beginn.";
 _u.ExtensibilityStrings.l_NoValidRecipientsProvided_Text = "Es wurden keine gültigen Empfänger angegeben.";
 _u.ExtensibilityStrings.l_NumberOfRecipientsExceeded_Text = "Die Gesamtzahl der Empfänger im Feld kann {0} nicht überschreiten.";
-_u.ExtensibilityStrings.l_OffsetNotfound_Text = "Für diesen Zeitstempel wurde kein Offset gefunden."
+_u.ExtensibilityStrings.l_OffsetNotfound_Text = "Für diesen Zeitstempel wurde kein Offset gefunden.";
 _u.ExtensibilityStrings.l_ParametersNotAsExpected_Text = "Der angegebene Parameter weist nicht das erwartete Format auf.";

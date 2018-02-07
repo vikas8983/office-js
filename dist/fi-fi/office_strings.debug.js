@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -11,7 +11,7 @@ Strings.OfficeOM.L_ActivityLimitReached = "Toimintojen raja on saavutettu.";
 Strings.OfficeOM.L_AddBindingFromPromptDefaultText = "Tee valinta.";
 Strings.OfficeOM.L_AddinIsAlreadyRequestingToken = "Apuohjelma pyytää jo käyttöoikeustietuetta.";
 Strings.OfficeOM.L_AddinIsAlreadyRequestingTokenMessage = "Toiminto epäonnistui, koska apuohjelma pyytää jo käyttöoikeustietuetta.";
-Strings.OfficeOM.L_ApiNotFoundDetails = "Menetelmä tai ominaisuus {0} on osa vaatimusjoukkoa {1}, joka ei ole käytettävissä siinä ohjelman {2} versiossa, joka sinulla on käytössäsi.";
+Strings.OfficeOM.L_ApiNotFoundDetails = "Menetelmä tai ominaisuus {0} on osa vaatimusjoukkoa {1}, joka ei ole käytettävissä siinä ohjelman {2} versiossa, joka sinulla on käytössäsi."
 Strings.OfficeOM.L_AppNameNotExist = "Apuohjelmaa {0} ei ole olemassa.";
 Strings.OfficeOM.L_AppNotExistInitializeNotCalled = "Sovellusta {0} ei ole. Kohdetta Microsoft.Office.WebExtension.initialize(reason) ei ole kutsuttu.";
 Strings.OfficeOM.L_AttemptingToSetReadOnlyProperty = "Yritetään määrittää vain luku -ominaisuutta {0}.";
@@ -138,7 +138,7 @@ Strings.OfficeOM.L_OperationCancelledError = "Toiminto peruutettu";
 Strings.OfficeOM.L_OperationCancelledErrorMessage = "Käyttäjä peruutti toiminnon.";
 Strings.OfficeOM.L_OperationNotSupported = "Toiminto ei ole tuettu.";
 Strings.OfficeOM.L_OperationNotSupportedOnMatrixData = "Valitun sisällön on oltava taulukkomuodossa. Muotoile tiedot taulukoksi ja yritä uudelleen.";
-Strings.OfficeOM.L_OperationNotSupportedOnThisBindingType = "Toimintoa ei tueta tässä sidostyypissä."
+Strings.OfficeOM.L_OperationNotSupportedOnThisBindingType = "Toimintoa ei tueta tässä sidostyypissä.";
 Strings.OfficeOM.L_OsfControlTypeNotSupported = "OsfControl-tyyppiä ei tueta.";
 Strings.OfficeOM.L_OutOfRange = "Ei alueella";
 Strings.OfficeOM.L_OverwriteWorksheetData = "Asetustoiminto epäonnistui, koska annettu tieto-objekti korvaa tai siirtää tiedot.";

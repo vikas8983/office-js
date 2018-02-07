@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -28,8 +28,8 @@ _u.ExtensibilityStrings.l_InvalidAttachmentId_Text = "Pielikuma ID nav derīgs."
 _u.ExtensibilityStrings.l_InvalidAttachmentPath_Text = "Pielikuma ceļš nav derīgs.";
 _u.ExtensibilityStrings.l_InvalidDate_Text = "Ievadē nav norādīts derīgs datums.";
 _u.ExtensibilityStrings.l_InvalidEndTime_Text = "Beigu laiks nevar būt pirms sākuma laika.";
-_u.ExtensibilityStrings.l_InvalidEventDates_Text = "Beigu datums ir pirms sākuma datuma."
+_u.ExtensibilityStrings.l_InvalidEventDates_Text = "Beigu datums ir pirms sākuma datuma.";
 _u.ExtensibilityStrings.l_NoValidRecipientsProvided_Text = "Netika norādīts neviens derīgs adresāts.";
 _u.ExtensibilityStrings.l_NumberOfRecipientsExceeded_Text = "Kopējais adresātu skaits laukā nedrīkst pārsniegt {0}.";
-_u.ExtensibilityStrings.l_OffsetNotfound_Text = "Šim laikspiedolam nevarēja atrast nobīdi.";
+_u.ExtensibilityStrings.l_OffsetNotfound_Text = "Šim laikspiedolam nevarēja atrast nobīdi."
 _u.ExtensibilityStrings.l_ParametersNotAsExpected_Text = "Norādītie parametri neatbilst paredzētajam formātam.";

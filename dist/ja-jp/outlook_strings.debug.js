@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -9,11 +9,11 @@ _u.ExtensibilityStrings.l_APICallFailedDueToItemChange_Text = "選択したア�
 _u.ExtensibilityStrings.l_AttachmentDeleteGeneralFailure_Text = "アイテムから添付ファイルを削除できません。";
 _u.ExtensibilityStrings.l_AttachmentDeletedBeforeUploadCompletes_Text = "アップロードが完了する前に、ユーザーが添付ファイルを削除しました。";
 _u.ExtensibilityStrings.l_AttachmentErrorName_Text = "添付ファイルのエラー";
-_u.ExtensibilityStrings.l_AttachmentExceededSize_Text = "添付ファイルのサイズが大きすぎるため、追加できません。";
+_u.ExtensibilityStrings.l_AttachmentExceededSize_Text = "添付ファイルのサイズが大きすぎるため、追加できません。"
 _u.ExtensibilityStrings.l_AttachmentUploadGeneralFailure_Text = "アイテムに添付ファイルを追加できません。";
 _u.ExtensibilityStrings.l_CannotAddAttachmentBeforeUpgrade_Text = "サーバーから返信または転送をすべて取得している間は、添付ファイルを追加できません。";
 _u.ExtensibilityStrings.l_CursorPositionChanged_Text = "データの挿入中に、ユーザーがカーソル位置を変更しました。";
-_u.ExtensibilityStrings.l_DataWriteErrorName_Text = "データの書き込みエラーが発生しました"
+_u.ExtensibilityStrings.l_DataWriteErrorName_Text = "データの書き込みエラーが発生しました";
 _u.ExtensibilityStrings.l_DeleteAttachmentDoesNotExist_Text = "添付ファイル インデックスを含む添付ファイルが見つからなかったため、添付ファイルを削除できません。";
 _u.ExtensibilityStrings.l_DisplayNameTooLong_Text = "指定した表示名の中に、長すぎるものが 1 つ以上あります。";
 _u.ExtensibilityStrings.l_ElevatedPermissionNeededForMethod_Text = "このメソッドを呼び出すには、管理者特権のアクセス許可が必要です: '{0}'。";

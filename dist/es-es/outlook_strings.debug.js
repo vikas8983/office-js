@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -26,10 +26,10 @@ _u.ExtensibilityStrings.l_InternalFormatError_Text = "Hubo un error de formato i
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = 'Error de protocolo interno: "{0}".';
 _u.ExtensibilityStrings.l_InvalidAttachmentId_Text = "El id. de datos adjuntos no es válido.";
 _u.ExtensibilityStrings.l_InvalidAttachmentPath_Text = "La ruta de los datos adjuntos no es válida.";
-_u.ExtensibilityStrings.l_InvalidDate_Text = "La entrada no se resuelve en una fecha válida.";
+_u.ExtensibilityStrings.l_InvalidDate_Text = "La entrada no se resuelve en una fecha válida."
 _u.ExtensibilityStrings.l_InvalidEndTime_Text = "La hora de finalización no puede ser anterior a la hora de inicio.";
 _u.ExtensibilityStrings.l_InvalidEventDates_Text = "La fecha de finalización se produce antes de la fecha de inicio.";
-_u.ExtensibilityStrings.l_NoValidRecipientsProvided_Text = "No se proporcionaron destinatarios válidos."
+_u.ExtensibilityStrings.l_NoValidRecipientsProvided_Text = "No se proporcionaron destinatarios válidos.";
 _u.ExtensibilityStrings.l_NumberOfRecipientsExceeded_Text = "El número total de destinatarios del campo no puede ser mayor de {0}.";
 _u.ExtensibilityStrings.l_OffsetNotfound_Text = "No se encontró ningún desplazamiento de esta marca de hora.";
 _u.ExtensibilityStrings.l_ParametersNotAsExpected_Text = "Los parámetros especificados no coinciden con el formato esperado.";

@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -67,7 +67,7 @@ Strings.OfficeOM.L_EventRegistrationError = "Une erreur s'est produite lors de l
 Strings.OfficeOM.L_FileTypeNotSupported = "Le type de fichier spécifié n’est pas pris en charge.";
 Strings.OfficeOM.L_FormatValueOutOfRange = "La valeur se trouve en dehors de la plage autorisée.";
 Strings.OfficeOM.L_FormattingReminder = "Mise en forme du rappel";
-Strings.OfficeOM.L_FunctionCallFailed = "Nous n'avons pas pu appeler la fonction {0}. Le code d'erreur est le suivant : {1}.";
+Strings.OfficeOM.L_FunctionCallFailed = "Nous n'avons pas pu appeler la fonction {0}. Le code d'erreur est le suivant : {1}."
 Strings.OfficeOM.L_GetDataIsTooLarge = "Le jeu de données demandé est trop volumineux.";
 Strings.OfficeOM.L_GetDataParametersConflict = "Les paramètres spécifiés sont en conflit.";
 Strings.OfficeOM.L_GetSelectionNotSupported = "La sélection actuelle n'est pas prise en charge.";
@@ -167,7 +167,7 @@ Strings.OfficeOM.L_SetDataParametersConflict = "Les paramètres spécifiés sont
 Strings.OfficeOM.L_SettingNameNotExist = "Le nom de paramètre spécifié n’existe pas.";
 Strings.OfficeOM.L_SettingsAreStale = "Nous n’avons pas pu enregistrer les paramètres car ils ne sont pas actualisés.";
 Strings.OfficeOM.L_SettingsCannotSave = "Nous n'avons pas pu enregistrer les paramètres.";
-Strings.OfficeOM.L_SettingsStaleError = "Erreur : les paramètres sont périmés."
+Strings.OfficeOM.L_SettingsStaleError = "Erreur : les paramètres sont périmés.";
 Strings.OfficeOM.L_ShowWindowDialogNotification = "{0} souhaite afficher une nouvelle fenêtre.";
 Strings.OfficeOM.L_ShowWindowDialogNotificationAllow = "Autoriser";
 Strings.OfficeOM.L_ShowWindowDialogNotificationIgnore = "Ignorer";

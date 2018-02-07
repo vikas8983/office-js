@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -146,7 +146,7 @@ Strings.OfficeOM.L_PermissionDenied = "Tilladelse nægtet";
 Strings.OfficeOM.L_PropertyDoesNotExist = 'Egenskaben "{0}" findes ikke på objektet.';
 Strings.OfficeOM.L_PropertyNotLoaded = "Egenskaben '{0}' er ikke tilgængelig. Før du læser egenskabens værdi, skal du kalde indlæsningsmetoden på det indeholdende objekt og kalde \"context.sync()\" på den tilknyttede anmodningskontekst.";
 Strings.OfficeOM.L_ReadSettingsError = "Fejl ved læsning af indstillinger";
-Strings.OfficeOM.L_RedundantCallbackSpecification = "Der kan ikke specificeres tilbagekald både i argumentlisten og i valgfrit objekt."
+Strings.OfficeOM.L_RedundantCallbackSpecification = "Der kan ikke specificeres tilbagekald både i argumentlisten og i valgfrit objekt.";
 Strings.OfficeOM.L_RequestTimeout = "Opkaldet tog for lang tid at udføre.";
 Strings.OfficeOM.L_RequestTokenUnavailable = "Denne API er blevet begrænset for at nedsætte opkaldshyppigheden.";
 Strings.OfficeOM.L_RowIndexOutOfRange = "Rækkeindeksværdien ligger uden for det tilladte interval. Brug en værdi (0 eller højere), som er lavere end antallet af rækker.";
@@ -189,4 +189,4 @@ Strings.OfficeOM.L_UserAborted = "Brugeren afbrød samtykkeanmodningen.";
 Strings.OfficeOM.L_UserAbortedMessage = "Brugeren har ikke givet samtykke til tilføjelsesprogramtilladelserne.";
 Strings.OfficeOM.L_UserClickIgnore = "Brugeren valgte at ignorere dialogboksen.";
 Strings.OfficeOM.L_UserNotSignedIn = "Ingen bruger er logget på Office.";
-Strings.OfficeOM.L_ValueNotLoaded = 'Værdien af resultatobjektet er endnu ikke indlæst. Før du læser værdiegenskaben, skal du kalde "context.sync()" i den tilknyttede anmodningskontekst.';
+Strings.OfficeOM.L_ValueNotLoaded = 'Værdien af resultatobjektet er endnu ikke indlæst. Før du læser værdiegenskaben, skal du kalde "context.sync()" i den tilknyttede anmodningskontekst.'

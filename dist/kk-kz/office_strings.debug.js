@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -81,7 +81,7 @@ Strings.OfficeOM.L_InvalidAPICall = "Жарамсыз API қоңырауы";
 Strings.OfficeOM.L_InvalidApiArgumentsMessage = "Енгізілген аргументтер жарамсыз.";
 Strings.OfficeOM.L_InvalidApiCallInContext = "Ағымдағы контекстідегі жарамсыз API шақыруы.";
 Strings.OfficeOM.L_InvalidArgument = '"{0}" аргументі осы жағдайда жұмыс істемейді, ол жоқ немесе дұрыс форматта берілмеген.';
-Strings.OfficeOM.L_InvalidArgumentGeneric = "Функцияға өтетін аргументтер бұл жағдайда жұмыс істемейді, олар жоқ немесе дұрыс пішімде емес.";
+Strings.OfficeOM.L_InvalidArgumentGeneric = "Функцияға өтетін аргументтер бұл жағдайда жұмыс істемейді, олар жоқ немесе дұрыс пішімде емес."
 Strings.OfficeOM.L_InvalidBinding = "Жарамсыз біріктіру";
 Strings.OfficeOM.L_InvalidBindingError = "Жарамсыз біріктіру қатесі";
 Strings.OfficeOM.L_InvalidBindingOperation = "Жарамсыз біріктіру амалы";
@@ -105,7 +105,7 @@ Strings.OfficeOM.L_InvalidOperationInCellEditMode = "Excel бағдарлама�
 Strings.OfficeOM.L_InvalidOrTimedOutSession = "Жарамсыз немесе күту уақыты өтіп кеткен сеанс";
 Strings.OfficeOM.L_InvalidOrTimedOutSessionMessage = "Office Online сеансының мерзімі өткен немесе жарамсыз. Жалғастыру үшін, бетті жаңартыңыз.";
 Strings.OfficeOM.L_InvalidParameters = "{0} функциясының параметрлері жарамсыз.";
-Strings.OfficeOM.L_InvalidReadForBlankRow = "Көрсетілген қатар бос."
+Strings.OfficeOM.L_InvalidReadForBlankRow = "Көрсетілген қатар бос.";
 Strings.OfficeOM.L_InvalidRequestContext = "Нысанды әртүрлі сұрау контексттері бойынша пайдалану мүмкін емес.";
 Strings.OfficeOM.L_InvalidResourceUrl = "Бағдарлама ресурсының көрсетілген URL мекенжайы жарамсыз.";
 Strings.OfficeOM.L_InvalidResourceUrlMessage = "Манифесте көрсетілген ресурстың URL мекенжайы жарамсыз.";

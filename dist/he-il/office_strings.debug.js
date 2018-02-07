@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -38,7 +38,7 @@ Strings.OfficeOM.L_CustomFunctionImplementationMissing = "המאפיין בשם 
 Strings.OfficeOM.L_CustomFunctionNameCannotSplit = "שם הפונקציה חייב להכיל מרחב שמות שאינו ריק ושם קצר שאינו ריק.";
 Strings.OfficeOM.L_CustomFunctionNameContainsBadChars = "שם הפונקציה יכול להכיל רק אותיות, ספרות, מקפים תחתונים ונקודות.";
 Strings.OfficeOM.L_CustomXmlError = "שגיאת XML מותאם אישית.";
-Strings.OfficeOM.L_CustomXmlExceedQuotaMessage = "XPath מגביל את הבחירה ל- 1024 פריטים.";
+Strings.OfficeOM.L_CustomXmlExceedQuotaMessage = "XPath מגביל את הבחירה ל- 1024 פריטים."
 Strings.OfficeOM.L_CustomXmlExceedQuotaName = "הגעת למגבלת הבחירה";
 Strings.OfficeOM.L_CustomXmlNodeNotFound = "הצומת שצוין לא נמצא.";
 Strings.OfficeOM.L_CustomXmlOutOfDateMessage = "הנתונים אינם עדכניים. אחזר שוב את האובייקט.";
@@ -135,7 +135,7 @@ Strings.OfficeOM.L_NotSupported = "הפונקציה {0} אינה נתמכת.";
 Strings.OfficeOM.L_NotSupportedBindingType = "סוג האיגוד שצוין {0} אינו נתמך.";
 Strings.OfficeOM.L_NotSupportedEventType = "סוג האירוע שצוין {0} אינו נתמך.";
 Strings.OfficeOM.L_OperationCancelledError = "הפעולה בוטלה";
-Strings.OfficeOM.L_OperationCancelledErrorMessage = "הפעולה בוטלה על-ידי המשתמש."
+Strings.OfficeOM.L_OperationCancelledErrorMessage = "הפעולה בוטלה על-ידי המשתמש.";
 Strings.OfficeOM.L_OperationNotSupported = "הפעולה אינה נתמכת.";
 Strings.OfficeOM.L_OperationNotSupportedOnMatrixData = "התוכן שנבחר צריך להיות בתבנית טבלה. עצב את הנתונים כטבלה ונסה שוב.";
 Strings.OfficeOM.L_OperationNotSupportedOnThisBindingType = "הפעולה אינה נתמכת באיגוד מסוג זה.";

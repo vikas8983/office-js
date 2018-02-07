@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -24,7 +24,7 @@ Strings.OfficeOM.L_CallbackNotAFunction = "Lazima mwito-rejeshi uwe wa aina ya k
 Strings.OfficeOM.L_CannotApplyPropertyThroughSetMethod = "Mabadiliko kwenye '{0}' hayawezi kutumiwa kupitia mbinu ya \"object.set\".";
 Strings.OfficeOM.L_CannotNavigateTo = "Kipengee kinapatikana katika eneo ambalo uabiri hauauniwi.";
 Strings.OfficeOM.L_CannotRegisterEvent = "Kishikizi cha tukio hakiwezi kusajiliwa.";
-Strings.OfficeOM.L_CannotWriteToSelection = "Haiwezi kuandika kwenye uteuzi wa sasa.";
+Strings.OfficeOM.L_CannotWriteToSelection = "Haiwezi kuandika kwenye uteuzi wa sasa."
 Strings.OfficeOM.L_CellDataAmountBeyondLimits = "Dokezo: Idadi ya seli katika jedwali inasemekana iko chini ya seli 20,000.";
 Strings.OfficeOM.L_CellFormatAmountBeyondLimits = "Dokezo: Seti za uumbizaji zilizowekwa na mwito wa API wa Uumbizaji zinasemekana ziko chini ya 100.";
 Strings.OfficeOM.L_CloseFileBeforeRetrieve = "Wasiliana na closeAsync kwenye Faili ya sasa kabla ya kuepua nyingine.";
@@ -134,7 +134,7 @@ Strings.OfficeOM.L_NotImplemented = "Kitendaji {0} hakijatekelezwa.";
 Strings.OfficeOM.L_NotSupported = "Kitendaji {0} hakiauniwi.";
 Strings.OfficeOM.L_NotSupportedBindingType = "Aina ya ufungaji uliobainishwa {0} haiauniwi.";
 Strings.OfficeOM.L_NotSupportedEventType = "Aina ya tukio lililobainishwa {0} haiauniwi.";
-Strings.OfficeOM.L_OperationCancelledError = "Uendeshaji Umeghairiwa"
+Strings.OfficeOM.L_OperationCancelledError = "Uendeshaji Umeghairiwa";
 Strings.OfficeOM.L_OperationCancelledErrorMessage = "Uendeshaji ulikatizwa na mtumiaji.";
 Strings.OfficeOM.L_OperationNotSupported = "Uendeshaji haujategemezwa.";
 Strings.OfficeOM.L_OperationNotSupportedOnMatrixData = "Maudhui yaliyoteuliwa yanahitaji kuwa katika umbizo la jedwali. Umbiza data kama jedwali na ujaribu tena.";

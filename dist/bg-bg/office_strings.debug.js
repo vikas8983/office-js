@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -98,7 +98,7 @@ Strings.OfficeOM.L_InvalidGetRows = "Посочените редове са не
 Strings.OfficeOM.L_InvalidGetStartRowColumn = "Зададените стойности за startRow или startColumn са невалидни.";
 Strings.OfficeOM.L_InvalidGrant = "Липсва предварително удостоверяване.";
 Strings.OfficeOM.L_InvalidGrantMessage = "Липсват разрешения за тази добавка.";
-Strings.OfficeOM.L_InvalidNamedItemForBindingType = "Зададеният тип обвързване не е съвместим с подадения именуван елемент."
+Strings.OfficeOM.L_InvalidNamedItemForBindingType = "Зададеният тип обвързване не е съвместим с подадения именуван елемент.";
 Strings.OfficeOM.L_InvalidNode = "Невалиден възел";
 Strings.OfficeOM.L_InvalidObjectPath = 'Пътят на обекта "{0}" не работи за това, което се опитвате да направите. Ако използвате обекта в няколко различни повиквания на "context.sync" и извън последователно изпълнение на партида ".run", използвайте методите "context.trackedObjects.add()" и "context.trackedObjects.remove()" за управление на времето на живот на обекта.';
 Strings.OfficeOM.L_InvalidOperationInCellEditMode = "Excel е в режим на редактиране на клетка. Излезте от режим на редактиране, като натиснете ENTER или TAB, или изберете друга клетка и след това опитайте отново.";
@@ -169,7 +169,7 @@ Strings.OfficeOM.L_SettingsAreStale = "Настройките не можаха 
 Strings.OfficeOM.L_SettingsCannotSave = "Настройките не можаха да бъдат записани.";
 Strings.OfficeOM.L_SettingsStaleError = "Грешка от неактуални настройки";
 Strings.OfficeOM.L_ShowWindowDialogNotification = "{0} иска да покаже нов прозорец.";
-Strings.OfficeOM.L_ShowWindowDialogNotificationAllow = "Позволи";
+Strings.OfficeOM.L_ShowWindowDialogNotificationAllow = "Позволи"
 Strings.OfficeOM.L_ShowWindowDialogNotificationIgnore = "Игнориране";
 Strings.OfficeOM.L_ShuttingDown = "Операцията беше неуспешна, защото данните в сървъра не са актуални.";
 Strings.OfficeOM.L_SliceSizeNotSupported = "Указаният размер на сегмент не се поддържа.";

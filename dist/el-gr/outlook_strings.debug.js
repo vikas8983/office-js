@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -28,8 +28,8 @@ _u.ExtensibilityStrings.l_InvalidAttachmentId_Text = "Το αναγνωριστ�
 _u.ExtensibilityStrings.l_InvalidAttachmentPath_Text = "Η διαδρομή συνημμένου δεν ήταν έγκυρη.";
 _u.ExtensibilityStrings.l_InvalidDate_Text = "Η είσοδος δεν αναλύεται σε έγκυρη ημερομηνία.";
 _u.ExtensibilityStrings.l_InvalidEndTime_Text = "Η ώρα λήξης δεν μπορεί να είναι πριν την ώρα έναρξης.";
-_u.ExtensibilityStrings.l_InvalidEventDates_Text = "Η ημερομηνία λήξης που ορίσατε προηγείται της ημερομηνίας έναρξης."
+_u.ExtensibilityStrings.l_InvalidEventDates_Text = "Η ημερομηνία λήξης που ορίσατε προηγείται της ημερομηνίας έναρξης.";
 _u.ExtensibilityStrings.l_NoValidRecipientsProvided_Text = "Δεν δόθηκαν έγκυροι παραλήπτες.";
 _u.ExtensibilityStrings.l_NumberOfRecipientsExceeded_Text = "Ο συνολικός αριθμός παραληπτών στο πεδίο δεν μπορεί να υπερβαίνει το {0}.";
 _u.ExtensibilityStrings.l_OffsetNotfound_Text = "Δεν ήταν δυνατό να βρεθεί μια μετατόπιση για αυτή τη χρονική σήμανση.";
-_u.ExtensibilityStrings.l_ParametersNotAsExpected_Text = "Οι δεδομένες παράμετροι δεν ταιριάζουν με την αναμενόμενη μορφή.";
+_u.ExtensibilityStrings.l_ParametersNotAsExpected_Text = "Οι δεδομένες παράμετροι δεν ταιριάζουν με την αναμενόμενη μορφή."

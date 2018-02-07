@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -94,7 +94,7 @@ Strings.OfficeOM.L_InvalidFormat = "Erro de formato inválido";
 Strings.OfficeOM.L_InvalidFormatValue = "Um ou mais parâmetros de formato têm valores que não são permitidos. Verifique outra vez os valores e tente novamente.";
 Strings.OfficeOM.L_InvalidGetColumns = "As colunas especificadas são inválidas.";
 Strings.OfficeOM.L_InvalidGetRowColumnCounts = "Os valores rowCount e columnCount especificados são inválidos.";
-Strings.OfficeOM.L_InvalidGetRows = "As linhas especificadas são inválidas."
+Strings.OfficeOM.L_InvalidGetRows = "As linhas especificadas são inválidas.";
 Strings.OfficeOM.L_InvalidGetStartRowColumn = "Os valores startRow ou startColumn especificados são inválidos.";
 Strings.OfficeOM.L_InvalidGrant = "Faltando pré-autorização.";
 Strings.OfficeOM.L_InvalidGrantMessage = "Concessão ausente para este suplemento.";
@@ -149,7 +149,7 @@ Strings.OfficeOM.L_ReadSettingsError = "Erro de leitura de configurações";
 Strings.OfficeOM.L_RedundantCallbackSpecification = "O retorno de chamada não pode ser especificado na lista de argumentos e no objeto opcional.";
 Strings.OfficeOM.L_RequestTimeout = "A chamada demorou muito tempo para executar.";
 Strings.OfficeOM.L_RequestTokenUnavailable = "Esta API foi limitada para reduzir a frequência de chamada.";
-Strings.OfficeOM.L_RowIndexOutOfRange = "O valor de índice de linha está fora do intervalo permitido. Use um valor (0 ou superior) que seja menor do que o número de linhas.";
+Strings.OfficeOM.L_RowIndexOutOfRange = "O valor de índice de linha está fora do intervalo permitido. Use um valor (0 ou superior) que seja menor do que o número de linhas."
 Strings.OfficeOM.L_RunMustReturnPromise = 'A função de lote passada para o método ".run" não retornou uma promessa. A função deve retornar uma promessa para que todos os objetos rastreados automaticamente possam ser liberados na conclusão da operação em lote. Normalmente, você deve retornar uma promessa enviando a resposta de "context.sync()".';
 Strings.OfficeOM.L_SSOClientError = "Ocorreu um erro na solicitação de autenticação do Office.";
 Strings.OfficeOM.L_SSOClientErrorMessage = "Ocorreu um erro inesperado no cliente.";

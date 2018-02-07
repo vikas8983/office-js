@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -13,8 +13,8 @@ _u.ExtensibilityStrings.l_AttachmentExceededSize_Text = "[D63AU]［The attachmen
 _u.ExtensibilityStrings.l_AttachmentUploadGeneralFailure_Text = "[0gPAl]［The attachment cannot be added to the item.］";
 _u.ExtensibilityStrings.l_CannotAddAttachmentBeforeUpgrade_Text = "[hnh2D]［Attachments cannot be added while the full reply or forward is being retrieved from the server.］";
 _u.ExtensibilityStrings.l_CursorPositionChanged_Text = "[PjcFc]［The user changed the position of the cursor while the data was being inserted.］";
-_u.ExtensibilityStrings.l_DataWriteErrorName_Text = "[xgx03]［Data Write Error］";
-_u.ExtensibilityStrings.l_DeleteAttachmentDoesNotExist_Text = "[dLsV2]［The attachment cannot be deleted because attachment with the attachment index cannot be found.］"
+_u.ExtensibilityStrings.l_DataWriteErrorName_Text = "[xgx03]［Data Write Error］"
+_u.ExtensibilityStrings.l_DeleteAttachmentDoesNotExist_Text = "[dLsV2]［The attachment cannot be deleted because attachment with the attachment index cannot be found.］";
 _u.ExtensibilityStrings.l_DisplayNameTooLong_Text = "[PlGmA]［One or more of the display names provided is too long.］";
 _u.ExtensibilityStrings.l_ElevatedPermissionNeededForMethod_Text = "[vpN0m]［Elevated permission is required to call the method: '{0}'.］";
 _u.ExtensibilityStrings.l_ElevatedPermissionNeeded_Text = "[O3YaN]［Elevated permission is required to access protected members of the JavaScript API for Office.］";

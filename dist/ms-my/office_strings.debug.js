@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -44,7 +44,7 @@ Strings.OfficeOM.L_CustomXmlNodeNotFound = "Nod yang ditentukan tidak ditemui.";
 Strings.OfficeOM.L_CustomXmlOutOfDateMessage = "Data tersebut sudah lapuk. Ambil objek semula.";
 Strings.OfficeOM.L_CustomXmlOutOfDateName = "Data Bukan Semasa";
 Strings.OfficeOM.L_DataNotMatchBindingSize = "Objek data yang dibekalkan tidak sepadan dengan saiz pilihan semasa.";
-Strings.OfficeOM.L_DataNotMatchBindingType = "Objek data yang ditentukan tidak serasi dengan jenis pengikatan.";
+Strings.OfficeOM.L_DataNotMatchBindingType = "Objek data yang ditentukan tidak serasi dengan jenis pengikatan."
 Strings.OfficeOM.L_DataNotMatchCoercionType = "Jenis objek data yang dibekalkan tidak serasi dengan pilihan semasa.";
 Strings.OfficeOM.L_DataNotMatchSelection = "Objek data yang dibekalkan tidak serasi dengan bentuk atau dimensi pilihan semasa.";
 Strings.OfficeOM.L_DataReadError = "Ralat Bacaan Data";
@@ -87,7 +87,7 @@ Strings.OfficeOM.L_InvalidBindingError = "Ralat Pengikatan Tidak Sah";
 Strings.OfficeOM.L_InvalidBindingOperation = "Operasi Pengikatan Tidak Sah";
 Strings.OfficeOM.L_InvalidCellsValue = "Satu atau lebih parameter sel mempunyai nilai yang tidak dibenarkan. Semak nilai sekali lagi dan cuba lagi.";
 Strings.OfficeOM.L_InvalidCoercion = "Jenis Paksaan Tidak Sah";
-Strings.OfficeOM.L_InvalidColumnsForBinding = "Lajur yang ditentukan adalah tidak sah."
+Strings.OfficeOM.L_InvalidColumnsForBinding = "Lajur yang ditentukan adalah tidak sah.";
 Strings.OfficeOM.L_InvalidDataFormat = "Format objek data yang ditentukan tidak sah.";
 Strings.OfficeOM.L_InvalidDataObject = "Objek Data Tidak Sah";
 Strings.OfficeOM.L_InvalidFormat = "Ralat Format Tidak Sah";

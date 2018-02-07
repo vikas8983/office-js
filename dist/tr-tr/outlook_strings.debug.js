@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -13,7 +13,7 @@ _u.ExtensibilityStrings.l_AttachmentExceededSize_Text = "Ek çok büyük olduğu
 _u.ExtensibilityStrings.l_AttachmentUploadGeneralFailure_Text = "Öğeye ek eklenemiyor.";
 _u.ExtensibilityStrings.l_CannotAddAttachmentBeforeUpgrade_Text = "Sunucudan tam yanıt veya ilet metni alınırken ek eklenemez.";
 _u.ExtensibilityStrings.l_CursorPositionChanged_Text = "Kullanıcı, veriler eklenirken imlecin yerini değiştirdi.";
-_u.ExtensibilityStrings.l_DataWriteErrorName_Text = "Veri Yazma Hatası"
+_u.ExtensibilityStrings.l_DataWriteErrorName_Text = "Veri Yazma Hatası";
 _u.ExtensibilityStrings.l_DeleteAttachmentDoesNotExist_Text = "Ek dizini bulunamadığı için ek silinemiyor.";
 _u.ExtensibilityStrings.l_DisplayNameTooLong_Text = "Sağlanan bir veya daha fazla sayıda görünen ad çok uzun.";
 _u.ExtensibilityStrings.l_ElevatedPermissionNeededForMethod_Text = "Şu yöntemi çağırmak için yükseltilmiş izin gerekir: '{0}'.";
@@ -27,7 +27,7 @@ _u.ExtensibilityStrings.l_InternalProtocolError_Text = "İç protokol hatası: '
 _u.ExtensibilityStrings.l_InvalidAttachmentId_Text = "Ek kimliği geçersiz.";
 _u.ExtensibilityStrings.l_InvalidAttachmentPath_Text = "Ek yolu geçersiz.";
 _u.ExtensibilityStrings.l_InvalidDate_Text = "Giriş, geçerli bir tarihe çözümlenemiyor.";
-_u.ExtensibilityStrings.l_InvalidEndTime_Text = "Bitiş saati başlangıç saatinden önce olamaz.";
+_u.ExtensibilityStrings.l_InvalidEndTime_Text = "Bitiş saati başlangıç saatinden önce olamaz."
 _u.ExtensibilityStrings.l_InvalidEventDates_Text = "Bitiş tarihi başlangıç tarihinden önce girilmiş.";
 _u.ExtensibilityStrings.l_NoValidRecipientsProvided_Text = "Geçerli alıcı bilgisi sağlanmadı.";
 _u.ExtensibilityStrings.l_NumberOfRecipientsExceeded_Text = "Alana eklenen toplam alıcı sayısı {0} değerinden fazla olamaz.";

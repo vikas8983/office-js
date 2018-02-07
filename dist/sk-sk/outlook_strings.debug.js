@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -10,7 +10,7 @@ _u.ExtensibilityStrings.l_AttachmentDeleteGeneralFailure_Text = "Príloha sa ned
 _u.ExtensibilityStrings.l_AttachmentDeletedBeforeUploadCompletes_Text = "Používateľ prílohu odstránil pred dokončením nahrávania.";
 _u.ExtensibilityStrings.l_AttachmentErrorName_Text = "Chyba prílohy";
 _u.ExtensibilityStrings.l_AttachmentExceededSize_Text = "Príloha sa nedá pridať, pretože je príliš veľká.";
-_u.ExtensibilityStrings.l_AttachmentUploadGeneralFailure_Text = "Príloha sa k položke nedá pridať.";
+_u.ExtensibilityStrings.l_AttachmentUploadGeneralFailure_Text = "Príloha sa k položke nedá pridať."
 _u.ExtensibilityStrings.l_CannotAddAttachmentBeforeUpgrade_Text = "Prílohy sa nedajú pridať, keď sa celá odpoveď alebo preposlaná správa načítava zo servera.";
 _u.ExtensibilityStrings.l_CursorPositionChanged_Text = "Používateľ zmenil počas vkladania údajov pozíciu kurzora.";
 _u.ExtensibilityStrings.l_DataWriteErrorName_Text = "Chyba pri zápise údajov";
@@ -19,7 +19,7 @@ _u.ExtensibilityStrings.l_DisplayNameTooLong_Text = "Minimálne jeden zadaný zo
 _u.ExtensibilityStrings.l_ElevatedPermissionNeededForMethod_Text = "Na volanie metódy {0} sa vyžaduje neobmedzené povolenie.";
 _u.ExtensibilityStrings.l_ElevatedPermissionNeeded_Text = "Na prístup k chráneným členom rozhrania JavaScript API pre Office sa vyžaduje neobmedzené povolenie.";
 _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Minimálne jedna zadaná e-mailová adresa je príliš dlhá.";
-_u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Požiadavka prekročila maximálnu veľkosť 1 MB. Upravte požiadavku EWS."
+_u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Požiadavka prekročila maximálnu veľkosť 1 MB. Upravte požiadavku EWS.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Prílohy sa nadajú pridať, pretože správa už obsahuje maximálny počet príloh";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "HTML čistenie zlyhalo.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Vyskytla sa interná chyba formátu.";

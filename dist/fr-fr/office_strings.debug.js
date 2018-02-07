@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -56,7 +56,7 @@ Strings.OfficeOM.L_DialogAlreadyOpened = "L’opération a échoué car ce compl
 Strings.OfficeOM.L_DialogInvalidScheme = "Le schéma d’URL n’est pas pris en charge. Utilisez le protocole HTTPS à la place.";
 Strings.OfficeOM.L_DialogNavigateError = "Erreur de navigation dans la boîte de dialogue";
 Strings.OfficeOM.L_DialogOK = "OK";
-Strings.OfficeOM.L_DialogRequireHTTPS = "Le protocole HTTP n’est pas pris en charge. Utilisez le protocole HTTPS à la place"
+Strings.OfficeOM.L_DialogRequireHTTPS = "Le protocole HTTP n’est pas pris en charge. Utilisez le protocole HTTPS à la place";
 Strings.OfficeOM.L_DisplayDialogError = "Erreur d’affichage de la boîte de dialogue";
 Strings.OfficeOM.L_DocumentReadOnly = "L’opération demandée n’est pas autorisée sur le mode de document actuel.";
 Strings.OfficeOM.L_ElementMissing = "Nous n’avons pas pu mettre en forme la cellule de tableau, car certaines valeurs de paramètre sont manquantes. Vérifiez à nouveau les paramètres et réessayez.";
@@ -161,7 +161,7 @@ Strings.OfficeOM.L_SSOUserConsentNotSupportedByCurrentAddinCategory = "Ce compl�
 Strings.OfficeOM.L_SSOUserConsentNotSupportedByCurrentAddinCategoryMessage = "L’opération a échoué, car ce complément ne prend pas en charge le consentement de l’utilisateur dans cette catégorie";
 Strings.OfficeOM.L_SaveSettingsError = "Une erreur s'est produite lors de l'enregistrement des paramètres";
 Strings.OfficeOM.L_SelectionCannotBound = "Désolé... Nous ne pouvons pas effectuer de liaison avec la sélection actuelle.";
-Strings.OfficeOM.L_SelectionNotSupportCoercionType = "La sélection actuelle n’est pas compatible avec le type de forçage spécifié.";
+Strings.OfficeOM.L_SelectionNotSupportCoercionType = "La sélection actuelle n’est pas compatible avec le type de forçage spécifié."
 Strings.OfficeOM.L_SetDataIsTooLarge = "L’objet de données spécifié est trop volumineux.";
 Strings.OfficeOM.L_SetDataParametersConflict = "Les paramètres spécifiés sont en conflit.";
 Strings.OfficeOM.L_SettingNameNotExist = "Désolé… Le nom de paramètre spécifié n’existe pas.";

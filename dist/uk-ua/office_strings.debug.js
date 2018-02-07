@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -13,7 +13,7 @@ Strings.OfficeOM.L_AddinIsAlreadyRequestingToken = "Надбудова вже з
 Strings.OfficeOM.L_AddinIsAlreadyRequestingTokenMessage = "Не вдалося виконати цю операцію, тому що ця надбудова вже запитує маркер доступу.";
 Strings.OfficeOM.L_ApiNotFoundDetails = 'Метод або властивість "{0}" належать до набору вимог {1}, недоступного у вашій версії {2}.';
 Strings.OfficeOM.L_AppNameNotExist = "Назва надбудови для {0} не існує.";
-Strings.OfficeOM.L_AppNotExistInitializeNotCalled = "Програма {0} не існує. Не вдалося викликати службу Microsoft.Office.WebExtension.initialize(reason).";
+Strings.OfficeOM.L_AppNotExistInitializeNotCalled = "Програма {0} не існує. Не вдалося викликати службу Microsoft.Office.WebExtension.initialize(reason)."
 Strings.OfficeOM.L_AttemptingToSetReadOnlyProperty = 'Триває спроба налаштувати доступну тільки для читання властивість "{0}".';
 Strings.OfficeOM.L_BadSelectorString = "Переданий у селектор рядок має неприпустимий формат або не підтримується.";
 Strings.OfficeOM.L_BindingCreationError = "Помилка створення зв’язування";
@@ -24,7 +24,7 @@ Strings.OfficeOM.L_CallbackNotAFunction = "Зворотній виклик ма�
 Strings.OfficeOM.L_CannotApplyPropertyThroughSetMethod = 'Не можна застосувати зміни властивості "{0}" за допомогою методу "object.set".';
 Strings.OfficeOM.L_CannotNavigateTo = "Об’єкт розташовано там, де не підтримується навігація.";
 Strings.OfficeOM.L_CannotRegisterEvent = "Не вдалося зареєструвати обробник подій.";
-Strings.OfficeOM.L_CannotWriteToSelection = "Не вдалося записати до поточного виділення."
+Strings.OfficeOM.L_CannotWriteToSelection = "Не вдалося записати до поточного виділення.";
 Strings.OfficeOM.L_CellDataAmountBeyondLimits = "Примітка: рекомендована кількість клітинок у таблиці – менше 20 000.";
 Strings.OfficeOM.L_CellFormatAmountBeyondLimits = "Примітка: рекомендована кількість наборів форматування, створених за допомогою виклику API форматування, – не більше 100.";
 Strings.OfficeOM.L_CloseFileBeforeRetrieve = "Виконайте команду closeAsync для поточного файлу, перш ніж отримати наступний.";

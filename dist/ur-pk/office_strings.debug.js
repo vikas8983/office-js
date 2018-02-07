@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -49,7 +49,7 @@ Strings.OfficeOM.L_DataNotMatchCoercionType = "اختصاصی کوائف آبج�
 Strings.OfficeOM.L_DataNotMatchSelection = "فراہم کردہ کوائف آبجیکٹ حالیہ انتخاب کے ابعاد یا شیپ کے ساتھ ہم آہنگ نہیں ہے۔";
 Strings.OfficeOM.L_DataReadError = "کوائف مطالعہ نقص";
 Strings.OfficeOM.L_DataStale = "کوائف موجودہ نہیں";
-Strings.OfficeOM.L_DataWriteError = "نقص کوائف کی تحریر";
+Strings.OfficeOM.L_DataWriteError = "نقص کوائف کی تحریر"
 Strings.OfficeOM.L_DataWriteReminder = "یاد دہانی کوائف کی تحریر";
 Strings.OfficeOM.L_DialogAddressNotTrusted = "آشکار میں ایپ ڈومینز عنصر میں URL کا ڈومین شامل نہیں کیا گیا ہے۔";
 Strings.OfficeOM.L_DialogAlreadyOpened = "عمل ناکام ہوگیا ہے کیونکہ اس ایڈ-ان میں پہلے ہی سے ایک فعال ڈائلاگ ہے۔";
@@ -116,7 +116,7 @@ Strings.OfficeOM.L_InvalidSetRows = "اختصاصی کالم درست نہیں �
 Strings.OfficeOM.L_InvalidSetStartRowColumn = "اختصاصی startRow یا startColumn اقدار درست نہیں ہیں۔";
 Strings.OfficeOM.L_InvalidTableOptionValue = "ایک یا زائد tableOptions پیرامیٹرز کے اقدار جن کی اجازت نہیں ہے۔ قدروں کو دہرا چیک کریں اور دوبارہ کوشش کریں۔";
 Strings.OfficeOM.L_InvalidValue = "غلط قدر";
-Strings.OfficeOM.L_MemoryLimit = "میموری حد سے تجاوز کرگیا ہے"
+Strings.OfficeOM.L_MemoryLimit = "میموری حد سے تجاوز کرگیا ہے";
 Strings.OfficeOM.L_MissingParameter = "غائب پیرامیٹر";
 Strings.OfficeOM.L_MissingRequiredArguments = "کچھ مطلوبہ دلائل غائب";
 Strings.OfficeOM.L_MultipleNamedItemFound = "اسی نام کے ساتھ متعدد آبجیکٹ نہیں ملے۔";

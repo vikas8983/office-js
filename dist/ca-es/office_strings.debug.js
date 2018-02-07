@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -13,7 +13,7 @@ Strings.OfficeOM.L_AddinIsAlreadyRequestingToken = "El complement ja està deman
 Strings.OfficeOM.L_AddinIsAlreadyRequestingTokenMessage = "L'operació ha fallat perquè aquest complement ja està demanant un testimoni d'accés.";
 Strings.OfficeOM.L_ApiNotFoundDetails = "El mètode o propietat {0} forma part del conjunt de requisits {1}, que no està disponible a la vostra versió de l'aplicació {2}.";
 Strings.OfficeOM.L_AppNameNotExist = "El nom del complement relatiu a {0} no existeix.";
-Strings.OfficeOM.L_AppNotExistInitializeNotCalled = "L'aplicació {0} no existeix. Microsoft.Office.WebExtension.initialize(reason) no s'ha cridat."
+Strings.OfficeOM.L_AppNotExistInitializeNotCalled = "L'aplicació {0} no existeix. Microsoft.Office.WebExtension.initialize(reason) no s'ha cridat.";
 Strings.OfficeOM.L_AttemptingToSetReadOnlyProperty = "S'està provant d'establir la propietat de només lectura \"{0}\".";
 Strings.OfficeOM.L_BadSelectorString = "La cadena passada al selector no està ben formatada o no s'admet.";
 Strings.OfficeOM.L_BindingCreationError = "Error de creació de vinculació";
@@ -116,7 +116,7 @@ Strings.OfficeOM.L_InvalidSetRows = "Les files especificades no són vàlides.";
 Strings.OfficeOM.L_InvalidSetStartRowColumn = "Els valors startRow o startColumn especificats no són vàlids.";
 Strings.OfficeOM.L_InvalidTableOptionValue = "Hi ha un o més paràmetres de la taula Opcions que tenen valors no permesos. Comproveu-los i torneu-ho a provar.";
 Strings.OfficeOM.L_InvalidValue = "Valor no vàlid";
-Strings.OfficeOM.L_MemoryLimit = "S'ha superat el límit de memòria";
+Strings.OfficeOM.L_MemoryLimit = "S'ha superat el límit de memòria"
 Strings.OfficeOM.L_MissingParameter = "Falta un paràmetre";
 Strings.OfficeOM.L_MissingRequiredArguments = "falten alguns arguments obligatoris";
 Strings.OfficeOM.L_MultipleNamedItemFound = "S'han trobat múltiples objectes amb el mateix nom.";

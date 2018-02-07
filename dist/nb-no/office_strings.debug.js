@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -108,7 +108,7 @@ Strings.OfficeOM.L_InvalidParameters = "Funksjonen {0} har ugyldige parametere."
 Strings.OfficeOM.L_InvalidReadForBlankRow = "Angitt rad er tom.";
 Strings.OfficeOM.L_InvalidRequestContext = "Kan ikke bruke objektet på tvers av ulike forespørselskontekster.";
 Strings.OfficeOM.L_InvalidResourceUrl = "Ugyldig nettadresse for programressurs er angitt.";
-Strings.OfficeOM.L_InvalidResourceUrlMessage = "Ugyldig nettadresse for ressurs er angitt i manifestet."
+Strings.OfficeOM.L_InvalidResourceUrlMessage = "Ugyldig nettadresse for ressurs er angitt i manifestet.";
 Strings.OfficeOM.L_InvalidSSOAddinMessage = "Identitet-API støttes ikke for dette tillegget.";
 Strings.OfficeOM.L_InvalidSelectionForBindingType = "Kan ikke opprette en binding med gjeldende utvalg og angitt bindingstype.";
 Strings.OfficeOM.L_InvalidSetColumns = "De angitte kolonnene er ugyldige.";
@@ -141,7 +141,7 @@ Strings.OfficeOM.L_OperationNotSupportedOnMatrixData = "Merket innhold må være
 Strings.OfficeOM.L_OperationNotSupportedOnThisBindingType = "Operasjonen støttes ikke for denne bindingstypen.";
 Strings.OfficeOM.L_OsfControlTypeNotSupported = "OsfControl-typen støttes ikke.";
 Strings.OfficeOM.L_OutOfRange = "Utenfor området";
-Strings.OfficeOM.L_OverwriteWorksheetData = "Set-operasjonen mislyktes fordi det angitte dataobjektet vil overskrive eller flytte data.";
+Strings.OfficeOM.L_OverwriteWorksheetData = "Set-operasjonen mislyktes fordi det angitte dataobjektet vil overskrive eller flytte data."
 Strings.OfficeOM.L_PermissionDenied = "Ingen tilgang";
 Strings.OfficeOM.L_PropertyDoesNotExist = "Egenskapen {0} ikke finnes på objektet.";
 Strings.OfficeOM.L_PropertyNotLoaded = "Egenskapen {0} er ikke tilgjengelig. Kall load-metoden på det inneholdende objektet før du leser egenskapens verdi, og kaller «context.sync()» på den tilknyttede forespørselskonteksten.";

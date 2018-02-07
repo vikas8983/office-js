@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -11,7 +11,7 @@ _u.ExtensibilityStrings.l_AttachmentDeletedBeforeUploadCompletes_Text = "Brugere
 _u.ExtensibilityStrings.l_AttachmentErrorName_Text = "Fejl ved vedhæftet fil";
 _u.ExtensibilityStrings.l_AttachmentExceededSize_Text = "Den vedhæftede fil kan ikke tilføjes, fordi den er for stor.";
 _u.ExtensibilityStrings.l_AttachmentUploadGeneralFailure_Text = "Den vedhæftede fil kan ikke føjes til elementet.";
-_u.ExtensibilityStrings.l_CannotAddAttachmentBeforeUpgrade_Text = "Vedhæftede filer kan ikke tilføjes, mens det fulde svar eller videresendelsen hentes fra serveren.";
+_u.ExtensibilityStrings.l_CannotAddAttachmentBeforeUpgrade_Text = "Vedhæftede filer kan ikke tilføjes, mens det fulde svar eller videresendelsen hentes fra serveren."
 _u.ExtensibilityStrings.l_CursorPositionChanged_Text = "Brugeren ændrede placering af markøren, mens data blev indsat.";
 _u.ExtensibilityStrings.l_DataWriteErrorName_Text = "Fejl i skrivning af data";
 _u.ExtensibilityStrings.l_DeleteAttachmentDoesNotExist_Text = "Den vedhæftede fil kan ikke slettes, fordi den vedhæftede fil ikke kan findes med indekset for den vedhæftede fil.";
@@ -27,7 +27,7 @@ _u.ExtensibilityStrings.l_InternalProtocolError_Text = "Intern protokolfejl: '{0
 _u.ExtensibilityStrings.l_InvalidAttachmentId_Text = "Den vedhæftede fils id var ugyldigt.";
 _u.ExtensibilityStrings.l_InvalidAttachmentPath_Text = "Stien for den vedhæftede fil var ugyldig.";
 _u.ExtensibilityStrings.l_InvalidDate_Text = "Inputtet fortolkes ikke som en gyldig dato.";
-_u.ExtensibilityStrings.l_InvalidEndTime_Text = "Sluttidspunktet kan ikke være før starttidspunktet."
+_u.ExtensibilityStrings.l_InvalidEndTime_Text = "Sluttidspunktet kan ikke være før starttidspunktet.";
 _u.ExtensibilityStrings.l_InvalidEventDates_Text = "Slutdatoen ligger før startdatoen.";
 _u.ExtensibilityStrings.l_NoValidRecipientsProvided_Text = "Der blev ikke angivet nogen gyldige modtagere.";
 _u.ExtensibilityStrings.l_NumberOfRecipientsExceeded_Text = "Det samlede antal modtagere i feltet må ikke overskride {0}.";

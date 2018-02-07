@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -87,7 +87,7 @@ Strings.OfficeOM.L_InvalidBindingError = "Invalid Binding Error";
 Strings.OfficeOM.L_InvalidBindingOperation = "Invalid Binding Operation";
 Strings.OfficeOM.L_InvalidCellsValue = "One or more of the cells parameters have values that aren't allowed. Double-check the values and try again.";
 Strings.OfficeOM.L_InvalidCoercion = "Invalid Coercion Type";
-Strings.OfficeOM.L_InvalidColumnsForBinding = "The specified columns are invalid.";
+Strings.OfficeOM.L_InvalidColumnsForBinding = "The specified columns are invalid."
 Strings.OfficeOM.L_InvalidDataFormat = "The format of the specified data object is invalid.";
 Strings.OfficeOM.L_InvalidDataObject = "Invalid Data Object";
 Strings.OfficeOM.L_InvalidFormat = "Invalid Format Error";
@@ -183,7 +183,7 @@ Strings.OfficeOM.L_UnknownBindingType = "The binding type is not supported.";
 Strings.OfficeOM.L_UnsupportedDataObject = "The supplied data object type is not supported.";
 Strings.OfficeOM.L_UnsupportedEnumeration = "Unsupported Enumeration";
 Strings.OfficeOM.L_UnsupportedEnumerationMessage = "The enumeration isn't supported in the current host application.";
-Strings.OfficeOM.L_UnsupportedUserIdentity = "User identity type is not supported."
+Strings.OfficeOM.L_UnsupportedUserIdentity = "User identity type is not supported.";
 Strings.OfficeOM.L_UnsupportedUserIdentityMessage = "The identity type of the user is not supported.";
 Strings.OfficeOM.L_UserAborted = "User aborted the consent request.";
 Strings.OfficeOM.L_UserAbortedMessage = "The user did not consent the add-in permissions.";

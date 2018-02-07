@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -23,7 +23,7 @@ _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "The request exceeds the 1 
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Attachments cannot be added because the message already has the maximum number of attachments";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "The HTML santization has failed.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "There was an internal format error.";
-_u.ExtensibilityStrings.l_InternalProtocolError_Text = "Internal protocol error: '{0}'.";
+_u.ExtensibilityStrings.l_InternalProtocolError_Text = "Internal protocol error: '{0}'."
 _u.ExtensibilityStrings.l_InvalidAttachmentId_Text = "The attachment ID was invalid.";
 _u.ExtensibilityStrings.l_InvalidAttachmentPath_Text = "The attachment path was invalid.";
 _u.ExtensibilityStrings.l_InvalidDate_Text = "The input doesn't resolve to a valid date.";
@@ -32,4 +32,4 @@ _u.ExtensibilityStrings.l_InvalidEventDates_Text = "The end date occurs before t
 _u.ExtensibilityStrings.l_NoValidRecipientsProvided_Text = "No valid recipients were provided.";
 _u.ExtensibilityStrings.l_NumberOfRecipientsExceeded_Text = "The total number of recipients in the field can't exceed {0}.";
 _u.ExtensibilityStrings.l_OffsetNotfound_Text = "An offset for this time stamp couldn't be found.";
-_u.ExtensibilityStrings.l_ParametersNotAsExpected_Text = "The given parameters do not match the expected format."
+_u.ExtensibilityStrings.l_ParametersNotAsExpected_Text = "The given parameters do not match the expected format.";

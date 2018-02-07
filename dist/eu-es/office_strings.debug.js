@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -25,7 +25,7 @@ Strings.OfficeOM.L_CannotApplyPropertyThroughSetMethod = '"{0}" propietatean egi
 Strings.OfficeOM.L_CannotNavigateTo = "Objektua nabigatu ezin den toki batean kokatuta dago.";
 Strings.OfficeOM.L_CannotRegisterEvent = "Ezin da erregistratu gertaera-maneatzailea.";
 Strings.OfficeOM.L_CannotWriteToSelection = "Ezin da uneko hautapenean idatzi.";
-Strings.OfficeOM.L_CellDataAmountBeyondLimits = "Oharra: taulek, gehienez, 20.000 gelaxka izatea gomendatzen da."
+Strings.OfficeOM.L_CellDataAmountBeyondLimits = "Oharra: taulek, gehienez, 20.000 gelaxka izatea gomendatzen da.";
 Strings.OfficeOM.L_CellFormatAmountBeyondLimits = "Oharra: formatua ezartzeko APIaren bidez, gehienez, 100 formatu ezartzea gomendatzen da.";
 Strings.OfficeOM.L_CloseFileBeforeRetrieve = "Deitu closeAsync metodoari uneko fitxategian, beste fitxategi bat eskuratu aurretik.";
 Strings.OfficeOM.L_CoercionTypeNotMatchBinding = "Zehaztutako hertsadura mota ez da lotura mota honekin bateragarria.";
@@ -137,7 +137,7 @@ Strings.OfficeOM.L_NotSupportedEventType = "Ez da zehaztutako {0} gertaera mota 
 Strings.OfficeOM.L_OperationCancelledError = "Bertan behera utzi da eragiketa";
 Strings.OfficeOM.L_OperationCancelledErrorMessage = "Erabiltzaileak bertan behera utzi du eragiketa.";
 Strings.OfficeOM.L_OperationNotSupported = "Ez da eragiketa onartzen.";
-Strings.OfficeOM.L_OperationNotSupportedOnMatrixData = "Hautatutako edukiak taula-formatuan egon behar du. Formateatu datuak taula gisa eta saiatu berriro.";
+Strings.OfficeOM.L_OperationNotSupportedOnMatrixData = "Hautatutako edukiak taula-formatuan egon behar du. Formateatu datuak taula gisa eta saiatu berriro."
 Strings.OfficeOM.L_OperationNotSupportedOnThisBindingType = "Lotura mota honetan ez da eragiketa hori onartzen.";
 Strings.OfficeOM.L_OsfControlTypeNotSupported = "Ez da OsfControl mota onartzen.";
 Strings.OfficeOM.L_OutOfRange = "Barrutitik kanpo";

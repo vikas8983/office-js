@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -10,7 +10,7 @@ _u.ExtensibilityStrings.l_AttachmentDeleteGeneralFailure_Text = "A melléklet ne
 _u.ExtensibilityStrings.l_AttachmentDeletedBeforeUploadCompletes_Text = "A felhasználó eltávolította a mellékletet, mielőtt a feltöltés befejeződött volna.";
 _u.ExtensibilityStrings.l_AttachmentErrorName_Text = "Melléklethiba";
 _u.ExtensibilityStrings.l_AttachmentExceededSize_Text = "A melléklet nem vehető fel, mert túl nagy a mérete.";
-_u.ExtensibilityStrings.l_AttachmentUploadGeneralFailure_Text = "A melléklet nem vehető fel az elembe.";
+_u.ExtensibilityStrings.l_AttachmentUploadGeneralFailure_Text = "A melléklet nem vehető fel az elembe."
 _u.ExtensibilityStrings.l_CannotAddAttachmentBeforeUpgrade_Text = "Nem vehetők fel mellékletek, amíg a válaszok vagy továbbított üzenetek teljes készletének lekérése folyik a kiszolgálóról.";
 _u.ExtensibilityStrings.l_CursorPositionChanged_Text = "A felhasználó az adatok beszúrása közben megváltoztatta a kurzor pozícióját.";
 _u.ExtensibilityStrings.l_DataWriteErrorName_Text = "Adatírási hiba";
@@ -21,7 +21,7 @@ _u.ExtensibilityStrings.l_ElevatedPermissionNeeded_Text = "Emelt szintű engedé
 _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Egy vagy több megadott e-mail-cím túl hosszú.";
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "A kérés túllépi az 1 MB-os méretkorlátot. Módosítsa az EWS-kérést.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Nem vehetők fel mellékletek, mert az üzenethez már a maximális számú melléklet van csatolva";
-_u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "Nem sikerült a HTML-tisztítás."
+_u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "Nem sikerült a HTML-tisztítás.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Belső formátumhiba történt.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "Belső protokollhiba: {0}.";
 _u.ExtensibilityStrings.l_InvalidAttachmentId_Text = "Érvénytelen a mellékletazonosító.";

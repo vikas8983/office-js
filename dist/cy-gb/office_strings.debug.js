@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -146,7 +146,7 @@ Strings.OfficeOM.L_PermissionDenied = "Dim Caniatâd";
 Strings.OfficeOM.L_PropertyDoesNotExist = "Dydy’r briodwedd '{0}' ddim yn bodoli ar y gwrthrych.";
 Strings.OfficeOM.L_PropertyNotLoaded = "Dydy'r briodwedd '{0}' ddim ar gael. Cyn darllen gwerth y briodwedd, dylech alw'r dull llwytho ar y gwrthrych sy'n ei gynnwys a galw \"context.sync()\" ar y cyd-destun cais cysylltiedig.";
 Strings.OfficeOM.L_ReadSettingsError = "Gwall Gosodiadau Darllen";
-Strings.OfficeOM.L_RedundantCallbackSpecification = "Does dim modd pennu galw'n ôl mewn rhestr arg a gwrthrych dewisol."
+Strings.OfficeOM.L_RedundantCallbackSpecification = "Does dim modd pennu galw'n ôl mewn rhestr arg a gwrthrych dewisol.";
 Strings.OfficeOM.L_RequestTimeout = "Roedd yr alwad wedi cymryd gormod o amser i'w gweithredu.";
 Strings.OfficeOM.L_RequestTokenUnavailable = "Mae'r API hwn wedi cael ei dagu i arafu amlder galwadau.";
 Strings.OfficeOM.L_RowIndexOutOfRange = "Mae'r gwerth mynegai rhes y tu allan i'r ystod sy'n cael ei chaniatáu. Defnyddiwch werth (0 neu fwy) sy'n llai na nifer y rhesi.";
@@ -162,7 +162,7 @@ Strings.OfficeOM.L_SSOUserConsentNotSupportedByCurrentAddinCategoryMessage = "Ma
 Strings.OfficeOM.L_SaveSettingsError = "Gwall Gosodiadau Cadw";
 Strings.OfficeOM.L_SelectionCannotBound = "Does dim modd rhwymo i'r dewis dan sylw.";
 Strings.OfficeOM.L_SelectionNotSupportCoercionType = "Dydy'r dewis dan sylw ddim yn cyd-fynd â'r math o orfodaeth a bennwyd.";
-Strings.OfficeOM.L_SetDataIsTooLarge = "Mae'r gwrthrych data a bennwyd yn rhy fawr.";
+Strings.OfficeOM.L_SetDataIsTooLarge = "Mae'r gwrthrych data a bennwyd yn rhy fawr."
 Strings.OfficeOM.L_SetDataParametersConflict = "Mae'r paramedrau a bennwyd yn gwrthdaro.";
 Strings.OfficeOM.L_SettingNameNotExist = "Dydy'r enw gosodiad a bennwyd ddim yn bodoli.";
 Strings.OfficeOM.L_SettingsAreStale = "Doedd dim modd cadw'r gosodiadau oherwydd dydyn nhw ddim yn gyfredol.";

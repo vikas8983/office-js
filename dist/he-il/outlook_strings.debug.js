@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -12,7 +12,7 @@ _u.ExtensibilityStrings.l_AttachmentErrorName_Text = "שגיאת קובץ מצו
 _u.ExtensibilityStrings.l_AttachmentExceededSize_Text = "אין אפשרות להוסיף את הקובץ המצורף מאחר שהוא גדול מדי.";
 _u.ExtensibilityStrings.l_AttachmentUploadGeneralFailure_Text = "אין אפשרות להוסיף את הקובץ המצורף לפריט.";
 _u.ExtensibilityStrings.l_CannotAddAttachmentBeforeUpgrade_Text = "אין אפשרות להוסיף קבצים מצורפים בזמן שהתשובה או ההעברה המלאה מאוחזרת מהשרת.";
-_u.ExtensibilityStrings.l_CursorPositionChanged_Text = "המשתמש שינה את מיקום הסמן בזמן שהנתונים נוספו."
+_u.ExtensibilityStrings.l_CursorPositionChanged_Text = "המשתמש שינה את מיקום הסמן בזמן שהנתונים נוספו.";
 _u.ExtensibilityStrings.l_DataWriteErrorName_Text = "שגיאה בכתיבת נתונים";
 _u.ExtensibilityStrings.l_DeleteAttachmentDoesNotExist_Text = "אין אפשרות למחוק את הקובץ המצורף מאחר שקובץ מצורף עם אינדקס הקובץ המצורף לא נמצא.";
 _u.ExtensibilityStrings.l_DisplayNameTooLong_Text = "אחד או יותר משמות התצוגה שסופקו ארוך מדי.";
@@ -26,7 +26,7 @@ _u.ExtensibilityStrings.l_InternalFormatError_Text = "אירעה שגיאת עי
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "שגיאת פרוטוקול פנימית: '{0}'.";
 _u.ExtensibilityStrings.l_InvalidAttachmentId_Text = "מזהה הקובץ המצורף לא היה חוקי.";
 _u.ExtensibilityStrings.l_InvalidAttachmentPath_Text = "נתיב הקובץ המצורף לא היה חוקי.";
-_u.ExtensibilityStrings.l_InvalidDate_Text = "הקלט אינו מזוהה כתאריך חוקי.";
+_u.ExtensibilityStrings.l_InvalidDate_Text = "הקלט אינו מזוהה כתאריך חוקי."
 _u.ExtensibilityStrings.l_InvalidEndTime_Text = "שעת הסיום אינה יכולה להיות מוקדמת יותר משעת ההתחלה.";
 _u.ExtensibilityStrings.l_InvalidEventDates_Text = "תאריך הסיום חל לפני תאריך ההתחלה.";
 _u.ExtensibilityStrings.l_NoValidRecipientsProvided_Text = "לא סופקו נמענים חוקיים.";

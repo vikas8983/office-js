@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -28,8 +28,8 @@ _u.ExtensibilityStrings.l_InvalidAttachmentId_Text = "Недопустимый �
 _u.ExtensibilityStrings.l_InvalidAttachmentPath_Text = "Недопустимый путь вложения.";
 _u.ExtensibilityStrings.l_InvalidDate_Text = "Введенные данные не содержат распознаваемую дату.";
 _u.ExtensibilityStrings.l_InvalidEndTime_Text = "Время окончания не может предшествовать времени начала.";
-_u.ExtensibilityStrings.l_InvalidEventDates_Text = "Дата окончания предшествует дате начала.";
+_u.ExtensibilityStrings.l_InvalidEventDates_Text = "Дата окончания предшествует дате начала."
 _u.ExtensibilityStrings.l_NoValidRecipientsProvided_Text = "Не указаны допустимые получатели.";
 _u.ExtensibilityStrings.l_NumberOfRecipientsExceeded_Text = "Общее число получателей в поле не может превышать {0}.";
 _u.ExtensibilityStrings.l_OffsetNotfound_Text = "Не удается найти смещение для данной метки времени.";
-_u.ExtensibilityStrings.l_ParametersNotAsExpected_Text = "Заданные параметры не соответствуют ожидаемому формату."
+_u.ExtensibilityStrings.l_ParametersNotAsExpected_Text = "Заданные параметры не соответствуют ожидаемому формату.";

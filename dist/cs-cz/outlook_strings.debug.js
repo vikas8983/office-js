@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -6,7 +6,7 @@ _u.ExtensibilityStrings = function()
 };
 _u.ExtensibilityStrings.registerClass("_u.ExtensibilityStrings");
 _u.ExtensibilityStrings.l_APICallFailedDueToItemChange_Text = "Vybraná položka se změnila.";
-_u.ExtensibilityStrings.l_AttachmentDeleteGeneralFailure_Text = "Příloha se nedá odstranit z položky."
+_u.ExtensibilityStrings.l_AttachmentDeleteGeneralFailure_Text = "Příloha se nedá odstranit z položky.";
 _u.ExtensibilityStrings.l_AttachmentDeletedBeforeUploadCompletes_Text = "Před dokončením nahrávání uživatel odebral přílohu.";
 _u.ExtensibilityStrings.l_AttachmentErrorName_Text = "Chyba přílohy";
 _u.ExtensibilityStrings.l_AttachmentExceededSize_Text = "Příloha se nedá přidat, protože je moc velká.";
@@ -20,7 +20,7 @@ _u.ExtensibilityStrings.l_ElevatedPermissionNeededForMethod_Text = "Je potřeba,
 _u.ExtensibilityStrings.l_ElevatedPermissionNeeded_Text = "Pro přístup k chráněným členům rozhraní JavaScript API pro Office je potřeba zvýšené oprávnění. ";
 _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Minimálně jedna ze zadaných e-mailových adres je moc dlouhá.";
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Požadavek nesmí být větší než 1 MB. Upravte svou žádost Webových služeb Exchange (EWS).";
-_u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Přílohy se nedají přidat, protože zpráva už má maximální možný počet příloh.";
+_u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Přílohy se nedají přidat, protože zpráva už má maximální možný počet příloh."
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "Sanitace HTML se nepovedla.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Došlo k chybě vnitřního formátu.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "Vnitřní chyba protokolu: {0}.";

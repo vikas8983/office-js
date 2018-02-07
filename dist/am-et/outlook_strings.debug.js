@@ -1,11 +1,11 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
 {
 };
 _u.ExtensibilityStrings.registerClass("_u.ExtensibilityStrings");
-_u.ExtensibilityStrings.l_APICallFailedDueToItemChange_Text = "የተመረጠው ንጥል ነገር ተለውጧል።"
+_u.ExtensibilityStrings.l_APICallFailedDueToItemChange_Text = "የተመረጠው ንጥል ነገር ተለውጧል።";
 _u.ExtensibilityStrings.l_AttachmentDeleteGeneralFailure_Text = "አባሪው ከንጥልነገሩ ላይ ሊሰረዝ አይችልም።";
 _u.ExtensibilityStrings.l_AttachmentDeletedBeforeUploadCompletes_Text = "ተጠቃሚው አባሪው ተጭኖ ሳይጠናቀቅ አስወግዶታል።";
 _u.ExtensibilityStrings.l_AttachmentErrorName_Text = "የአባሪ ስህተት";
@@ -29,7 +29,7 @@ _u.ExtensibilityStrings.l_InvalidAttachmentPath_Text = "የአባሪው መን�
 _u.ExtensibilityStrings.l_InvalidDate_Text = "ግቤቱ ወደ ቅቡል ቀን ሊቀየር አልቻም።";
 _u.ExtensibilityStrings.l_InvalidEndTime_Text = "የመቸረሻው ቀን ከመጀመርያው ቀን ሊቀድም አይችልም።";
 _u.ExtensibilityStrings.l_InvalidEventDates_Text = "የመጨረሻው ቀን ከመጀመሪያው ቀን ቀድሞ ተከሰተ።";
-_u.ExtensibilityStrings.l_NoValidRecipientsProvided_Text = "ምንም ተቀባይነት ያላቸው ተቀባዮች አልቀረቡም።";
+_u.ExtensibilityStrings.l_NoValidRecipientsProvided_Text = "ምንም ተቀባይነት ያላቸው ተቀባዮች አልቀረቡም።"
 _u.ExtensibilityStrings.l_NumberOfRecipientsExceeded_Text = "ሜዳው ላይ ያሉት ጠቀላላ ተቀባዮች ቁጥር ከ {0} ሊበልጥ አይችልም።";
 _u.ExtensibilityStrings.l_OffsetNotfound_Text = "ዚህ የግዜ ማህተም ኣመጣጣኝ ሊገኝ አልቻለም።";
 _u.ExtensibilityStrings.l_ParametersNotAsExpected_Text = "የተሰጡት ፓራሜትሮች ከሚጠበቀው ቅርጽ ጋር የሚሄድ አይደለም።";

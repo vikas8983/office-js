@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -95,7 +95,7 @@ Strings.OfficeOM.L_InvalidFormatValue = "Satu atau beberapa parameter format mem
 Strings.OfficeOM.L_InvalidGetColumns = "Kolom yang ditentukan tidak valid.";
 Strings.OfficeOM.L_InvalidGetRowColumnCounts = "Nilai rowCount atau columnCount yang ditentukan tidak valid.";
 Strings.OfficeOM.L_InvalidGetRows = "Baris yang ditentukan tidak valid.";
-Strings.OfficeOM.L_InvalidGetStartRowColumn = "Nilai startRow atau startColumn yang ditentukan tidak valid."
+Strings.OfficeOM.L_InvalidGetStartRowColumn = "Nilai startRow atau startColumn yang ditentukan tidak valid.";
 Strings.OfficeOM.L_InvalidGrant = "Tidak ada pra-otorisasi.";
 Strings.OfficeOM.L_InvalidGrantMessage = "Tidak ada perizinan untuk add-in ini.";
 Strings.OfficeOM.L_InvalidNamedItemForBindingType = "Tipe ikatan yang ditentukan tidak kompatibel dengan item bernama yang tersedia.";
@@ -169,7 +169,7 @@ Strings.OfficeOM.L_SettingsAreStale = "Pengaturan tidak bisa disimpan karena buk
 Strings.OfficeOM.L_SettingsCannotSave = "Pengaturan tidak dapat disimpan.";
 Strings.OfficeOM.L_SettingsStaleError = "Kesalahan Pengaturan Tidak Valid";
 Strings.OfficeOM.L_ShowWindowDialogNotification = "{0} ingin menampilkan jendela baru.";
-Strings.OfficeOM.L_ShowWindowDialogNotificationAllow = "Izinkan";
+Strings.OfficeOM.L_ShowWindowDialogNotificationAllow = "Izinkan"
 Strings.OfficeOM.L_ShowWindowDialogNotificationIgnore = "Abaikan";
 Strings.OfficeOM.L_ShuttingDown = "Operasi gagal karena data pada server bukan data saat ini.";
 Strings.OfficeOM.L_SliceSizeNotSupported = "Ukuran iris yang ditentukan tidak didukung.";

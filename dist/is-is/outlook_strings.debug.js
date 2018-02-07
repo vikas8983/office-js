@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -15,7 +15,7 @@ _u.ExtensibilityStrings.l_CannotAddAttachmentBeforeUpgrade_Text = "Ekki er hægt
 _u.ExtensibilityStrings.l_CursorPositionChanged_Text = "Notandinn breytti stöðu bendils á meðan gögnin voru sett inn.";
 _u.ExtensibilityStrings.l_DataWriteErrorName_Text = "Skrifvilla gagna";
 _u.ExtensibilityStrings.l_DeleteAttachmentDoesNotExist_Text = "Ekki var hægt að eyða viðhengi vegna þess að atriðskrá viðhengis fannst ekki.";
-_u.ExtensibilityStrings.l_DisplayNameTooLong_Text = "Eitt eða fleiri af nöfnum til birtingar sem eru gefin upp eru of löng."
+_u.ExtensibilityStrings.l_DisplayNameTooLong_Text = "Eitt eða fleiri af nöfnum til birtingar sem eru gefin upp eru of löng.";
 _u.ExtensibilityStrings.l_ElevatedPermissionNeededForMethod_Text = "Þörf er á aukinni heimild til að framkvæma aðferð: '{0}'.";
 _u.ExtensibilityStrings.l_ElevatedPermissionNeeded_Text = "Þörf er á aukinni heimild til að komast að vernduðum meðlimum í JavaScript API for Office.";
 _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Eitt eða fleiri af tölvupóstföngum sem eru gefin upp eru of löng.";
@@ -30,6 +30,6 @@ _u.ExtensibilityStrings.l_InvalidDate_Text = "Inntakið skilaði ekki gildri dag
 _u.ExtensibilityStrings.l_InvalidEndTime_Text = "Lokatíminn getur ekki verið á undan upphafstímanum.";
 _u.ExtensibilityStrings.l_InvalidEventDates_Text = "Lokadagsetning á sér stað á undan upphafsdagsetningu.";
 _u.ExtensibilityStrings.l_NoValidRecipientsProvided_Text = "Engir gildir viðtakendur voru gefnir upp.";
-_u.ExtensibilityStrings.l_NumberOfRecipientsExceeded_Text = "Heildarfjöldi viðtakenda í reitnum getur ekki farið yfir {0}.";
+_u.ExtensibilityStrings.l_NumberOfRecipientsExceeded_Text = "Heildarfjöldi viðtakenda í reitnum getur ekki farið yfir {0}."
 _u.ExtensibilityStrings.l_OffsetNotfound_Text = "Hliðrun fyrir þennan tímastimpil fannst ekki.";
 _u.ExtensibilityStrings.l_ParametersNotAsExpected_Text = "Uppgefnar breytur samsvara ekki viðbúnu sniði.";

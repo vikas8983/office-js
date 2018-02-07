@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -12,7 +12,7 @@ Strings.OfficeOM.L_AddBindingFromPromptDefaultText = "Bitte treffen Sie eine Aus
 Strings.OfficeOM.L_AddinIsAlreadyRequestingToken = "Das Add-In fordert bereits ein Zugriffstoken an.";
 Strings.OfficeOM.L_AddinIsAlreadyRequestingTokenMessage = "Fehler beim Vorgang, da dieses Add-In bereits ein Zugriffstoken anfordert.";
 Strings.OfficeOM.L_ApiNotFoundDetails = 'Die Methode oder Eigenschaft "{0}" ist Teil des "{1}"-Anforderungssatzes, der in Ihrer Version von {2} nicht verfügbar ist.';
-Strings.OfficeOM.L_AppNameNotExist = "Add-In-Name für {0} ist nicht vorhanden.";
+Strings.OfficeOM.L_AppNameNotExist = "Add-In-Name für {0} ist nicht vorhanden."
 Strings.OfficeOM.L_AppNotExistInitializeNotCalled = "Die Anwendung {0} ist nicht vorhanden. Microsoft.Office.WebExtension.initialize(Ursache) wird nicht aufgerufen.";
 Strings.OfficeOM.L_AttemptingToSetReadOnlyProperty = 'Versuch, die schreibgeschützte Eigenschaft "{0}" festzulegen.';
 Strings.OfficeOM.L_BadSelectorString = "Die an den Selektor übergebene Zeichenfolge ist nicht ordnungsgemäß formatiert oder wird nicht unterstützt.";
@@ -119,7 +119,7 @@ Strings.OfficeOM.L_InvalidValue = "Ungültiger Wert";
 Strings.OfficeOM.L_MemoryLimit = "Arbeitsspeichergrenze überschritten";
 Strings.OfficeOM.L_MissingParameter = "Fehlender Parameter";
 Strings.OfficeOM.L_MissingRequiredArguments = "fehlen einige erforderliche Argumente";
-Strings.OfficeOM.L_MultipleNamedItemFound = "Es wurden mehrere Objekte mit dem gleichen Namen gefunden."
+Strings.OfficeOM.L_MultipleNamedItemFound = "Es wurden mehrere Objekte mit dem gleichen Namen gefunden.";
 Strings.OfficeOM.L_NamedItemNotFound = "Das benannte Element ist nicht vorhanden.";
 Strings.OfficeOM.L_NavOutOfBound = "Vorgangsfehler, weil der Index außerhalb des Bereichs liegt.";
 Strings.OfficeOM.L_NetworkProblem = "Netzwerkproblem";

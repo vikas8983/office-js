@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -117,7 +117,7 @@ Strings.OfficeOM.L_InvalidSetStartRowColumn = "Los valores de startRow o startCo
 Strings.OfficeOM.L_InvalidTableOptionValue = "Uno o más de los parámetros de tableOptions tienen valores que no están permitidos. Compruebe los valores y vuelva a intentarlo.";
 Strings.OfficeOM.L_InvalidValue = "Valor no válido";
 Strings.OfficeOM.L_MemoryLimit = "Límite de memoria superado";
-Strings.OfficeOM.L_MissingParameter = "Parámetro ausente"
+Strings.OfficeOM.L_MissingParameter = "Parámetro ausente";
 Strings.OfficeOM.L_MissingRequiredArguments = "Faltan algunos argumentos necesarios";
 Strings.OfficeOM.L_MultipleNamedItemFound = "Se han encontrado varios objetos con el mismo nombre.";
 Strings.OfficeOM.L_NamedItemNotFound = "El elemento con nombre no existe.";
@@ -158,7 +158,7 @@ Strings.OfficeOM.L_SSOConnectionLostErrorMessage = "Se perdió una conexión dur
 Strings.OfficeOM.L_SSOServerError = "Se produjo un error en el proveedor de autenticación.";
 Strings.OfficeOM.L_SSOServerErrorMessage = "Se produjo un error inesperado en el servidor.";
 Strings.OfficeOM.L_SSOUserConsentNotSupportedByCurrentAddinCategory = "Este complemento no admite el consentimiento del usuario.";
-Strings.OfficeOM.L_SSOUserConsentNotSupportedByCurrentAddinCategoryMessage = "Se ha producido un error en la operación porque el complemento no admite el consentimiento del usuario en esta categoría";
+Strings.OfficeOM.L_SSOUserConsentNotSupportedByCurrentAddinCategoryMessage = "Se ha producido un error en la operación porque el complemento no admite el consentimiento del usuario en esta categoría"
 Strings.OfficeOM.L_SaveSettingsError = "Error de configuración de guardado";
 Strings.OfficeOM.L_SelectionCannotBound = "No se puede enlazar a la selección actual.";
 Strings.OfficeOM.L_SelectionNotSupportCoercionType = "La selección actual no es compatible con el tipo de conversión especificado.";

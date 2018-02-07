@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -88,7 +88,7 @@ Strings.OfficeOM.L_InvalidBindingOperation = "Ógild aðgerð bindingar";
 Strings.OfficeOM.L_InvalidCellsValue = "Ein eða fleiri af breytum fyrir hólf hafa gildi sem eru ekki leyfð. Athugaðu gildin og reyndu aftur.";
 Strings.OfficeOM.L_InvalidCoercion = "Ógild gerð þvingunar";
 Strings.OfficeOM.L_InvalidColumnsForBinding = "Tilgreindir dálkar eru ógildir.";
-Strings.OfficeOM.L_InvalidDataFormat = "Snið skilgreinds gagnahlutar er ógilt.";
+Strings.OfficeOM.L_InvalidDataFormat = "Snið skilgreinds gagnahlutar er ógilt."
 Strings.OfficeOM.L_InvalidDataObject = "Ógildur gagnahlutur";
 Strings.OfficeOM.L_InvalidFormat = "Villa ógilt snið";
 Strings.OfficeOM.L_InvalidFormatValue = "Ein eða fleiri af sniðbreytum fyrir hólf hafa gildi sem eru ekki leyfð. Athugaðu gildin og reyndu aftur.";
@@ -110,7 +110,7 @@ Strings.OfficeOM.L_InvalidRequestContext = "Ekki er hægt að nota hlutinn í mi
 Strings.OfficeOM.L_InvalidResourceUrl = "Ógild vefslóð gefin upp fyrir forritatilföng.";
 Strings.OfficeOM.L_InvalidResourceUrlMessage = "Ógild vefslóð tilfangs var gefin upp í skrá.";
 Strings.OfficeOM.L_InvalidSSOAddinMessage = "API auðkenningar er ekki stutt fyrir þessa innbót.";
-Strings.OfficeOM.L_InvalidSelectionForBindingType = "Ekki er hægt að stofna bindingu við núverandi val og skilgreinda gerð bindingar."
+Strings.OfficeOM.L_InvalidSelectionForBindingType = "Ekki er hægt að stofna bindingu við núverandi val og skilgreinda gerð bindingar.";
 Strings.OfficeOM.L_InvalidSetColumns = "Tilgreindir dálkar eru ógildir.";
 Strings.OfficeOM.L_InvalidSetRows = "Tilgreindar raðir eru ógildar.";
 Strings.OfficeOM.L_InvalidSetStartRowColumn = "Tilgreind gildi fyrir startRow eða startColumn eru ógild.";

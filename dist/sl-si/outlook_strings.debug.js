@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -21,13 +21,13 @@ _u.ExtensibilityStrings.l_ElevatedPermissionNeeded_Text = "Za dostop do zaščit
 _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Eno ali več vnesenih e-poštnih naslovov je predolgih.";
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Zahteva presega omejitev velikosti 1 MB. Spremenite zahtevo EWS.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Prilog ni mogoče dodati, ker sporočilo že ima največje dovoljeno število prilog";
-_u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "Kode HTML ni bilo mogoče sanirati."
+_u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "Kode HTML ni bilo mogoče sanirati.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Prišlo je do napake notranje oblike zapisa.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "Notranja napaka protokola: »{0}«.";
 _u.ExtensibilityStrings.l_InvalidAttachmentId_Text = "ID priloge ni veljaven.";
 _u.ExtensibilityStrings.l_InvalidAttachmentPath_Text = "Pot priloge ni veljavna.";
 _u.ExtensibilityStrings.l_InvalidDate_Text = "Vnosa ni mogoče razrešiti v veljaven datum.";
-_u.ExtensibilityStrings.l_InvalidEndTime_Text = "Čas konca ne more biti pred časom začetka.";
+_u.ExtensibilityStrings.l_InvalidEndTime_Text = "Čas konca ne more biti pred časom začetka."
 _u.ExtensibilityStrings.l_InvalidEventDates_Text = "Končni datum nastopi pred začetnim datumom.";
 _u.ExtensibilityStrings.l_NoValidRecipientsProvided_Text = "Ni navedenih veljavnih prejemnikov.";
 _u.ExtensibilityStrings.l_NumberOfRecipientsExceeded_Text = "Skupno število prejemnikov v polju ne sme biti večje od {0}.";

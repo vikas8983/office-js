@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -18,7 +18,7 @@ _u.ExtensibilityStrings.l_DeleteAttachmentDoesNotExist_Text = "Вкладенн�
 _u.ExtensibilityStrings.l_DisplayNameTooLong_Text = "Принаймні одне вказане коротке ім’я задовге.";
 _u.ExtensibilityStrings.l_ElevatedPermissionNeededForMethod_Text = 'Для виклику методу "{0}" потрібен дозвіл вищого рівня.';
 _u.ExtensibilityStrings.l_ElevatedPermissionNeeded_Text = "Для доступу до захищених учасників інтерфейсу API JavaScript для Office потрібен дозвіл вищого рівня.";
-_u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Принаймні одна вказана адреса електронної пошти задовга."
+_u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Принаймні одна вказана адреса електронної пошти задовга.";
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Розмір запиту перевищує максимально дозволений – 1 МБ. Змініть свій запит EWS.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Вкладення не можна додати, оскільки повідомлення вже містить максимальну кількість вкладень";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "Не вдалося очистити HTML.";
@@ -26,7 +26,7 @@ _u.ExtensibilityStrings.l_InternalFormatError_Text = "Сталася помил�
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "Помилка внутрішнього протоколу: {0}.";
 _u.ExtensibilityStrings.l_InvalidAttachmentId_Text = "Неприпустимий ідентифікатор вкладення.";
 _u.ExtensibilityStrings.l_InvalidAttachmentPath_Text = "Неприпустимий шлях до вкладення.";
-_u.ExtensibilityStrings.l_InvalidDate_Text = "Введене значення не відповідає припустимій даті.";
+_u.ExtensibilityStrings.l_InvalidDate_Text = "Введене значення не відповідає припустимій даті."
 _u.ExtensibilityStrings.l_InvalidEndTime_Text = "Час завершення не може передувати часу початку.";
 _u.ExtensibilityStrings.l_InvalidEventDates_Text = "Дата завершення передує даті початку.";
 _u.ExtensibilityStrings.l_NoValidRecipientsProvided_Text = "Не вказано жодного припустимого одержувача.";
