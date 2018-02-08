@@ -1,8 +1,8 @@
-version: 1.1.5-adhoc.10
+version: 1.1.5-adhoc.11
 tag: adhoc
-githubReleaseUrl: https://github.com/OfficeDev/office-js/releases/tag/v1.1.5-adhoc.10
-githubViewUrl: https://github.com/OfficeDev/office-js/tree/v1.1.5-adhoc.10
-deployedAt: 2018-02-08 6:26 pm UTC  (2018-02-08 10:26 am Pacific Time)
+githubReleaseUrl: https://github.com/OfficeDev/office-js/releases/tag/v1.1.5-adhoc.11
+githubViewUrl: https://github.com/OfficeDev/office-js/tree/v1.1.5-adhoc.11
+deployedAt: 2018-02-08 6:28 pm UTC  (2018-02-08 10:28 am Pacific Time)
 
 history:
     adhocBranchName: __adhoc--current--local--2018-02-08--9.49am--insights-sso-dts
@@ -40,7 +40,7 @@ history:
 
 unpkgUrls: |-
     this specific build number:
-        https://unpkg.com/@microsoft/office-js@1.1.5-adhoc.10/dist/office.js
-        https://unpkg.com/@microsoft/office-js@1.1.5-adhoc.10/dist/office.d.ts
+        https://unpkg.com/@microsoft/office-js@1.1.5-adhoc.11/dist/office.js
+        https://unpkg.com/@microsoft/office-js@1.1.5-adhoc.11/dist/office.d.ts
 
 buildLog: https://travis-ci.org/OfficeDev/office-js/builds/339111848
