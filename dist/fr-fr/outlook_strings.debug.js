@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -25,10 +25,10 @@ _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "Le nettoyage HTML a é
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Une erreur de format interne s’est produite.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "Désolé... Nous avons rencontré l’erreur de protocole interne « {0} ».";
 _u.ExtensibilityStrings.l_InvalidAttachmentId_Text = "L’ID de la pièce jointe était incorrect.";
-_u.ExtensibilityStrings.l_InvalidAttachmentPath_Text = "Le chemin d’accès de la pièce jointe était incorrect.";
+_u.ExtensibilityStrings.l_InvalidAttachmentPath_Text = "Le chemin d’accès de la pièce jointe était incorrect."
 _u.ExtensibilityStrings.l_InvalidDate_Text = "La valeur saisie n’est pas une date correcte.";
 _u.ExtensibilityStrings.l_InvalidEndTime_Text = "L’heure de fin ne peut pas être supérieure à la date de début.";
-_u.ExtensibilityStrings.l_InvalidEventDates_Text = "La date de fin se produit avant la date de début."
+_u.ExtensibilityStrings.l_InvalidEventDates_Text = "La date de fin se produit avant la date de début.";
 _u.ExtensibilityStrings.l_NoValidRecipientsProvided_Text = "Aucun destinataire valide n’a été indiqué.";
 _u.ExtensibilityStrings.l_NumberOfRecipientsExceeded_Text = "Le nombre total de destinataires dans le champ ne peut pas dépasser {0}.";
 _u.ExtensibilityStrings.l_OffsetNotfound_Text = "Désolé... Nous ne trouvons pas de décalage pour cet horodatage.";

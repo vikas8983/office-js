@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -77,7 +77,7 @@ Strings.OfficeOM.L_IndexOutOfRange = "Lampas sa saklaw ng indese.";
 Strings.OfficeOM.L_InitializeNotReady = "Hindi pa lubos na nai-load ang Office.js. Mangyaring subukan muli sa ibang pagkakataon o tiyaking idagdag ang iyong code ng pagsisimula sa Office.initialize function.";
 Strings.OfficeOM.L_InternalError = "Panloob na Error";
 Strings.OfficeOM.L_InternalErrorDescription = "May naganap na panloob na error.";
-Strings.OfficeOM.L_InvalidAPICall = "Hindi Tamang API Call"
+Strings.OfficeOM.L_InvalidAPICall = "Hindi Tamang API Call";
 Strings.OfficeOM.L_InvalidApiArgumentsMessage = "Hindi wastong mga input argument.";
 Strings.OfficeOM.L_InvalidApiCallInContext = "May hindi tamang API call sa kasalukuyang konteksto.";
 Strings.OfficeOM.L_InvalidArgument = "Ang argumentong '{0}' ay hindi gumagana para sa sitwasyong ito, ay nawawala o wala sa tamang format.";
@@ -147,7 +147,7 @@ Strings.OfficeOM.L_PropertyDoesNotExist = "Walang property na '{0}' sa object.";
 Strings.OfficeOM.L_PropertyNotLoaded = "Hindi available ang property na '{0}'. Bago basahin ang value ng property, gawin ang paraan ng pag-load sa naglalaman ng object at gawin ang \"context.sync()\" sa nauugnay na konteksto ng kahilingan.";
 Strings.OfficeOM.L_ReadSettingsError = "Error ng mga Setting ng Basa";
 Strings.OfficeOM.L_RedundantCallbackSpecification = "Hindi matuloy ang pagbalik-tawag sa parehong listahan ng argumento at sa osyunal na bagay.";
-Strings.OfficeOM.L_RequestTimeout = "Natagalang isagawa ang tawag.";
+Strings.OfficeOM.L_RequestTimeout = "Natagalang isagawa ang tawag."
 Strings.OfficeOM.L_RequestTokenUnavailable = "Sinakal ang API na ito para pabagalin ang frequency ng tawag.";
 Strings.OfficeOM.L_RowIndexOutOfRange = "Ang value ng hanay ng indese ay lampas sa pinapayagang saklaw. Gumamit ng value (0 o mas mataas) na mas mababa kaysa sa bilang ng mga hanay.";
 Strings.OfficeOM.L_RunMustReturnPromise = 'Hindi nagbalik ng pangako ang batch function na idinaan sa ".run" na paraan. Kailangang magbalik ng isang pangako ang function, para mailabas ang anumang mga object na awtomatikong sinusubaybayan kapag nakumpleto na ang batch operation. Karaniwan, nagbabalik ka ng isang pangako sa pamamagitan ng pagbalik sa tugon na mula sa "context.sync()".';

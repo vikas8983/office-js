@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -57,7 +57,7 @@ Strings.OfficeOM.L_DialogInvalidScheme = "Schéma adresy URL není podporované.
 Strings.OfficeOM.L_DialogNavigateError = "Chyba navigace v dialogovém okně";
 Strings.OfficeOM.L_DialogOK = "OK";
 Strings.OfficeOM.L_DialogRequireHTTPS = "Protokol HTTP se nepodporuje. Použijte prosím HTTPS.";
-Strings.OfficeOM.L_DisplayDialogError = "Chyba zobrazení dialogového okna";
+Strings.OfficeOM.L_DisplayDialogError = "Chyba zobrazení dialogového okna"
 Strings.OfficeOM.L_DocumentReadOnly = "Požadovaná operace není v aktuálním režimu dokumentu povolená.";
 Strings.OfficeOM.L_ElementMissing = "Nemohli jsme naformátovat buňku tabulky, protože chybí některé hodnoty parametrů. Ještě jednou zkontrolujte parametry a zkuste to znovu.";
 Strings.OfficeOM.L_EventHandlerAdditionFailed = "Nepovedlo se přidat obslužnou rutinu události.";
@@ -87,7 +87,7 @@ Strings.OfficeOM.L_InvalidBindingError = "Chyba neplatné vazby";
 Strings.OfficeOM.L_InvalidBindingOperation = "Neplatná operace vazby";
 Strings.OfficeOM.L_InvalidCellsValue = "Minimálně jeden parametr buňky má hodnoty, které nejsou povolené. Překontrolujte hodnoty a zkuste to znovu.";
 Strings.OfficeOM.L_InvalidCoercion = "Neplatný typ převodu";
-Strings.OfficeOM.L_InvalidColumnsForBinding = "Zadané sloupce jsou neplatné."
+Strings.OfficeOM.L_InvalidColumnsForBinding = "Zadané sloupce jsou neplatné.";
 Strings.OfficeOM.L_InvalidDataFormat = "Formát zadaného datového objektu je neplatný.";
 Strings.OfficeOM.L_InvalidDataObject = "Neplatný datový objekt";
 Strings.OfficeOM.L_InvalidFormat = "Chyba neplatného formátu";

@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -8,8 +8,8 @@ _u.ExtensibilityStrings.registerClass("_u.ExtensibilityStrings");
 _u.ExtensibilityStrings.l_APICallFailedDueToItemChange_Text = "Det valgte elementet er endret.";
 _u.ExtensibilityStrings.l_AttachmentDeleteGeneralFailure_Text = "Vedlegget kan ikke slettes fra elementet.";
 _u.ExtensibilityStrings.l_AttachmentDeletedBeforeUploadCompletes_Text = "Brukeren fjernet vedlegget før opplastingen var fullført.";
-_u.ExtensibilityStrings.l_AttachmentErrorName_Text = "Vedleggsfeil"
-_u.ExtensibilityStrings.l_AttachmentExceededSize_Text = "Vedlegget kan ikke legges til fordi det er for stort.";
+_u.ExtensibilityStrings.l_AttachmentErrorName_Text = "Vedleggsfeil";
+_u.ExtensibilityStrings.l_AttachmentExceededSize_Text = "Vedlegget kan ikke legges til fordi det er for stort."
 _u.ExtensibilityStrings.l_AttachmentUploadGeneralFailure_Text = "Vedlegget kan ikke legges til i elementet.";
 _u.ExtensibilityStrings.l_CannotAddAttachmentBeforeUpgrade_Text = "Vedlegg kan ikke legges til mens fullstendig svar eller videresend hentes fra serveren.";
 _u.ExtensibilityStrings.l_CursorPositionChanged_Text = "Brukeren endret markørens plassering mens dataene ble satt inn.";

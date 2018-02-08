@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -51,7 +51,7 @@ Strings.OfficeOM.L_DataReadError = "[O6ydk]［Data Read Error］";
 Strings.OfficeOM.L_DataStale = "[CPq31]［Data Not Current］";
 Strings.OfficeOM.L_DataWriteError = "[Xc0RN]［Data Write Error］";
 Strings.OfficeOM.L_DataWriteReminder = "[6x3Rl]［Data Write Reminder］";
-Strings.OfficeOM.L_DialogAddressNotTrusted = "[giVvL]［The domain of the URL is not included in the AppDomains element in the manifest.］";
+Strings.OfficeOM.L_DialogAddressNotTrusted = "[giVvL]［The domain of the URL is not included in the AppDomains element in the manifest.］"
 Strings.OfficeOM.L_DialogAlreadyOpened = "[0B7Sm]［The operation failed because this add-in already has an active dialog.］";
 Strings.OfficeOM.L_DialogInvalidScheme = "[bewBN]［The URL scheme is not supported. Use HTTPS instead.］";
 Strings.OfficeOM.L_DialogNavigateError = "[uzg7N]［Dialog Navigation Error］";
@@ -108,7 +108,7 @@ Strings.OfficeOM.L_InvalidParameters = "[KDV1q]［Function {0} has invalid param
 Strings.OfficeOM.L_InvalidReadForBlankRow = "[O14g9]［The specified row is blank.］";
 Strings.OfficeOM.L_InvalidRequestContext = "[EU97A]［Cannot use the object across different request contexts.］";
 Strings.OfficeOM.L_InvalidResourceUrl = "[ZwZqf]［Invalid application resource Url provided.］";
-Strings.OfficeOM.L_InvalidResourceUrlMessage = "[RrzgS]［Invalid resource Url specified in the manifest.］"
+Strings.OfficeOM.L_InvalidResourceUrlMessage = "[RrzgS]［Invalid resource Url specified in the manifest.］";
 Strings.OfficeOM.L_InvalidSSOAddinMessage = "[aCWF7]［The identity API is not supported for this add-in.］";
 Strings.OfficeOM.L_InvalidSelectionForBindingType = "[hyH3U]［A binding cannot be created with the current selection and the specified binding type.］";
 Strings.OfficeOM.L_InvalidSetColumns = "[behcV]［The specified columns are invalid.］";

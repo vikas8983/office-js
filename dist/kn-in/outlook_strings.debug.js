@@ -1,11 +1,11 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
 {
 };
 _u.ExtensibilityStrings.registerClass("_u.ExtensibilityStrings");
-_u.ExtensibilityStrings.l_APICallFailedDueToItemChange_Text = "ಆಯ್ಕೆಮಾಡಿದ ಅಂಶವನ್ನು ಬದಲಿಸಲಾಗಿದೆ."
+_u.ExtensibilityStrings.l_APICallFailedDueToItemChange_Text = "ಆಯ್ಕೆಮಾಡಿದ ಅಂಶವನ್ನು ಬದಲಿಸಲಾಗಿದೆ.";
 _u.ExtensibilityStrings.l_AttachmentDeleteGeneralFailure_Text = "ಐಟಂನಿಂದ ಲಗತ್ತನ್ನು ಅಳಿಸುವುದು ಸಾಧ್ಯವಿಲ್ಲ.";
 _u.ExtensibilityStrings.l_AttachmentDeletedBeforeUploadCompletes_Text = "ಅಪ್‌ಲೋಡ್ ಪೂರ್ತಿಗೊಳ್ಳುವ ಮೊದಲೇ ಬಳಕೆದಾರರು ಲಗತ್ತನ್ನು ತೆಗೆದುಹಾಕಿದ್ದಾರೆ.";
 _u.ExtensibilityStrings.l_AttachmentErrorName_Text = "ಲಗತ್ತು ದೋಷ";
@@ -28,7 +28,7 @@ _u.ExtensibilityStrings.l_InvalidAttachmentId_Text = "ಲಗತ್ತು ID ಅ�
 _u.ExtensibilityStrings.l_InvalidAttachmentPath_Text = "ಲಗತ್ತು ಪಥ ಅಮಾನ್ಯವಾಗಿದೆ.";
 _u.ExtensibilityStrings.l_InvalidDate_Text = "ಇನ್‌ಪುಟ್ ಮಾನ್ಯವಾಗಿರುವ ದಿನಾಂಕದಂದು ಪರಿಹಾರವಾಗುವುದಿಲ್ಲ.";
 _u.ExtensibilityStrings.l_InvalidEndTime_Text = "ಮುಕ್ತಾಯ ದಿನಾಂಕವು ಆರಂಭ ದಿನಾಂಕಕ್ಕಿಂತ ಮೊದಲು ಬರಲು ಸಾಧ್ಯವಿಲ್ಲ.";
-_u.ExtensibilityStrings.l_InvalidEventDates_Text = "ಮುಕ್ತಾಯ ದಿನಾಂಕವು ಆರಂಭ ದಿನಾಂಕಕ್ಕಿಂತ ಮೊದಲೇ ಬರುತ್ತದೆ.";
+_u.ExtensibilityStrings.l_InvalidEventDates_Text = "ಮುಕ್ತಾಯ ದಿನಾಂಕವು ಆರಂಭ ದಿನಾಂಕಕ್ಕಿಂತ ಮೊದಲೇ ಬರುತ್ತದೆ."
 _u.ExtensibilityStrings.l_NoValidRecipientsProvided_Text = "ಯಾವುದೇ ಸಿಂಧುವಾಗಿರುವ ಸ್ವೀಕೃತಿದಾರರನ್ನು ಒದಗಿಸಲಾಗಿಲ್ಲ.";
 _u.ExtensibilityStrings.l_NumberOfRecipientsExceeded_Text = "ಕ್ಷೇತ್ರದಲ್ಲಿರುವ ಒಟ್ಟು ಸ್ವೀಕೃತಿದಾರರ ಸಂಖ್ಯೆಯು {0} ಯನ್ನು ಮೀರುವುದಿಲ್ಲ.";
 _u.ExtensibilityStrings.l_OffsetNotfound_Text = "ಈ ಸಮಯ ಮುದ್ರೆಗಾಗಿ ಆಫ್‌ಸೆಟ್ ಪತ್ತೆಯಾಗುವುದಿಲ್ಲ.";

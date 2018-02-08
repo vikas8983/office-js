@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -89,7 +89,7 @@ Strings.OfficeOM.L_InvalidCellsValue = "Neki parametri ćelije imaju vrednosti k
 Strings.OfficeOM.L_InvalidCoercion = "Nevažeći tip promene";
 Strings.OfficeOM.L_InvalidColumnsForBinding = "Navedene kolone su nevažeće.";
 Strings.OfficeOM.L_InvalidDataFormat = "Format navedenog objekta podataka nije važeći.";
-Strings.OfficeOM.L_InvalidDataObject = "Nevažeći objekat podataka";
+Strings.OfficeOM.L_InvalidDataObject = "Nevažeći objekat podataka"
 Strings.OfficeOM.L_InvalidFormat = "Greška nevažećeg formata";
 Strings.OfficeOM.L_InvalidFormatValue = "Neki parametri formata imaju vrednosti koje nisu dozvoljene. Proverite vrednosti još jednom i probajte ponovo.";
 Strings.OfficeOM.L_InvalidGetColumns = "Navedene kolone su nevažeće.";
@@ -122,7 +122,7 @@ Strings.OfficeOM.L_MissingRequiredArguments = "nedostaju neki neophodni argument
 Strings.OfficeOM.L_MultipleNamedItemFound = "Pronađeno je više objekata sa istim imenom.";
 Strings.OfficeOM.L_NamedItemNotFound = "Imenovana stavka ne postoji.";
 Strings.OfficeOM.L_NavOutOfBound = "Operacija nije uspela zato što je indeks izvan opsega.";
-Strings.OfficeOM.L_NetworkProblem = "Problem sa mrežom"
+Strings.OfficeOM.L_NetworkProblem = "Problem sa mrežom";
 Strings.OfficeOM.L_NetworkProblemRetrieveFile = "Mrežni problem je sprečio preuzimanje datoteke.";
 Strings.OfficeOM.L_NewWindowCrossZone = "Bezbednosne postavke u pregledaču sprečavaju nas da kreiramo dijalog. Pokušajte sa drugim pregledačem ili {0} kako bi „{1}“ i domen prikazan na traci adresa bili u istoj bezbednosnoj zoni.";
 Strings.OfficeOM.L_NewWindowCrossZoneConfigureBrowserLink = "konfigurišite pregledač";

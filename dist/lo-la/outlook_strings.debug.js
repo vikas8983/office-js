@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -11,7 +11,7 @@ _u.ExtensibilityStrings.l_AttachmentDeletedBeforeUploadCompletes_Text = "ຜູ�
 _u.ExtensibilityStrings.l_AttachmentErrorName_Text = "ໄຟລ໌ແນບຜິດພາດ";
 _u.ExtensibilityStrings.l_AttachmentExceededSize_Text = "ບໍ່ສາມາດເພີ່ມໄຟລ໌ແນບໄດ້ເນື່ອງຈາກມັນໃຫຍ່ເກີນໄປ.";
 _u.ExtensibilityStrings.l_AttachmentUploadGeneralFailure_Text = "ບໍ່ສາມາດເພີ່ມໄຟລ໌ແນບໄປໃສ່ລາຍການໄດ້.";
-_u.ExtensibilityStrings.l_CannotAddAttachmentBeforeUpgrade_Text = "ບໍ່ສາມາດເພີ່ມໄຟລ໌ແນບໃນເວລາທີ່ກຳລັງດຶງການຕອບກັບແບບເຕັມ ຫຼື ສົ່ງຕໍ່ມາຈາກເຊີບເວີ."
+_u.ExtensibilityStrings.l_CannotAddAttachmentBeforeUpgrade_Text = "ບໍ່ສາມາດເພີ່ມໄຟລ໌ແນບໃນເວລາທີ່ກຳລັງດຶງການຕອບກັບແບບເຕັມ ຫຼື ສົ່ງຕໍ່ມາຈາກເຊີບເວີ.";
 _u.ExtensibilityStrings.l_CursorPositionChanged_Text = "ຜູ້ໃຊ້ໄດ້ປ່ຽນຕຳແໜ່ງຂອງເຄີເຊີໃນຂະນະທີ່ກຳລັງແຊກຂໍ້ມູນໃສ່.";
 _u.ExtensibilityStrings.l_DataWriteErrorName_Text = "ຂຽນຂໍ້ມູນຜິດພາດ";
 _u.ExtensibilityStrings.l_DeleteAttachmentDoesNotExist_Text = "ບໍ່ສາມາດລຶບໄຟລ໌ແນບໄດ້ເນື່ອງຈາກໄຟລ໌ແນບບໍ່ພົບດັດຊະນີໄຟລ໌ແນບ.";
@@ -31,5 +31,5 @@ _u.ExtensibilityStrings.l_InvalidEndTime_Text = "ເວລາສິ້ນສຸ�
 _u.ExtensibilityStrings.l_InvalidEventDates_Text = "ວັນທີສິ້ນສຸດເກີດຂຶ້ນກ່ອນວັນທີເລີ່ມຕົ້ນ.";
 _u.ExtensibilityStrings.l_NoValidRecipientsProvided_Text = "ບໍ່ໄດ້ລະບຸຜູ້ຮັບທີ່ຖືກຕ້ອງ.";
 _u.ExtensibilityStrings.l_NumberOfRecipientsExceeded_Text = "ຈຳນວນຂອງຜູ້ຮັບໃນຊ່ອງຂໍ້ມູນບໍ່ສາມາດເກີນ {0} ໄດ້.";
-_u.ExtensibilityStrings.l_OffsetNotfound_Text = "ບໍ່ພົບອອບເຊັດສຳລັບເວລານີ້.";
+_u.ExtensibilityStrings.l_OffsetNotfound_Text = "ບໍ່ພົບອອບເຊັດສຳລັບເວລານີ້."
 _u.ExtensibilityStrings.l_ParametersNotAsExpected_Text = "ພາຣາມິເຕີທີ່ລະບຸບໍ່ກົງກັບຮູບແບບທີ່ຄາດຫວັງໄວ້.";

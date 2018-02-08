@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -6,7 +6,7 @@ _u.ExtensibilityStrings = function()
 };
 _u.ExtensibilityStrings.registerClass("_u.ExtensibilityStrings");
 _u.ExtensibilityStrings.l_APICallFailedDueToItemChange_Text = "Napalitan ang piniling item.";
-_u.ExtensibilityStrings.l_AttachmentDeleteGeneralFailure_Text = "Hindi matanggal sa item ang kalakip.";
+_u.ExtensibilityStrings.l_AttachmentDeleteGeneralFailure_Text = "Hindi matanggal sa item ang kalakip."
 _u.ExtensibilityStrings.l_AttachmentDeletedBeforeUploadCompletes_Text = "Tinanggal ng user ang kalakip bago pa matapos ang pag-upload.";
 _u.ExtensibilityStrings.l_AttachmentErrorName_Text = "Error ng Kalakip";
 _u.ExtensibilityStrings.l_AttachmentExceededSize_Text = "Hindi maidagdag ang kalakip dahil masyado itong malaki.";
@@ -20,7 +20,7 @@ _u.ExtensibilityStrings.l_ElevatedPermissionNeededForMethod_Text = "Kailangan ng
 _u.ExtensibilityStrings.l_ElevatedPermissionNeeded_Text = "Kailangan ng itinaas na pahitulot para ma-access ang mga protektadong miyembro ng JavaScript API para sa Office.";
 _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Masyadong mahaba ang isa o higit pa sa mga ibinigay na email address .";
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Lumampas ang hiling na limitasyon ng laki na 1 MB. Mangyaring baguhin ang iyong hiling na EWS.";
-_u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Hindi maidagdag ang mga kalakip dahil ang mensahe ay mayroon nang maximum na dami ng mga kalakip"
+_u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Hindi maidagdag ang mga kalakip dahil ang mensahe ay mayroon nang maximum na dami ng mga kalakip";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "Pumalya ang HTML santization.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Nagkaroon ng error sa panloob na format.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "Panloob na protocol error: '{0}'.";

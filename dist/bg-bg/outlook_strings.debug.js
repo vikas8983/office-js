@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -8,8 +8,8 @@ _u.ExtensibilityStrings.registerClass("_u.ExtensibilityStrings");
 _u.ExtensibilityStrings.l_APICallFailedDueToItemChange_Text = "Избраният елемент е променен.";
 _u.ExtensibilityStrings.l_AttachmentDeleteGeneralFailure_Text = "Прикаченият файл не може да бъде изтрит от елемента.";
 _u.ExtensibilityStrings.l_AttachmentDeletedBeforeUploadCompletes_Text = "Потребителят премахна прикачения файл, преди да завърши качването.";
-_u.ExtensibilityStrings.l_AttachmentErrorName_Text = "Грешка с прикачени файлове";
-_u.ExtensibilityStrings.l_AttachmentExceededSize_Text = "Прикаченият файл не може да бъде добавен, защото е прекалено голям."
+_u.ExtensibilityStrings.l_AttachmentErrorName_Text = "Грешка с прикачени файлове"
+_u.ExtensibilityStrings.l_AttachmentExceededSize_Text = "Прикаченият файл не може да бъде добавен, защото е прекалено голям.";
 _u.ExtensibilityStrings.l_AttachmentUploadGeneralFailure_Text = "Прикаченият файл не може да бъде добавен към елемента.";
 _u.ExtensibilityStrings.l_CannotAddAttachmentBeforeUpgrade_Text = "Прикачените файлове не могат да се добавят, докато пълният отговор или препращане се извлича от сървъра.";
 _u.ExtensibilityStrings.l_CursorPositionChanged_Text = "Потребителят промени позицията на курсора по време на вмъкването на данните.";

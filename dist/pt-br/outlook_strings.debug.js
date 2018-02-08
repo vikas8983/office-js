@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -9,8 +9,8 @@ _u.ExtensibilityStrings.l_APICallFailedDueToItemChange_Text = "O item selecionad
 _u.ExtensibilityStrings.l_AttachmentDeleteGeneralFailure_Text = "O anexo não pode ser excluído do item.";
 _u.ExtensibilityStrings.l_AttachmentDeletedBeforeUploadCompletes_Text = "O usuário removeu o anexo antes de o carregamento ser concluído.";
 _u.ExtensibilityStrings.l_AttachmentErrorName_Text = "Erro de Anexo";
-_u.ExtensibilityStrings.l_AttachmentExceededSize_Text = "Não foi possível adicionar o anexo, pois ele é muito grande.";
-_u.ExtensibilityStrings.l_AttachmentUploadGeneralFailure_Text = "O anexo não pode ser adicionado ao item."
+_u.ExtensibilityStrings.l_AttachmentExceededSize_Text = "Não foi possível adicionar o anexo, pois ele é muito grande."
+_u.ExtensibilityStrings.l_AttachmentUploadGeneralFailure_Text = "O anexo não pode ser adicionado ao item.";
 _u.ExtensibilityStrings.l_CannotAddAttachmentBeforeUpgrade_Text = "Anexos não podem ser adicionados enquanto o encaminhamento ou resposta completa estiver sendo recuperada do servidor.";
 _u.ExtensibilityStrings.l_CursorPositionChanged_Text = "O usuário alterou a posição do cursor durante a inserção dos dados.";
 _u.ExtensibilityStrings.l_DataWriteErrorName_Text = "Erro de Gravação de Dados";

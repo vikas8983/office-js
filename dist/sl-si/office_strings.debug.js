@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -66,7 +66,7 @@ Strings.OfficeOM.L_EventHandlerRemovalFailed = "Rutine za obravnavo dogodkov ni 
 Strings.OfficeOM.L_EventRegistrationError = "Napaka pri prijavi na dogodek";
 Strings.OfficeOM.L_FileTypeNotSupported = "Navedena vrsta datoteke ni podprta.";
 Strings.OfficeOM.L_FormatValueOutOfRange = "Vrednost je zunaj dovoljenega obsega.";
-Strings.OfficeOM.L_FormattingReminder = "Opomnik za oblikovanje"
+Strings.OfficeOM.L_FormattingReminder = "Opomnik za oblikovanje";
 Strings.OfficeOM.L_FunctionCallFailed = "Klic funkcije {0} ni uspel, koda napake: {1}.";
 Strings.OfficeOM.L_GetDataIsTooLarge = "Zahtevani nabor podatkov je prevelik.";
 Strings.OfficeOM.L_GetDataParametersConflict = "Navedeni parametri so v sporu.";
@@ -133,7 +133,7 @@ Strings.OfficeOM.L_NonUniformPartialSetNotSupported = "Koordinatnih parametrov n
 Strings.OfficeOM.L_NotImplemented = "Funkcija {0} ni izvedena.";
 Strings.OfficeOM.L_NotSupported = "Funkcija {0} ni podprta.";
 Strings.OfficeOM.L_NotSupportedBindingType = "Navedena vrsta vezave {0} ni podprta. ";
-Strings.OfficeOM.L_NotSupportedEventType = "Navedena vrsta dogodka {0} ni podprta. ";
+Strings.OfficeOM.L_NotSupportedEventType = "Navedena vrsta dogodka {0} ni podprta. "
 Strings.OfficeOM.L_OperationCancelledError = "Postopek je preklican";
 Strings.OfficeOM.L_OperationCancelledErrorMessage = "Ta postopek je preklical uporabnik.";
 Strings.OfficeOM.L_OperationNotSupported = "Postopek ni podprt.";

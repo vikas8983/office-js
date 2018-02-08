@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -111,7 +111,7 @@ Strings.OfficeOM.L_InvalidResourceUrl = "Er is een ongeldige bron-URL voor de to
 Strings.OfficeOM.L_InvalidResourceUrlMessage = "Er is een ongeldige bron-URL opgegeven in het manifest.";
 Strings.OfficeOM.L_InvalidSSOAddinMessage = "De API voor identiteit wordt niet ondersteund voor deze invoegtoepassing.";
 Strings.OfficeOM.L_InvalidSelectionForBindingType = "Er kan geen binding worden gemaakt met de huidige selectie en het opgegeven bindingstype.";
-Strings.OfficeOM.L_InvalidSetColumns = "De opgegeven kolommen zijn ongeldig."
+Strings.OfficeOM.L_InvalidSetColumns = "De opgegeven kolommen zijn ongeldig.";
 Strings.OfficeOM.L_InvalidSetRows = "De opgegeven rijen zijn ongeldig.";
 Strings.OfficeOM.L_InvalidSetStartRowColumn = "De opgegeven startRow- of startColumn-waarden zijn ongeldig.";
 Strings.OfficeOM.L_InvalidTableOptionValue = "Een of meer tableOptions-parameters hebben een waarde die niet is toegestaan. Controleer de waarden en probeer het opnieuw.";
@@ -188,5 +188,5 @@ Strings.OfficeOM.L_UnsupportedUserIdentityMessage = "Het identiteitstype van de 
 Strings.OfficeOM.L_UserAborted = "Gebruiker heeft de toestemmingsaanvraag afgebroken.";
 Strings.OfficeOM.L_UserAbortedMessage = "De gebruiker heeft geen toestemming gegeven voor de machtigingen voor de invoegtoepassing.";
 Strings.OfficeOM.L_UserClickIgnore = "De gebruiker heeft het dialoogvenster genegeerd.";
-Strings.OfficeOM.L_UserNotSignedIn = "Er is geen gebruiker aangemeld bij Office.";
+Strings.OfficeOM.L_UserNotSignedIn = "Er is geen gebruiker aangemeld bij Office."
 Strings.OfficeOM.L_ValueNotLoaded = "De waarde van het resultaatobject is nog niet geladen. Roep context.sync() in de context van de bijbehorende aanvraag aan voordat u de waarde-eigenschap leest.";

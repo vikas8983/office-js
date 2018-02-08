@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -11,7 +11,7 @@ _u.ExtensibilityStrings.l_AttachmentDeletedBeforeUploadCompletes_Text = "O usuar
 _u.ExtensibilityStrings.l_AttachmentErrorName_Text = "Erro de anexo";
 _u.ExtensibilityStrings.l_AttachmentExceededSize_Text = "O anexo non se pode engadir porque é moi grande.";
 _u.ExtensibilityStrings.l_AttachmentUploadGeneralFailure_Text = "O anexo non se pode engadir ao elemento.";
-_u.ExtensibilityStrings.l_CannotAddAttachmentBeforeUpgrade_Text = "Os anexos non se poden engadir mentres está a recuperarse o reenvío ou a resposta completa do servidor."
+_u.ExtensibilityStrings.l_CannotAddAttachmentBeforeUpgrade_Text = "Os anexos non se poden engadir mentres está a recuperarse o reenvío ou a resposta completa do servidor.";
 _u.ExtensibilityStrings.l_CursorPositionChanged_Text = "O usuario mudou a posición do cursor mentres se estaban a inserir datos.";
 _u.ExtensibilityStrings.l_DataWriteErrorName_Text = "Erro de escritura de datos";
 _u.ExtensibilityStrings.l_DeleteAttachmentDoesNotExist_Text = "Non se pode eliminar o anexo porque non se pode atopar un anexo co índice de anexos.";
@@ -23,7 +23,7 @@ _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "A solicitude excede o lím
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Non se poden engadir anexos porque a mensaxe xa ten o número máximo de anexos";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "Erro da inmunización HTML.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Erro de formato interno.";
-_u.ExtensibilityStrings.l_InternalProtocolError_Text = 'Erro de protocolo interno: "{0}".';
+_u.ExtensibilityStrings.l_InternalProtocolError_Text = 'Erro de protocolo interno: "{0}".'
 _u.ExtensibilityStrings.l_InvalidAttachmentId_Text = "O ID do anexo non era válido.";
 _u.ExtensibilityStrings.l_InvalidAttachmentPath_Text = "O camiño do anexo non era válido.";
 _u.ExtensibilityStrings.l_InvalidDate_Text = "A entrada non se resolve como unha data válida.";

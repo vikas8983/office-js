@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -7,13 +7,13 @@ _u.ExtensibilityStrings = function()
 _u.ExtensibilityStrings.registerClass("_u.ExtensibilityStrings");
 _u.ExtensibilityStrings.l_APICallFailedDueToItemChange_Text = "［aFLze］‏‏أبع[The selected item has been changed.]לף";
 _u.ExtensibilityStrings.l_AttachmentDeleteGeneralFailure_Text = "［h0ho0］‏‏أبع[The attachment cannot be deleted from the item.]לף";
-_u.ExtensibilityStrings.l_AttachmentDeletedBeforeUploadCompletes_Text = "［9bYDV］‏‏أبع[The user removed the attachment before upload has completed.]לף";
+_u.ExtensibilityStrings.l_AttachmentDeletedBeforeUploadCompletes_Text = "［9bYDV］‏‏أبع[The user removed the attachment before upload has completed.]לף"
 _u.ExtensibilityStrings.l_AttachmentErrorName_Text = "［e6S9w］‏‏أبع[Attachment Error]לף";
 _u.ExtensibilityStrings.l_AttachmentExceededSize_Text = "［D63AU］‏‏أبع[The attachment cannot be added because it is too big.]לף";
 _u.ExtensibilityStrings.l_AttachmentUploadGeneralFailure_Text = "［0gPAl］‏‏أبع[The attachment cannot be added to the item.]לף";
 _u.ExtensibilityStrings.l_CannotAddAttachmentBeforeUpgrade_Text = "［hnh2D］‏‏أبع[Attachments cannot be added while the full reply or forward is being retrieved from the server.]לף";
 _u.ExtensibilityStrings.l_CursorPositionChanged_Text = "［PjcFc］‏‏أبع[The user changed the position of the cursor while the data was being inserted.]לף";
-_u.ExtensibilityStrings.l_DataWriteErrorName_Text = "［xgx03］‏‏أبع[Data Write Error]לף"
+_u.ExtensibilityStrings.l_DataWriteErrorName_Text = "［xgx03］‏‏أبع[Data Write Error]לף";
 _u.ExtensibilityStrings.l_DeleteAttachmentDoesNotExist_Text = "［dLsV2］‏‏أبع[The attachment cannot be deleted because attachment with the attachment index cannot be found.]לף";
 _u.ExtensibilityStrings.l_DisplayNameTooLong_Text = "［PlGmA］‏‏أبع[One or more of the display names provided is too long.]לף";
 _u.ExtensibilityStrings.l_ElevatedPermissionNeededForMethod_Text = "［vpN0m］‏‏أبع[Elevated permission is required to call the method: '{0}'.]לף";

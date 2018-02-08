@@ -1,11 +1,11 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
 {
 };
 _u.ExtensibilityStrings.registerClass("_u.ExtensibilityStrings");
-_u.ExtensibilityStrings.l_APICallFailedDueToItemChange_Text = "選取的項目已變更。"
+_u.ExtensibilityStrings.l_APICallFailedDueToItemChange_Text = "選取的項目已變更。";
 _u.ExtensibilityStrings.l_AttachmentDeleteGeneralFailure_Text = "無法從項目刪除附件。";
 _u.ExtensibilityStrings.l_AttachmentDeletedBeforeUploadCompletes_Text = "完成上傳之前，使用者即已移除附件。";
 _u.ExtensibilityStrings.l_AttachmentErrorName_Text = "附件錯誤";
@@ -27,7 +27,7 @@ _u.ExtensibilityStrings.l_InternalProtocolError_Text = "內部通訊協定錯誤
 _u.ExtensibilityStrings.l_InvalidAttachmentId_Text = "附件識別碼無效。";
 _u.ExtensibilityStrings.l_InvalidAttachmentPath_Text = "附件路徑無效。";
 _u.ExtensibilityStrings.l_InvalidDate_Text = "輸入的內容無法解析為有效的日期。";
-_u.ExtensibilityStrings.l_InvalidEndTime_Text = "結束時間不能早於開始時間。";
+_u.ExtensibilityStrings.l_InvalidEndTime_Text = "結束時間不能早於開始時間。"
 _u.ExtensibilityStrings.l_InvalidEventDates_Text = "結束日期早於開始日期。";
 _u.ExtensibilityStrings.l_NoValidRecipientsProvided_Text = "未提供有效的收件者。";
 _u.ExtensibilityStrings.l_NumberOfRecipientsExceeded_Text = "在欄位中的收件者總數不能超過 {0}。";

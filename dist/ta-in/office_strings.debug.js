@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -137,7 +137,7 @@ Strings.OfficeOM.L_NotSupportedEventType = "குறிப்பிடப்ப
 Strings.OfficeOM.L_OperationCancelledError = "செயல்பாடு ரத்துசெய்யப்பட்டது";
 Strings.OfficeOM.L_OperationCancelledErrorMessage = "பயனரால் செயல்பாடு ரத்துசெய்யப்பட்டது.";
 Strings.OfficeOM.L_OperationNotSupported = "செயல்பாட்டுக்கு ஆதரவில்லை.";
-Strings.OfficeOM.L_OperationNotSupportedOnMatrixData = "தேர்ந்தெடுத்த உள்ளடக்கம் அட்டவணை வடிவமைப்பில் இருக்க வேண்டும். தரவை அட்டவணையாக வடிவமைத்து, மீண்டும் முயற்சிக்கவும்."
+Strings.OfficeOM.L_OperationNotSupportedOnMatrixData = "தேர்ந்தெடுத்த உள்ளடக்கம் அட்டவணை வடிவமைப்பில் இருக்க வேண்டும். தரவை அட்டவணையாக வடிவமைத்து, மீண்டும் முயற்சிக்கவும்.";
 Strings.OfficeOM.L_OperationNotSupportedOnThisBindingType = "இந்த பைண்டிங் வகையுடன் செயல்பாட்டுக்கு ஆதரவில்லை.";
 Strings.OfficeOM.L_OsfControlTypeNotSupported = "OsfControl வகை ஆதரிக்கப்படவில்லை.";
 Strings.OfficeOM.L_OutOfRange = "வரம்புக்கு வெளியே உள்ளது";
@@ -174,7 +174,7 @@ Strings.OfficeOM.L_ShowWindowDialogNotificationIgnore = "தவிர்";
 Strings.OfficeOM.L_ShuttingDown = "செயல்பாடு தோல்வியுற்றது, ஏனெனில் தரவு சேவையகத்தில், சமீபத்தியதாக இல்லை.";
 Strings.OfficeOM.L_SliceSizeNotSupported = "குறிப்பிட்ட ஸ்லைஸ் அளவுக்கு ஆதரவில்லை.";
 Strings.OfficeOM.L_SpecifiedIdNotExist = "குறிப்பிடப்பட்ட ஐடி இப்போது இல்லை.";
-Strings.OfficeOM.L_Timeout = "இயக்கம் நேரம் முடிந்தது.";
+Strings.OfficeOM.L_Timeout = "இயக்கம் நேரம் முடிந்தது."
 Strings.OfficeOM.L_TooManyArguments = "மிக அதிகமான அளவுருக்கள்";
 Strings.OfficeOM.L_TooManyIncompleteRequests = "முந்தைய அழைப்பு முடிவடையும் வரை காத்திருக்கவும்.";
 Strings.OfficeOM.L_TooManyOptionalFunction = "அளவுருக்கள் பட்டியலில் பல விருப்ப செயல்பாடுகள் உள்ளன";

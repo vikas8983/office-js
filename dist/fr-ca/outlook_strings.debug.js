@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -16,9 +16,9 @@ _u.ExtensibilityStrings.l_CursorPositionChanged_Text = "L’utilisateur a modifi
 _u.ExtensibilityStrings.l_DataWriteErrorName_Text = "Une erreur s’est produite lors de l’écriture des données";
 _u.ExtensibilityStrings.l_DeleteAttachmentDoesNotExist_Text = "La pièce jointe ne peut pas être supprimée car elle et l’index des pièces jointes sont introuvables.";
 _u.ExtensibilityStrings.l_DisplayNameTooLong_Text = "Un ou plusieurs des noms complets fournis sont trop longs.";
-_u.ExtensibilityStrings.l_ElevatedPermissionNeededForMethod_Text = "Une autorisation élevée est requise pour appeler la méthode : « {0} ».";
+_u.ExtensibilityStrings.l_ElevatedPermissionNeededForMethod_Text = "Une autorisation élevée est requise pour appeler la méthode : « {0} »."
 _u.ExtensibilityStrings.l_ElevatedPermissionNeeded_Text = "Une autorisation élevée est requise pour accéder aux membres protégés de l’API JavaScript pour Office.";
-_u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Une ou plusieurs des adresses de courriel sont trop longues."
+_u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Une ou plusieurs des adresses de courriel sont trop longues.";
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "La demande dépasse la limite de taille de 1 Mo. Veuillez modifier votre demande EWS.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Les pièces jointes ne peuvent pas être ajoutées car le nombre maximal de pièces jointes est déjà atteint";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "Le nettoyage HTML a échoué.";

@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -111,7 +111,7 @@ Strings.OfficeOM.L_InvalidResourceUrl = "Pateiktas netinkamas programos ištekli
 Strings.OfficeOM.L_InvalidResourceUrlMessage = "Deklaracijoje nurodytas netinkamas ištekliaus URL.";
 Strings.OfficeOM.L_InvalidSSOAddinMessage = "Tapatybės API šiame papildinyje nepalaikomas.";
 Strings.OfficeOM.L_InvalidSelectionForBindingType = "Negalima sukurti susiejimo su dabartiniu žymėjimu ir nurodytu susiejimo tipu.";
-Strings.OfficeOM.L_InvalidSetColumns = "Nurodyti stulpeliai yra neleistini."
+Strings.OfficeOM.L_InvalidSetColumns = "Nurodyti stulpeliai yra neleistini.";
 Strings.OfficeOM.L_InvalidSetRows = "Nurodytos eilutės yra neleistinos.";
 Strings.OfficeOM.L_InvalidSetStartRowColumn = "Nurodytos „startRow“ arba „startColumn“ reikšmės yra neteisingos.";
 Strings.OfficeOM.L_InvalidTableOptionValue = "Vieno arba kelių „tableOptions“ parametrų neleistinos reikšmės. Dar kartą patikrinkite reikšmes ir bandykite vėl.";
@@ -135,7 +135,7 @@ Strings.OfficeOM.L_NotSupported = "Funkcija {0} nepalaikoma.";
 Strings.OfficeOM.L_NotSupportedBindingType = "Nurodytas susiejimo tipas {0} nepalaikomas.";
 Strings.OfficeOM.L_NotSupportedEventType = "Nurodytas įvykio tipas {0} nepalaikomas.";
 Strings.OfficeOM.L_OperationCancelledError = "Operacija atšaukta";
-Strings.OfficeOM.L_OperationCancelledErrorMessage = "Vartotojas atšaukė operaciją.";
+Strings.OfficeOM.L_OperationCancelledErrorMessage = "Vartotojas atšaukė operaciją."
 Strings.OfficeOM.L_OperationNotSupported = "Operacija nepalaikoma.";
 Strings.OfficeOM.L_OperationNotSupportedOnMatrixData = "Pasirinktas turinys turi būti lentelės formatu. Suformatuokite duomenis kaip lentelę ir bandykite dar kartą.";
 Strings.OfficeOM.L_OperationNotSupportedOnThisBindingType = "Operacija nepalaikoma šiam susiejimo tipui.";

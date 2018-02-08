@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -66,7 +66,7 @@ Strings.OfficeOM.L_EventHandlerRemovalFailed = "Nem sikerült eltávolítani az 
 Strings.OfficeOM.L_EventRegistrationError = "Eseményregisztrációs hiba";
 Strings.OfficeOM.L_FileTypeNotSupported = "A megadott fájltípus nem támogatott.";
 Strings.OfficeOM.L_FormatValueOutOfRange = "Az érték kívül esik a megengedett tartományon.";
-Strings.OfficeOM.L_FormattingReminder = "Formázási emlékeztető";
+Strings.OfficeOM.L_FormattingReminder = "Formázási emlékeztető"
 Strings.OfficeOM.L_FunctionCallFailed = "A(z) {0} függvény hívása sikertelen, hibakód: {1}.";
 Strings.OfficeOM.L_GetDataIsTooLarge = "A kért adatkészlet túl nagy.";
 Strings.OfficeOM.L_GetDataParametersConflict = "A megadott paraméterek ütköznek.";
@@ -144,7 +144,7 @@ Strings.OfficeOM.L_OutOfRange = "Tartományon kívüli érték";
 Strings.OfficeOM.L_OverwriteWorksheetData = "A beállítási művelet nem sikerült, mert a megadott adatobjektum felülírná vagy eltolná az adatokat.";
 Strings.OfficeOM.L_PermissionDenied = "Engedély megtagadva";
 Strings.OfficeOM.L_PropertyDoesNotExist = "Az objektum nem tartalmaz {0} nevű tulajdonságot.";
-Strings.OfficeOM.L_PropertyNotLoaded = "Nem érhető el a(z) „{0}” tulajdonság. A tulajdonság értékének olvasása előtt hívja meg a betöltési metódust a tároló objektumon, és hívja meg a „context.sync()” metódust a társított kérelemkontextuson."
+Strings.OfficeOM.L_PropertyNotLoaded = "Nem érhető el a(z) „{0}” tulajdonság. A tulajdonság értékének olvasása előtt hívja meg a betöltési metódust a tároló objektumon, és hívja meg a „context.sync()” metódust a társított kérelemkontextuson.";
 Strings.OfficeOM.L_ReadSettingsError = "Beállításolvasási hiba";
 Strings.OfficeOM.L_RedundantCallbackSpecification = "A visszahívás nem adható meg az argumentumlistában és a választható objektumban is.";
 Strings.OfficeOM.L_RequestTimeout = "Túl sokáig tartott a hívás végrehajtása.";

@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -24,7 +24,7 @@ Strings.OfficeOM.L_CallbackNotAFunction = "Gọi lại phải là chức năng k
 Strings.OfficeOM.L_CannotApplyPropertyThroughSetMethod = "Không thể áp dụng thay đổi với thuộc tính '{0}' thông qua phương pháp \"object.set\".";
 Strings.OfficeOM.L_CannotNavigateTo = "Đối tượng nằm ở vị trí không hỗ trợ dẫn hướng.";
 Strings.OfficeOM.L_CannotRegisterEvent = "Không thể đăng ký quy trình xử lý sự kiện.";
-Strings.OfficeOM.L_CannotWriteToSelection = "Không thể ghi vào lựa chọn hiện tại.";
+Strings.OfficeOM.L_CannotWriteToSelection = "Không thể ghi vào lựa chọn hiện tại."
 Strings.OfficeOM.L_CellDataAmountBeyondLimits = "Lưu ý: Số lượng ô trong một bảng được đề nghị để dưới 20.000 ô.";
 Strings.OfficeOM.L_CellFormatAmountBeyondLimits = "Lưu ý: Bộ định dạng do lệnh gọi Định dạng API thiết lập được đề nghị để dưới 100.";
 Strings.OfficeOM.L_CloseFileBeforeRetrieve = "Gọi closeAsync trên Tệp hiện tại trước khi truy xuất tệp khác.";
@@ -51,7 +51,7 @@ Strings.OfficeOM.L_DataReadError = "Lỗi Đọc Dữ liệu";
 Strings.OfficeOM.L_DataStale = "Dữ liệu Không Cập nhật";
 Strings.OfficeOM.L_DataWriteError = "Lỗi Ghi Dữ liệu";
 Strings.OfficeOM.L_DataWriteReminder = "Lời nhắc Viết Dữ liệu";
-Strings.OfficeOM.L_DialogAddressNotTrusted = "Phần tử AppDomains trong tệp kê khai không chứa miền của URL."
+Strings.OfficeOM.L_DialogAddressNotTrusted = "Phần tử AppDomains trong tệp kê khai không chứa miền của URL.";
 Strings.OfficeOM.L_DialogAlreadyOpened = "Hoạt động không thành công vì phần bổ trợ này đã có một hộp thoại hiện hoạt.";
 Strings.OfficeOM.L_DialogInvalidScheme = "Không hỗ trợ lược đồ URL. Sử dụng HTTPS thay thế.";
 Strings.OfficeOM.L_DialogNavigateError = "Lỗi Điều hướng Hộp thoại";

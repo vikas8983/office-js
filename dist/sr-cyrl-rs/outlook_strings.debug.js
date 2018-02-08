@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -9,7 +9,7 @@ _u.ExtensibilityStrings.l_APICallFailedDueToItemChange_Text = "Изабрана 
 _u.ExtensibilityStrings.l_AttachmentDeleteGeneralFailure_Text = "Није могуће избрисати прилог из ставке.";
 _u.ExtensibilityStrings.l_AttachmentDeletedBeforeUploadCompletes_Text = "Корисник је уклонио прилог пре довршавања отпремања.";
 _u.ExtensibilityStrings.l_AttachmentErrorName_Text = "Грешка у прилогу";
-_u.ExtensibilityStrings.l_AttachmentExceededSize_Text = "Није могуће додати прилог јер је превелик.";
+_u.ExtensibilityStrings.l_AttachmentExceededSize_Text = "Није могуће додати прилог јер је превелик."
 _u.ExtensibilityStrings.l_AttachmentUploadGeneralFailure_Text = "Није могуће додати прилог ставци.";
 _u.ExtensibilityStrings.l_CannotAddAttachmentBeforeUpgrade_Text = "Није могуће додати прилоге док се потпуни одговор или прослеђивање преузимају са сервера.";
 _u.ExtensibilityStrings.l_CursorPositionChanged_Text = "Корисник је променио позицију курсора док су се подаци уметали.";
@@ -23,7 +23,7 @@ _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Захтев премаш�
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Није могуће додати прилоге јер порука већ има максималан број прилога";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "Уклањање HTML-а није успело.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Дошло је до унутрашње грешке формата.";
-_u.ExtensibilityStrings.l_InternalProtocolError_Text = "Интерна грешка протокола: '{0}'."
+_u.ExtensibilityStrings.l_InternalProtocolError_Text = "Интерна грешка протокола: '{0}'.";
 _u.ExtensibilityStrings.l_InvalidAttachmentId_Text = "ID прилога је неважећи.";
 _u.ExtensibilityStrings.l_InvalidAttachmentPath_Text = "Путања прилога је неважећа.";
 _u.ExtensibilityStrings.l_InvalidDate_Text = "Унос се не разрешава на важећи датум.";

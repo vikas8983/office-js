@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -30,6 +30,6 @@ _u.ExtensibilityStrings.l_InvalidDate_Text = "Įvestis nėra paverčiama tinkama
 _u.ExtensibilityStrings.l_InvalidEndTime_Text = "Pabaigos laikas negali būti prieš pradžios laiką.";
 _u.ExtensibilityStrings.l_InvalidEventDates_Text = "Pabaigos data yra ankstesnė nei pradžios data.";
 _u.ExtensibilityStrings.l_NoValidRecipientsProvided_Text = "Nepateikta tinkamų gavėjų.";
-_u.ExtensibilityStrings.l_NumberOfRecipientsExceeded_Text = "Bendras gavėjų skaičius lauke negali viršyti {0}.";
+_u.ExtensibilityStrings.l_NumberOfRecipientsExceeded_Text = "Bendras gavėjų skaičius lauke negali viršyti {0}."
 _u.ExtensibilityStrings.l_OffsetNotfound_Text = "Nepavyko rasti šios laiko žymės poslinkio.";
-_u.ExtensibilityStrings.l_ParametersNotAsExpected_Text = "Nurodyti parametrai neatitinka numatyto formato."
+_u.ExtensibilityStrings.l_ParametersNotAsExpected_Text = "Nurodyti parametrai neatitinka numatyto formato.";

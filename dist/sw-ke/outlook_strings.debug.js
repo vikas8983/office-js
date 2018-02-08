@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -23,11 +23,11 @@ _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Ombi linazidizisha kipimo 
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Viambatisho haviwezi kuongezwa kwa sababu ujumbe tayari una idadi ya juu zaidi za viambatisho";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "Usafishaji wa HTML haujafaulu.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Kulikuwa na hitilafu ya umbizo ya ndani.";
-_u.ExtensibilityStrings.l_InternalProtocolError_Text = "Hitilafu ya itifaki ya ndani: '{0}'.";
+_u.ExtensibilityStrings.l_InternalProtocolError_Text = "Hitilafu ya itifaki ya ndani: '{0}'."
 _u.ExtensibilityStrings.l_InvalidAttachmentId_Text = "ID ya kitambulisho ni batili.";
 _u.ExtensibilityStrings.l_InvalidAttachmentPath_Text = "Kijia cha kiambatisho kilikuwa batili.";
 _u.ExtensibilityStrings.l_InvalidDate_Text = "Ingizo halitatatuliki kuwa tarehe halali.";
-_u.ExtensibilityStrings.l_InvalidEndTime_Text = "Muda wa mwisho hauwezi kuwa kabla ya muda wa kuanza."
+_u.ExtensibilityStrings.l_InvalidEndTime_Text = "Muda wa mwisho hauwezi kuwa kabla ya muda wa kuanza.";
 _u.ExtensibilityStrings.l_InvalidEventDates_Text = "Tarehe ya mwisho inajitokeza kabla ya tarehe ya kuanza.";
 _u.ExtensibilityStrings.l_NoValidRecipientsProvided_Text = "Hakuna wapokeaji halali walitolewa.";
 _u.ExtensibilityStrings.l_NumberOfRecipientsExceeded_Text = "Idadi ya jumla ya wapokeaji katika uga haiwezi kuzidi {0}.";

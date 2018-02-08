@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -131,7 +131,7 @@ Strings.OfficeOM.L_NoCapability = "이 작업에 대해 충분한 권한이 없�
 Strings.OfficeOM.L_NonUniformPartialGetNotSupported = "테이블에 병합된 셀이 포함되어 있으면 좌표 매개 변수를 강제 변환 유형 테이블과 함께 사용할 수 없습니다.";
 Strings.OfficeOM.L_NonUniformPartialSetNotSupported = "테이블에 병합된 셀이 포함되어 있으면 좌표 매개 변수를 강제 변환 유형 테이블과 함께 사용할 수 없습니다.";
 Strings.OfficeOM.L_NotImplemented = "함수 {0}이(가) 구현되지 않았습니다.";
-Strings.OfficeOM.L_NotSupported = "함수 {0}은(는) 지원되지 않습니다.";
+Strings.OfficeOM.L_NotSupported = "함수 {0}은(는) 지원되지 않습니다."
 Strings.OfficeOM.L_NotSupportedBindingType = "지정한 바인딩 유형 {0}이(가) 지원되지 않습니다.";
 Strings.OfficeOM.L_NotSupportedEventType = "지정한 이벤트 종류 {0}이(가) 지원되지 않습니다.";
 Strings.OfficeOM.L_OperationCancelledError = "작업이 취소되었습니다.";
@@ -175,7 +175,7 @@ Strings.OfficeOM.L_ShuttingDown = "서버의 데이터가 최신 상태가 아�
 Strings.OfficeOM.L_SliceSizeNotSupported = "지정된 슬라이스 크기는 지원되지 않습니다.";
 Strings.OfficeOM.L_SpecifiedIdNotExist = "지정된 ID가 없습니다.";
 Strings.OfficeOM.L_Timeout = "작업이 시간 초과되었습니다.";
-Strings.OfficeOM.L_TooManyArguments = "인수가 너무 많습니다."
+Strings.OfficeOM.L_TooManyArguments = "인수가 너무 많습니다.";
 Strings.OfficeOM.L_TooManyIncompleteRequests = "이전 호출이 완료될 때까지 기다립니다.";
 Strings.OfficeOM.L_TooManyOptionalFunction = "매개 변수 목록에 선택적 함수가 여러 개 있습니다.";
 Strings.OfficeOM.L_TooManyOptionalObjects = "매개 변수 목록에 선택적 개체가 여러 개 있습니다.";

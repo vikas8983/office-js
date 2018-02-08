@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -12,7 +12,7 @@ Strings.OfficeOM.L_AddBindingFromPromptDefaultText = "Fai unha selección.";
 Strings.OfficeOM.L_AddinIsAlreadyRequestingToken = "O suplemento xa está a solicitar un token de acceso.";
 Strings.OfficeOM.L_AddinIsAlreadyRequestingTokenMessage = "Non se puido completar a operación porque este suplemento xa está a solicitar un token de acceso.";
 Strings.OfficeOM.L_ApiNotFoundDetails = "O método ou propiedade {0} forma parte do conxunto de requirimentos de {1}, o que non está dispoñible na túa versión de {2}.";
-Strings.OfficeOM.L_AppNameNotExist = "O nome de suplemento para {0} non existe."
+Strings.OfficeOM.L_AppNameNotExist = "O nome de suplemento para {0} non existe.";
 Strings.OfficeOM.L_AppNotExistInitializeNotCalled = "A aplicación {0} non existe. Non se chamou a Microsoft.Office.WebExtension.initialize(motivo).";
 Strings.OfficeOM.L_AttemptingToSetReadOnlyProperty = 'Tentando establecer a propiedade só de lectura "{0}".';
 Strings.OfficeOM.L_BadSelectorString = "A cadea pasada ao selector non ten o formato correcto ou non é compatible.";
@@ -137,7 +137,7 @@ Strings.OfficeOM.L_NotSupportedEventType = "O tipo de evento especificado {0} no
 Strings.OfficeOM.L_OperationCancelledError = "Operación cancelada";
 Strings.OfficeOM.L_OperationCancelledErrorMessage = "O usuario cancelou a operación.";
 Strings.OfficeOM.L_OperationNotSupported = "A operación non é compatible.";
-Strings.OfficeOM.L_OperationNotSupportedOnMatrixData = "O contido seleccionado ten que estar en formato de táboa. Formata os datos como unha táboa e téntao de novo.";
+Strings.OfficeOM.L_OperationNotSupportedOnMatrixData = "O contido seleccionado ten que estar en formato de táboa. Formata os datos como unha táboa e téntao de novo."
 Strings.OfficeOM.L_OperationNotSupportedOnThisBindingType = "A operación non é compatible neste tipo de vinculación.";
 Strings.OfficeOM.L_OsfControlTypeNotSupported = "O tipo OsfControl non é compatible.";
 Strings.OfficeOM.L_OutOfRange = "Fóra do intervalo";

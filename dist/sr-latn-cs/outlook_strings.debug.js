@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -7,10 +7,10 @@ _u.ExtensibilityStrings = function()
 _u.ExtensibilityStrings.registerClass("_u.ExtensibilityStrings");
 _u.ExtensibilityStrings.l_APICallFailedDueToItemChange_Text = "The selected item has been changed.";
 _u.ExtensibilityStrings.l_AttachmentDeleteGeneralFailure_Text = "Nije moguće izbrisati prilog iz stavke.";
-_u.ExtensibilityStrings.l_AttachmentDeletedBeforeUploadCompletes_Text = "Korisnik je uklonio prilog pre nego što je otpremanje dovršeno."
+_u.ExtensibilityStrings.l_AttachmentDeletedBeforeUploadCompletes_Text = "Korisnik je uklonio prilog pre nego što je otpremanje dovršeno.";
 _u.ExtensibilityStrings.l_AttachmentErrorName_Text = "Greška u prilogu";
 _u.ExtensibilityStrings.l_AttachmentExceededSize_Text = "Nije moguće dodati prilog zato što je prevelik.";
-_u.ExtensibilityStrings.l_AttachmentUploadGeneralFailure_Text = "Nije moguće dodati prilog stavci.";
+_u.ExtensibilityStrings.l_AttachmentUploadGeneralFailure_Text = "Nije moguće dodati prilog stavci."
 _u.ExtensibilityStrings.l_CannotAddAttachmentBeforeUpgrade_Text = "Nije moguće dodati priloge dok se pun odgovor preuzima sa servera.";
 _u.ExtensibilityStrings.l_CursorPositionChanged_Text = "Korisnik je promenio poziciju kursora dok je trajalo umetanje podataka.";
 _u.ExtensibilityStrings.l_DataWriteErrorName_Text = "Greška u pisanju podataka";

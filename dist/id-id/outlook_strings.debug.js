@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -6,7 +6,7 @@ _u.ExtensibilityStrings = function()
 };
 _u.ExtensibilityStrings.registerClass("_u.ExtensibilityStrings");
 _u.ExtensibilityStrings.l_APICallFailedDueToItemChange_Text = "Item yang dipilih telah diubah.";
-_u.ExtensibilityStrings.l_AttachmentDeleteGeneralFailure_Text = "Lampiran tidak dapat dihapus dari item."
+_u.ExtensibilityStrings.l_AttachmentDeleteGeneralFailure_Text = "Lampiran tidak dapat dihapus dari item.";
 _u.ExtensibilityStrings.l_AttachmentDeletedBeforeUploadCompletes_Text = "Pengguna menghapus lampiran sebelum unggahan selesai.";
 _u.ExtensibilityStrings.l_AttachmentErrorName_Text = "Kesalahan Lampiran";
 _u.ExtensibilityStrings.l_AttachmentExceededSize_Text = "Lampiran tidak dapat ditambahkan karena terlalu besar.";
@@ -32,4 +32,4 @@ _u.ExtensibilityStrings.l_InvalidEventDates_Text = "Tanggal selesai diatur terja
 _u.ExtensibilityStrings.l_NoValidRecipientsProvided_Text = "Tidak tersedia penerima valid.";
 _u.ExtensibilityStrings.l_NumberOfRecipientsExceeded_Text = "Jumlah total penerima di bidang tidak dapat melampaui {0}.";
 _u.ExtensibilityStrings.l_OffsetNotfound_Text = "Offset untuk time stamp ini tidak ditemukan.";
-_u.ExtensibilityStrings.l_ParametersNotAsExpected_Text = "Parameter yang diberikan tidak sesuai format yang diharapkan.";
+_u.ExtensibilityStrings.l_ParametersNotAsExpected_Text = "Parameter yang diberikan tidak sesuai format yang diharapkan."

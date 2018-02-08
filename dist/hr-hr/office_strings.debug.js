@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -96,7 +96,7 @@ Strings.OfficeOM.L_InvalidGetColumns = "Navedeni stupci nisu valjani.";
 Strings.OfficeOM.L_InvalidGetRowColumnCounts = "Navedene vrijednosti rowCount ili columnCount nisu valjane.";
 Strings.OfficeOM.L_InvalidGetRows = "Navedeni reci nisu valjani.";
 Strings.OfficeOM.L_InvalidGetStartRowColumn = "Navedene vrijednosti startRow ili startColumn nisu valjane.";
-Strings.OfficeOM.L_InvalidGrant = "Nema predautorizacije."
+Strings.OfficeOM.L_InvalidGrant = "Nema predautorizacije.";
 Strings.OfficeOM.L_InvalidGrantMessage = "Nema dodjele za ovaj dodatak.";
 Strings.OfficeOM.L_InvalidNamedItemForBindingType = "Navedena vrsta povezivanja nije kompatibilna s priloženom imenovanom stavkom.";
 Strings.OfficeOM.L_InvalidNode = "Čvor nije valjan";
@@ -144,7 +144,7 @@ Strings.OfficeOM.L_OutOfRange = "Izvan raspona";
 Strings.OfficeOM.L_OverwriteWorksheetData = "Operacija skupa nije uspjela jer će priloženi podatkovni objekt prebrisati ili pomaknuti podatke.";
 Strings.OfficeOM.L_PermissionDenied = "Dozvola je odbijena";
 Strings.OfficeOM.L_PropertyDoesNotExist = "Svojstvo '{0}' ne postoji za objekt.";
-Strings.OfficeOM.L_PropertyNotLoaded = "Svojstvo '{0}' nije dostupno. Prije čitanja vrijednosti svojstva pozovite metodu učitavanja na objektu koji sadrži to svojstvo te pozovite \"context.sync()\" u kontekstu pridruženog zahtjeva.";
+Strings.OfficeOM.L_PropertyNotLoaded = "Svojstvo '{0}' nije dostupno. Prije čitanja vrijednosti svojstva pozovite metodu učitavanja na objektu koji sadrži to svojstvo te pozovite \"context.sync()\" u kontekstu pridruženog zahtjeva."
 Strings.OfficeOM.L_ReadSettingsError = "Pogreška postavki čitanja";
 Strings.OfficeOM.L_RedundantCallbackSpecification = "Povratni poziv nije moguće navesti i na popisu argumenata i u neobaveznom objektu.";
 Strings.OfficeOM.L_RequestTimeout = "Izvršavanje poziva trajalo je predugo.";

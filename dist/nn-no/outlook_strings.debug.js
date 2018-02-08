@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -9,7 +9,7 @@ _u.ExtensibilityStrings.l_APICallFailedDueToItemChange_Text = "Det valde element
 _u.ExtensibilityStrings.l_AttachmentDeleteGeneralFailure_Text = "Vedlegget kan ikkje slettast frå elementet.";
 _u.ExtensibilityStrings.l_AttachmentDeletedBeforeUploadCompletes_Text = "Brukaren fjerna vedlegget før opplastinga var fullført.";
 _u.ExtensibilityStrings.l_AttachmentErrorName_Text = "Vedleggsfeil";
-_u.ExtensibilityStrings.l_AttachmentExceededSize_Text = "Vedlegget kan ikkje leggjast til, fordi det er for stort.";
+_u.ExtensibilityStrings.l_AttachmentExceededSize_Text = "Vedlegget kan ikkje leggjast til, fordi det er for stort."
 _u.ExtensibilityStrings.l_AttachmentUploadGeneralFailure_Text = "Vedlegget kan ikkje leggast til i elementet.";
 _u.ExtensibilityStrings.l_CannotAddAttachmentBeforeUpgrade_Text = "Vedlegg kan ikkje leggjast til medan det fullstendige svaret eller vidaresendinga blir henta frå tenaren.";
 _u.ExtensibilityStrings.l_CursorPositionChanged_Text = "Brukaren endra markørposisjonen medan dataa blei sette inn.";
@@ -21,7 +21,7 @@ _u.ExtensibilityStrings.l_ElevatedPermissionNeeded_Text = "Opphøgd løyve er n�
 _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Éi eller fleire oppgitte e-postadresser er for lange.";
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Førespurnaden overskrid storleiksgrensa på 1 MB. Endre EWS-førespurnaden.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Vedlegg kan ikkje leggast til, fordi meldinga allereie har det maksimale talet på vedlegg";
-_u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "HTML-reinsinga har mislukkast."
+_u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "HTML-reinsinga har mislukkast.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Det oppstod ein intern formatfeil.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "Intern protokollfeil: {0}.";
 _u.ExtensibilityStrings.l_InvalidAttachmentId_Text = "Vedleggs-ID-en var ugyldig.";

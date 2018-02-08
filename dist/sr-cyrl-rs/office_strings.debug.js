@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -82,7 +82,7 @@ Strings.OfficeOM.L_InvalidApiArgumentsMessage = "Аргументи неваже
 Strings.OfficeOM.L_InvalidApiCallInContext = "Неважећи API позив у тренутном контексту.";
 Strings.OfficeOM.L_InvalidArgument = "Аргумент „{0}“ не функционише у овој ситуацији, недостаје или није у одговарајућем формату.";
 Strings.OfficeOM.L_InvalidArgumentGeneric = "Аргументи прослеђени у функцију не функционишу у овој ситуацији, недостају или нису у одговарајућем формату.";
-Strings.OfficeOM.L_InvalidBinding = "Неважеће повезивање"
+Strings.OfficeOM.L_InvalidBinding = "Неважеће повезивање";
 Strings.OfficeOM.L_InvalidBindingError = "Грешка неважећег повезивања";
 Strings.OfficeOM.L_InvalidBindingOperation = "Операција неважећег повезивања";
 Strings.OfficeOM.L_InvalidCellsValue = "Неки параметри ћелија имају вредности које нису дозвољене. Двапут проверите вредности и покушајте поново.";
@@ -94,7 +94,7 @@ Strings.OfficeOM.L_InvalidFormat = "Грешка неважећег формат
 Strings.OfficeOM.L_InvalidFormatValue = "Неки параметри формата имају вредности које нису дозвољене. Двапут проверите вредности и покушајте поново.";
 Strings.OfficeOM.L_InvalidGetColumns = "Наведене колоне су неважеће.";
 Strings.OfficeOM.L_InvalidGetRowColumnCounts = "Наведене вредности за број редова или број колона нису важеће.";
-Strings.OfficeOM.L_InvalidGetRows = "Наведени редови су неважећи.";
+Strings.OfficeOM.L_InvalidGetRows = "Наведени редови су неважећи."
 Strings.OfficeOM.L_InvalidGetStartRowColumn = "Наведене вредности за почетни ред или почетну колону нису важеће.";
 Strings.OfficeOM.L_InvalidGrant = "Пред-ауторизација недостаје.";
 Strings.OfficeOM.L_InvalidGrantMessage = "Недостаје одобрење за овај програмски додатак.";

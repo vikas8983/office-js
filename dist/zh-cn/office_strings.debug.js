@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -45,7 +45,7 @@ Strings.OfficeOM.L_CustomXmlOutOfDateMessage = "数据已过期。请重新检�
 Strings.OfficeOM.L_CustomXmlOutOfDateName = "数据不是最新的";
 Strings.OfficeOM.L_DataNotMatchBindingSize = "提供的数据对象与当前所选内容的大小不匹配。";
 Strings.OfficeOM.L_DataNotMatchBindingType = "指定的数据对象与绑定类型不兼容。";
-Strings.OfficeOM.L_DataNotMatchCoercionType = "指定的数据对象的类型与当前所选内容不兼容。"
+Strings.OfficeOM.L_DataNotMatchCoercionType = "指定的数据对象的类型与当前所选内容不兼容。";
 Strings.OfficeOM.L_DataNotMatchSelection = "提供的数据对象与当前所选内容的形状或尺寸不兼容。";
 Strings.OfficeOM.L_DataReadError = "数据读取错误";
 Strings.OfficeOM.L_DataStale = "数据不是最新的";
@@ -73,7 +73,7 @@ Strings.OfficeOM.L_GetDataParametersConflict = "指定的参数发生冲突。";
 Strings.OfficeOM.L_GetSelectionNotSupported = "不支持当前所选内容。";
 Strings.OfficeOM.L_HostError = "主机错误";
 Strings.OfficeOM.L_InValidOptionalArgument = "可选参数无效";
-Strings.OfficeOM.L_IndexOutOfRange = "索引超出范围。";
+Strings.OfficeOM.L_IndexOutOfRange = "索引超出范围。"
 Strings.OfficeOM.L_InitializeNotReady = "Office.js 尚未完全加载。请稍后再试或者确保在 Office.initialize 函数上添加初始化代码。";
 Strings.OfficeOM.L_InternalError = "内部错误";
 Strings.OfficeOM.L_InternalErrorDescription = "发生了内部错误。";

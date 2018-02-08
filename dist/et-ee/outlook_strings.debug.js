@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -6,7 +6,7 @@ _u.ExtensibilityStrings = function()
 };
 _u.ExtensibilityStrings.registerClass("_u.ExtensibilityStrings");
 _u.ExtensibilityStrings.l_APICallFailedDueToItemChange_Text = "Valitud üksust on muudetud.";
-_u.ExtensibilityStrings.l_AttachmentDeleteGeneralFailure_Text = "Manust ei saa üksusest kustutada."
+_u.ExtensibilityStrings.l_AttachmentDeleteGeneralFailure_Text = "Manust ei saa üksusest kustutada.";
 _u.ExtensibilityStrings.l_AttachmentDeletedBeforeUploadCompletes_Text = "Kasutaja eemaldas manuse enne üleslaadimise lõpulejõudmist.";
 _u.ExtensibilityStrings.l_AttachmentErrorName_Text = "Manusetõrge";
 _u.ExtensibilityStrings.l_AttachmentExceededSize_Text = "Manust ei saa lisada, kuna selle maht on liiga suur.";
@@ -19,7 +19,7 @@ _u.ExtensibilityStrings.l_DisplayNameTooLong_Text = "Vähemalt üks sisestatud k
 _u.ExtensibilityStrings.l_ElevatedPermissionNeededForMethod_Text = "Meetodi {0} kutsumiseks on nõutavad administraatoriõigused.";
 _u.ExtensibilityStrings.l_ElevatedPermissionNeeded_Text = "Office'i JavaScripti API kaitstud liikmetele juurdepääsemiseks on nõutavad administraatoriõigused.";
 _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Vähemalt üks sisestatud meiliaadress on liiga pikk.";
-_u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Taotlus ületab 1 MB mahupiirangu. Muutke oma EWS-i taotlust.";
+_u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Taotlus ületab 1 MB mahupiirangu. Muutke oma EWS-i taotlust."
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Manuseid ei saa lisada, kuna sõnumile on juba lisatud suurim lubatud arv manuseid";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "HTML-i puhastus nurjus.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Ilmnes sisemine vormingutõrge.";

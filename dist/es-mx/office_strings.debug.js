@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -46,7 +46,7 @@ Strings.OfficeOM.L_CustomXmlOutOfDateName = "Datos obsoletos";
 Strings.OfficeOM.L_DataNotMatchBindingSize = "El objeto de datos proporcionado no coincide con el tamaño de la selección actual.";
 Strings.OfficeOM.L_DataNotMatchBindingType = "El objeto de datos especificado no es compatible con el tipo de enlace.";
 Strings.OfficeOM.L_DataNotMatchCoercionType = "El tipo de objeto de datos especificado no es compatible con la selección actual.";
-Strings.OfficeOM.L_DataNotMatchSelection = "El objeto de datos proporcionado no es compatible con la forma o las dimensiones de la selección actual."
+Strings.OfficeOM.L_DataNotMatchSelection = "El objeto de datos proporcionado no es compatible con la forma o las dimensiones de la selección actual.";
 Strings.OfficeOM.L_DataReadError = "Error de lectura de datos";
 Strings.OfficeOM.L_DataStale = "Datos obsoletos";
 Strings.OfficeOM.L_DataWriteError = "Error de escritura de datos";
@@ -181,7 +181,7 @@ Strings.OfficeOM.L_TooManyOptionalFunction = "existen varias funciones opcionale
 Strings.OfficeOM.L_TooManyOptionalObjects = "existen varios objetos opcionales en la lista de parámetros";
 Strings.OfficeOM.L_UnknownBindingType = "El tipo de enlace no es compatible.";
 Strings.OfficeOM.L_UnsupportedDataObject = "No se admite el tipo de objeto de datos proporcionado.";
-Strings.OfficeOM.L_UnsupportedEnumeration = "Enumeración no compatible";
+Strings.OfficeOM.L_UnsupportedEnumeration = "Enumeración no compatible"
 Strings.OfficeOM.L_UnsupportedEnumerationMessage = "La enumeración no se admite la aplicación host actual.";
 Strings.OfficeOM.L_UnsupportedUserIdentity = "No se admite el tipo de identidad del usuario.";
 Strings.OfficeOM.L_UnsupportedUserIdentityMessage = "No se admite el tipo de identidad del usuario.";

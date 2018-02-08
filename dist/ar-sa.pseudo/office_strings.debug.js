@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -93,7 +93,7 @@ Strings.OfficeOM.L_InvalidDataObject = "［gFTdx］‏‏أبع[Invalid Data Obj
 Strings.OfficeOM.L_InvalidFormat = "［aPhpJ］‏‏أبع[Invalid Format Error]לף";
 Strings.OfficeOM.L_InvalidFormatValue = "［0DFva］‏‏أبع[One or more of the format parameters have values that aren't allowed. Double-check the values and try again.]לף";
 Strings.OfficeOM.L_InvalidGetColumns = "［gwsNB］‏‏أبع[The specified columns are invalid.]לף";
-Strings.OfficeOM.L_InvalidGetRowColumnCounts = "［6atwJ］‏‏أبع[The specified rowCount or columnCount values are invalid.]לף";
+Strings.OfficeOM.L_InvalidGetRowColumnCounts = "［6atwJ］‏‏أبع[The specified rowCount or columnCount values are invalid.]לף"
 Strings.OfficeOM.L_InvalidGetRows = "［KshdR］‏‏أبع[The specified rows are invalid.]לף";
 Strings.OfficeOM.L_InvalidGetStartRowColumn = "［ghnzE］‏‏أبع[The specified startRow or startColumn values are invalid.]לף";
 Strings.OfficeOM.L_InvalidGrant = "［hWgqe］‏‏أبع[Preauthorization missing.]לף";
@@ -143,7 +143,7 @@ Strings.OfficeOM.L_OsfControlTypeNotSupported = "［N1OVz］‏‏أبع[OsfCont
 Strings.OfficeOM.L_OutOfRange = "［0AgiF］‏‏أبع[Out of Range]לף";
 Strings.OfficeOM.L_OverwriteWorksheetData = "［DOAPX］‏‏أبع[The set operation failed because the supplied data object will overwrite or shift data.]לף";
 Strings.OfficeOM.L_PermissionDenied = "［pMeM6］‏‏أبع[Permission Denied]לף";
-Strings.OfficeOM.L_PropertyDoesNotExist = "［P3fDW］‏‏أبع[Property '{0}' does not exist on the object.]לף"
+Strings.OfficeOM.L_PropertyDoesNotExist = "［P3fDW］‏‏أبع[Property '{0}' does not exist on the object.]לף";
 Strings.OfficeOM.L_PropertyNotLoaded = "［WhYjj］‏‏أبع[The property '{0}' is not available. Before reading the property's value, call the load method on the containing object and call \"context.sync()\" on the associated request context.]לף";
 Strings.OfficeOM.L_ReadSettingsError = "［NO2AI］‏‏أبع[Read Settings Error]לף";
 Strings.OfficeOM.L_RedundantCallbackSpecification = "［1w72s］‏‏أبع[Callback cannot be specified both in argument list and in optional object.]לף";

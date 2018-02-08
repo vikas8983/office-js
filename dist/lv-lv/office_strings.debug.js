@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -154,13 +154,13 @@ Strings.OfficeOM.L_RunMustReturnPromise = "Pakešuzdevuma funkcija, kas nodota m
 Strings.OfficeOM.L_SSOClientError = "Kļūda radās Office autentifikācijas pieprasījumā.";
 Strings.OfficeOM.L_SSOClientErrorMessage = "Klientā radās neparedzēta kļūda.";
 Strings.OfficeOM.L_SSOConnectionLostError = "Pierakstīšanās laikā zuda savienojums.";
-Strings.OfficeOM.L_SSOConnectionLostErrorMessage = "Pierakstīšanās laikā zuda savienojums, un lietotājs nevar pierakstīties. Iespējams, ka to izraisīja lietotāja pārlūkprogrammas konfigurācijas iestatījumi, piemēram, drošības zonas."
+Strings.OfficeOM.L_SSOConnectionLostErrorMessage = "Pierakstīšanās laikā zuda savienojums, un lietotājs nevar pierakstīties. Iespējams, ka to izraisīja lietotāja pārlūkprogrammas konfigurācijas iestatījumi, piemēram, drošības zonas.";
 Strings.OfficeOM.L_SSOServerError = "Kļūda radās autentifikācijas nodrošinātājā.";
 Strings.OfficeOM.L_SSOServerErrorMessage = "Serverī radās neparedzēta kļūda.";
 Strings.OfficeOM.L_SSOUserConsentNotSupportedByCurrentAddinCategory = "Šī pievienojumprogramma neatbalsta lietotāja piekrišanu.";
 Strings.OfficeOM.L_SSOUserConsentNotSupportedByCurrentAddinCategoryMessage = "Operācija neizdevās, jo šī pievienojumprogramma neatbalsta lietotāja piekrišanu šajā kategorijā";
 Strings.OfficeOM.L_SaveSettingsError = "Iestatījumu saglabāšanas kļūda";
-Strings.OfficeOM.L_SelectionCannotBound = "Nevar piesaistīt pašreizējai atlasei.";
+Strings.OfficeOM.L_SelectionCannotBound = "Nevar piesaistīt pašreizējai atlasei."
 Strings.OfficeOM.L_SelectionNotSupportCoercionType = "Pašreizējā atlase nav saderīga ar norādīto piespiedu pārvēršanas tipu.";
 Strings.OfficeOM.L_SetDataIsTooLarge = "Norādītais datu objekts ir pārāk liels.";
 Strings.OfficeOM.L_SetDataParametersConflict = "Norādītie parametri konfliktē.";

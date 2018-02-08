@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -105,7 +105,7 @@ Strings.OfficeOM.L_InvalidOperationInCellEditMode = "Excel je v režime úpravy 
 Strings.OfficeOM.L_InvalidOrTimedOutSession = "Neplatná relácia alebo relácia s uplynutým časovým limitom";
 Strings.OfficeOM.L_InvalidOrTimedOutSessionMessage = "Platnosť relácie služby Office Online uplynula alebo je relácia neplatná. Ak chcete pokračovať, obnovte stránku.";
 Strings.OfficeOM.L_InvalidParameters = "Funkcia {0} má neplatné parametre.";
-Strings.OfficeOM.L_InvalidReadForBlankRow = "Zadaný riadok je prázdny."
+Strings.OfficeOM.L_InvalidReadForBlankRow = "Zadaný riadok je prázdny.";
 Strings.OfficeOM.L_InvalidRequestContext = "Objekt sa nedá použiť v kontextoch rôznych žiadostí.";
 Strings.OfficeOM.L_InvalidResourceUrl = "Bola zadaná neplatná URL adresa zdroja aplikácie.";
 Strings.OfficeOM.L_InvalidResourceUrlMessage = "V manifeste bola zadaná neplatná URL adresa zdroja.";
@@ -119,7 +119,7 @@ Strings.OfficeOM.L_InvalidValue = "Neplatná hodnota";
 Strings.OfficeOM.L_MemoryLimit = "Prekročil sa limit pamäte";
 Strings.OfficeOM.L_MissingParameter = "Chýbajúci parameter";
 Strings.OfficeOM.L_MissingRequiredArguments = "chýba niekoľko požadovaných argumentov";
-Strings.OfficeOM.L_MultipleNamedItemFound = "Našlo sa viacero objektov s rovnakým názvom.";
+Strings.OfficeOM.L_MultipleNamedItemFound = "Našlo sa viacero objektov s rovnakým názvom."
 Strings.OfficeOM.L_NamedItemNotFound = "Pomenovaná položka neexistuje.";
 Strings.OfficeOM.L_NavOutOfBound = "Operácia zlyhala, pretože index je mimo rozsahu.";
 Strings.OfficeOM.L_NetworkProblem = "Problém so sieťou";

@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -83,11 +83,11 @@ Strings.OfficeOM.L_InvalidApiCallInContext = "現在のコンテキストに無�
 Strings.OfficeOM.L_InvalidArgument = "引数 '{0}' は、この状況では機能しないか、欠落している、または適切な形式ではありません。";
 Strings.OfficeOM.L_InvalidArgumentGeneric = "関数に渡された引数が、この状況では機能しないか、不足しているか、形式の誤りがあります。";
 Strings.OfficeOM.L_InvalidBinding = "無効なバインド";
-Strings.OfficeOM.L_InvalidBindingError = "無効なバインド エラー"
+Strings.OfficeOM.L_InvalidBindingError = "無効なバインド エラー";
 Strings.OfficeOM.L_InvalidBindingOperation = "無効なバインドの操作";
 Strings.OfficeOM.L_InvalidCellsValue = "1 つ以上の cells パラメーターに、許可されていない値が設定されています。値を再確認し、もう一度お試しください。";
 Strings.OfficeOM.L_InvalidCoercion = "強制変換タイプが無効です";
-Strings.OfficeOM.L_InvalidColumnsForBinding = "指定された列が無効です。";
+Strings.OfficeOM.L_InvalidColumnsForBinding = "指定された列が無効です。"
 Strings.OfficeOM.L_InvalidDataFormat = "指定したデータ オブジェクトの形式は無効です。";
 Strings.OfficeOM.L_InvalidDataObject = "データ オブジェクトが無効です";
 Strings.OfficeOM.L_InvalidFormat = "無効な形式のためにエラーが発生しました";

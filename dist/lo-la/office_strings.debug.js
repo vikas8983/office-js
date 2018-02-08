@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -70,7 +70,7 @@ Strings.OfficeOM.L_FormattingReminder = "ການແຈ້ງເຕືອນກ
 Strings.OfficeOM.L_FunctionCallFailed = "ເອີ້ນຟັງຊັນ {0} ບໍ່ສຳເລັດ, ລະຫັດຂໍ້ຜິດພາດ: {1}.";
 Strings.OfficeOM.L_GetDataIsTooLarge = "ຊຸດຂໍ້ມູນທີ່ຮ້ອງຂໍນັ້ນໃຫຍ່ເກີນໄປ.";
 Strings.OfficeOM.L_GetDataParametersConflict = "ພາຣາມິເຕີທີ່ລະບຸນັ້ນຂັດແຍ່ງກັນ.";
-Strings.OfficeOM.L_GetSelectionNotSupported = "ບໍ່ຮອງຮັບການເລືອກປັດຈຸບັນ.";
+Strings.OfficeOM.L_GetSelectionNotSupported = "ບໍ່ຮອງຮັບການເລືອກປັດຈຸບັນ."
 Strings.OfficeOM.L_HostError = "ໂຮສຜິດພາດ";
 Strings.OfficeOM.L_InValidOptionalArgument = "ອາກິວເມັນຕົວເລືອກເສີມບໍ່ຖືກຕ້ອງ";
 Strings.OfficeOM.L_IndexOutOfRange = "ດັດຊະນີຢູ່ເກີນໄລຍະ.";
@@ -116,7 +116,7 @@ Strings.OfficeOM.L_InvalidSetRows = "ແຖວທີ່ລະບຸນັ້ນ�
 Strings.OfficeOM.L_InvalidSetStartRowColumn = "ຄ່າ startRow ຫຼື startColumn ທີ່ລະບຸນັ້ນບໍ່ຖືກຕ້ອງ.";
 Strings.OfficeOM.L_InvalidTableOptionValue = "ໜຶ່ງ ຫຼື ຫຼາຍກວ່າໜຶ່ງພາຣາມິເຕີ tableOptions ມີຄ່າທີ່ບໍ່ອະນຸຍາດໃຫ້ໃຊ້. ໃຫ້ກວດສອບຄ່າຕ່າງໆຄືນໃໝ່ ແລ້ວລອງອີກຄັ້ງ.";
 Strings.OfficeOM.L_InvalidValue = "ຄ່າບໍ່ຖືກຕ້ອງ";
-Strings.OfficeOM.L_MemoryLimit = "ເກີດຂີດຈຳກັດຄວາມຈຳ"
+Strings.OfficeOM.L_MemoryLimit = "ເກີດຂີດຈຳກັດຄວາມຈຳ";
 Strings.OfficeOM.L_MissingParameter = "ບໍ່ມີພາຣາມິເຕີ";
 Strings.OfficeOM.L_MissingRequiredArguments = "ບໍ່ມີອາກິວເມັນທີ່ຕ້ອງໃຊ້";
 Strings.OfficeOM.L_MultipleNamedItemFound = "ພົບອອບເຈັກຫຼາຍອັນທີ່ມີຊື່ດຽວກັນ.";

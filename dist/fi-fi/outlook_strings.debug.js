@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -16,12 +16,12 @@ _u.ExtensibilityStrings.l_CursorPositionChanged_Text = "Käyttäjä muutti kohdi
 _u.ExtensibilityStrings.l_DataWriteErrorName_Text = "Virhe kirjoitettaessa tietoja";
 _u.ExtensibilityStrings.l_DeleteAttachmentDoesNotExist_Text = "Liitettä ei voi poistaa, koska liitettä ei löydy liitteen indeksin perusteella.";
 _u.ExtensibilityStrings.l_DisplayNameTooLong_Text = "Vähintään yksi annettu näyttönimi on liian pitkä.";
-_u.ExtensibilityStrings.l_ElevatedPermissionNeededForMethod_Text = "Menetelmän kutsumiseen tarvitaan laajennetut oikeudet: {0}."
+_u.ExtensibilityStrings.l_ElevatedPermissionNeededForMethod_Text = "Menetelmän kutsumiseen tarvitaan laajennetut oikeudet: {0}.";
 _u.ExtensibilityStrings.l_ElevatedPermissionNeeded_Text = "Officen JavaScript-ohjelmointirajapinnan suojattujen jäsenten käyttämiseen tarvitaan laajennetut oikeudet.";
 _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Vähintään yksi annettu sähköpostiosoite on liian pitkä.";
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Pyyntö ylittää yhden megatavun kokorajoituksen. Muokkaa EWS-pyyntöä.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Liitteitä ei voi lisätä, koska viestissä on jo suurin sallittu määrä liitteitä";
-_u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "HTML-koodin puhdistaminen epäonnistui.";
+_u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "HTML-koodin puhdistaminen epäonnistui."
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Virhe sisäisessä muodossa.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "Sisäinen protokollavirhe: {0}.";
 _u.ExtensibilityStrings.l_InvalidAttachmentId_Text = "Liitteen tunnus ei kelpaa.";

@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -34,14 +34,14 @@ Strings.OfficeOM.L_ColIndexOutOfRange = "Значение индекса сто�
 Strings.OfficeOM.L_ConnectionFailureWithDetails = "Сбой запроса с кодом состояния {0}, кодом ошибки {1}, а также сообщением об ошибке: {2}";
 Strings.OfficeOM.L_ConnectionFailureWithStatus = "Сбой запроса с кодом состояния {0}.";
 Strings.OfficeOM.L_CustomFunctionDefinitionMissing = "Свойство с таким именем, представляющее определение функции, должно существовать для Excel.CustomFunctions.";
-Strings.OfficeOM.L_CustomFunctionImplementationMissing = "Свойство с таким именем для Excel.CustomFunctions, представляющее определение функции, должно содержать свойство call, реализующее эту функцию."
+Strings.OfficeOM.L_CustomFunctionImplementationMissing = "Свойство с таким именем для Excel.CustomFunctions, представляющее определение функции, должно содержать свойство call, реализующее эту функцию.";
 Strings.OfficeOM.L_CustomFunctionNameCannotSplit = "Имя функции должно содержать пространство имени и короткое имя (оба должны быть указаны).";
 Strings.OfficeOM.L_CustomFunctionNameContainsBadChars = "Имя функции может содержать только буквы, цифры, подчеркивания и точки.";
 Strings.OfficeOM.L_CustomXmlError = "Ошибка настраиваемого XML-документа.";
 Strings.OfficeOM.L_CustomXmlExceedQuotaMessage = "Из-за XPath можно выбрать не более 1024 элементов.";
 Strings.OfficeOM.L_CustomXmlExceedQuotaName = "Достигнут предел выбора";
 Strings.OfficeOM.L_CustomXmlNodeNotFound = "Указанный узел не найден.";
-Strings.OfficeOM.L_CustomXmlOutOfDateMessage = "Данные устарели. Получите объект еще раз.";
+Strings.OfficeOM.L_CustomXmlOutOfDateMessage = "Данные устарели. Получите объект еще раз."
 Strings.OfficeOM.L_CustomXmlOutOfDateName = "Данные устарели";
 Strings.OfficeOM.L_DataNotMatchBindingSize = "Заданный объект данных не соответствует размеру выделенного фрагмента.";
 Strings.OfficeOM.L_DataNotMatchBindingType = "Указанный объект данных несовместим с типом привязки.";

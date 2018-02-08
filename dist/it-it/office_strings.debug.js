@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -26,7 +26,7 @@ Strings.OfficeOM.L_CannotNavigateTo = "L'oggetto si trova in una posizione in cu
 Strings.OfficeOM.L_CannotRegisterEvent = "Non è possibile registrare il gestore eventi.";
 Strings.OfficeOM.L_CannotWriteToSelection = "Non è possibile scrivere sulla selezione corrente.";
 Strings.OfficeOM.L_CellDataAmountBeyondLimits = "Nota: è consigliabile che il numero di celle di una tabella sia inferiore a 20.000.";
-Strings.OfficeOM.L_CellFormatAmountBeyondLimits = "Nota: è consigliabile che i set di formattazione impostati da una chiamata all'API Formatting siano inferiori a 100.";
+Strings.OfficeOM.L_CellFormatAmountBeyondLimits = "Nota: è consigliabile che i set di formattazione impostati da una chiamata all'API Formatting siano inferiori a 100."
 Strings.OfficeOM.L_CloseFileBeforeRetrieve = "Chiamare closeAsync nel file corrente prima di recuperarne un altro.";
 Strings.OfficeOM.L_CoercionTypeNotMatchBinding = "Il tipo di coercizione specificato non è compatibile con questo tipo di associazione.";
 Strings.OfficeOM.L_CoercionTypeNotSupported = "Il tipo di coercizione specificato non è supportato.";
@@ -129,7 +129,7 @@ Strings.OfficeOM.L_NewWindowCrossZoneConfigureBrowserLink = "configurare il brow
 Strings.OfficeOM.L_NewWindowCrossZoneErrorString = "Le restrizioni del browser hanno impedito la creazione della finestra di dialogo. Il dominio della finestra di dialogo e quello dell'host dei componenti aggiuntivi non si trovano nella stessa area di sicurezza.";
 Strings.OfficeOM.L_NoCapability = "Non si dispone di autorizzazioni sufficienti per l'azione.";
 Strings.OfficeOM.L_NonUniformPartialGetNotSupported = "Non è possibile usare i parametri delle coordinate con il tipo di coercizione Tabella quando la tabella contiene celle unite.";
-Strings.OfficeOM.L_NonUniformPartialSetNotSupported = "Non è possibile usare i parametri delle coordinate con il tipo di coercizione Tabella quando la tabella contiene celle unite."
+Strings.OfficeOM.L_NonUniformPartialSetNotSupported = "Non è possibile usare i parametri delle coordinate con il tipo di coercizione Tabella quando la tabella contiene celle unite.";
 Strings.OfficeOM.L_NotImplemented = "La funzione {0} non è implementata.";
 Strings.OfficeOM.L_NotSupported = "La funzione {0} non è supportata.";
 Strings.OfficeOM.L_NotSupportedBindingType = "Il tipo di associazione specificato {0} non è supportato.";

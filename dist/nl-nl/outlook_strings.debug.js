@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -14,7 +14,7 @@ _u.ExtensibilityStrings.l_AttachmentUploadGeneralFailure_Text = "De bijlage kan 
 _u.ExtensibilityStrings.l_CannotAddAttachmentBeforeUpgrade_Text = "U kunt geen bijlagen toevoegen op het moment dat het volledige antwoord of doorgestuurde bericht wordt opgehaald van de server.";
 _u.ExtensibilityStrings.l_CursorPositionChanged_Text = "De gebruiker heeft de positie van de cursor gewijzigd terwijl de gegevens werden ingevoegd.";
 _u.ExtensibilityStrings.l_DataWriteErrorName_Text = "Fout bij het schrijven van gegevens";
-_u.ExtensibilityStrings.l_DeleteAttachmentDoesNotExist_Text = "De bijlage kan niet worden verwijderd omdat de bijlage met de bijlage-index niet kan worden gevonden."
+_u.ExtensibilityStrings.l_DeleteAttachmentDoesNotExist_Text = "De bijlage kan niet worden verwijderd omdat de bijlage met de bijlage-index niet kan worden gevonden.";
 _u.ExtensibilityStrings.l_DisplayNameTooLong_Text = "Een of meer van de opgegeven weergavenamen is te lang.";
 _u.ExtensibilityStrings.l_ElevatedPermissionNeededForMethod_Text = "U hebt een verhoogde machtiging nodig voor het aanroepen van de methode: '{0}'.";
 _u.ExtensibilityStrings.l_ElevatedPermissionNeeded_Text = "U hebt een verhoogde machtiging nodig voor toegang tot beschermde leden van de JavaScript-API voor Office.";
@@ -24,7 +24,7 @@ _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "U kunt geen bij
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "De HTML-opschoning is mislukt.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Er is een interne indelingsfout opgetreden.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "Interne protocolfout: '{0}'.";
-_u.ExtensibilityStrings.l_InvalidAttachmentId_Text = "De bijlage-id is ongeldig.";
+_u.ExtensibilityStrings.l_InvalidAttachmentId_Text = "De bijlage-id is ongeldig."
 _u.ExtensibilityStrings.l_InvalidAttachmentPath_Text = "Het bijlagepad is ongeldig.";
 _u.ExtensibilityStrings.l_InvalidDate_Text = "De invoer kan niet worden omgezet in een geldige datum.";
 _u.ExtensibilityStrings.l_InvalidEndTime_Text = "De eindtijd kan niet vóór de begintijd liggen.";

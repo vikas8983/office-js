@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -79,7 +79,7 @@ Strings.OfficeOM.L_InternalError = "內部錯誤";
 Strings.OfficeOM.L_InternalErrorDescription = "發生內部錯誤。";
 Strings.OfficeOM.L_InvalidAPICall = "無效的 API 呼叫";
 Strings.OfficeOM.L_InvalidApiArgumentsMessage = "輸入引數無效。";
-Strings.OfficeOM.L_InvalidApiCallInContext = "目前的內容中發生無效的 API 呼叫。";
+Strings.OfficeOM.L_InvalidApiCallInContext = "目前的內容中發生無效的 API 呼叫。"
 Strings.OfficeOM.L_InvalidArgument = "引數 '{0}' 不適用於這種情況、遺失，或格式不正確。";
 Strings.OfficeOM.L_InvalidArgumentGeneric = "傳遞到函數的引數在此情況下不適用、已遺失或格式不正確。";
 Strings.OfficeOM.L_InvalidBinding = "無效的繫結";
@@ -121,7 +121,7 @@ Strings.OfficeOM.L_MissingParameter = "缺少參數。";
 Strings.OfficeOM.L_MissingRequiredArguments = "遺失部分必要引數";
 Strings.OfficeOM.L_MultipleNamedItemFound = "找到多個同名稱的物件。";
 Strings.OfficeOM.L_NamedItemNotFound = "命名項目不存在。";
-Strings.OfficeOM.L_NavOutOfBound = "作業失敗，因為索引超出範圍。"
+Strings.OfficeOM.L_NavOutOfBound = "作業失敗，因為索引超出範圍。";
 Strings.OfficeOM.L_NetworkProblem = "網路問題";
 Strings.OfficeOM.L_NetworkProblemRetrieveFile = "網路發生問題，無法擷取檔案。";
 Strings.OfficeOM.L_NewWindowCrossZone = "您瀏覽器的安全性設定導致我們無法建立對話方塊。請嘗試其他瀏覽器，或{0}以讓 '{1}' 和網址列顯示的網域位於相同的安全性區域。";

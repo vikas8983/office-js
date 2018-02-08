@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -29,7 +29,7 @@ _u.ExtensibilityStrings.l_InvalidAttachmentPath_Text = "附件路径无效。";
 _u.ExtensibilityStrings.l_InvalidDate_Text = "此输入无法解析为有效的日期。";
 _u.ExtensibilityStrings.l_InvalidEndTime_Text = "结束时间不能早于开始时间。";
 _u.ExtensibilityStrings.l_InvalidEventDates_Text = "结束日期早于开始日期。";
-_u.ExtensibilityStrings.l_NoValidRecipientsProvided_Text = "未提供有效的收件人。";
+_u.ExtensibilityStrings.l_NoValidRecipientsProvided_Text = "未提供有效的收件人。"
 _u.ExtensibilityStrings.l_NumberOfRecipientsExceeded_Text = "字段中的收件人总数不能超过 {0}。";
 _u.ExtensibilityStrings.l_OffsetNotfound_Text = "无法找到此时间戳的偏移量。";
-_u.ExtensibilityStrings.l_ParametersNotAsExpected_Text = "给定参数与预期格式不匹配。"
+_u.ExtensibilityStrings.l_ParametersNotAsExpected_Text = "给定参数与预期格式不匹配。";

@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -6,7 +6,7 @@ Strings.OfficeOM = function()
 };
 Strings.OfficeOM.registerClass("Strings.OfficeOM");
 Strings.OfficeOM.L_APICallFailed = "Wywołanie interfejsu API nie powiodło się";
-Strings.OfficeOM.L_APINotSupported = "Interfejs API nie jest obsługiwany"
+Strings.OfficeOM.L_APINotSupported = "Interfejs API nie jest obsługiwany";
 Strings.OfficeOM.L_ActivityLimitReached = "Osiągnięto limit aktywności.";
 Strings.OfficeOM.L_AddBindingFromPromptDefaultText = "Dokonaj wyboru.";
 Strings.OfficeOM.L_AddinIsAlreadyRequestingToken = "Dodatek już żąda tokenu dostępu.";
@@ -46,7 +46,7 @@ Strings.OfficeOM.L_CustomXmlOutOfDateName = "Nieaktualne dane";
 Strings.OfficeOM.L_DataNotMatchBindingSize = "Podany obiekt danych nie jest zgodny z rozmiarem bieżącego wyboru.";
 Strings.OfficeOM.L_DataNotMatchBindingType = "Określony obiekt danych jest niezgodny z typem powiązania.";
 Strings.OfficeOM.L_DataNotMatchCoercionType = "Typ określonego obiektu danych nie jest zgodny z bieżącym wyborem.";
-Strings.OfficeOM.L_DataNotMatchSelection = "Podany obiekt danych jest niezgodny z kształtem lub wymiarami bieżącego zaznaczenia.";
+Strings.OfficeOM.L_DataNotMatchSelection = "Podany obiekt danych jest niezgodny z kształtem lub wymiarami bieżącego zaznaczenia."
 Strings.OfficeOM.L_DataReadError = "Błąd odczytu danych";
 Strings.OfficeOM.L_DataStale = "Nieaktualne dane";
 Strings.OfficeOM.L_DataWriteError = "Błąd zapisu danych";

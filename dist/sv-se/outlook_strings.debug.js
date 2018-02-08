@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -14,11 +14,11 @@ _u.ExtensibilityStrings.l_AttachmentUploadGeneralFailure_Text = "Det går inte a
 _u.ExtensibilityStrings.l_CannotAddAttachmentBeforeUpgrade_Text = "Det går inte att bifoga filer under tiden som hela svaret eller vidarebefordran hämtas från servern.";
 _u.ExtensibilityStrings.l_CursorPositionChanged_Text = "Användaren ändrade markörens läge under tiden som data infogades.";
 _u.ExtensibilityStrings.l_DataWriteErrorName_Text = "Dataskrivningsfel";
-_u.ExtensibilityStrings.l_DeleteAttachmentDoesNotExist_Text = "Det går inte att ta bort den bifogade filen, eftersom det inte går att hitta någon bifogad fil med det indexet."
+_u.ExtensibilityStrings.l_DeleteAttachmentDoesNotExist_Text = "Det går inte att ta bort den bifogade filen, eftersom det inte går att hitta någon bifogad fil med det indexet.";
 _u.ExtensibilityStrings.l_DisplayNameTooLong_Text = "Ett eller flera av de angivna visningsnamnen är för långa.";
 _u.ExtensibilityStrings.l_ElevatedPermissionNeededForMethod_Text = "Förhöjd behörighet krävs för att anropa metoden: {0}.";
 _u.ExtensibilityStrings.l_ElevatedPermissionNeeded_Text = "Förhöjd behörighet krävs för åtkomst till skyddade medlemmar av JavaScript API:n för Office.";
-_u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "En eller flera av de angivna e-postadresserna är för långa.";
+_u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "En eller flera av de angivna e-postadresserna är för långa."
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Storleken på begäran överskrider gränsen på 1 MB. Ändra din EWS-begäran.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Det går inte att bifoga filer, eftersom meddelandet redan har högsta möjliga antal bifogade filer";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "HTML-rensningen misslyckades.";

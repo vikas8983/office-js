@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -8,9 +8,9 @@ _u.ExtensibilityStrings.registerClass("_u.ExtensibilityStrings");
 _u.ExtensibilityStrings.l_APICallFailedDueToItemChange_Text = "Mục được chọn đã bị thay đổi.";
 _u.ExtensibilityStrings.l_AttachmentDeleteGeneralFailure_Text = "Không thể xóa phần đính kèm ra khỏi mục.";
 _u.ExtensibilityStrings.l_AttachmentDeletedBeforeUploadCompletes_Text = "Người dùng đã loại bỏ phần đính kèm trước khi tải lên hoàn tất.";
-_u.ExtensibilityStrings.l_AttachmentErrorName_Text = "Lỗi Phần đính kèm";
+_u.ExtensibilityStrings.l_AttachmentErrorName_Text = "Lỗi Phần đính kèm"
 _u.ExtensibilityStrings.l_AttachmentExceededSize_Text = "Không thể thêm phần đính kèm do quá lớn.";
-_u.ExtensibilityStrings.l_AttachmentUploadGeneralFailure_Text = "Không thể thêm phần đính kèm vào mục."
+_u.ExtensibilityStrings.l_AttachmentUploadGeneralFailure_Text = "Không thể thêm phần đính kèm vào mục.";
 _u.ExtensibilityStrings.l_CannotAddAttachmentBeforeUpgrade_Text = "Không thể thêm phần đính kèm trong lúc đang truy xuất trả lời đầy đủ hoặc chuyển tiếp từ máy chủ.";
 _u.ExtensibilityStrings.l_CursorPositionChanged_Text = "Người dùng đã thay đổi vị trí của con trỏ chuột trong lúc chèn dữ liệu.";
 _u.ExtensibilityStrings.l_DataWriteErrorName_Text = "Lỗi Ghi Dữ liệu";

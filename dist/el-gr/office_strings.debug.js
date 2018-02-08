@@ -1,4 +1,4 @@
-/* Version: 16.0.9030.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -22,7 +22,7 @@ Strings.OfficeOM.L_BindingToMultipleSelection = "Οι μη συνεχόμενε�
 Strings.OfficeOM.L_BrowserAPINotSupported = "Αυτό το πρόγραμμα περιήγησης δεν υποστηρίζει το API που ζητήθηκε.";
 Strings.OfficeOM.L_CallbackNotAFunction = "Η επιστροφή κλήσης πρέπει να είναι τύπου συνάρτησης, ήταν τύπου {0}.";
 Strings.OfficeOM.L_CannotApplyPropertyThroughSetMethod = 'Δεν είναι δυνατή η εφαρμογή των αλλαγών στην ιδιότητα "{0}" μέσω μιας μεθόδου "object.set".';
-Strings.OfficeOM.L_CannotNavigateTo = "Το αντικείμενο βρίσκεται σε θέση όπου δεν υποστηρίζεται η περιήγηση.";
+Strings.OfficeOM.L_CannotNavigateTo = "Το αντικείμενο βρίσκεται σε θέση όπου δεν υποστηρίζεται η περιήγηση."
 Strings.OfficeOM.L_CannotRegisterEvent = "Δεν είναι δυνατή η καταχώρηση του προγράμματος χειρισμού συμβάντων.";
 Strings.OfficeOM.L_CannotWriteToSelection = "Δεν είναι δυνατή η εγγραφή στην τρέχουσα επιλογή.";
 Strings.OfficeOM.L_CellDataAmountBeyondLimits = "Σημείωση: Το πλήθος των κελιών σε έναν πίνακα προτείνεται να είναι κάτω από 20.000 κελιά.";
@@ -177,7 +177,7 @@ Strings.OfficeOM.L_SpecifiedIdNotExist = "Το καθορισμένο αναγν
 Strings.OfficeOM.L_Timeout = "Έληξε το χρονικό όριο της λειτουργίας. ";
 Strings.OfficeOM.L_TooManyArguments = "πάρα πολλά ορίσματα";
 Strings.OfficeOM.L_TooManyIncompleteRequests = "Περιμένετε μέχρι να ολοκληρωθεί η προηγούμενη κλήση.";
-Strings.OfficeOM.L_TooManyOptionalFunction = "πολλές προαιρετικές συναρτήσεις στη λίστα παραμέτρων"
+Strings.OfficeOM.L_TooManyOptionalFunction = "πολλές προαιρετικές συναρτήσεις στη λίστα παραμέτρων";
 Strings.OfficeOM.L_TooManyOptionalObjects = "πολλά προαιρετικά αντικείμενα στη λίστα παραμέτρων";
 Strings.OfficeOM.L_UnknownBindingType = "Ο τύπος σύνδεσης δεν υποστηρίζεται.";
 Strings.OfficeOM.L_UnsupportedDataObject = "Ο τύπος του αντικειμένου δεδομένων που δόθηκε δεν υποστηρίζεται.";
