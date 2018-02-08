@@ -1,5 +1,5 @@
 /* Excel Android-specific API library */
-/* Version: 16.0.9025.3000 */
+/* Version: 16.0.9103.3000 */
 
 /*
 	Copyright (c) Microsoft Corporation.  All rights reserved.
@@ -5559,7 +5559,7 @@ var OSFAppTelemetry;
 		}
 		appInfo.message=context.get_hostCustomMessage();
 		appInfo.officeJSVersion=OSF.ConstantNames.FileVersion;
-		appInfo.hostJSVersion="16.0.9025.3000";
+		appInfo.hostJSVersion="16.0.9103.3000";
 		if (context._wacHostEnvironment) {
 			appInfo.wacHostEnvironment=context._wacHostEnvironment;
 		}
@@ -11419,6 +11419,24 @@ var OfficeExtension;
 				this.m_parentObjectPath=null;
 				return;
 			}
+			var collectionPropertyPath=clientObject[OfficeExtension.Constants.collectionPropertyPath];
+			if (!OfficeExtension.Utility.isNullOrEmptyString(collectionPropertyPath)) {
+				var id=OfficeExtension.Utility.tryGetObjectIdFromLoadOrRetrieveResult(value);
+				if (!OfficeExtension.Utility.isNullOrUndefined(id)) {
+					var propNames=collectionPropertyPath.split(".");
+					var parent_1=clientObject.context[propNames[0]];
+					for (var i=1; i < propNames.length; i++) {
+						parent_1=parent_1[propNames[i]];
+					}
+					this.resetForUpdateUsingObjectData();
+					this.m_parentObjectPath=parent_1._objectPath;
+					this.m_objectPathInfo.ParentObjectPathId=this.m_parentObjectPath.objectPathInfo.Id;
+					this.m_objectPathInfo.ObjectPathType=5;
+					this.m_objectPathInfo.Name="";
+					this.m_objectPathInfo.ArgumentInfo.Arguments=[id];
+					return;
+				}
+			}
 			var parentIsCollection=this.parentObjectPath && this.parentObjectPath.isCollection;
 			var getByIdMethodName=this.getByIdMethodName;
 			if (parentIsCollection || !OfficeExtension.Utility.isNullOrEmptyString(getByIdMethodName)) {
@@ -11434,24 +11452,6 @@ var OfficeExtension;
 						this.m_objectPathInfo.ObjectPathType=5;
 						this.m_objectPathInfo.Name="";
 					}
-					this.m_objectPathInfo.ArgumentInfo.Arguments=[id];
-					return;
-				}
-			}
-			var collectionPropertyPath=clientObject[OfficeExtension.Constants.collectionPropertyPath];
-			if (this.m_objectPathInfo.ObjectPathType !==5 && !OfficeExtension.Utility.isNullOrEmptyString(collectionPropertyPath)) {
-				var id=OfficeExtension.Utility.tryGetObjectIdFromLoadOrRetrieveResult(value);
-				if (!OfficeExtension.Utility.isNullOrUndefined(id)) {
-					var propNames=collectionPropertyPath.split(".");
-					var parent_1=clientObject.context[propNames[0]];
-					for (var i=1; i < propNames.length; i++) {
-						parent_1=parent_1[propNames[i]];
-					}
-					this.resetForUpdateUsingObjectData();
-					this.m_parentObjectPath=parent_1._objectPath;
-					this.m_objectPathInfo.ParentObjectPathId=this.m_parentObjectPath.objectPathInfo.Id;
-					this.m_objectPathInfo.ObjectPathType=5;
-					this.m_objectPathInfo.Name="";
 					this.m_objectPathInfo.ArgumentInfo.Arguments=[id];
 					return;
 				}
@@ -14683,31 +14683,14 @@ var Excel;
 			enumerable: true,
 			configurable: true
 		});
-		Object.defineProperty(Application.prototype, "_scalarPropertyUpdateable", {
-			get: function () {
-				return [true];
-			},
-			enumerable: true,
-			configurable: true
-		});
 		Object.defineProperty(Application.prototype, "calculationMode", {
 			get: function () {
 				_throwIfNotLoaded("calculationMode", this._C, _typeApplication, this._isNull);
 				return this._C;
 			},
-			set: function (value) {
-				this._C=value;
-				_createSetPropertyAction(this.context, this, "CalculationMode", value);
-			},
 			enumerable: true,
 			configurable: true
 		});
-		Application.prototype.set=function (properties, options) {
-			this._recursivelySet(properties, options, ["calculationMode"], [], []);
-		};
-		Application.prototype.update=function (properties) {
-			this._recursivelyUpdate(properties);
-		};
 		Application.prototype.calculate=function (calculationType) {
 			_createMethodAction(this.context, this, "Calculate", 0, [calculationType], false);
 		};
@@ -15043,6 +15026,13 @@ var Excel;
 		Workbook.prototype.getActiveCell=function () {
 			_throwIfApiNotSupported("Workbook.getActiveCell", _defaultApiSetName, "1.7", _hostName);
 			return new Excel.Range(this.context, _createMethodObjectPath(this.context, this, "GetActiveCell", 1, [], false, true, null, false));
+		};
+		Workbook.prototype.getMultiUserEditing=function () {
+			_throwIfApiNotSupported("Workbook.getMultiUserEditing", _defaultApiSetName, "1.9", _hostName);
+			var action=_createMethodAction(this.context, this, "GetMultiUserEditing", 0, [], false);
+			var ret=new OfficeExtension.ClientResult();
+			_addActionResultHandler(this, action, ret);
+			return ret;
 		};
 		Workbook.prototype.getSelectedRange=function () {
 			return new Excel.Range(this.context, _createMethodObjectPath(this.context, this, "GetSelectedRange", 1, [], false, true, null, false));

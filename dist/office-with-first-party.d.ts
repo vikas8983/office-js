@@ -2578,6 +2578,12 @@ declare namespace OfficeExtension {
 		top?: number;
 		skip?: number;
 	}
+	export declare interface UpdateOptions {
+		/**
+		 * Throw an error if the passed-in property list includes read-only properties (default = true).
+		 */
+		throwOnReadOnly?: boolean
+	}
 	/** An abstract RequestContext object that facilitates requests to the host Office application. The "Excel.run" and "Word.run" methods provide a request context. */
 	class ClientRequestContext {
 		constructor(url?: string);
@@ -2981,9 +2987,14 @@ declare namespace OfficeCore {
     }
 }
 declare namespace OfficeCore {
+    class FirstPartyApis {
+        private context;
+        constructor(context: RequestContext);
+        readonly authentication: AuthenticationService;
+    }
     class RequestContext extends OfficeExtension.ClientRequestContext {
         constructor(url?: string | OfficeExtension.RequestUrlAndHeaderInfo | any);
-        readonly authentication: AuthenticationService;
+        readonly firstParty: FirstPartyApis;
         readonly flighting: FlightingService;
         readonly telemetry: TelemetryService;
         readonly bi: BiShim;
@@ -3032,18 +3043,41 @@ declare namespace OfficeCore {
 }
 declare namespace OfficeCore {
     /**
-     * [Api set: Authentication 1]
+     * [Api set: FirstPartyAuthentication 1.1]
      */
     namespace IdentityType {
         var organizationAccount: string;
         var microsoftAccount: string;
     }
     /**
-     * [Api set: Authentication 1]
+     * [Api set: FirstPartyAuthentication 1.1]
      */
     class AuthenticationService extends OfficeExtension.ClientObject {
+        /**
+         *
+         * Get the access token for the current primary identity.
+         *
+         * [Api set: FirstPartyAuthentication 1.1]
+         *
+         * @param tokenParameters The parameter for the required access token.
+         * @returns The access token object.
+         */
         getAccessToken(tokenParameters: OfficeCore.TokenParameters): OfficeExtension.ClientResult<OfficeCore.SingleSignOnToken>;
+        /**
+         *
+         * Get the information of the primary identity (in rich client, it's the active profile).
+         *
+         * [Api set: FirstPartyAuthentication 1.1]
+         * @returns The primary identity type.
+         */
         getPrimaryIdentityType(): OfficeExtension.ClientResult<string>;
+        /**
+         *
+         * Check whether there is any user has signed-in.
+         *
+         * [Api set: FirstPartyAuthentication 1.1]
+         * @returns A boolean that tells  whether there is any user has signed-in.
+         */
         hasUserSignin(): OfficeExtension.ClientResult<boolean>;
         /**
          * Create a new instance of OfficeCore.AuthenticationService object
@@ -3054,18 +3088,48 @@ declare namespace OfficeCore {
         };
     }
     /**
-     * [Api set: Authentication 1]
+     * [Api set: FirstPartyAuthentication 1.1]
      */
     interface TokenParameters {
+        /**
+         *
+         * The auth challenge string.
+         *
+         * [Api set: FirstPartyAuthentication 1.1]
+         */
         authChallenge?: string;
+        /**
+         *
+         * The auth policy string.
+         *
+         * [Api set: FirstPartyAuthentication 1.1]
+         */
         policy?: string;
+        /**
+         *
+         * The resource URL (or target)
+         *
+         * [Api set: FirstPartyAuthentication 1.1]
+         */
         resource?: string;
     }
     /**
-     * [Api set: Authentication 1]
+     * [Api set: FirstPartyAuthentication 1.1]
      */
     interface SingleSignOnToken {
+        /**
+         *
+         * The access token for the primary identity.
+         *
+         * [Api set: FirstPartyAuthentication 1.1]
+         */
         accessToken: string;
+        /**
+         *
+         * The identity type associated with the access token
+         *
+         * [Api set: FirstPartyAuthentication 1.1]
+         */
         tokenIdenityType: string;
     }
     /**
@@ -4377,15 +4441,11 @@ declare namespace Excel {
     class Application extends OfficeExtension.ClientObject {
         /**
          *
-         * Returns the calculation mode used in the workbook. See Excel.CalculationMode for details.
+         * Returns the calculation mode used in the workbook. See Excel.CalculationMode for details. Read-only.
          *
-         * [Api set: ExcelApi 1.1 for get, 1.8 for set]
+         * [Api set: ExcelApi 1.1]
          */
-        calculationMode: Excel.CalculationMode | "Automatic" | "AutomaticExceptTables" | "Manual";
-        /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ApplicationUpdateData, options?: OfficeExtension.UpdateOptions): void;
-        /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
-        set(properties: Application): void;
+        readonly calculationMode: Excel.CalculationMode | "Automatic" | "AutomaticExceptTables" | "Manual";
         /**
          *
          * Recalculate all currently opened workbooks in Excel.
@@ -4546,7 +4606,7 @@ declare namespace Excel {
         readonly name: string;
         /**
          *
-         * True if the workbook is open as a shared list. Read-only.
+         * True if the workbook is open in Read-only mode. Read-only.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
@@ -4570,6 +4630,14 @@ declare namespace Excel {
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         getActiveCell(): Excel.Range;
+        /**
+         *
+         * True if the workbook is being edited by multiple users (co-authing). Read-only.
+            Please be aware there might be some delay between when the workbook status changes and when the changes are reflected on the result of the method.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getMultiUserEditing(): OfficeExtension.ClientResult<boolean>;
         /**
          *
          * Gets the currently selected range from the workbook.
@@ -18669,16 +18737,6 @@ declare namespace Excel {
              */
             enableEvents?: boolean;
         }
-        /** An interface for updating data on the Application object, for use in "application.set({ ... })". */
-        interface ApplicationUpdateData {
-            /**
-             *
-             * Returns the calculation mode used in the workbook. See Excel.CalculationMode for details.
-             *
-             * [Api set: ExcelApi 1.1 for get, 1.8 for set]
-             */
-            calculationMode?: Excel.CalculationMode | "Automatic" | "AutomaticExceptTables" | "Manual";
-        }
         /** An interface for updating data on the Workbook object, for use in "workbook.set({ ... })". */
         interface WorkbookUpdateData {
             /**
@@ -21397,9 +21455,9 @@ declare namespace Excel {
         interface ApplicationData {
             /**
              *
-             * Returns the calculation mode used in the workbook. See Excel.CalculationMode for details.
+             * Returns the calculation mode used in the workbook. See Excel.CalculationMode for details. Read-only.
              *
-             * [Api set: ExcelApi 1.1 for get, 1.8 for set]
+             * [Api set: ExcelApi 1.1]
              */
             calculationMode?: Excel.CalculationMode | "Automatic" | "AutomaticExceptTables" | "Manual";
         }
@@ -21499,7 +21557,7 @@ declare namespace Excel {
             name?: string;
             /**
              *
-             * True if the workbook is open as a shared list. Read-only.
+             * True if the workbook is open in Read-only mode. Read-only.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -25027,9 +25085,9 @@ declare namespace Excel {
             $all?: boolean;
             /**
              *
-             * Returns the calculation mode used in the workbook. See Excel.CalculationMode for details.
+             * Returns the calculation mode used in the workbook. See Excel.CalculationMode for details. Read-only.
              *
-             * [Api set: ExcelApi 1.1 for get, 1.8 for set]
+             * [Api set: ExcelApi 1.1]
              */
             calculationMode?: boolean;
         }
@@ -25085,7 +25143,7 @@ declare namespace Excel {
             name?: boolean;
             /**
              *
-             * True if the workbook is open as a shared list. Read-only.
+             * True if the workbook is open in Read-only mode. Read-only.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */

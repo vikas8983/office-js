@@ -1,4 +1,4 @@
-/* Version: 16.0.9031.1000 */
+/* Version: 16.0.9106.1000 */
 /*
 	Copyright (c) Microsoft Corporation.  All rights reserved.
 */
@@ -3262,7 +3262,7 @@ var Excel;
 			/// <summary> Represents the Excel application that manages the workbook. [Api set: ExcelApi 1.1] </summary>
 			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
 			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
-			/// <field name="calculationMode" type="String">Returns the calculation mode used in the workbook. See Excel.CalculationMode for details. [Api set: ExcelApi 1.1 for get, 1.8 for set]</field>
+			/// <field name="calculationMode" type="String">Returns the calculation mode used in the workbook. See Excel.CalculationMode for details. Read-only. [Api set: ExcelApi 1.1]</field>
 		}
 
 		Application.prototype.load = function(option) {
@@ -3271,21 +3271,6 @@ var Excel;
 			/// </summary>
 			/// <param name="option" type="string | string[] | OfficeExtension.LoadOption"/>
 			/// <returns type="Excel.Application"/>
-		}
-
-		Application.prototype.set = function() {
-			/// <signature>
-			/// <summary>Sets multiple properties on the object at the same time, based on JSON input.</summary>
-			/// <param name="properties" type="Excel.Interfaces.ApplicationUpdateData">Properties described by the Excel.Interfaces.ApplicationUpdateData interface.</param>
-			/// <param name="options" type="string">Options of the form { throwOnReadOnly?: boolean }
-			/// <br />
-			/// * throwOnReadOnly: Throw an error if the passed-in property list includes read-only properties (default = true).
-			/// </param>
-			/// </signature>
-			/// <signature>
-			/// <summary>Sets multiple properties on the object at the same time, based on an existing loaded object.</summary>
-			/// <param name="properties" type="Application">An existing Application object, with properties that have already been loaded and synced.</param>
-			/// </signature>
 		}
 		Application.prototype.calculate = function(calculationType) {
 			/// <summary>
@@ -14283,7 +14268,7 @@ var Excel;
 			/// <field name="pivotTables" type="Excel.PivotTableCollection">Represents a collection of PivotTables associated with the workbook. Read-only. [Api set: ExcelApi 1.3]</field>
 			/// <field name="properties" type="Excel.DocumentProperties">Gets the workbook properties. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="protection" type="Excel.WorkbookProtection">Returns workbook protection object for a workbook. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
-			/// <field name="readOnly" type="Boolean">True if the workbook is open as a shared list. Read-only. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="readOnly" type="Boolean">True if the workbook is open in Read-only mode. Read-only. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="saved" type="Boolean">True if no changes have been made to the specified workbook since it was last saved.              You can set this property to True if you want to close a modified workbook without either saving it or being prompted to save it. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="settings" type="Excel.SettingCollection">Represents a collection of Settings associated with the workbook. Read-only. [Api set: ExcelApi 1.4]</field>
 			/// <field name="styles" type="Excel.StyleCollection">Represents a collection of styles associated with the workbook. Read-only. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
@@ -14320,6 +14305,16 @@ var Excel;
 			/// Gets the currently active cell from the workbook. [Api set: ExcelApi BETA (PREVIEW ONLY)]
 			/// </summary>
 			/// <returns type="Excel.Range"></returns>
+		}
+		Workbook.prototype.getMultiUserEditing = function() {
+			/// <summary>
+			/// True if the workbook is being edited by multiple users (co-authing). Read-only.              Please be aware there might be some delay between when the workbook status changes and when the changes are reflected on the result of the method. [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <returns type="OfficeExtension.ClientResult&lt;boolean&gt;"></returns>
+			var result = new OfficeExtension.ClientResult();
+			result.__proto__ = null;
+			result.value = false;
+			return result;
 		}
 		Workbook.prototype.getSelectedRange = function() {
 			/// <summary>
@@ -15067,22 +15062,6 @@ var Excel;
 		})();
 		Interfaces.RuntimeUpdateData.__proto__ = null;
 		Interfaces.RuntimeUpdateData = RuntimeUpdateData;
-	})(Interfaces = Excel.Interfaces || (Excel.Interfaces = { __proto__: null}));
-})(Excel || (Excel = {__proto__: null}));
-
-var Excel;
-(function (Excel) {
-	var Interfaces;
-	(function (Interfaces) {
-		var ApplicationUpdateData = (function() {
-			function ApplicationUpdateData() {
-				/// <summary>An interface for updating data on the Application object, for use in "application.set({ ... })".</summary>
-				/// <field name="calculationMode" type="String">Returns the calculation mode used in the workbook. See Excel.CalculationMode for details. [Api set: ExcelApi 1.1 for get, 1.8 for set]</field>;
-			}
-			return ApplicationUpdateData;
-		})();
-		Interfaces.ApplicationUpdateData.__proto__ = null;
-		Interfaces.ApplicationUpdateData = ApplicationUpdateData;
 	})(Interfaces = Excel.Interfaces || (Excel.Interfaces = { __proto__: null}));
 })(Excel || (Excel = {__proto__: null}));
 
