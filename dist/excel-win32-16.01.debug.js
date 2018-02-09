@@ -13209,7 +13209,7 @@ var OfficeExtension;
 			function processUndefinedValueCase(prop) {
 				if (methodName==="toJSON") {
 				}
-				else if (methodName==="cloneLoadedData") {
+				else if (methodName==="cloneLoaded") {
 					Object.defineProperty(result, prop, {
 						get: function () {
 							throw Utility.createPropertyNotLoadedException(entityName, prop);
@@ -14771,8 +14771,8 @@ var Excel;
 		Runtime.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		Runtime.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		Runtime.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		return Runtime;
 	}(OfficeExtension.ClientObject));
@@ -14843,8 +14843,8 @@ var Excel;
 		Application.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		Application.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		Application.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		Application.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -15107,8 +15107,8 @@ var Excel;
 		Workbook.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		Workbook.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		Workbook.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		Workbook.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -15380,8 +15380,8 @@ var Excel;
 		Worksheet.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		Worksheet.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		Worksheet.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		Worksheet.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -15480,8 +15480,8 @@ var Excel;
 		WorksheetCollection.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		WorksheetCollection.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		WorksheetCollection.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		return WorksheetCollection;
 	}(OfficeExtension.ClientObject));
@@ -15568,8 +15568,8 @@ var Excel;
 		WorksheetProtection.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		WorksheetProtection.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		WorksheetProtection.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		WorksheetProtection.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -16167,8 +16167,8 @@ var Excel;
 		Range.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		Range.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		Range.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		Range.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -16428,8 +16428,8 @@ var Excel;
 		RangeView.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		RangeView.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		RangeView.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		RangeView.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -16510,8 +16510,8 @@ var Excel;
 		RangeViewCollection.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		RangeViewCollection.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		RangeViewCollection.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		return RangeViewCollection;
 	}(OfficeExtension.ClientObject));
@@ -16615,8 +16615,8 @@ var Excel;
 		SettingCollection.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		SettingCollection.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		SettingCollection.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		return SettingCollection;
 	}(OfficeExtension.ClientObject));
@@ -16733,8 +16733,8 @@ var Excel;
 		Setting.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		Setting.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		Setting.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		Setting.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -16829,8 +16829,8 @@ var Excel;
 		NamedItemCollection.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		NamedItemCollection.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		NamedItemCollection.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		return NamedItemCollection;
 	}(OfficeExtension.ClientObject));
@@ -17052,8 +17052,8 @@ var Excel;
 		NamedItem.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		NamedItem.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		NamedItem.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		NamedItem.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -17212,8 +17212,8 @@ var Excel;
 		Binding.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		Binding.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		Binding.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		Binding.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -17334,8 +17334,8 @@ var Excel;
 		BindingCollection.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		BindingCollection.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		BindingCollection.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		return BindingCollection;
 	}(OfficeExtension.ClientObject));
@@ -17453,8 +17453,8 @@ var Excel;
 		TableCollection.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		TableCollection.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		TableCollection.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		return TableCollection;
 	}(OfficeExtension.ClientObject));
@@ -17808,8 +17808,8 @@ var Excel;
 		Table.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		Table.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		Table.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		Table.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -17921,8 +17921,8 @@ var Excel;
 		TableColumnCollection.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		TableColumnCollection.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		TableColumnCollection.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		return TableColumnCollection;
 	}(OfficeExtension.ClientObject));
@@ -18095,8 +18095,8 @@ var Excel;
 		TableColumn.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		TableColumn.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		TableColumn.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		TableColumn.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -18201,8 +18201,8 @@ var Excel;
 		TableRowCollection.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		TableRowCollection.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		TableRowCollection.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		return TableRowCollection;
 	}(OfficeExtension.ClientObject));
@@ -18300,8 +18300,8 @@ var Excel;
 		TableRow.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		TableRow.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		TableRow.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		TableRow.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -18535,8 +18535,8 @@ var Excel;
 		RangeFormat.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		RangeFormat.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		RangeFormat.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		RangeFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -18636,8 +18636,8 @@ var Excel;
 		FormatProtection.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		FormatProtection.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		FormatProtection.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		FormatProtection.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -18723,8 +18723,8 @@ var Excel;
 		RangeFill.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		RangeFill.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		RangeFill.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		RangeFill.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -18855,8 +18855,8 @@ var Excel;
 		RangeBorder.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		RangeBorder.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		RangeBorder.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		RangeBorder.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -18954,8 +18954,8 @@ var Excel;
 		RangeBorderCollection.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		RangeBorderCollection.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		RangeBorderCollection.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		return RangeBorderCollection;
 	}(OfficeExtension.ClientObject));
@@ -19123,8 +19123,8 @@ var Excel;
 		RangeFont.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		RangeFont.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		RangeFont.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		RangeFont.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -19252,8 +19252,8 @@ var Excel;
 		ChartCollection.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ChartCollection.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ChartCollection.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		return ChartCollection;
 	}(OfficeExtension.ClientObject));
@@ -19535,8 +19535,8 @@ var Excel;
 		Chart.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		Chart.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		Chart.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		Chart.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -19619,8 +19619,8 @@ var Excel;
 		ChartAreaFormat.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ChartAreaFormat.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ChartAreaFormat.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		ChartAreaFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -19722,8 +19722,8 @@ var Excel;
 		ChartSeriesCollection.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ChartSeriesCollection.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ChartSeriesCollection.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		return ChartSeriesCollection;
 	}(OfficeExtension.ClientObject));
@@ -19840,8 +19840,8 @@ var Excel;
 		ChartSeries.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ChartSeries.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ChartSeries.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		ChartSeries.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -19924,8 +19924,8 @@ var Excel;
 		ChartSeriesFormat.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ChartSeriesFormat.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ChartSeriesFormat.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		ChartSeriesFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -20027,8 +20027,8 @@ var Excel;
 		ChartPointsCollection.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ChartPointsCollection.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ChartPointsCollection.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		return ChartPointsCollection;
 	}(OfficeExtension.ClientObject));
@@ -20110,8 +20110,8 @@ var Excel;
 		ChartPoint.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ChartPoint.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ChartPoint.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		ChartPoint.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -20168,8 +20168,8 @@ var Excel;
 		ChartPointFormat.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ChartPointFormat.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ChartPointFormat.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		return ChartPointFormat;
 	}(OfficeExtension.ClientObject));
@@ -20264,8 +20264,8 @@ var Excel;
 		ChartAxes.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ChartAxes.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ChartAxes.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		ChartAxes.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -20466,8 +20466,8 @@ var Excel;
 		ChartAxis.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ChartAxis.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ChartAxis.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		ChartAxis.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -20552,8 +20552,8 @@ var Excel;
 		ChartAxisFormat.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ChartAxisFormat.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ChartAxisFormat.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		ChartAxisFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -20676,8 +20676,8 @@ var Excel;
 		ChartAxisTitle.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ChartAxisTitle.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ChartAxisTitle.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		ChartAxisTitle.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -20748,8 +20748,8 @@ var Excel;
 		ChartAxisTitleFormat.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ChartAxisTitleFormat.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ChartAxisTitleFormat.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		ChartAxisTitleFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -20980,8 +20980,8 @@ var Excel;
 		ChartDataLabels.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ChartDataLabels.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ChartDataLabels.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		ChartDataLabels.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -21064,8 +21064,8 @@ var Excel;
 		ChartDataLabelFormat.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ChartDataLabelFormat.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ChartDataLabelFormat.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		ChartDataLabelFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -21170,8 +21170,8 @@ var Excel;
 		ChartGridlines.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ChartGridlines.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ChartGridlines.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		ChartGridlines.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -21242,8 +21242,8 @@ var Excel;
 		ChartGridlinesFormat.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ChartGridlinesFormat.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ChartGridlinesFormat.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		ChartGridlinesFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -21384,8 +21384,8 @@ var Excel;
 		ChartLegend.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ChartLegend.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ChartLegend.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		ChartLegend.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -21468,8 +21468,8 @@ var Excel;
 		ChartLegendFormat.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ChartLegendFormat.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ChartLegendFormat.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		ChartLegendFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -21610,8 +21610,8 @@ var Excel;
 		ChartTitle.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ChartTitle.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ChartTitle.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		ChartTitle.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -21694,8 +21694,8 @@ var Excel;
 		ChartTitleFormat.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ChartTitleFormat.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ChartTitleFormat.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		ChartTitleFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -21745,8 +21745,8 @@ var Excel;
 		ChartFill.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ChartFill.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ChartFill.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		return ChartFill;
 	}(OfficeExtension.ClientObject));
@@ -21828,8 +21828,8 @@ var Excel;
 		ChartLineFormat.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ChartLineFormat.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ChartLineFormat.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		ChartLineFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -22001,8 +22001,8 @@ var Excel;
 		ChartFont.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ChartFont.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ChartFont.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		ChartFont.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -22045,8 +22045,8 @@ var Excel;
 		RangeSort.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		RangeSort.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		RangeSort.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		return RangeSort;
 	}(OfficeExtension.ClientObject));
@@ -22146,8 +22146,8 @@ var Excel;
 		TableSort.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		TableSort.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		TableSort.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		TableSort.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -22261,8 +22261,8 @@ var Excel;
 		Filter.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		Filter.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		Filter.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		Filter.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -22351,8 +22351,8 @@ var Excel;
 		CustomXmlPartScopedCollection.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		CustomXmlPartScopedCollection.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		CustomXmlPartScopedCollection.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		return CustomXmlPartScopedCollection;
 	}(OfficeExtension.ClientObject));
@@ -22437,8 +22437,8 @@ var Excel;
 		CustomXmlPartCollection.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		CustomXmlPartCollection.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		CustomXmlPartCollection.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		return CustomXmlPartCollection;
 	}(OfficeExtension.ClientObject));
@@ -22536,8 +22536,8 @@ var Excel;
 		CustomXmlPart.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		CustomXmlPart.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		CustomXmlPart.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		CustomXmlPart.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -22685,8 +22685,8 @@ var Excel;
 		_V1Api.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		_V1Api.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		_V1Api.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		return _V1Api;
 	}(OfficeExtension.ClientObject));
@@ -22771,8 +22771,8 @@ var Excel;
 		PivotTableCollection.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		PivotTableCollection.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		PivotTableCollection.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		return PivotTableCollection;
 	}(OfficeExtension.ClientObject));
@@ -22900,8 +22900,8 @@ var Excel;
 		PivotTable.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		PivotTable.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		PivotTable.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		PivotTable.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -22991,8 +22991,8 @@ var Excel;
 		ConditionalFormatCollection.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ConditionalFormatCollection.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ConditionalFormatCollection.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		return ConditionalFormatCollection;
 	}(OfficeExtension.ClientObject));
@@ -23366,8 +23366,8 @@ var Excel;
 		ConditionalFormat.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ConditionalFormat.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ConditionalFormat.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		ConditionalFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -23576,8 +23576,8 @@ var Excel;
 		DataBarConditionalFormat.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		DataBarConditionalFormat.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		DataBarConditionalFormat.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		DataBarConditionalFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -23695,8 +23695,8 @@ var Excel;
 		ConditionalDataBarPositiveFormat.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ConditionalDataBarPositiveFormat.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ConditionalDataBarPositiveFormat.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		ConditionalDataBarPositiveFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -23832,8 +23832,8 @@ var Excel;
 		ConditionalDataBarNegativeFormat.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ConditionalDataBarNegativeFormat.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ConditionalDataBarNegativeFormat.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		ConditionalDataBarNegativeFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -23918,8 +23918,8 @@ var Excel;
 		CustomConditionalFormat.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		CustomConditionalFormat.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		CustomConditionalFormat.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		CustomConditionalFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -24037,8 +24037,8 @@ var Excel;
 		ConditionalFormatRule.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ConditionalFormatRule.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ConditionalFormatRule.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		ConditionalFormatRule.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -24174,8 +24174,8 @@ var Excel;
 		IconSetConditionalFormat.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		IconSetConditionalFormat.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		IconSetConditionalFormat.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		IconSetConditionalFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -24270,8 +24270,8 @@ var Excel;
 		ColorScaleConditionalFormat.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ColorScaleConditionalFormat.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ColorScaleConditionalFormat.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		ColorScaleConditionalFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -24376,8 +24376,8 @@ var Excel;
 		TopBottomConditionalFormat.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		TopBottomConditionalFormat.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		TopBottomConditionalFormat.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		TopBottomConditionalFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -24482,8 +24482,8 @@ var Excel;
 		PresetCriteriaConditionalFormat.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		PresetCriteriaConditionalFormat.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		PresetCriteriaConditionalFormat.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		PresetCriteriaConditionalFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -24588,8 +24588,8 @@ var Excel;
 		TextConditionalFormat.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		TextConditionalFormat.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		TextConditionalFormat.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		TextConditionalFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -24694,8 +24694,8 @@ var Excel;
 		CellValueConditionalFormat.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		CellValueConditionalFormat.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		CellValueConditionalFormat.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		CellValueConditionalFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -24830,8 +24830,8 @@ var Excel;
 		ConditionalRangeFormat.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ConditionalRangeFormat.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ConditionalRangeFormat.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		ConditionalRangeFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -24989,8 +24989,8 @@ var Excel;
 		ConditionalRangeFont.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ConditionalRangeFont.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ConditionalRangeFont.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		ConditionalRangeFont.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -25076,8 +25076,8 @@ var Excel;
 		ConditionalRangeFill.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ConditionalRangeFill.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ConditionalRangeFill.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		ConditionalRangeFill.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -25190,8 +25190,8 @@ var Excel;
 		ConditionalRangeBorder.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ConditionalRangeBorder.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ConditionalRangeBorder.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		ConditionalRangeBorder.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -25354,8 +25354,8 @@ var Excel;
 		ConditionalRangeBorderCollection.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		ConditionalRangeBorderCollection.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		ConditionalRangeBorderCollection.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		return ConditionalRangeBorderCollection;
 	}(OfficeExtension.ClientObject));
@@ -25396,8 +25396,8 @@ var Excel;
 		InternalTest.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		InternalTest.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		InternalTest.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		return InternalTest;
 	}(OfficeExtension.ClientObject));
@@ -25969,8 +25969,8 @@ var Excel;
 		FunctionResult.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		FunctionResult.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		FunctionResult.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		FunctionResult.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -27275,8 +27275,8 @@ var Excel;
 		Functions.prototype.toJSON=function () {
 			return this.toJsonOrClone("toJSON");
 		};
-		Functions.prototype.cloneLoadedData=function () {
-			return this.toJsonOrClone("cloneLoadedData");
+		Functions.prototype.cloneLoaded=function () {
+			return this.toJsonOrClone("cloneLoaded");
 		};
 		return Functions;
 	}(OfficeExtension.ClientObject));

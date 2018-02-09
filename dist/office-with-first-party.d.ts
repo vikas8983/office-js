@@ -3900,7 +3900,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): {
+        cloneLoaded(): {
             [key: string]: any;
         };
     }
@@ -3980,7 +3980,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ApplicationData;
+        cloneLoaded(): Excel.Interfaces.ApplicationData;
     }
     /**
      *
@@ -4101,7 +4101,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.WorkbookData;
+        cloneLoaded(): Excel.Interfaces.WorkbookData;
     }
     /**
      *
@@ -4390,7 +4390,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.WorksheetData;
+        cloneLoaded(): Excel.Interfaces.WorksheetData;
     }
     /**
      *
@@ -4490,7 +4490,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.WorksheetCollectionData;
+        cloneLoaded(): Excel.Interfaces.WorksheetCollectionData;
     }
     /**
      *
@@ -4568,7 +4568,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.WorksheetProtectionData;
+        cloneLoaded(): Excel.Interfaces.WorksheetProtectionData;
     }
     /**
      *
@@ -5286,7 +5286,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.RangeData;
+        cloneLoaded(): Excel.Interfaces.RangeData;
     }
     /**
      *
@@ -5555,7 +5555,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.RangeViewData;
+        cloneLoaded(): Excel.Interfaces.RangeViewData;
     }
     /**
      *
@@ -5614,7 +5614,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.RangeViewCollectionData;
+        cloneLoaded(): Excel.Interfaces.RangeViewCollectionData;
     }
     /**
      *
@@ -5699,7 +5699,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.SettingCollectionData;
+        cloneLoaded(): Excel.Interfaces.SettingCollectionData;
     }
     /**
      *
@@ -5804,7 +5804,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.SettingData;
+        cloneLoaded(): Excel.Interfaces.SettingData;
     }
     /**
      *
@@ -5896,7 +5896,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.NamedItemCollectionData;
+        cloneLoaded(): Excel.Interfaces.NamedItemCollectionData;
     }
     /**
      *
@@ -6080,7 +6080,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.NamedItemData;
+        cloneLoaded(): Excel.Interfaces.NamedItemData;
     }
     /**
      *
@@ -6179,7 +6179,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.BindingData;
+        cloneLoaded(): Excel.Interfaces.BindingData;
     }
     /**
      *
@@ -6328,7 +6328,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.BindingCollectionData;
+        cloneLoaded(): Excel.Interfaces.BindingCollectionData;
     }
     /**
      *
@@ -6423,7 +6423,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.TableCollectionData;
+        cloneLoaded(): Excel.Interfaces.TableCollectionData;
     }
     /**
      *
@@ -6834,7 +6834,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.TableData;
+        cloneLoaded(): Excel.Interfaces.TableData;
     }
     /**
      *
@@ -6930,7 +6930,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.TableColumnCollectionData;
+        cloneLoaded(): Excel.Interfaces.TableColumnCollectionData;
     }
     /**
      *
@@ -7104,7 +7104,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.TableColumnData;
+        cloneLoaded(): Excel.Interfaces.TableColumnData;
     }
     /**
      *
@@ -7196,7 +7196,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.TableRowCollectionData;
+        cloneLoaded(): Excel.Interfaces.TableRowCollectionData;
     }
     /**
      *
@@ -7310,7 +7310,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.TableRowData;
+        cloneLoaded(): Excel.Interfaces.TableRowData;
     }
     /**
      *
@@ -7557,7 +7557,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.RangeFormatData;
+        cloneLoaded(): Excel.Interfaces.RangeFormatData;
     }
     /**
      *
@@ -7670,7 +7670,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.FormatProtectionData;
+        cloneLoaded(): Excel.Interfaces.FormatProtectionData;
     }
     /**
      *
@@ -7764,7 +7764,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.RangeFillData;
+        cloneLoaded(): Excel.Interfaces.RangeFillData;
     }
     /**
      *
@@ -7913,7 +7913,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.RangeBorderData;
+        cloneLoaded(): Excel.Interfaces.RangeBorderData;
     }
     /**
      *
@@ -7991,7 +7991,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.RangeBorderCollectionData;
+        cloneLoaded(): Excel.Interfaces.RangeBorderCollectionData;
     }
     /**
      *
@@ -8216,7 +8216,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.RangeFontData;
+        cloneLoaded(): Excel.Interfaces.RangeFontData;
     }
     /**
      *
@@ -8324,7 +8324,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ChartCollectionData;
+        cloneLoaded(): Excel.Interfaces.ChartCollectionData;
     }
     /**
      *
@@ -8646,7 +8646,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ChartData;
+        cloneLoaded(): Excel.Interfaces.ChartData;
     }
     /**
      *
@@ -8715,7 +8715,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ChartAreaFormatData;
+        cloneLoaded(): Excel.Interfaces.ChartAreaFormatData;
     }
     /**
      *
@@ -8782,7 +8782,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ChartSeriesCollectionData;
+        cloneLoaded(): Excel.Interfaces.ChartSeriesCollectionData;
     }
     /**
      *
@@ -8883,7 +8883,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ChartSeriesData;
+        cloneLoaded(): Excel.Interfaces.ChartSeriesData;
     }
     /**
      *
@@ -8952,7 +8952,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ChartSeriesFormatData;
+        cloneLoaded(): Excel.Interfaces.ChartSeriesFormatData;
     }
     /**
      *
@@ -9019,7 +9019,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ChartPointsCollectionData;
+        cloneLoaded(): Excel.Interfaces.ChartPointsCollectionData;
     }
     /**
      *
@@ -9074,7 +9074,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ChartPointData;
+        cloneLoaded(): Excel.Interfaces.ChartPointData;
     }
     /**
      *
@@ -9098,7 +9098,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ChartPointFormatData;
+        cloneLoaded(): Excel.Interfaces.ChartPointFormatData;
     }
     /**
      *
@@ -9175,7 +9175,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ChartAxesData;
+        cloneLoaded(): Excel.Interfaces.ChartAxesData;
     }
     /**
      *
@@ -9376,7 +9376,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ChartAxisData;
+        cloneLoaded(): Excel.Interfaces.ChartAxisData;
     }
     /**
      *
@@ -9445,7 +9445,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ChartAxisFormatData;
+        cloneLoaded(): Excel.Interfaces.ChartAxisFormatData;
     }
     /**
      *
@@ -9566,7 +9566,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ChartAxisTitleData;
+        cloneLoaded(): Excel.Interfaces.ChartAxisTitleData;
     }
     /**
      *
@@ -9627,7 +9627,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ChartAxisTitleFormatData;
+        cloneLoaded(): Excel.Interfaces.ChartAxisTitleFormatData;
     }
     /**
      *
@@ -9916,7 +9916,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ChartDataLabelsData;
+        cloneLoaded(): Excel.Interfaces.ChartDataLabelsData;
     }
     /**
      *
@@ -9985,7 +9985,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ChartDataLabelFormatData;
+        cloneLoaded(): Excel.Interfaces.ChartDataLabelFormatData;
     }
     /**
      *
@@ -10078,7 +10078,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ChartGridlinesData;
+        cloneLoaded(): Excel.Interfaces.ChartGridlinesData;
     }
     /**
      *
@@ -10139,7 +10139,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ChartGridlinesFormatData;
+        cloneLoaded(): Excel.Interfaces.ChartGridlinesFormatData;
     }
     /**
      *
@@ -10288,7 +10288,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ChartLegendData;
+        cloneLoaded(): Excel.Interfaces.ChartLegendData;
     }
     /**
      *
@@ -10357,7 +10357,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ChartLegendFormatData;
+        cloneLoaded(): Excel.Interfaces.ChartLegendFormatData;
     }
     /**
      *
@@ -10506,7 +10506,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ChartTitleData;
+        cloneLoaded(): Excel.Interfaces.ChartTitleData;
     }
     /**
      *
@@ -10575,7 +10575,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ChartTitleFormatData;
+        cloneLoaded(): Excel.Interfaces.ChartTitleFormatData;
     }
     /**
      *
@@ -10617,7 +10617,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): {
+        cloneLoaded(): {
             [key: string]: any;
         };
     }
@@ -10713,7 +10713,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ChartLineFormatData;
+        cloneLoaded(): Excel.Interfaces.ChartLineFormatData;
     }
     /**
      *
@@ -10938,7 +10938,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ChartFontData;
+        cloneLoaded(): Excel.Interfaces.ChartFontData;
     }
     /**
      *
@@ -10986,7 +10986,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): {
+        cloneLoaded(): {
             [key: string]: any;
         };
     }
@@ -11095,7 +11095,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.TableSortData;
+        cloneLoaded(): Excel.Interfaces.TableSortData;
     }
     /**
      *
@@ -11342,7 +11342,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.FilterData;
+        cloneLoaded(): Excel.Interfaces.FilterData;
     }
     /**
      *
@@ -11528,7 +11528,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.CustomXmlPartScopedCollectionData;
+        cloneLoaded(): Excel.Interfaces.CustomXmlPartScopedCollectionData;
     }
     /**
      *
@@ -11615,7 +11615,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.CustomXmlPartCollectionData;
+        cloneLoaded(): Excel.Interfaces.CustomXmlPartCollectionData;
     }
     /**
      *
@@ -11697,7 +11697,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.CustomXmlPartData;
+        cloneLoaded(): Excel.Interfaces.CustomXmlPartData;
     }
     /**
      *
@@ -11774,7 +11774,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.PivotTableCollectionData;
+        cloneLoaded(): Excel.Interfaces.PivotTableCollectionData;
     }
     /**
      *
@@ -11884,7 +11884,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.PivotTableData;
+        cloneLoaded(): Excel.Interfaces.PivotTableData;
     }
     /**
      *
@@ -11980,7 +11980,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ConditionalFormatCollectionData;
+        cloneLoaded(): Excel.Interfaces.ConditionalFormatCollectionData;
     }
     /**
      *
@@ -12276,7 +12276,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ConditionalFormatData;
+        cloneLoaded(): Excel.Interfaces.ConditionalFormatData;
     }
     /**
      *
@@ -12519,7 +12519,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.DataBarConditionalFormatData;
+        cloneLoaded(): Excel.Interfaces.DataBarConditionalFormatData;
     }
     /**
      *
@@ -12662,7 +12662,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ConditionalDataBarPositiveFormatData;
+        cloneLoaded(): Excel.Interfaces.ConditionalDataBarPositiveFormatData;
     }
     /**
      *
@@ -12833,7 +12833,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ConditionalDataBarNegativeFormatData;
+        cloneLoaded(): Excel.Interfaces.ConditionalDataBarNegativeFormatData;
     }
     /**
      *
@@ -12922,7 +12922,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.CustomConditionalFormatData;
+        cloneLoaded(): Excel.Interfaces.CustomConditionalFormatData;
     }
     /**
      *
@@ -13063,7 +13063,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ConditionalFormatRuleData;
+        cloneLoaded(): Excel.Interfaces.ConditionalFormatRuleData;
     }
     /**
      *
@@ -13232,7 +13232,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.IconSetConditionalFormatData;
+        cloneLoaded(): Excel.Interfaces.IconSetConditionalFormatData;
     }
     /**
      *
@@ -13357,7 +13357,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ColorScaleConditionalFormatData;
+        cloneLoaded(): Excel.Interfaces.ColorScaleConditionalFormatData;
     }
     /**
      *
@@ -13502,7 +13502,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.TopBottomConditionalFormatData;
+        cloneLoaded(): Excel.Interfaces.TopBottomConditionalFormatData;
     }
     /**
      *
@@ -13615,7 +13615,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.PresetCriteriaConditionalFormatData;
+        cloneLoaded(): Excel.Interfaces.PresetCriteriaConditionalFormatData;
     }
     /**
      *
@@ -13722,7 +13722,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.TextConditionalFormatData;
+        cloneLoaded(): Excel.Interfaces.TextConditionalFormatData;
     }
     /**
      *
@@ -13835,7 +13835,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.CellValueConditionalFormatData;
+        cloneLoaded(): Excel.Interfaces.CellValueConditionalFormatData;
     }
     /**
      *
@@ -13970,7 +13970,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ConditionalRangeFormatData;
+        cloneLoaded(): Excel.Interfaces.ConditionalRangeFormatData;
     }
     /**
      *
@@ -14176,7 +14176,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ConditionalRangeFontData;
+        cloneLoaded(): Excel.Interfaces.ConditionalRangeFontData;
     }
     /**
      *
@@ -14270,7 +14270,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ConditionalRangeFillData;
+        cloneLoaded(): Excel.Interfaces.ConditionalRangeFillData;
     }
     /**
      *
@@ -14391,7 +14391,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ConditionalRangeBorderData;
+        cloneLoaded(): Excel.Interfaces.ConditionalRangeBorderData;
     }
     /**
      *
@@ -14501,7 +14501,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Excel.Interfaces.ConditionalRangeBorderCollectionData;
+        cloneLoaded(): Excel.Interfaces.ConditionalRangeBorderCollectionData;
     }
     /**
      * [Api set: ExcelApi 1.1]
@@ -15208,7 +15208,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): Interfaces.FunctionResultData<T>;
+        cloneLoaded(): Interfaces.FunctionResultData<T>;
     }
     /**
      *
@@ -18962,7 +18962,7 @@ declare namespace Excel {
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): {
+        cloneLoaded(): {
             [key: string]: any;
         };
     }
