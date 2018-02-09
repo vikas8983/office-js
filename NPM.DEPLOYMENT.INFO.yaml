@@ -1,4 +1,9 @@
+version: 1.1.5-experiment-kiwi.8
 tag: experiment-kiwi
+githubReleaseUrl: https://github.com/OfficeDev/office-js/releases/tag/v1.1.5-experiment-kiwi.8
+githubViewUrl: https://github.com/OfficeDev/office-js/tree/v1.1.5-experiment-kiwi.8
+deployedAt: 2018-02-09 4:15 am UTC  (2018-02-08 8:15 pm Pacific Time)
+
 history:
     adhocBranchName: __adhoc--experiment-kiwi--release--local--2018-02-08--8.11pm
     commitMessage: __adhoc--experiment-kiwi--release--local--2018-02-08--8.11pm
@@ -31,3 +36,14 @@ history:
             message: >-
                 [BEGIN PUBLISH UPDATES] --
                 __adhoc--experiment-kiwi--release--local--2018-02-08--8.11pm
+
+
+unpkgUrls: |-
+    this specific build number:
+        https://unpkg.com/@microsoft/office-js@1.1.5-experiment-kiwi.8/dist/office.js
+        https://unpkg.com/@microsoft/office-js@1.1.5-experiment-kiwi.8/dist/office.d.ts
+    builds using this same tag ("experiment-kiwi"):
+        https://unpkg.com/@microsoft/office-js@experiment-kiwi/dist/office.js
+        https://unpkg.com/@microsoft/office-js@experiment-kiwi/dist/office.d.ts
+
+buildLog: https://travis-ci.org/OfficeDev/office-js/builds/339300894
