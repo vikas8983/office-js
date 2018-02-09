@@ -3827,7 +3827,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.Application;
+        invalidateLoaded(): Excel.Application;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ApplicationData;
         /**
@@ -3941,7 +3941,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.Workbook;
+        invalidateLoaded(): Excel.Workbook;
         /**
          *
          * Occurs when the selection in the document is changed.
@@ -4237,7 +4237,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.Worksheet;
+        invalidateLoaded(): Excel.Worksheet;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.WorksheetData;
         /**
@@ -4337,7 +4337,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.WorksheetCollection;
+        invalidateLoaded(): Excel.WorksheetCollection;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.WorksheetCollectionData;
         /**
@@ -4415,7 +4415,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.WorksheetProtection;
+        invalidateLoaded(): Excel.WorksheetProtection;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.WorksheetProtectionData;
         /**
@@ -5125,7 +5125,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.Range;
+        invalidateLoaded(): Excel.Range;
         /**
          * Track the object for automatic adjustment based on surrounding changes in the document. This call is a shorthand for context.trackedObjects.add(thisObject). If you are using this object across ".sync" calls and outside the sequential execution of a ".run" batch, and get an "InvalidObjectPath" error when setting a property or invoking a method on the object, you needed to have added the object to the tracked object collection when the object was first created.
          */
@@ -5402,7 +5402,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.RangeView;
+        invalidateLoaded(): Excel.RangeView;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.RangeViewData;
         /**
@@ -5461,7 +5461,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.RangeViewCollection;
+        invalidateLoaded(): Excel.RangeViewCollection;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.RangeViewCollectionData;
         /**
@@ -5539,7 +5539,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.SettingCollection;
+        invalidateLoaded(): Excel.SettingCollection;
         /**
          *
          * Occurs when the Settings in the document are changed.
@@ -5651,7 +5651,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.Setting;
+        invalidateLoaded(): Excel.Setting;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.SettingData;
         /**
@@ -5743,7 +5743,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.NamedItemCollection;
+        invalidateLoaded(): Excel.NamedItemCollection;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.NamedItemCollectionData;
         /**
@@ -5927,7 +5927,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.NamedItem;
+        invalidateLoaded(): Excel.NamedItem;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.NamedItemData;
         /**
@@ -6012,7 +6012,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.Binding;
+        invalidateLoaded(): Excel.Binding;
         /**
          *
          * Occurs when data or formatting within the binding is changed.
@@ -6175,7 +6175,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.BindingCollection;
+        invalidateLoaded(): Excel.BindingCollection;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.BindingCollectionData;
         /**
@@ -6270,7 +6270,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.TableCollection;
+        invalidateLoaded(): Excel.TableCollection;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.TableCollectionData;
         /**
@@ -6681,7 +6681,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.Table;
+        invalidateLoaded(): Excel.Table;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.TableData;
         /**
@@ -6777,7 +6777,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.TableColumnCollection;
+        invalidateLoaded(): Excel.TableColumnCollection;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.TableColumnCollectionData;
         /**
@@ -6951,7 +6951,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.TableColumn;
+        invalidateLoaded(): Excel.TableColumn;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.TableColumnData;
         /**
@@ -7043,7 +7043,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.TableRowCollection;
+        invalidateLoaded(): Excel.TableRowCollection;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.TableRowCollectionData;
         /**
@@ -7157,7 +7157,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.TableRow;
+        invalidateLoaded(): Excel.TableRow;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.TableRowData;
         /**
@@ -7404,7 +7404,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.RangeFormat;
+        invalidateLoaded(): Excel.RangeFormat;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.RangeFormatData;
         /**
@@ -7517,7 +7517,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.FormatProtection;
+        invalidateLoaded(): Excel.FormatProtection;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.FormatProtectionData;
         /**
@@ -7611,7 +7611,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.RangeFill;
+        invalidateLoaded(): Excel.RangeFill;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.RangeFillData;
         /**
@@ -7760,7 +7760,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.RangeBorder;
+        invalidateLoaded(): Excel.RangeBorder;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.RangeBorderData;
         /**
@@ -7838,7 +7838,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.RangeBorderCollection;
+        invalidateLoaded(): Excel.RangeBorderCollection;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.RangeBorderCollectionData;
         /**
@@ -8063,7 +8063,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.RangeFont;
+        invalidateLoaded(): Excel.RangeFont;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.RangeFontData;
         /**
@@ -8171,7 +8171,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ChartCollection;
+        invalidateLoaded(): Excel.ChartCollection;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartCollectionData;
         /**
@@ -8493,7 +8493,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.Chart;
+        invalidateLoaded(): Excel.Chart;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartData;
         /**
@@ -8562,7 +8562,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ChartAreaFormat;
+        invalidateLoaded(): Excel.ChartAreaFormat;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartAreaFormatData;
         /**
@@ -8629,7 +8629,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ChartSeriesCollection;
+        invalidateLoaded(): Excel.ChartSeriesCollection;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartSeriesCollectionData;
         /**
@@ -8730,7 +8730,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ChartSeries;
+        invalidateLoaded(): Excel.ChartSeries;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartSeriesData;
         /**
@@ -8799,7 +8799,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ChartSeriesFormat;
+        invalidateLoaded(): Excel.ChartSeriesFormat;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartSeriesFormatData;
         /**
@@ -8866,7 +8866,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ChartPointsCollection;
+        invalidateLoaded(): Excel.ChartPointsCollection;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartPointsCollectionData;
         /**
@@ -8921,7 +8921,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ChartPoint;
+        invalidateLoaded(): Excel.ChartPoint;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartPointData;
         /**
@@ -9022,7 +9022,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ChartAxes;
+        invalidateLoaded(): Excel.ChartAxes;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartAxesData;
         /**
@@ -9223,7 +9223,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ChartAxis;
+        invalidateLoaded(): Excel.ChartAxis;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartAxisData;
         /**
@@ -9292,7 +9292,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ChartAxisFormat;
+        invalidateLoaded(): Excel.ChartAxisFormat;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartAxisFormatData;
         /**
@@ -9413,7 +9413,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ChartAxisTitle;
+        invalidateLoaded(): Excel.ChartAxisTitle;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartAxisTitleData;
         /**
@@ -9474,7 +9474,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ChartAxisTitleFormat;
+        invalidateLoaded(): Excel.ChartAxisTitleFormat;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartAxisTitleFormatData;
         /**
@@ -9763,7 +9763,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ChartDataLabels;
+        invalidateLoaded(): Excel.ChartDataLabels;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartDataLabelsData;
         /**
@@ -9832,7 +9832,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ChartDataLabelFormat;
+        invalidateLoaded(): Excel.ChartDataLabelFormat;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartDataLabelFormatData;
         /**
@@ -9925,7 +9925,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ChartGridlines;
+        invalidateLoaded(): Excel.ChartGridlines;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartGridlinesData;
         /**
@@ -9986,7 +9986,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ChartGridlinesFormat;
+        invalidateLoaded(): Excel.ChartGridlinesFormat;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartGridlinesFormatData;
         /**
@@ -10135,7 +10135,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ChartLegend;
+        invalidateLoaded(): Excel.ChartLegend;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartLegendData;
         /**
@@ -10204,7 +10204,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ChartLegendFormat;
+        invalidateLoaded(): Excel.ChartLegendFormat;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartLegendFormatData;
         /**
@@ -10353,7 +10353,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ChartTitle;
+        invalidateLoaded(): Excel.ChartTitle;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartTitleData;
         /**
@@ -10422,7 +10422,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ChartTitleFormat;
+        invalidateLoaded(): Excel.ChartTitleFormat;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartTitleFormatData;
         /**
@@ -10560,7 +10560,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ChartLineFormat;
+        invalidateLoaded(): Excel.ChartLineFormat;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartLineFormatData;
         /**
@@ -10785,7 +10785,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ChartFont;
+        invalidateLoaded(): Excel.ChartFont;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartFontData;
         /**
@@ -10942,7 +10942,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.TableSort;
+        invalidateLoaded(): Excel.TableSort;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.TableSortData;
         /**
@@ -11189,7 +11189,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.Filter;
+        invalidateLoaded(): Excel.Filter;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.FilterData;
         /**
@@ -11375,7 +11375,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.CustomXmlPartScopedCollection;
+        invalidateLoaded(): Excel.CustomXmlPartScopedCollection;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.CustomXmlPartScopedCollectionData;
         /**
@@ -11462,7 +11462,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.CustomXmlPartCollection;
+        invalidateLoaded(): Excel.CustomXmlPartCollection;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.CustomXmlPartCollectionData;
         /**
@@ -11544,7 +11544,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.CustomXmlPart;
+        invalidateLoaded(): Excel.CustomXmlPart;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.CustomXmlPartData;
         /**
@@ -11621,7 +11621,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.PivotTableCollection;
+        invalidateLoaded(): Excel.PivotTableCollection;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.PivotTableCollectionData;
         /**
@@ -11731,7 +11731,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.PivotTable;
+        invalidateLoaded(): Excel.PivotTable;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.PivotTableData;
         /**
@@ -11827,7 +11827,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ConditionalFormatCollection;
+        invalidateLoaded(): Excel.ConditionalFormatCollection;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ConditionalFormatCollectionData;
         /**
@@ -12123,7 +12123,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ConditionalFormat;
+        invalidateLoaded(): Excel.ConditionalFormat;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ConditionalFormatData;
         /**
@@ -12366,7 +12366,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.DataBarConditionalFormat;
+        invalidateLoaded(): Excel.DataBarConditionalFormat;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.DataBarConditionalFormatData;
         /**
@@ -12509,7 +12509,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ConditionalDataBarPositiveFormat;
+        invalidateLoaded(): Excel.ConditionalDataBarPositiveFormat;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ConditionalDataBarPositiveFormatData;
         /**
@@ -12680,7 +12680,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ConditionalDataBarNegativeFormat;
+        invalidateLoaded(): Excel.ConditionalDataBarNegativeFormat;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ConditionalDataBarNegativeFormatData;
         /**
@@ -12769,7 +12769,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.CustomConditionalFormat;
+        invalidateLoaded(): Excel.CustomConditionalFormat;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.CustomConditionalFormatData;
         /**
@@ -12910,7 +12910,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ConditionalFormatRule;
+        invalidateLoaded(): Excel.ConditionalFormatRule;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ConditionalFormatRuleData;
         /**
@@ -13079,7 +13079,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.IconSetConditionalFormat;
+        invalidateLoaded(): Excel.IconSetConditionalFormat;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.IconSetConditionalFormatData;
         /**
@@ -13204,7 +13204,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ColorScaleConditionalFormat;
+        invalidateLoaded(): Excel.ColorScaleConditionalFormat;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ColorScaleConditionalFormatData;
         /**
@@ -13349,7 +13349,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.TopBottomConditionalFormat;
+        invalidateLoaded(): Excel.TopBottomConditionalFormat;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.TopBottomConditionalFormatData;
         /**
@@ -13462,7 +13462,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.PresetCriteriaConditionalFormat;
+        invalidateLoaded(): Excel.PresetCriteriaConditionalFormat;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.PresetCriteriaConditionalFormatData;
         /**
@@ -13569,7 +13569,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.TextConditionalFormat;
+        invalidateLoaded(): Excel.TextConditionalFormat;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.TextConditionalFormatData;
         /**
@@ -13682,7 +13682,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.CellValueConditionalFormat;
+        invalidateLoaded(): Excel.CellValueConditionalFormat;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.CellValueConditionalFormatData;
         /**
@@ -13817,7 +13817,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ConditionalRangeFormat;
+        invalidateLoaded(): Excel.ConditionalRangeFormat;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ConditionalRangeFormatData;
         /**
@@ -14023,7 +14023,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ConditionalRangeFont;
+        invalidateLoaded(): Excel.ConditionalRangeFont;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ConditionalRangeFontData;
         /**
@@ -14117,7 +14117,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ConditionalRangeFill;
+        invalidateLoaded(): Excel.ConditionalRangeFill;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ConditionalRangeFillData;
         /**
@@ -14238,7 +14238,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ConditionalRangeBorder;
+        invalidateLoaded(): Excel.ConditionalRangeBorder;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ConditionalRangeBorderData;
         /**
@@ -14348,7 +14348,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): Excel.ConditionalRangeBorderCollection;
+        invalidateLoaded(): Excel.ConditionalRangeBorderCollection;
         private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ConditionalRangeBorderCollectionData;
         /**
@@ -15055,7 +15055,7 @@ declare namespace Excel {
          *
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
-        invalidateLoadedData(): FunctionResult<T>;
+        invalidateLoaded(): FunctionResult<T>;
         private toJsonOrClone(method);
         toJSON(): Interfaces.FunctionResultData<T>;
         /**

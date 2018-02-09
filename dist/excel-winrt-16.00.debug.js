@@ -14284,7 +14284,7 @@ var Excel;
 		Application.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		Application.prototype.invalidateLoadedData=function () {
+		Application.prototype.invalidateLoaded=function () {
 			delete this._C;
 			return this;
 		};
@@ -14497,30 +14497,30 @@ var Excel;
 		Workbook.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		Workbook.prototype.invalidateLoadedData=function () {
+		Workbook.prototype.invalidateLoaded=function () {
 			if (this._A) {
-				this._A.invalidateLoadedData();
+				this._A.invalidateLoaded();
 			}
 			if (this._B) {
-				this._B.invalidateLoadedData();
+				this._B.invalidateLoaded();
 			}
 			if (this._C) {
-				this._C.invalidateLoadedData();
+				this._C.invalidateLoaded();
 			}
 			if (this._N) {
-				this._N.invalidateLoadedData();
+				this._N.invalidateLoaded();
 			}
 			if (this._P) {
-				this._P.invalidateLoadedData();
+				this._P.invalidateLoaded();
 			}
 			if (this._S) {
-				this._S.invalidateLoadedData();
+				this._S.invalidateLoaded();
 			}
 			if (this._T) {
-				this._T.invalidateLoadedData();
+				this._T.invalidateLoaded();
 			}
 			if (this._W) {
-				this._W.invalidateLoadedData();
+				this._W.invalidateLoaded();
 			}
 			return this;
 		};
@@ -14785,21 +14785,21 @@ var Excel;
 		Worksheet.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		Worksheet.prototype.invalidateLoadedData=function () {
+		Worksheet.prototype.invalidateLoaded=function () {
 			if (this._C) {
-				this._C.invalidateLoadedData();
+				this._C.invalidateLoaded();
 			}
 			if (this._Na) {
-				this._Na.invalidateLoadedData();
+				this._Na.invalidateLoaded();
 			}
 			if (this._P) {
-				this._P.invalidateLoadedData();
+				this._P.invalidateLoaded();
 			}
 			if (this._Pr) {
-				this._Pr.invalidateLoadedData();
+				this._Pr.invalidateLoaded();
 			}
 			if (this.m_tables) {
-				this.m_tables.invalidateLoadedData();
+				this.m_tables.invalidateLoaded();
 			}
 			delete this._I;
 			delete this._N;
@@ -14922,7 +14922,7 @@ var Excel;
 		WorksheetCollection.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		WorksheetCollection.prototype.invalidateLoadedData=function () {
+		WorksheetCollection.prototype.invalidateLoaded=function () {
 			delete this.m__items;
 			return this;
 		};
@@ -15007,7 +15007,7 @@ var Excel;
 		WorksheetProtection.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		WorksheetProtection.prototype.invalidateLoadedData=function () {
+		WorksheetProtection.prototype.invalidateLoaded=function () {
 			delete this._O;
 			delete this._P;
 			return this;
@@ -15546,15 +15546,15 @@ var Excel;
 		Range.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		Range.prototype.invalidateLoadedData=function () {
+		Range.prototype.invalidateLoaded=function () {
 			if (this._Con) {
-				this._Con.invalidateLoadedData();
+				this._Con.invalidateLoaded();
 			}
 			if (this._F) {
-				this._F.invalidateLoadedData();
+				this._F.invalidateLoaded();
 			}
 			if (this._W) {
-				this._W.invalidateLoadedData();
+				this._W.invalidateLoaded();
 			}
 			delete this._A;
 			delete this._Ad;
@@ -15844,9 +15844,9 @@ var Excel;
 		RangeView.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		RangeView.prototype.invalidateLoadedData=function () {
+		RangeView.prototype.invalidateLoaded=function () {
 			if (this._Ro) {
-				this._Ro.invalidateLoadedData();
+				this._Ro.invalidateLoaded();
 			}
 			delete this._C;
 			delete this._Co;
@@ -15952,7 +15952,7 @@ var Excel;
 		RangeViewCollection.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		RangeViewCollection.prototype.invalidateLoadedData=function () {
+		RangeViewCollection.prototype.invalidateLoaded=function () {
 			delete this.m__items;
 			return this;
 		};
@@ -16036,7 +16036,7 @@ var Excel;
 		SettingCollection.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		SettingCollection.prototype.invalidateLoadedData=function () {
+		SettingCollection.prototype.invalidateLoaded=function () {
 			delete this.m__items;
 			return this;
 		};
@@ -16172,7 +16172,7 @@ var Excel;
 		Setting.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		Setting.prototype.invalidateLoadedData=function () {
+		Setting.prototype.invalidateLoaded=function () {
 			delete this._K;
 			delete this.m_value;
 			return this;
@@ -16271,7 +16271,7 @@ var Excel;
 		NamedItemCollection.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		NamedItemCollection.prototype.invalidateLoadedData=function () {
+		NamedItemCollection.prototype.invalidateLoaded=function () {
 			delete this.m__items;
 			return this;
 		};
@@ -16467,12 +16467,12 @@ var Excel;
 		NamedItem.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		NamedItem.prototype.invalidateLoadedData=function () {
+		NamedItem.prototype.invalidateLoaded=function () {
 			if (this._W) {
-				this._W.invalidateLoadedData();
+				this._W.invalidateLoaded();
 			}
 			if (this._Wo) {
-				this._Wo.invalidateLoadedData();
+				this._Wo.invalidateLoaded();
 			}
 			delete this._C;
 			delete this._N;
@@ -16588,7 +16588,7 @@ var Excel;
 		Binding.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		Binding.prototype.invalidateLoadedData=function () {
+		Binding.prototype.invalidateLoaded=function () {
 			delete this._I;
 			delete this._T;
 			return this;
@@ -16773,7 +16773,7 @@ var Excel;
 		BindingCollection.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		BindingCollection.prototype.invalidateLoadedData=function () {
+		BindingCollection.prototype.invalidateLoaded=function () {
 			delete this._C;
 			delete this.m__items;
 			return this;
@@ -16892,7 +16892,7 @@ var Excel;
 		TableCollection.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		TableCollection.prototype.invalidateLoadedData=function () {
+		TableCollection.prototype.invalidateLoaded=function () {
 			delete this._C;
 			delete this.m__items;
 			return this;
@@ -17205,18 +17205,18 @@ var Excel;
 		Table.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		Table.prototype.invalidateLoadedData=function () {
+		Table.prototype.invalidateLoaded=function () {
 			if (this._C) {
-				this._C.invalidateLoadedData();
+				this._C.invalidateLoaded();
 			}
 			if (this._R) {
-				this._R.invalidateLoadedData();
+				this._R.invalidateLoaded();
 			}
 			if (this._So) {
-				this._So.invalidateLoadedData();
+				this._So.invalidateLoaded();
 			}
 			if (this._W) {
-				this._W.invalidateLoadedData();
+				this._W.invalidateLoaded();
 			}
 			delete this._H;
 			delete this._Hi;
@@ -17360,7 +17360,7 @@ var Excel;
 		TableColumnCollection.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		TableColumnCollection.prototype.invalidateLoadedData=function () {
+		TableColumnCollection.prototype.invalidateLoaded=function () {
 			delete this._C;
 			delete this.m__items;
 			return this;
@@ -17516,9 +17516,9 @@ var Excel;
 		TableColumn.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		TableColumn.prototype.invalidateLoadedData=function () {
+		TableColumn.prototype.invalidateLoaded=function () {
 			if (this._F) {
-				this._F.invalidateLoadedData();
+				this._F.invalidateLoaded();
 			}
 			delete this._I;
 			delete this._In;
@@ -17640,7 +17640,7 @@ var Excel;
 		TableRowCollection.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		TableRowCollection.prototype.invalidateLoadedData=function () {
+		TableRowCollection.prototype.invalidateLoaded=function () {
 			delete this._C;
 			delete this.m__items;
 			return this;
@@ -17739,7 +17739,7 @@ var Excel;
 		TableRow.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		TableRow.prototype.invalidateLoadedData=function () {
+		TableRow.prototype.invalidateLoaded=function () {
 			delete this._I;
 			delete this._V;
 			return this;
@@ -17951,18 +17951,18 @@ var Excel;
 		RangeFormat.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		RangeFormat.prototype.invalidateLoadedData=function () {
+		RangeFormat.prototype.invalidateLoaded=function () {
 			if (this._B) {
-				this._B.invalidateLoadedData();
+				this._B.invalidateLoaded();
 			}
 			if (this._F) {
-				this._F.invalidateLoadedData();
+				this._F.invalidateLoaded();
 			}
 			if (this._Fo) {
-				this._Fo.invalidateLoadedData();
+				this._Fo.invalidateLoaded();
 			}
 			if (this._P) {
-				this._P.invalidateLoadedData();
+				this._P.invalidateLoaded();
 			}
 			delete this._C;
 			delete this._H;
@@ -18075,7 +18075,7 @@ var Excel;
 		FormatProtection.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		FormatProtection.prototype.invalidateLoadedData=function () {
+		FormatProtection.prototype.invalidateLoaded=function () {
 			delete this._F;
 			delete this._L;
 			return this;
@@ -18164,7 +18164,7 @@ var Excel;
 		RangeFill.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		RangeFill.prototype.invalidateLoadedData=function () {
+		RangeFill.prototype.invalidateLoaded=function () {
 			delete this._C;
 			return this;
 		};
@@ -18290,7 +18290,7 @@ var Excel;
 		RangeBorder.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		RangeBorder.prototype.invalidateLoadedData=function () {
+		RangeBorder.prototype.invalidateLoaded=function () {
 			delete this._C;
 			delete this._S;
 			delete this._St;
@@ -18393,7 +18393,7 @@ var Excel;
 		RangeBorderCollection.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		RangeBorderCollection.prototype.invalidateLoadedData=function () {
+		RangeBorderCollection.prototype.invalidateLoaded=function () {
 			delete this._C;
 			delete this.m__items;
 			return this;
@@ -18554,7 +18554,7 @@ var Excel;
 		RangeFont.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		RangeFont.prototype.invalidateLoadedData=function () {
+		RangeFont.prototype.invalidateLoaded=function () {
 			delete this._B;
 			delete this._C;
 			delete this._I;
@@ -18691,7 +18691,7 @@ var Excel;
 		ChartCollection.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ChartCollection.prototype.invalidateLoadedData=function () {
+		ChartCollection.prototype.invalidateLoaded=function () {
 			delete this._C;
 			delete this.m__items;
 			return this;
@@ -18940,27 +18940,27 @@ var Excel;
 		Chart.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		Chart.prototype.invalidateLoadedData=function () {
+		Chart.prototype.invalidateLoaded=function () {
 			if (this._A) {
-				this._A.invalidateLoadedData();
+				this._A.invalidateLoaded();
 			}
 			if (this._D) {
-				this._D.invalidateLoadedData();
+				this._D.invalidateLoaded();
 			}
 			if (this._F) {
-				this._F.invalidateLoadedData();
+				this._F.invalidateLoaded();
 			}
 			if (this._Le) {
-				this._Le.invalidateLoadedData();
+				this._Le.invalidateLoaded();
 			}
 			if (this._S) {
-				this._S.invalidateLoadedData();
+				this._S.invalidateLoaded();
 			}
 			if (this._T) {
-				this._T.invalidateLoadedData();
+				this._T.invalidateLoaded();
 			}
 			if (this._Wo) {
-				this._Wo.invalidateLoadedData();
+				this._Wo.invalidateLoaded();
 			}
 			delete this._H;
 			delete this._L;
@@ -19058,9 +19058,9 @@ var Excel;
 		ChartAreaFormat.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ChartAreaFormat.prototype.invalidateLoadedData=function () {
+		ChartAreaFormat.prototype.invalidateLoaded=function () {
 			if (this._Fo) {
-				this._Fo.invalidateLoadedData();
+				this._Fo.invalidateLoaded();
 			}
 			return this;
 		};
@@ -19161,7 +19161,7 @@ var Excel;
 		ChartSeriesCollection.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ChartSeriesCollection.prototype.invalidateLoadedData=function () {
+		ChartSeriesCollection.prototype.invalidateLoaded=function () {
 			delete this._C;
 			delete this.m__items;
 			return this;
@@ -19272,12 +19272,12 @@ var Excel;
 		ChartSeries.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ChartSeries.prototype.invalidateLoadedData=function () {
+		ChartSeries.prototype.invalidateLoaded=function () {
 			if (this._F) {
-				this._F.invalidateLoadedData();
+				this._F.invalidateLoaded();
 			}
 			if (this._P) {
-				this._P.invalidateLoadedData();
+				this._P.invalidateLoaded();
 			}
 			delete this._N;
 			return this;
@@ -19363,9 +19363,9 @@ var Excel;
 		ChartSeriesFormat.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ChartSeriesFormat.prototype.invalidateLoadedData=function () {
+		ChartSeriesFormat.prototype.invalidateLoaded=function () {
 			if (this._L) {
-				this._L.invalidateLoadedData();
+				this._L.invalidateLoaded();
 			}
 			return this;
 		};
@@ -19466,7 +19466,7 @@ var Excel;
 		ChartPointsCollection.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ChartPointsCollection.prototype.invalidateLoadedData=function () {
+		ChartPointsCollection.prototype.invalidateLoaded=function () {
 			delete this._C;
 			delete this.m__items;
 			return this;
@@ -19549,7 +19549,7 @@ var Excel;
 		ChartPoint.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ChartPoint.prototype.invalidateLoadedData=function () {
+		ChartPoint.prototype.invalidateLoaded=function () {
 			delete this._V;
 			return this;
 		};
@@ -19695,15 +19695,15 @@ var Excel;
 		ChartAxes.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ChartAxes.prototype.invalidateLoadedData=function () {
+		ChartAxes.prototype.invalidateLoaded=function () {
 			if (this._C) {
-				this._C.invalidateLoadedData();
+				this._C.invalidateLoaded();
 			}
 			if (this._S) {
-				this._S.invalidateLoadedData();
+				this._S.invalidateLoaded();
 			}
 			if (this._V) {
-				this._V.invalidateLoadedData();
+				this._V.invalidateLoaded();
 			}
 			return this;
 		};
@@ -19884,18 +19884,18 @@ var Excel;
 		ChartAxis.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ChartAxis.prototype.invalidateLoadedData=function () {
+		ChartAxis.prototype.invalidateLoaded=function () {
 			if (this._F) {
-				this._F.invalidateLoadedData();
+				this._F.invalidateLoaded();
 			}
 			if (this._M) {
-				this._M.invalidateLoadedData();
+				this._M.invalidateLoaded();
 			}
 			if (this._Min) {
-				this._Min.invalidateLoadedData();
+				this._Min.invalidateLoaded();
 			}
 			if (this._T) {
-				this._T.invalidateLoadedData();
+				this._T.invalidateLoaded();
 			}
 			delete this._Ma;
 			delete this._Max;
@@ -19987,12 +19987,12 @@ var Excel;
 		ChartAxisFormat.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ChartAxisFormat.prototype.invalidateLoadedData=function () {
+		ChartAxisFormat.prototype.invalidateLoaded=function () {
 			if (this._F) {
-				this._F.invalidateLoadedData();
+				this._F.invalidateLoaded();
 			}
 			if (this._L) {
-				this._L.invalidateLoadedData();
+				this._L.invalidateLoaded();
 			}
 			return this;
 		};
@@ -20110,9 +20110,9 @@ var Excel;
 		ChartAxisTitle.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ChartAxisTitle.prototype.invalidateLoadedData=function () {
+		ChartAxisTitle.prototype.invalidateLoaded=function () {
 			if (this._F) {
-				this._F.invalidateLoadedData();
+				this._F.invalidateLoaded();
 			}
 			delete this._T;
 			delete this._V;
@@ -20187,9 +20187,9 @@ var Excel;
 		ChartAxisTitleFormat.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ChartAxisTitleFormat.prototype.invalidateLoadedData=function () {
+		ChartAxisTitleFormat.prototype.invalidateLoaded=function () {
 			if (this._F) {
-				this._F.invalidateLoadedData();
+				this._F.invalidateLoaded();
 			}
 			return this;
 		};
@@ -20402,9 +20402,9 @@ var Excel;
 		ChartDataLabels.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ChartDataLabels.prototype.invalidateLoadedData=function () {
+		ChartDataLabels.prototype.invalidateLoaded=function () {
 			if (this._F) {
-				this._F.invalidateLoadedData();
+				this._F.invalidateLoaded();
 			}
 			delete this._P;
 			delete this._S;
@@ -20503,9 +20503,9 @@ var Excel;
 		ChartDataLabelFormat.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ChartDataLabelFormat.prototype.invalidateLoadedData=function () {
+		ChartDataLabelFormat.prototype.invalidateLoaded=function () {
 			if (this._Fo) {
-				this._Fo.invalidateLoadedData();
+				this._Fo.invalidateLoaded();
 			}
 			return this;
 		};
@@ -20606,9 +20606,9 @@ var Excel;
 		ChartGridlines.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ChartGridlines.prototype.invalidateLoadedData=function () {
+		ChartGridlines.prototype.invalidateLoaded=function () {
 			if (this._F) {
-				this._F.invalidateLoadedData();
+				this._F.invalidateLoaded();
 			}
 			delete this._V;
 			return this;
@@ -20681,9 +20681,9 @@ var Excel;
 		ChartGridlinesFormat.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ChartGridlinesFormat.prototype.invalidateLoadedData=function () {
+		ChartGridlinesFormat.prototype.invalidateLoaded=function () {
 			if (this._L) {
-				this._L.invalidateLoadedData();
+				this._L.invalidateLoaded();
 			}
 			return this;
 		};
@@ -20816,9 +20816,9 @@ var Excel;
 		ChartLegend.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ChartLegend.prototype.invalidateLoadedData=function () {
+		ChartLegend.prototype.invalidateLoaded=function () {
 			if (this._F) {
-				this._F.invalidateLoadedData();
+				this._F.invalidateLoaded();
 			}
 			delete this._O;
 			delete this._P;
@@ -20907,9 +20907,9 @@ var Excel;
 		ChartLegendFormat.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ChartLegendFormat.prototype.invalidateLoadedData=function () {
+		ChartLegendFormat.prototype.invalidateLoaded=function () {
 			if (this._Fo) {
-				this._Fo.invalidateLoadedData();
+				this._Fo.invalidateLoaded();
 			}
 			return this;
 		};
@@ -21042,9 +21042,9 @@ var Excel;
 		ChartTitle.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ChartTitle.prototype.invalidateLoadedData=function () {
+		ChartTitle.prototype.invalidateLoaded=function () {
 			if (this._F) {
-				this._F.invalidateLoadedData();
+				this._F.invalidateLoaded();
 			}
 			delete this._O;
 			delete this._T;
@@ -21133,9 +21133,9 @@ var Excel;
 		ChartTitleFormat.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ChartTitleFormat.prototype.invalidateLoadedData=function () {
+		ChartTitleFormat.prototype.invalidateLoaded=function () {
 			if (this._Fo) {
-				this._Fo.invalidateLoadedData();
+				this._Fo.invalidateLoaded();
 			}
 			return this;
 		};
@@ -21269,7 +21269,7 @@ var Excel;
 		ChartLineFormat.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ChartLineFormat.prototype.invalidateLoadedData=function () {
+		ChartLineFormat.prototype.invalidateLoaded=function () {
 			delete this._C;
 			return this;
 		};
@@ -21432,7 +21432,7 @@ var Excel;
 		ChartFont.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ChartFont.prototype.invalidateLoadedData=function () {
+		ChartFont.prototype.invalidateLoaded=function () {
 			delete this._B;
 			delete this._C;
 			delete this._I;
@@ -21583,7 +21583,7 @@ var Excel;
 		TableSort.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		TableSort.prototype.invalidateLoadedData=function () {
+		TableSort.prototype.invalidateLoaded=function () {
 			delete this._F;
 			delete this._M;
 			delete this._Me;
@@ -21702,7 +21702,7 @@ var Excel;
 		Filter.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		Filter.prototype.invalidateLoadedData=function () {
+		Filter.prototype.invalidateLoaded=function () {
 			delete this._C;
 			return this;
 		};
@@ -21793,7 +21793,7 @@ var Excel;
 		CustomXmlPartScopedCollection.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		CustomXmlPartScopedCollection.prototype.invalidateLoadedData=function () {
+		CustomXmlPartScopedCollection.prototype.invalidateLoaded=function () {
 			delete this.m__items;
 			return this;
 		};
@@ -21879,7 +21879,7 @@ var Excel;
 		CustomXmlPartCollection.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		CustomXmlPartCollection.prototype.invalidateLoadedData=function () {
+		CustomXmlPartCollection.prototype.invalidateLoaded=function () {
 			delete this.m__items;
 			return this;
 		};
@@ -21966,7 +21966,7 @@ var Excel;
 		CustomXmlPart.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		CustomXmlPart.prototype.invalidateLoadedData=function () {
+		CustomXmlPart.prototype.invalidateLoaded=function () {
 			delete this._I;
 			delete this._N;
 			return this;
@@ -22213,7 +22213,7 @@ var Excel;
 		PivotTableCollection.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		PivotTableCollection.prototype.invalidateLoadedData=function () {
+		PivotTableCollection.prototype.invalidateLoaded=function () {
 			delete this.m__items;
 			return this;
 		};
@@ -22327,9 +22327,9 @@ var Excel;
 		PivotTable.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		PivotTable.prototype.invalidateLoadedData=function () {
+		PivotTable.prototype.invalidateLoaded=function () {
 			if (this._W) {
-				this._W.invalidateLoadedData();
+				this._W.invalidateLoaded();
 			}
 			delete this._I;
 			delete this._N;
@@ -22433,7 +22433,7 @@ var Excel;
 		ConditionalFormatCollection.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ConditionalFormatCollection.prototype.invalidateLoadedData=function () {
+		ConditionalFormatCollection.prototype.invalidateLoaded=function () {
 			delete this.m__items;
 			return this;
 		};
@@ -22727,54 +22727,54 @@ var Excel;
 		ConditionalFormat.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ConditionalFormat.prototype.invalidateLoadedData=function () {
+		ConditionalFormat.prototype.invalidateLoaded=function () {
 			if (this._C) {
-				this._C.invalidateLoadedData();
+				this._C.invalidateLoaded();
 			}
 			if (this._Ce) {
-				this._Ce.invalidateLoadedData();
+				this._Ce.invalidateLoaded();
 			}
 			if (this._Co) {
-				this._Co.invalidateLoadedData();
+				this._Co.invalidateLoaded();
 			}
 			if (this._Col) {
-				this._Col.invalidateLoadedData();
+				this._Col.invalidateLoaded();
 			}
 			if (this._Cu) {
-				this._Cu.invalidateLoadedData();
+				this._Cu.invalidateLoaded();
 			}
 			if (this._Cus) {
-				this._Cus.invalidateLoadedData();
+				this._Cus.invalidateLoaded();
 			}
 			if (this._D) {
-				this._D.invalidateLoadedData();
+				this._D.invalidateLoaded();
 			}
 			if (this._Da) {
-				this._Da.invalidateLoadedData();
+				this._Da.invalidateLoaded();
 			}
 			if (this._I) {
-				this._I.invalidateLoadedData();
+				this._I.invalidateLoaded();
 			}
 			if (this._Ic) {
-				this._Ic.invalidateLoadedData();
+				this._Ic.invalidateLoaded();
 			}
 			if (this._P) {
-				this._P.invalidateLoadedData();
+				this._P.invalidateLoaded();
 			}
 			if (this._Pr) {
-				this._Pr.invalidateLoadedData();
+				this._Pr.invalidateLoaded();
 			}
 			if (this._T) {
-				this._T.invalidateLoadedData();
+				this._T.invalidateLoaded();
 			}
 			if (this._Te) {
-				this._Te.invalidateLoadedData();
+				this._Te.invalidateLoaded();
 			}
 			if (this._To) {
-				this._To.invalidateLoadedData();
+				this._To.invalidateLoaded();
 			}
 			if (this._Top) {
-				this._Top.invalidateLoadedData();
+				this._Top.invalidateLoaded();
 			}
 			delete this._Id0;
 			delete this._Pri;
@@ -22998,12 +22998,12 @@ var Excel;
 		DataBarConditionalFormat.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		DataBarConditionalFormat.prototype.invalidateLoadedData=function () {
+		DataBarConditionalFormat.prototype.invalidateLoaded=function () {
 			if (this._N) {
-				this._N.invalidateLoadedData();
+				this._N.invalidateLoaded();
 			}
 			if (this._P) {
-				this._P.invalidateLoadedData();
+				this._P.invalidateLoaded();
 			}
 			delete this._A;
 			delete this._Ax;
@@ -23132,7 +23132,7 @@ var Excel;
 		ConditionalDataBarPositiveFormat.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ConditionalDataBarPositiveFormat.prototype.invalidateLoadedData=function () {
+		ConditionalDataBarPositiveFormat.prototype.invalidateLoaded=function () {
 			delete this._B;
 			delete this._F;
 			delete this._G;
@@ -23267,7 +23267,7 @@ var Excel;
 		ConditionalDataBarNegativeFormat.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ConditionalDataBarNegativeFormat.prototype.invalidateLoadedData=function () {
+		ConditionalDataBarNegativeFormat.prototype.invalidateLoaded=function () {
 			delete this._B;
 			delete this._F;
 			delete this._M;
@@ -23353,12 +23353,12 @@ var Excel;
 		CustomConditionalFormat.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		CustomConditionalFormat.prototype.invalidateLoadedData=function () {
+		CustomConditionalFormat.prototype.invalidateLoaded=function () {
 			if (this._F) {
-				this._F.invalidateLoadedData();
+				this._F.invalidateLoaded();
 			}
 			if (this._R) {
-				this._R.invalidateLoadedData();
+				this._R.invalidateLoaded();
 			}
 			return this;
 		};
@@ -23474,7 +23474,7 @@ var Excel;
 		ConditionalFormatRule.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ConditionalFormatRule.prototype.invalidateLoadedData=function () {
+		ConditionalFormatRule.prototype.invalidateLoaded=function () {
 			delete this._F;
 			delete this._Fo;
 			delete this._For;
@@ -23609,7 +23609,7 @@ var Excel;
 		IconSetConditionalFormat.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		IconSetConditionalFormat.prototype.invalidateLoadedData=function () {
+		IconSetConditionalFormat.prototype.invalidateLoaded=function () {
 			delete this._C;
 			delete this._R;
 			delete this._S;
@@ -23709,7 +23709,7 @@ var Excel;
 		ColorScaleConditionalFormat.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ColorScaleConditionalFormat.prototype.invalidateLoadedData=function () {
+		ColorScaleConditionalFormat.prototype.invalidateLoaded=function () {
 			delete this._C;
 			delete this._T;
 			return this;
@@ -23812,9 +23812,9 @@ var Excel;
 		TopBottomConditionalFormat.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		TopBottomConditionalFormat.prototype.invalidateLoadedData=function () {
+		TopBottomConditionalFormat.prototype.invalidateLoaded=function () {
 			if (this._F) {
-				this._F.invalidateLoadedData();
+				this._F.invalidateLoaded();
 			}
 			delete this._R;
 			return this;
@@ -23918,9 +23918,9 @@ var Excel;
 		PresetCriteriaConditionalFormat.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		PresetCriteriaConditionalFormat.prototype.invalidateLoadedData=function () {
+		PresetCriteriaConditionalFormat.prototype.invalidateLoaded=function () {
 			if (this._F) {
-				this._F.invalidateLoadedData();
+				this._F.invalidateLoaded();
 			}
 			delete this._R;
 			return this;
@@ -24024,9 +24024,9 @@ var Excel;
 		TextConditionalFormat.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		TextConditionalFormat.prototype.invalidateLoadedData=function () {
+		TextConditionalFormat.prototype.invalidateLoaded=function () {
 			if (this._F) {
-				this._F.invalidateLoadedData();
+				this._F.invalidateLoaded();
 			}
 			delete this._R;
 			return this;
@@ -24130,9 +24130,9 @@ var Excel;
 		CellValueConditionalFormat.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		CellValueConditionalFormat.prototype.invalidateLoadedData=function () {
+		CellValueConditionalFormat.prototype.invalidateLoaded=function () {
 			if (this._F) {
-				this._F.invalidateLoadedData();
+				this._F.invalidateLoaded();
 			}
 			delete this._R;
 			return this;
@@ -24258,15 +24258,15 @@ var Excel;
 		ConditionalRangeFormat.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ConditionalRangeFormat.prototype.invalidateLoadedData=function () {
+		ConditionalRangeFormat.prototype.invalidateLoaded=function () {
 			if (this._B) {
-				this._B.invalidateLoadedData();
+				this._B.invalidateLoaded();
 			}
 			if (this._F) {
-				this._F.invalidateLoadedData();
+				this._F.invalidateLoaded();
 			}
 			if (this._Fo) {
-				this._Fo.invalidateLoadedData();
+				this._Fo.invalidateLoaded();
 			}
 			delete this._N;
 			return this;
@@ -24422,7 +24422,7 @@ var Excel;
 		ConditionalRangeFont.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ConditionalRangeFont.prototype.invalidateLoadedData=function () {
+		ConditionalRangeFont.prototype.invalidateLoaded=function () {
 			delete this._B;
 			delete this._C;
 			delete this._I;
@@ -24517,7 +24517,7 @@ var Excel;
 		ConditionalRangeFill.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ConditionalRangeFill.prototype.invalidateLoadedData=function () {
+		ConditionalRangeFill.prototype.invalidateLoaded=function () {
 			delete this._C;
 			return this;
 		};
@@ -24627,7 +24627,7 @@ var Excel;
 		ConditionalRangeBorder.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ConditionalRangeBorder.prototype.invalidateLoadedData=function () {
+		ConditionalRangeBorder.prototype.invalidateLoaded=function () {
 			delete this._C;
 			delete this._S;
 			delete this._St;
@@ -24776,18 +24776,18 @@ var Excel;
 		ConditionalRangeBorderCollection.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		ConditionalRangeBorderCollection.prototype.invalidateLoadedData=function () {
+		ConditionalRangeBorderCollection.prototype.invalidateLoaded=function () {
 			if (this._B) {
-				this._B.invalidateLoadedData();
+				this._B.invalidateLoaded();
 			}
 			if (this._L) {
-				this._L.invalidateLoadedData();
+				this._L.invalidateLoaded();
 			}
 			if (this._R) {
-				this._R.invalidateLoadedData();
+				this._R.invalidateLoaded();
 			}
 			if (this._T) {
-				this._T.invalidateLoadedData();
+				this._T.invalidateLoaded();
 			}
 			delete this._C;
 			delete this.m__items;
@@ -25408,7 +25408,7 @@ var Excel;
 		FunctionResult.prototype.load=function () {
 			return _load2(this, arguments);
 		};
-		FunctionResult.prototype.invalidateLoadedData=function () {
+		FunctionResult.prototype.invalidateLoaded=function () {
 			delete this._E;
 			delete this._V;
 			return this;
