@@ -13008,19 +13008,16 @@ var OfficeExtension;
 				if (methodName==="toJSON") {
 				}
 				else if (methodName==="cloneLoadedData") {
-					var wasSet_1;
-					var currentValue_1;
 					Object.defineProperty(result, prop, {
 						get: function () {
-							if (!wasSet_1) {
-								throw Utility.createPropertyNotLoadedException(entityName, prop);
-							}
-							return currentValue_1;
+							throw Utility.createPropertyNotLoadedException(entityName, prop);
 						},
 						set: function (newValue) {
-							wasSet_1=true;
-							currentValue_1=newValue;
-						}
+							delete result[prop];
+							result[prop]=newValue;
+						},
+						configurable: true,
+						enumerable: false
 					});
 				}
 				else {
