@@ -272,8 +272,7 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
         } catch (e) {
             const wasFailureDueToPreviouslyPublishedDeletedVersion =
                 (e as AdditionalInfoError).additionalInfo &&
-                ((e as AdditionalInfoError).additionalInfo.indexOf(
-                    "npm ERR! You cannot publish over the previously published version") > 0);
+                isPublishOverPreviouslyPublishVersionErrorString((e as AdditionalInfoError).additionalInfo);
 
             if (wasFailureDueToPreviouslyPublishedDeletedVersion) {
                 version = VersionUtils.incrementLastNumber(version, npmPublishTag);
@@ -349,6 +348,16 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
     banner('SUCCESS, DEPLOYMENT COMPLETE!', markdownReleasesNotes!.replace(/&nbsp;/g, ' '), chalk.green.bold);
 
     banner(`GitHub Releases page for v${version}`, `https://github.com/OfficeDev/office-js/releases/tag/v${version}`, chalk.green.bold);
+}
+
+function isPublishOverPreviouslyPublishVersionErrorString(errorText: string): boolean {
+    const phraseMatchIndex = [
+        "npm ERR! You cannot publish over the previously published version",
+        "npm ERR! Cannot publish over previously published version"
+    ]
+        .map(phrase => phrase.toLowerCase())
+        .findIndex(phrase => errorText.toLowerCase().indexOf(phrase) >= 0);
+    return phraseMatchIndex >= 0;
 }
 
 async function getDeploymentInfoFromGithubRepoState(lookupBranch: string): Promise<IDeploymentInfoFromSubmittedRepo> {
