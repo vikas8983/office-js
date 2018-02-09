@@ -2562,7 +2562,7 @@ declare namespace Office {
 //////////////// Begin OfficeExtension runtime /////////////////
 ////////////////////////////////////////////////////////////////
 
-declare namespace OfficeExtension {
+﻿declare namespace OfficeExtension {
 	/** An abstract proxy object that represents an object in an Office document. You create proxy objects from the context (or from other proxy objects), add commands to a queue to act on the object, and then synchronize the proxy object state with the document by calling "context.sync()". */
 	class ClientObject {
 		/** The request context associated with the object */
@@ -2604,7 +2604,7 @@ declare namespace OfficeExtension {
 		/** Adds a trace message to the queue. If the promise returned by "context.sync()" is rejected due to an error, this adds a ".traceMessages" array to the OfficeExtension.Error object, containing all trace messages that were executed. These messages can help you monitor the program execution sequence and detect the cause of the error. */
 		trace(message: string): void;
 
-		/** Synchronizes the state between JavaScript proxy objects and the Office document, by executing instructions queued on the request context and retrieving properties of loaded Office objects for use in your code.�This method returns a promise, which is resolved when the synchronization is complete. */
+		/** Synchronizes the state between JavaScript proxy objects and the Office document, by executing instructions queued on the request context and retrieving properties of loaded Office objects for use in your code. This method returns a promise, which is resolved when the synchronization is complete. */
 		sync<T>(passThroughValue?: T): IPromise<T>;
 	}
 }
@@ -3746,14 +3746,17 @@ declare namespace Excel {
      */
     class Runtime extends OfficeExtension.ClientObject {
         constructor(context: OfficeExtension.ClientRequestContext, objectPath: OfficeExtension.ObjectPath);
+        private toJsonOrClone(method);
         toJSON(): {
-            [key: string]: string;
+            [key: string]: any;
         };
         /**
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): any;
+        cloneLoadedData(): {
+            [key: string]: any;
+        };
     }
     /**
      *
@@ -3825,6 +3828,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.Application;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ApplicationData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -3945,6 +3949,7 @@ declare namespace Excel {
          * [Api set: ExcelApi 1.2]
          */
         readonly onSelectionChanged: OfficeExtension.EventHandlers<Excel.SelectionChangedEventArgs>;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.WorkbookData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -4242,6 +4247,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.Worksheet;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.WorksheetData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -4341,6 +4347,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.WorksheetCollection;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.WorksheetCollectionData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -4418,6 +4425,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.WorksheetProtection;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.WorksheetProtectionData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -4804,7 +4812,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          */
-        readonly valueTypes: ReadonlyArray<ReadonlyArray<RangeValueType>>;
+        readonly valueTypes: ReadonlyArray<ReadonlyArray<Excel.RangeValueType>>;
         /**
          * Represents the raw values of the specified range. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
          *
@@ -5156,6 +5164,7 @@ declare namespace Excel {
          * Release the memory associated with this object, if it has previously been tracked. This call is shorthand for context.trackedObjects.remove(thisObject). Having many tracked objects slows down the host application, so please remember to free any objects you add, once you're done using them. You will need to call "context.sync()" before the memory release takes effect.
          */
         untrack(): Excel.Range;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.RangeData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -5439,6 +5448,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.RangeView;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.RangeViewData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -5497,6 +5507,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.RangeViewCollection;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.RangeViewCollectionData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -5581,6 +5592,7 @@ declare namespace Excel {
          * [Api set: ExcelApi 1.4]
          */
         readonly onSettingsChanged: OfficeExtension.EventHandlers<Excel.SettingsChangedEventArgs>;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.SettingCollectionData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -5688,6 +5700,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.Setting;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.SettingData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -5779,6 +5792,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.NamedItemCollection;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.NamedItemCollectionData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -5968,6 +5982,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.NamedItem;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.NamedItemData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -6066,6 +6081,7 @@ declare namespace Excel {
          * [Api set: ExcelApi 1.2]
          */
         readonly onSelectionChanged: OfficeExtension.EventHandlers<Excel.BindingSelectionChangedEventArgs>;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.BindingData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -6214,6 +6230,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.BindingCollection;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.BindingCollectionData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -6308,6 +6325,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.TableCollection;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.TableCollectionData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -6745,6 +6763,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.Table;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.TableData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -6840,6 +6859,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.TableColumnCollection;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.TableColumnCollectionData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -7019,6 +7039,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.TableColumn;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.TableColumnData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -7110,6 +7131,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.TableRowCollection;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.TableRowCollectionData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -7226,6 +7248,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.TableRow;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.TableRowData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -7487,6 +7510,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.RangeFormat;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.RangeFormatData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -7605,6 +7629,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.FormatProtection;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.FormatProtectionData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -7701,6 +7726,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.RangeFill;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.RangeFillData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -7858,6 +7884,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.RangeBorder;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.RangeBorderData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -7935,6 +7962,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.RangeBorderCollection;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.RangeBorderCollectionData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -8177,6 +8205,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.RangeFont;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.RangeFontData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -8284,6 +8313,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ChartCollection;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartCollectionData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -8620,6 +8650,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.Chart;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -8688,6 +8719,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ChartAreaFormat;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartAreaFormatData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -8754,6 +8786,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ChartSeriesCollection;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartSeriesCollectionData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -8857,6 +8890,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ChartSeries;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartSeriesData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -8925,6 +8959,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ChartSeriesFormat;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartSeriesFormatData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -8991,6 +9026,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ChartPointsCollection;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartPointsCollectionData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -9045,6 +9081,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ChartPoint;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartPointData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -9068,6 +9105,7 @@ declare namespace Excel {
          * [Api set: ExcelApi 1.1]
          */
         readonly fill: Excel.ChartFill;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartPointFormatData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -9144,6 +9182,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ChartAxes;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartAxesData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -9356,6 +9395,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ChartAxis;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartAxisData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -9424,6 +9464,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ChartAxisFormat;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartAxisFormatData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -9550,6 +9591,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ChartAxisTitle;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartAxisTitleData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -9610,6 +9652,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ChartAxisTitleFormat;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartAxisTitleFormatData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -9922,6 +9965,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ChartDataLabels;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartDataLabelsData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -9990,6 +10034,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ChartDataLabelFormat;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartDataLabelFormatData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -10085,6 +10130,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ChartGridlines;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartGridlinesData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -10145,6 +10191,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ChartGridlinesFormat;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartGridlinesFormatData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -10302,6 +10349,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ChartLegend;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartLegendData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -10370,6 +10418,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ChartLegendFormat;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartLegendFormatData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -10527,6 +10576,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ChartTitle;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartTitleData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -10595,6 +10645,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ChartTitleFormat;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartTitleFormatData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -10634,14 +10685,17 @@ declare namespace Excel {
          * @param color HTML color code representing the color of the border line, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
          */
         setSolidColor(color: string): Excel.ChartFill;
+        private toJsonOrClone(method);
         toJSON(): {
-            [key: string]: string;
+            [key: string]: any;
         };
         /**
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): any;
+        cloneLoadedData(): {
+            [key: string]: any;
+        };
     }
     /**
      *
@@ -10732,6 +10786,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ChartLineFormat;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartLineFormatData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -10974,6 +11029,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ChartFont;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ChartFontData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -11019,14 +11075,17 @@ declare namespace Excel {
          * @param method The ordering method used for Chinese characters.
          */
         apply(fields: Excel.SortField[], matchCase?: boolean, hasHeaders?: boolean, orientation?: "Rows" | "Columns", method?: "PinYin" | "StrokeCount"): Excel.RangeSort;
+        private toJsonOrClone(method);
         toJSON(): {
-            [key: string]: string;
+            [key: string]: any;
         };
         /**
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): any;
+        cloneLoadedData(): {
+            [key: string]: any;
+        };
     }
     /**
      *
@@ -11043,7 +11102,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.2]
          */
-        readonly fields: Excel.SortField[];
+        readonly fields: ReadonlyArray<Excel.SortField>;
         /**
          * Represents whether the casing impacted the last sort of the table.
          *
@@ -11127,6 +11186,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.TableSort;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.TableSortData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -11373,6 +11433,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.Filter;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.FilterData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -11558,6 +11619,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.CustomXmlPartScopedCollection;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.CustomXmlPartScopedCollectionData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -11644,6 +11706,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.CustomXmlPartCollection;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.CustomXmlPartCollectionData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -11725,6 +11788,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.CustomXmlPart;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.CustomXmlPartData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -11801,6 +11865,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.PivotTableCollection;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.PivotTableCollectionData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -11913,6 +11978,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.PivotTable;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.PivotTableData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -12008,6 +12074,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ConditionalFormatCollection;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ConditionalFormatCollectionData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -12309,6 +12376,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ConditionalFormat;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ConditionalFormatData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -12569,6 +12637,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.DataBarConditionalFormat;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.DataBarConditionalFormatData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -12720,6 +12789,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ConditionalDataBarPositiveFormat;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ConditionalDataBarPositiveFormatData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -12902,6 +12972,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ConditionalDataBarNegativeFormat;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ConditionalDataBarNegativeFormatData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -12990,6 +13061,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.CustomConditionalFormat;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.CustomConditionalFormatData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -13139,6 +13211,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ConditionalFormatRule;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ConditionalFormatRuleData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -13170,7 +13243,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.6]
          */
-        readonly criteria: Excel.ConditionalIconCriterion[];
+        readonly criteria: ReadonlyArray<Excel.ConditionalIconCriterion>;
         /**
          * Sets the **criteria** property:
          * > An array of Criteria and IconSets for the rules and potential custom icons for conditional icons. Note that for the first criterion only the custom icon can be modified, while type, formula and operator will be ignored when set.
@@ -13319,6 +13392,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.IconSetConditionalFormat;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.IconSetConditionalFormatData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -13446,6 +13520,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ColorScaleConditionalFormat;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ColorScaleConditionalFormatData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -13593,6 +13668,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.TopBottomConditionalFormat;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.TopBottomConditionalFormatData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -13708,6 +13784,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.PresetCriteriaConditionalFormat;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.PresetCriteriaConditionalFormatData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -13817,6 +13894,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.TextConditionalFormat;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.TextConditionalFormatData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -13932,6 +14010,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.CellValueConditionalFormat;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.CellValueConditionalFormatData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -14069,6 +14148,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ConditionalRangeFormat;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ConditionalRangeFormatData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -14289,6 +14369,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ConditionalRangeFont;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ConditionalRangeFontData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -14385,6 +14466,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ConditionalRangeFill;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ConditionalRangeFillData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -14511,6 +14593,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ConditionalRangeBorder;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ConditionalRangeBorderData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -14620,6 +14703,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): Excel.ConditionalRangeBorderCollection;
+        private toJsonOrClone(method);
         toJSON(): Excel.Interfaces.ConditionalRangeBorderCollectionData;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -15326,6 +15410,7 @@ declare namespace Excel {
          * After you call this method, any properties that had been loaded will throw `PropertyNotLoaded`, until you explicitly load and sync again
          */
         invalidateLoadedData(): FunctionResult<T>;
+        private toJsonOrClone(method);
         toJSON(): Interfaces.FunctionResultData<T>;
         /**
          * Returns a deep copy of the currently-loaded data on the object.
@@ -19077,14 +19162,17 @@ declare namespace Excel {
          * @param sigma Is the population (known) standard deviation. If omitted, the sample standard deviation is used.
          */
         z_Test(array: number | Excel.Range | Excel.RangeReference | Excel.FunctionResult<any>, x: number | Excel.Range | Excel.RangeReference | Excel.FunctionResult<any>, sigma?: number | Excel.Range | Excel.RangeReference | Excel.FunctionResult<any>): FunctionResult<number>;
+        private toJsonOrClone(method);
         toJSON(): {
-            [key: string]: string;
+            [key: string]: any;
         };
         /**
          * Returns a deep copy of the currently-loaded data on the object.
          * This is useful for being able to extract and manipulate data, before setting it back on the object.
          */
-        cloneLoadedData(): any;
+        cloneLoadedData(): {
+            [key: string]: any;
+        };
     }
     enum ErrorCodes {
         accessDenied = "AccessDenied",
@@ -20614,19 +20702,19 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            formulas?: ReadonlyArray<ReadonlyArray<string>>;
+            formulas?: string[][];
             /**
              * Represents the formula in A1-style notation, in the user's language and number-formatting locale.  For example, the English "=SUM(A1, 1.5)" formula would become "=SUMME(A1; 1,5)" in German.
              *
              * [Api set: ExcelApi 1.1]
              */
-            formulasLocal?: ReadonlyArray<ReadonlyArray<string>>;
+            formulasLocal?: string[][];
             /**
              * Represents the formula in R1C1-style notation.
              *
              * [Api set: ExcelApi 1.2]
              */
-            formulasR1C1?: ReadonlyArray<ReadonlyArray<string>>;
+            formulasR1C1?: string[][];
             /**
              * Represents if all cells of the current range are hidden.
              *
@@ -20638,7 +20726,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            numberFormat?: ReadonlyArray<ReadonlyArray<string>>;
+            numberFormat?: string[][];
             /**
              * Returns the total number of rows in the range.
              *
@@ -20662,19 +20750,19 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            text?: ReadonlyArray<ReadonlyArray<string>>;
+            text?: string[][];
             /**
              * Represents the type of data of each cell.
              *
              * [Api set: ExcelApi 1.1]
              */
-            valueTypes?: ReadonlyArray<ReadonlyArray<RangeValueType>>;
+            valueTypes?: Excel.RangeValueType[][];
             /**
              * Represents the raw values of the specified range. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
              *
              * [Api set: ExcelApi 1.1]
              */
-            values?: ReadonlyArray<ReadonlyArray<number | string | boolean>>;
+            values?: (number | string | boolean)[][];
         }
         /** An interface describing the data returned by calling "rangeView.toJSON()". */
         interface RangeViewData {
@@ -20689,7 +20777,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.3]
              */
-            cellAddresses?: ReadonlyArray<ReadonlyArray<string>>;
+            cellAddresses?: string[][];
             /**
              * Returns the number of visible columns.
              *
@@ -20701,19 +20789,19 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.3]
              */
-            formulas?: ReadonlyArray<ReadonlyArray<string>>;
+            formulas?: string[][];
             /**
              * Represents the formula in A1-style notation, in the user's language and number-formatting locale.  For example, the English "=SUM(A1, 1.5)" formula would become "=SUMME(A1; 1,5)" in German.
              *
              * [Api set: ExcelApi 1.3]
              */
-            formulasLocal?: ReadonlyArray<ReadonlyArray<string>>;
+            formulasLocal?: string[][];
             /**
              * Represents the formula in R1C1-style notation.
              *
              * [Api set: ExcelApi 1.3]
              */
-            formulasR1C1?: ReadonlyArray<ReadonlyArray<string>>;
+            formulasR1C1?: string[][];
             /**
              * Returns a value that represents the index of the RangeView.
              *
@@ -20725,7 +20813,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.3]
              */
-            numberFormat?: ReadonlyArray<ReadonlyArray<string>>;
+            numberFormat?: string[][];
             /**
              * Returns the number of visible rows.
              *
@@ -20737,19 +20825,19 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.3]
              */
-            text?: ReadonlyArray<ReadonlyArray<string>>;
+            text?: string[][];
             /**
              * Represents the type of data of each cell.
              *
              * [Api set: ExcelApi 1.3]
              */
-            valueTypes?: ReadonlyArray<ReadonlyArray<Excel.RangeValueType>>;
+            valueTypes?: Excel.RangeValueType[][];
             /**
              * Represents the raw values of the specified range view. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
              *
              * [Api set: ExcelApi 1.3]
              */
-            values?: ReadonlyArray<ReadonlyArray<number | string | boolean>>;
+            values?: (number | string | boolean)[][];
         }
         /** An interface describing the data returned by calling "rangeViewCollection.toJSON()". */
         interface RangeViewCollectionData {
@@ -20974,7 +21062,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            values?: ReadonlyArray<ReadonlyArray<number | string | boolean>>;
+            values?: (number | string | boolean)[][];
         }
         /** An interface describing the data returned by calling "tableRowCollection.toJSON()". */
         interface TableRowCollectionData {
@@ -20993,7 +21081,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            values?: ReadonlyArray<ReadonlyArray<number | string | boolean>>;
+            values?: (number | string | boolean)[][];
         }
         /** An interface describing the data returned by calling "rangeFormat.toJSON()". */
         interface RangeFormatData {

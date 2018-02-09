@@ -12634,29 +12634,58 @@ var OfficeExtension;
 				return propertyName.replace(new RegExp("[\/\.]items[\/\.]", "gi"), "/");
 			}
 		};
-		Utility.toJson=function (clientObj, scalarProperties, navigationProperties, collectionItemsIfAny) {
+		Utility.toJsonOrClone=function (methodName, clientObj, entityName, scalarProperties, navigationProperties, collectionItemsIfAny) {
 			var result={};
 			for (var prop in scalarProperties) {
 				var value=scalarProperties[prop];
-				if (typeof value !=="undefined") {
+				if (typeof value==="undefined") {
+					processUndefinedValueCase(prop);
+				}
+				else {
 					result[prop]=value;
 				}
 			}
 			for (var prop in navigationProperties) {
 				var value=navigationProperties[prop];
-				if (typeof value !=="undefined") {
+				if (typeof value==="undefined") {
+					processUndefinedValueCase(prop);
+				}
+				else {
 					if (value[Utility.fieldName_isCollection] && (typeof value[Utility.fieldName_m__items] !=="undefined")) {
-						result[prop]=value.toJSON()["items"];
+						result[prop]=value[methodName]()["items"];
 					}
 					else {
-						result[prop]=value.toJSON();
+						result[prop]=value[methodName]();
 					}
 				}
 			}
 			if (collectionItemsIfAny) {
-				result["items"]=collectionItemsIfAny.map(function (item) { return item.toJSON(); });
+				result["items"]=collectionItemsIfAny.map(function (item) { return item[methodName](); });
 			}
 			return result;
+			function processUndefinedValueCase(prop) {
+				if (methodName==="toJSON") {
+				}
+				else if (methodName==="cloneLoadedData") {
+					var wasSet_1;
+					var currentValue_1;
+					Object.defineProperty(result, prop, {
+						get: function () {
+							if (!wasSet_1) {
+								throw Utility.createPropertyNotLoadedException(entityName, prop);
+							}
+							return currentValue_1;
+						},
+						set: function (newValue) {
+							wasSet_1=true;
+							currentValue_1=newValue;
+						}
+					});
+				}
+				else {
+					throw new OfficeExtension.Error("Invalid methodName, this should never hapen");
+				}
+			}
 		};
 		Utility.throwError=function (resourceId, arg, errorLocation) {
 			throw new OfficeExtension._Internal.RuntimeError({
@@ -14166,7 +14195,7 @@ var Excel;
 	var _throwIfNotLoaded=OfficeExtension.Utility.throwIfNotLoaded;
 	var _throwIfApiNotSupported=OfficeExtension.Utility.throwIfApiNotSupported;
 	var _load2=OfficeExtension.Utility.load2;
-	var _toJson=OfficeExtension.Utility.toJson;
+	var _toJsonOrClone=OfficeExtension.Utility.toJsonOrClone;
 	var _fixObjectPathIfNecessary=OfficeExtension.Utility.fixObjectPathIfNecessary;
 	var _addActionResultHandler=OfficeExtension.Utility._addActionResultHandler;
 	var _handleNavigationPropertyResults=OfficeExtension.Utility._handleNavigationPropertyResults;
@@ -14196,11 +14225,14 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
+		Runtime.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeRuntime, {}, {});
+		};
 		Runtime.prototype.toJSON=function () {
-			return _toJson(this, {}, {});
+			return this.toJsonOrClone("toJSON");
 		};
 		Runtime.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		return Runtime;
 	}(OfficeExtension.ClientObject));
@@ -14263,13 +14295,16 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		Application.prototype.toJSON=function () {
-			return _toJson(this, {
+		Application.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeApplication, {
 				"calculationMode": this._C,
 			}, {});
 		};
+		Application.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		Application.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		Application.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -14518,8 +14553,8 @@ var Excel;
 			enumerable: true,
 			configurable: true
 		});
-		Workbook.prototype.toJSON=function () {
-			return _toJson(this, {}, {
+		Workbook.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeWorkbook, {}, {
 				"bindings": this._B,
 				"customXmlParts": this._C,
 				"names": this._N,
@@ -14529,8 +14564,11 @@ var Excel;
 				"worksheets": this._W,
 			});
 		};
+		Workbook.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		Workbook.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		Workbook.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -14785,8 +14823,8 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		Worksheet.prototype.toJSON=function () {
-			return _toJson(this, {
+		Worksheet.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeWorksheet, {
 				"id": this._I,
 				"name": this._N,
 				"position": this._Po,
@@ -14799,8 +14837,11 @@ var Excel;
 				"tables": this.m_tables,
 			});
 		};
+		Worksheet.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		Worksheet.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		Worksheet.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -14893,11 +14934,14 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result, function (childItemData, index) { return new Excel.Worksheet(_this.context, _createChildItemObjectPathUsingIndexerOrGetItemAt(true, _this.context, _this, childItemData, index)); });
 		};
+		WorksheetCollection.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeWorksheetCollection, {}, {}, this.m__items);
+		};
 		WorksheetCollection.prototype.toJSON=function () {
-			return _toJson(this, {}, {}, this.m__items);
+			return this.toJsonOrClone("toJSON");
 		};
 		WorksheetCollection.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		return WorksheetCollection;
 	}(OfficeExtension.ClientObject));
@@ -14975,14 +15019,17 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		WorksheetProtection.prototype.toJSON=function () {
-			return _toJson(this, {
+		WorksheetProtection.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeWorksheetProtection, {
 				"options": this._O,
 				"protected": this._P,
 			}, {});
 		};
+		WorksheetProtection.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		WorksheetProtection.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		WorksheetProtection.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -15553,8 +15600,8 @@ var Excel;
 			this.context.trackedObjects.remove(this);
 			return this;
 		};
-		Range.prototype.toJSON=function () {
-			return _toJson(this, {
+		Range.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeRange, {
 				"address": this._A,
 				"addressLocal": this._Ad,
 				"cellCount": this._C,
@@ -15577,8 +15624,11 @@ var Excel;
 				"format": this._F,
 			});
 		};
+		Range.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		Range.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		Range.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -15818,8 +15868,8 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		RangeView.prototype.toJSON=function () {
-			return _toJson(this, {
+		RangeView.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeRangeView, {
 				"cellAddresses": this._C,
 				"columnCount": this._Co,
 				"formulas": this._F,
@@ -15835,8 +15885,11 @@ var Excel;
 				"rows": this._Ro,
 			});
 		};
+		RangeView.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		RangeView.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		RangeView.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -15911,11 +15964,14 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result, function (childItemData, index) { return new Excel.RangeView(_this.context, _createChildItemObjectPathUsingIndexerOrGetItemAt(false, _this.context, _this, childItemData, index)); });
 		};
+		RangeViewCollection.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeRangeViewCollection, {}, {}, this.m__items);
+		};
 		RangeViewCollection.prototype.toJSON=function () {
-			return _toJson(this, {}, {}, this.m__items);
+			return this.toJsonOrClone("toJSON");
 		};
 		RangeViewCollection.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		return RangeViewCollection;
 	}(OfficeExtension.ClientObject));
@@ -16013,11 +16069,14 @@ var Excel;
 			enumerable: true,
 			configurable: true
 		});
+		SettingCollection.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeSettingCollection, {}, {}, this.m__items);
+		};
 		SettingCollection.prototype.toJSON=function () {
-			return _toJson(this, {}, {}, this.m__items);
+			return this.toJsonOrClone("toJSON");
 		};
 		SettingCollection.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		return SettingCollection;
 	}(OfficeExtension.ClientObject));
@@ -16125,14 +16184,17 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		Setting.prototype.toJSON=function () {
-			return _toJson(this, {
+		Setting.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeSetting, {
 				"key": this._K,
 				"value": this.m_value,
 			}, {});
 		};
+		Setting.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		Setting.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		Setting.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -16221,11 +16283,14 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result, function (childItemData, index) { return new Excel.NamedItem(_this.context, _createChildItemObjectPathUsingIndexerOrGetItemAt(true, _this.context, _this, childItemData, index)); });
 		};
+		NamedItemCollection.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeNamedItemCollection, {}, {}, this.m__items);
+		};
 		NamedItemCollection.prototype.toJSON=function () {
-			return _toJson(this, {}, {}, this.m__items);
+			return this.toJsonOrClone("toJSON");
 		};
 		NamedItemCollection.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		return NamedItemCollection;
 	}(OfficeExtension.ClientObject));
@@ -16434,8 +16499,8 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		NamedItem.prototype.toJSON=function () {
-			return _toJson(this, {
+		NamedItem.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeNamedItem, {
 				"comment": this._C,
 				"name": this._N,
 				"scope": this._S,
@@ -16444,8 +16509,11 @@ var Excel;
 				"visible": this._Vi,
 			}, {});
 		};
+		NamedItem.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		NamedItem.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		NamedItem.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -16595,14 +16663,17 @@ var Excel;
 			enumerable: true,
 			configurable: true
 		});
-		Binding.prototype.toJSON=function () {
-			return _toJson(this, {
+		Binding.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeBinding, {
 				"id": this._I,
 				"type": this._T,
 			}, {});
 		};
+		Binding.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		Binding.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		Binding.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -16715,13 +16786,16 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result, function (childItemData, index) { return new Excel.Binding(_this.context, _createChildItemObjectPathUsingIndexerOrGetItemAt(true, _this.context, _this, childItemData, index)); });
 		};
-		BindingCollection.prototype.toJSON=function () {
-			return _toJson(this, {
+		BindingCollection.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeBindingCollection, {
 				"count": this._C,
 			}, {}, this.m__items);
 		};
+		BindingCollection.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		BindingCollection.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		return BindingCollection;
 	}(OfficeExtension.ClientObject));
@@ -16831,13 +16905,16 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result, function (childItemData, index) { return new Excel.Table(_this.context, _createChildItemObjectPathUsingIndexerOrGetItemAt(true, _this.context, _this, childItemData, index)); });
 		};
-		TableCollection.prototype.toJSON=function () {
-			return _toJson(this, {
+		TableCollection.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeTableCollection, {
 				"count": this._C,
 			}, {}, this.m__items);
 		};
+		TableCollection.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		TableCollection.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		return TableCollection;
 	}(OfficeExtension.ClientObject));
@@ -17170,8 +17247,8 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		Table.prototype.toJSON=function () {
-			return _toJson(this, {
+		Table.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeTable, {
 				"highlightFirstColumn": this._H,
 				"highlightLastColumn": this._Hi,
 				"id": this._I,
@@ -17188,8 +17265,11 @@ var Excel;
 				"sort": this._So,
 			});
 		};
+		Table.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		Table.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		Table.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -17293,13 +17373,16 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result, function (childItemData, index) { return new Excel.TableColumn(_this.context, _createChildItemObjectPathUsingIndexerOrGetItemAt(true, _this.context, _this, childItemData, index)); });
 		};
-		TableColumnCollection.prototype.toJSON=function () {
-			return _toJson(this, {
+		TableColumnCollection.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeTableColumnCollection, {
 				"count": this._C,
 			}, {}, this.m__items);
 		};
+		TableColumnCollection.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		TableColumnCollection.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		return TableColumnCollection;
 	}(OfficeExtension.ClientObject));
@@ -17459,8 +17542,8 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		TableColumn.prototype.toJSON=function () {
-			return _toJson(this, {
+		TableColumn.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeTableColumn, {
 				"id": this._I,
 				"index": this._In,
 				"name": this._N,
@@ -17469,8 +17552,11 @@ var Excel;
 				"filter": this._F,
 			});
 		};
+		TableColumn.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		TableColumn.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		TableColumn.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -17567,13 +17653,16 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result, function (childItemData, index) { return new Excel.TableRow(_this.context, _createChildItemObjectPathUsingIndexerOrGetItemAt(false, _this.context, _this, childItemData, index)); });
 		};
-		TableRowCollection.prototype.toJSON=function () {
-			return _toJson(this, {
+		TableRowCollection.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeTableRowCollection, {
 				"count": this._C,
 			}, {}, this.m__items);
 		};
+		TableRowCollection.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		TableRowCollection.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		return TableRowCollection;
 	}(OfficeExtension.ClientObject));
@@ -17662,14 +17751,17 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		TableRow.prototype.toJSON=function () {
-			return _toJson(this, {
+		TableRow.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeTableRow, {
 				"index": this._I,
 				"values": this._V,
 			}, {});
 		};
+		TableRow.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		TableRow.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		TableRow.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -17886,8 +17978,8 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		RangeFormat.prototype.toJSON=function () {
-			return _toJson(this, {
+		RangeFormat.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeRangeFormat, {
 				"columnWidth": this._C,
 				"horizontalAlignment": this._H,
 				"rowHeight": this._R,
@@ -17900,8 +17992,11 @@ var Excel;
 				"protection": this._P,
 			});
 		};
+		RangeFormat.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		RangeFormat.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		RangeFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -17992,14 +18087,17 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		FormatProtection.prototype.toJSON=function () {
-			return _toJson(this, {
+		FormatProtection.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeFormatProtection, {
 				"formulaHidden": this._F,
 				"locked": this._L,
 			}, {});
 		};
+		FormatProtection.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		FormatProtection.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		FormatProtection.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -18077,13 +18175,16 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		RangeFill.prototype.toJSON=function () {
-			return _toJson(this, {
+		RangeFill.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeRangeFill, {
 				"color": this._C,
 			}, {});
 		};
+		RangeFill.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		RangeFill.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		RangeFill.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -18203,16 +18304,19 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		RangeBorder.prototype.toJSON=function () {
-			return _toJson(this, {
+		RangeBorder.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeRangeBorder, {
 				"color": this._C,
 				"sideIndex": this._S,
 				"style": this._St,
 				"weight": this._W,
 			}, {});
 		};
+		RangeBorder.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		RangeBorder.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		RangeBorder.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -18302,13 +18406,16 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result, function (childItemData, index) { return new Excel.RangeBorder(_this.context, _createChildItemObjectPathUsingIndexerOrGetItemAt(true, _this.context, _this, childItemData, index)); });
 		};
-		RangeBorderCollection.prototype.toJSON=function () {
-			return _toJson(this, {
+		RangeBorderCollection.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeRangeBorderCollection, {
 				"count": this._C,
 			}, {}, this.m__items);
 		};
+		RangeBorderCollection.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		RangeBorderCollection.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		return RangeBorderCollection;
 	}(OfficeExtension.ClientObject));
@@ -18463,8 +18570,8 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		RangeFont.prototype.toJSON=function () {
-			return _toJson(this, {
+		RangeFont.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeRangeFont, {
 				"bold": this._B,
 				"color": this._C,
 				"italic": this._I,
@@ -18473,8 +18580,11 @@ var Excel;
 				"underline": this._U,
 			}, {});
 		};
+		RangeFont.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		RangeFont.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		RangeFont.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -18594,13 +18704,16 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result, function (childItemData, index) { return new Excel.Chart(_this.context, _createChildItemObjectPathUsingIndexerOrGetItemAt(true, _this.context, _this, childItemData, index)); });
 		};
-		ChartCollection.prototype.toJSON=function () {
-			return _toJson(this, {
+		ChartCollection.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeChartCollection, {
 				"count": this._C,
 			}, {}, this.m__items);
 		};
+		ChartCollection.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ChartCollection.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		return ChartCollection;
 	}(OfficeExtension.ClientObject));
@@ -18863,8 +18976,8 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		Chart.prototype.toJSON=function () {
-			return _toJson(this, {
+		Chart.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeChart, {
 				"height": this._H,
 				"left": this._L,
 				"name": this._N,
@@ -18879,8 +18992,11 @@ var Excel;
 				"title": this._T,
 			});
 		};
+		Chart.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		Chart.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		Chart.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -18955,13 +19071,16 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		ChartAreaFormat.prototype.toJSON=function () {
-			return _toJson(this, {}, {
+		ChartAreaFormat.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeChartAreaFormat, {}, {
 				"font": this._Fo,
 			});
 		};
+		ChartAreaFormat.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ChartAreaFormat.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		ChartAreaFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -19055,13 +19174,16 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result, function (childItemData, index) { return new Excel.ChartSeries(_this.context, _createChildItemObjectPathUsingIndexerOrGetItemAt(false, _this.context, _this, childItemData, index)); });
 		};
-		ChartSeriesCollection.prototype.toJSON=function () {
-			return _toJson(this, {
+		ChartSeriesCollection.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeChartSeriesCollection, {
 				"count": this._C,
 			}, {}, this.m__items);
 		};
+		ChartSeriesCollection.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ChartSeriesCollection.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		return ChartSeriesCollection;
 	}(OfficeExtension.ClientObject));
@@ -19167,16 +19289,19 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		ChartSeries.prototype.toJSON=function () {
-			return _toJson(this, {
+		ChartSeries.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeChartSeries, {
 				"name": this._N,
 			}, {
 				"format": this._F,
 				"points": this._P,
 			});
 		};
+		ChartSeries.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ChartSeries.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		ChartSeries.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -19251,13 +19376,16 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		ChartSeriesFormat.prototype.toJSON=function () {
-			return _toJson(this, {}, {
+		ChartSeriesFormat.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeChartSeriesFormat, {}, {
 				"line": this._L,
 			});
 		};
+		ChartSeriesFormat.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ChartSeriesFormat.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		ChartSeriesFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -19351,13 +19479,16 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result, function (childItemData, index) { return new Excel.ChartPoint(_this.context, _createChildItemObjectPathUsingIndexerOrGetItemAt(false, _this.context, _this, childItemData, index)); });
 		};
-		ChartPointsCollection.prototype.toJSON=function () {
-			return _toJson(this, {
+		ChartPointsCollection.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeChartPointsCollection, {
 				"count": this._C,
 			}, {}, this.m__items);
 		};
+		ChartPointsCollection.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ChartPointsCollection.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		return ChartPointsCollection;
 	}(OfficeExtension.ClientObject));
@@ -19429,15 +19560,18 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		ChartPoint.prototype.toJSON=function () {
-			return _toJson(this, {
+		ChartPoint.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeChartPoint, {
 				"value": this._V,
 			}, {
 				"format": this._F,
 			});
 		};
+		ChartPoint.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ChartPoint.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		ChartPoint.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -19488,11 +19622,14 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
+		ChartPointFormat.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeChartPointFormat, {}, {});
+		};
 		ChartPointFormat.prototype.toJSON=function () {
-			return _toJson(this, {}, {});
+			return this.toJsonOrClone("toJSON");
 		};
 		ChartPointFormat.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		return ChartPointFormat;
 	}(OfficeExtension.ClientObject));
@@ -19577,15 +19714,18 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		ChartAxes.prototype.toJSON=function () {
-			return _toJson(this, {}, {
+		ChartAxes.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeChartAxes, {}, {
 				"categoryAxis": this._C,
 				"seriesAxis": this._S,
 				"valueAxis": this._V,
 			});
 		};
+		ChartAxes.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ChartAxes.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		ChartAxes.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -19770,8 +19910,8 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		ChartAxis.prototype.toJSON=function () {
-			return _toJson(this, {
+		ChartAxis.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeChartAxis, {
 				"majorUnit": this._Ma,
 				"maximum": this._Max,
 				"minimum": this._Mi,
@@ -19783,8 +19923,11 @@ var Excel;
 				"title": this._T,
 			});
 		};
+		ChartAxis.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ChartAxis.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		ChartAxis.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -19860,14 +20003,17 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		ChartAxisFormat.prototype.toJSON=function () {
-			return _toJson(this, {}, {
+		ChartAxisFormat.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeChartAxisFormat, {}, {
 				"font": this._F,
 				"line": this._L,
 			});
 		};
+		ChartAxisFormat.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ChartAxisFormat.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		ChartAxisFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -19979,16 +20125,19 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		ChartAxisTitle.prototype.toJSON=function () {
-			return _toJson(this, {
+		ChartAxisTitle.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeChartAxisTitle, {
 				"text": this._T,
 				"visible": this._V,
 			}, {
 				"format": this._F,
 			});
 		};
+		ChartAxisTitle.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ChartAxisTitle.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		ChartAxisTitle.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -20051,13 +20200,16 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		ChartAxisTitleFormat.prototype.toJSON=function () {
-			return _toJson(this, {}, {
+		ChartAxisTitleFormat.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeChartAxisTitleFormat, {}, {
 				"font": this._F,
 			});
 		};
+		ChartAxisTitleFormat.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ChartAxisTitleFormat.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		ChartAxisTitleFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -20271,8 +20423,8 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		ChartDataLabels.prototype.toJSON=function () {
-			return _toJson(this, {
+		ChartDataLabels.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeChartDataLabels, {
 				"position": this._P,
 				"separator": this._S,
 				"showBubbleSize": this._Sh,
@@ -20285,8 +20437,11 @@ var Excel;
 				"format": this._F,
 			});
 		};
+		ChartDataLabels.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ChartDataLabels.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		ChartDataLabels.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -20361,13 +20516,16 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		ChartDataLabelFormat.prototype.toJSON=function () {
-			return _toJson(this, {}, {
+		ChartDataLabelFormat.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeChartDataLabelFormat, {}, {
 				"font": this._Fo,
 			});
 		};
+		ChartDataLabelFormat.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ChartDataLabelFormat.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		ChartDataLabelFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -20462,15 +20620,18 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		ChartGridlines.prototype.toJSON=function () {
-			return _toJson(this, {
+		ChartGridlines.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeChartGridlines, {
 				"visible": this._V,
 			}, {
 				"format": this._F,
 			});
 		};
+		ChartGridlines.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ChartGridlines.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		ChartGridlines.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -20533,13 +20694,16 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		ChartGridlinesFormat.prototype.toJSON=function () {
-			return _toJson(this, {}, {
+		ChartGridlinesFormat.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeChartGridlinesFormat, {}, {
 				"line": this._L,
 			});
 		};
+		ChartGridlinesFormat.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ChartGridlinesFormat.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		ChartGridlinesFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -20668,8 +20832,8 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		ChartLegend.prototype.toJSON=function () {
-			return _toJson(this, {
+		ChartLegend.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeChartLegend, {
 				"overlay": this._O,
 				"position": this._P,
 				"visible": this._V,
@@ -20677,8 +20841,11 @@ var Excel;
 				"format": this._F,
 			});
 		};
+		ChartLegend.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ChartLegend.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		ChartLegend.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -20753,13 +20920,16 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		ChartLegendFormat.prototype.toJSON=function () {
-			return _toJson(this, {}, {
+		ChartLegendFormat.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeChartLegendFormat, {}, {
 				"font": this._Fo,
 			});
 		};
+		ChartLegendFormat.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ChartLegendFormat.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		ChartLegendFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -20888,8 +21058,8 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		ChartTitle.prototype.toJSON=function () {
-			return _toJson(this, {
+		ChartTitle.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeChartTitle, {
 				"overlay": this._O,
 				"text": this._T,
 				"visible": this._V,
@@ -20897,8 +21067,11 @@ var Excel;
 				"format": this._F,
 			});
 		};
+		ChartTitle.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ChartTitle.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		ChartTitle.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -20973,13 +21146,16 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		ChartTitleFormat.prototype.toJSON=function () {
-			return _toJson(this, {}, {
+		ChartTitleFormat.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeChartTitleFormat, {}, {
 				"font": this._Fo,
 			});
 		};
+		ChartTitleFormat.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ChartTitleFormat.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		ChartTitleFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -21023,11 +21199,14 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
+		ChartFill.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeChartFill, {}, {});
+		};
 		ChartFill.prototype.toJSON=function () {
-			return _toJson(this, {}, {});
+			return this.toJsonOrClone("toJSON");
 		};
 		ChartFill.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		return ChartFill;
 	}(OfficeExtension.ClientObject));
@@ -21101,13 +21280,16 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		ChartLineFormat.prototype.toJSON=function () {
-			return _toJson(this, {
+		ChartLineFormat.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeChartLineFormat, {
 				"color": this._C,
 			}, {});
 		};
+		ChartLineFormat.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ChartLineFormat.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		ChartLineFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -21266,8 +21448,8 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		ChartFont.prototype.toJSON=function () {
-			return _toJson(this, {
+		ChartFont.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeChartFont, {
 				"bold": this._B,
 				"color": this._C,
 				"italic": this._I,
@@ -21276,8 +21458,11 @@ var Excel;
 				"underline": this._U,
 			}, {});
 		};
+		ChartFont.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ChartFont.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		ChartFont.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -21314,11 +21499,14 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
+		RangeSort.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeRangeSort, {}, {});
+		};
 		RangeSort.prototype.toJSON=function () {
-			return _toJson(this, {}, {});
+			return this.toJsonOrClone("toJSON");
 		};
 		RangeSort.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		return RangeSort;
 	}(OfficeExtension.ClientObject));
@@ -21408,15 +21596,18 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		TableSort.prototype.toJSON=function () {
-			return _toJson(this, {
+		TableSort.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeTableSort, {
 				"fields": this._F,
 				"matchCase": this._M,
 				"method": this._Me,
 			}, {});
 		};
+		TableSort.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		TableSort.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		TableSort.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -21522,13 +21713,16 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		Filter.prototype.toJSON=function () {
-			return _toJson(this, {
+		Filter.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeFilter, {
 				"criteria": this._C,
 			}, {});
 		};
+		Filter.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		Filter.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		Filter.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -21611,11 +21805,14 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result, function (childItemData, index) { return new Excel.CustomXmlPart(_this.context, _createChildItemObjectPathUsingIndexerOrGetItemAt(true, _this.context, _this, childItemData, index)); });
 		};
+		CustomXmlPartScopedCollection.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeCustomXmlPartScopedCollection, {}, {}, this.m__items);
+		};
 		CustomXmlPartScopedCollection.prototype.toJSON=function () {
-			return _toJson(this, {}, {}, this.m__items);
+			return this.toJsonOrClone("toJSON");
 		};
 		CustomXmlPartScopedCollection.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		return CustomXmlPartScopedCollection;
 	}(OfficeExtension.ClientObject));
@@ -21694,11 +21891,14 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result, function (childItemData, index) { return new Excel.CustomXmlPart(_this.context, _createChildItemObjectPathUsingIndexerOrGetItemAt(true, _this.context, _this, childItemData, index)); });
 		};
+		CustomXmlPartCollection.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeCustomXmlPartCollection, {}, {}, this.m__items);
+		};
 		CustomXmlPartCollection.prototype.toJSON=function () {
-			return _toJson(this, {}, {}, this.m__items);
+			return this.toJsonOrClone("toJSON");
 		};
 		CustomXmlPartCollection.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		return CustomXmlPartCollection;
 	}(OfficeExtension.ClientObject));
@@ -21787,14 +21987,17 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		CustomXmlPart.prototype.toJSON=function () {
-			return _toJson(this, {
+		CustomXmlPart.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeCustomXmlPart, {
 				"id": this._I,
 				"namespaceUri": this._N,
 			}, {});
 		};
+		CustomXmlPart.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		CustomXmlPart.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		CustomXmlPart.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -21936,11 +22139,14 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
+		_V1Api.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _type_V1Api, {}, {});
+		};
 		_V1Api.prototype.toJSON=function () {
-			return _toJson(this, {}, {});
+			return this.toJsonOrClone("toJSON");
 		};
 		_V1Api.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		return _V1Api;
 	}(OfficeExtension.ClientObject));
@@ -22019,11 +22225,14 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result, function (childItemData, index) { return new Excel.PivotTable(_this.context, _createChildItemObjectPathUsingIndexerOrGetItemAt(true, _this.context, _this, childItemData, index)); });
 		};
+		PivotTableCollection.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typePivotTableCollection, {}, {}, this.m__items);
+		};
 		PivotTableCollection.prototype.toJSON=function () {
-			return _toJson(this, {}, {}, this.m__items);
+			return this.toJsonOrClone("toJSON");
 		};
 		PivotTableCollection.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		return PivotTableCollection;
 	}(OfficeExtension.ClientObject));
@@ -22142,14 +22351,17 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		PivotTable.prototype.toJSON=function () {
-			return _toJson(this, {
+		PivotTable.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typePivotTable, {
 				"id": this._I,
 				"name": this._N,
 			}, {});
 		};
+		PivotTable.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		PivotTable.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		PivotTable.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -22233,11 +22445,14 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result, function (childItemData, index) { return new Excel.ConditionalFormat(_this.context, _createChildItemObjectPathUsingIndexerOrGetItemAt(true, _this.context, _this, childItemData, index)); });
 		};
+		ConditionalFormatCollection.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeConditionalFormatCollection, {}, {}, this.m__items);
+		};
 		ConditionalFormatCollection.prototype.toJSON=function () {
-			return _toJson(this, {}, {}, this.m__items);
+			return this.toJsonOrClone("toJSON");
 		};
 		ConditionalFormatCollection.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		return ConditionalFormatCollection;
 	}(OfficeExtension.ClientObject));
@@ -22583,8 +22798,8 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		ConditionalFormat.prototype.toJSON=function () {
-			return _toJson(this, {
+		ConditionalFormat.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeConditionalFormat, {
 				"id": this._Id0,
 				"priority": this._Pri,
 				"stopIfTrue": this._S,
@@ -22608,8 +22823,11 @@ var Excel;
 				"topBottomOrNullObject": this._Top,
 			});
 		};
+		ConditionalFormat.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ConditionalFormat.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		ConditionalFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -22802,8 +23020,8 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		DataBarConditionalFormat.prototype.toJSON=function () {
-			return _toJson(this, {
+		DataBarConditionalFormat.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeDataBarConditionalFormat, {
 				"axisColor": this._A,
 				"axisFormat": this._Ax,
 				"barDirection": this._B,
@@ -22815,8 +23033,11 @@ var Excel;
 				"positiveFormat": this._P,
 			});
 		};
+		DataBarConditionalFormat.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		DataBarConditionalFormat.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		DataBarConditionalFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -22924,15 +23145,18 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		ConditionalDataBarPositiveFormat.prototype.toJSON=function () {
-			return _toJson(this, {
+		ConditionalDataBarPositiveFormat.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeConditionalDataBarPositiveFormat, {
 				"borderColor": this._B,
 				"fillColor": this._F,
 				"gradientFill": this._G,
 			}, {});
 		};
+		ConditionalDataBarPositiveFormat.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ConditionalDataBarPositiveFormat.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		ConditionalDataBarPositiveFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -23057,16 +23281,19 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		ConditionalDataBarNegativeFormat.prototype.toJSON=function () {
-			return _toJson(this, {
+		ConditionalDataBarNegativeFormat.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeConditionalDataBarNegativeFormat, {
 				"borderColor": this._B,
 				"fillColor": this._F,
 				"matchPositiveBorderColor": this._M,
 				"matchPositiveFillColor": this._Ma,
 			}, {});
 		};
+		ConditionalDataBarNegativeFormat.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ConditionalDataBarNegativeFormat.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		ConditionalDataBarNegativeFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -23142,14 +23369,17 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		CustomConditionalFormat.prototype.toJSON=function () {
-			return _toJson(this, {}, {
+		CustomConditionalFormat.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeCustomConditionalFormat, {}, {
 				"format": this._F,
 				"rule": this._R,
 			});
 		};
+		CustomConditionalFormat.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		CustomConditionalFormat.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		CustomConditionalFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -23257,15 +23487,18 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		ConditionalFormatRule.prototype.toJSON=function () {
-			return _toJson(this, {
+		ConditionalFormatRule.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeConditionalFormatRule, {
 				"formula": this._F,
 				"formulaLocal": this._Fo,
 				"formulaR1C1": this._For,
 			}, {});
 		};
+		ConditionalFormatRule.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ConditionalFormatRule.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		ConditionalFormatRule.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -23390,16 +23623,19 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		IconSetConditionalFormat.prototype.toJSON=function () {
-			return _toJson(this, {
+		IconSetConditionalFormat.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeIconSetConditionalFormat, {
 				"criteria": this._C,
 				"reverseIconOrder": this._R,
 				"showIconOnly": this._S,
 				"style": this._St,
 			}, {});
 		};
+		IconSetConditionalFormat.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		IconSetConditionalFormat.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		IconSetConditionalFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -23485,14 +23721,17 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		ColorScaleConditionalFormat.prototype.toJSON=function () {
-			return _toJson(this, {
+		ColorScaleConditionalFormat.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeColorScaleConditionalFormat, {
 				"criteria": this._C,
 				"threeColorScale": this._T,
 			}, {});
 		};
+		ColorScaleConditionalFormat.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ColorScaleConditionalFormat.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		ColorScaleConditionalFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -23587,15 +23826,18 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		TopBottomConditionalFormat.prototype.toJSON=function () {
-			return _toJson(this, {
+		TopBottomConditionalFormat.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeTopBottomConditionalFormat, {
 				"rule": this._R,
 			}, {
 				"format": this._F,
 			});
 		};
+		TopBottomConditionalFormat.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		TopBottomConditionalFormat.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		TopBottomConditionalFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -23690,15 +23932,18 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		PresetCriteriaConditionalFormat.prototype.toJSON=function () {
-			return _toJson(this, {
+		PresetCriteriaConditionalFormat.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typePresetCriteriaConditionalFormat, {
 				"rule": this._R,
 			}, {
 				"format": this._F,
 			});
 		};
+		PresetCriteriaConditionalFormat.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		PresetCriteriaConditionalFormat.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		PresetCriteriaConditionalFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -23793,15 +24038,18 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		TextConditionalFormat.prototype.toJSON=function () {
-			return _toJson(this, {
+		TextConditionalFormat.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeTextConditionalFormat, {
 				"rule": this._R,
 			}, {
 				"format": this._F,
 			});
 		};
+		TextConditionalFormat.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		TextConditionalFormat.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		TextConditionalFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -23896,15 +24144,18 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		CellValueConditionalFormat.prototype.toJSON=function () {
-			return _toJson(this, {
+		CellValueConditionalFormat.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeCellValueConditionalFormat, {
 				"rule": this._R,
 			}, {
 				"format": this._F,
 			});
 		};
+		CellValueConditionalFormat.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		CellValueConditionalFormat.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		CellValueConditionalFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -24027,8 +24278,8 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		ConditionalRangeFormat.prototype.toJSON=function () {
-			return _toJson(this, {
+		ConditionalRangeFormat.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeConditionalRangeFormat, {
 				"numberFormat": this._N,
 			}, {
 				"borders": this._B,
@@ -24036,8 +24287,11 @@ var Excel;
 				"font": this._Fo,
 			});
 		};
+		ConditionalRangeFormat.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ConditionalRangeFormat.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		ConditionalRangeFormat.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -24183,8 +24437,8 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		ConditionalRangeFont.prototype.toJSON=function () {
-			return _toJson(this, {
+		ConditionalRangeFont.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeConditionalRangeFont, {
 				"bold": this._B,
 				"color": this._C,
 				"italic": this._I,
@@ -24192,8 +24446,11 @@ var Excel;
 				"underline": this._U,
 			}, {});
 		};
+		ConditionalRangeFont.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ConditionalRangeFont.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		ConditionalRangeFont.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -24271,13 +24528,16 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		ConditionalRangeFill.prototype.toJSON=function () {
-			return _toJson(this, {
+		ConditionalRangeFill.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeConditionalRangeFill, {
 				"color": this._C,
 			}, {});
 		};
+		ConditionalRangeFill.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ConditionalRangeFill.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		ConditionalRangeFill.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -24380,15 +24640,18 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		ConditionalRangeBorder.prototype.toJSON=function () {
-			return _toJson(this, {
+		ConditionalRangeBorder.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeConditionalRangeBorder, {
 				"color": this._C,
 				"sideIndex": this._S,
 				"style": this._St,
 			}, {});
 		};
+		ConditionalRangeBorder.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ConditionalRangeBorder.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		ConditionalRangeBorder.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -24538,8 +24801,8 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result, function (childItemData, index) { return new Excel.ConditionalRangeBorder(_this.context, _createChildItemObjectPathUsingIndexerOrGetItemAt(true, _this.context, _this, childItemData, index)); });
 		};
-		ConditionalRangeBorderCollection.prototype.toJSON=function () {
-			return _toJson(this, {
+		ConditionalRangeBorderCollection.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeConditionalRangeBorderCollection, {
 				"count": this._C,
 			}, {
 				"bottom": this._B,
@@ -24548,8 +24811,11 @@ var Excel;
 				"top": this._T,
 			}, this.m__items);
 		};
+		ConditionalRangeBorderCollection.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		ConditionalRangeBorderCollection.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		return ConditionalRangeBorderCollection;
 	}(OfficeExtension.ClientObject));
@@ -24584,11 +24850,14 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
+		InternalTest.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeInternalTest, {}, {});
+		};
 		InternalTest.prototype.toJSON=function () {
-			return _toJson(this, {}, {});
+			return this.toJsonOrClone("toJSON");
 		};
 		InternalTest.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		return InternalTest;
 	}(OfficeExtension.ClientObject));
@@ -25151,14 +25420,17 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
-		FunctionResult.prototype.toJSON=function () {
-			return _toJson(this, {
+		FunctionResult.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeFunctionResult, {
 				"error": this._E,
 				"value": this._V,
 			}, {});
 		};
+		FunctionResult.prototype.toJSON=function () {
+			return this.toJsonOrClone("toJSON");
+		};
 		FunctionResult.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		FunctionResult.prototype.ensureUnchanged=function (data) {
 			_createEnsureUnchangedAction(this.context, this, data);
@@ -26457,11 +26729,14 @@ var Excel;
 			_super.prototype._handleRetrieveResult.call(this, value, result);
 			_processRetrieveResult(this, value, result);
 		};
+		Functions.prototype.toJsonOrClone=function (method) {
+			return _toJsonOrClone(method, this, _typeFunctions, {}, {});
+		};
 		Functions.prototype.toJSON=function () {
-			return _toJson(this, {}, {});
+			return this.toJsonOrClone("toJSON");
 		};
 		Functions.prototype.cloneLoadedData=function () {
-			return JSON.parse(JSON.stringify(this.toJSON()));
+			return this.toJsonOrClone("cloneLoadedData");
 		};
 		return Functions;
 	}(OfficeExtension.ClientObject));
