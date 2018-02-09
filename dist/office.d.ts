@@ -4016,16 +4016,13 @@ declare namespace Excel {
         /**
          * The display name of the worksheet.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setName(<your data>);
+         * `object.setName( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            name: <your data>,
-         *            ...
-         *        });
+         * `object.set({ name: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -4047,16 +4044,13 @@ declare namespace Excel {
         /**
          * The zero-based position of the worksheet within the workbook.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setPosition(<your data>);
+         * `object.setPosition( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            position: <your data>,
-         *            ...
-         *        });
+         * `object.set({ position: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -4078,16 +4072,13 @@ declare namespace Excel {
         /**
          * The Visibility of the worksheet.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setVisibility(<your data>);
+         * `object.setVisibility( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            visibility: <your data>,
-         *            ...
-         *        });
+         * `object.set({ visibility: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1 for reading visibility; 1.2 for setting it.]
          */
@@ -4582,16 +4573,13 @@ declare namespace Excel {
         /**
          * Represents if all columns of the current range are hidden.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setColumnHidden(<your data>);
+         * `object.setColumnHidden( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            columnHidden: <your data>,
-         *            ...
-         *        });
+         * `object.set({ columnHidden: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.2]
          */
@@ -4621,16 +4609,13 @@ declare namespace Excel {
         /**
          * Represents the formula in A1-style notation.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setFormulas(<your data>);
+         * `object.setFormulas( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            formulas: <your data>,
-         *            ...
-         *        });
+         * `object.set({ formulas: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -4652,16 +4637,13 @@ declare namespace Excel {
         /**
          * Represents the formula in A1-style notation, in the user's language and number-formatting locale.  For example, the English "=SUM(A1, 1.5)" formula would become "=SUMME(A1; 1,5)" in German.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setFormulasLocal(<your data>);
+         * `object.setFormulasLocal( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            formulasLocal: <your data>,
-         *            ...
-         *        });
+         * `object.set({ formulasLocal: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -4683,16 +4665,13 @@ declare namespace Excel {
         /**
          * Represents the formula in R1C1-style notation.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setFormulasR1C1(<your data>);
+         * `object.setFormulasR1C1( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            formulasR1C1: <your data>,
-         *            ...
-         *        });
+         * `object.set({ formulasR1C1: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.2]
          */
@@ -4722,16 +4701,13 @@ declare namespace Excel {
         /**
          * Represents Excel's number format code for the given cell.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setNumberFormat(<your data>);
+         * `object.setNumberFormat( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            numberFormat: <your data>,
-         *            ...
-         *        });
+         * `object.set({ numberFormat: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -4761,16 +4737,13 @@ declare namespace Excel {
         /**
          * Represents if all rows of the current range are hidden.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setRowHidden(<your data>);
+         * `object.setRowHidden( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            rowHidden: <your data>,
-         *            ...
-         *        });
+         * `object.set({ rowHidden: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.2]
          */
@@ -4816,16 +4789,13 @@ declare namespace Excel {
         /**
          * Represents the raw values of the specified range. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setValues(<your data>);
+         * `object.setValues( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            values: <your data>,
-         *            ...
-         *        });
+         * `object.set({ values: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -5216,16 +5186,13 @@ declare namespace Excel {
         /**
          * Represents the formula in A1-style notation.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setFormulas(<your data>);
+         * `object.setFormulas( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            formulas: <your data>,
-         *            ...
-         *        });
+         * `object.set({ formulas: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.3]
          */
@@ -5247,16 +5214,13 @@ declare namespace Excel {
         /**
          * Represents the formula in A1-style notation, in the user's language and number-formatting locale.  For example, the English "=SUM(A1, 1.5)" formula would become "=SUMME(A1; 1,5)" in German.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setFormulasLocal(<your data>);
+         * `object.setFormulasLocal( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            formulasLocal: <your data>,
-         *            ...
-         *        });
+         * `object.set({ formulasLocal: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.3]
          */
@@ -5278,16 +5242,13 @@ declare namespace Excel {
         /**
          * Represents the formula in R1C1-style notation.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setFormulasR1C1(<your data>);
+         * `object.setFormulasR1C1( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            formulasR1C1: <your data>,
-         *            ...
-         *        });
+         * `object.set({ formulasR1C1: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.3]
          */
@@ -5317,16 +5278,13 @@ declare namespace Excel {
         /**
          * Represents Excel's number format code for the given cell.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setNumberFormat(<your data>);
+         * `object.setNumberFormat( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            numberFormat: <your data>,
-         *            ...
-         *        });
+         * `object.set({ numberFormat: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.3]
          */
@@ -5372,16 +5330,13 @@ declare namespace Excel {
         /**
          * Represents the raw values of the specified range view. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setValues(<your data>);
+         * `object.setValues( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            values: <your data>,
-         *            ...
-         *        });
+         * `object.set({ values: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.3]
          */
@@ -5622,16 +5577,13 @@ declare namespace Excel {
         /**
          * Represents the value stored for this setting.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setValue(<your data>);
+         * `object.setValue( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            value: <your data>,
-         *            ...
-         *        });
+         * `object.set({ value: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.4]
          */
@@ -5827,16 +5779,13 @@ declare namespace Excel {
         /**
          * Represents the comment associated with this name.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setComment(<your data>);
+         * `object.setComment( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            comment: <your data>,
-         *            ...
-         *        });
+         * `object.set({ comment: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.4]
          */
@@ -5890,16 +5839,13 @@ declare namespace Excel {
         /**
          * Specifies whether the object is visible or not.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setVisible(<your data>);
+         * `object.setVisible( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            visible: <your data>,
-         *            ...
-         *        });
+         * `object.set({ visible: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -6376,16 +6322,13 @@ declare namespace Excel {
         /**
          * Indicates whether the first column contains special formatting.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setHighlightFirstColumn(<your data>);
+         * `object.setHighlightFirstColumn( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            highlightFirstColumn: <your data>,
-         *            ...
-         *        });
+         * `object.set({ highlightFirstColumn: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.3]
          */
@@ -6407,16 +6350,13 @@ declare namespace Excel {
         /**
          * Indicates whether the last column contains special formatting.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setHighlightLastColumn(<your data>);
+         * `object.setHighlightLastColumn( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            highlightLastColumn: <your data>,
-         *            ...
-         *        });
+         * `object.set({ highlightLastColumn: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.3]
          */
@@ -6446,16 +6386,13 @@ declare namespace Excel {
         /**
          * Name of the table.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setName(<your data>);
+         * `object.setName( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            name: <your data>,
-         *            ...
-         *        });
+         * `object.set({ name: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -6477,16 +6414,13 @@ declare namespace Excel {
         /**
          * Indicates whether the columns show banded formatting in which odd columns are highlighted differently from even ones to make reading the table easier.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setShowBandedColumns(<your data>);
+         * `object.setShowBandedColumns( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            showBandedColumns: <your data>,
-         *            ...
-         *        });
+         * `object.set({ showBandedColumns: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.3]
          */
@@ -6508,16 +6442,13 @@ declare namespace Excel {
         /**
          * Indicates whether the rows show banded formatting in which odd rows are highlighted differently from even ones to make reading the table easier.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setShowBandedRows(<your data>);
+         * `object.setShowBandedRows( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            showBandedRows: <your data>,
-         *            ...
-         *        });
+         * `object.set({ showBandedRows: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.3]
          */
@@ -6539,16 +6470,13 @@ declare namespace Excel {
         /**
          * Indicates whether the filter buttons are visible at the top of each column header. Setting this is only allowed if the table contains a header row.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setShowFilterButton(<your data>);
+         * `object.setShowFilterButton( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            showFilterButton: <your data>,
-         *            ...
-         *        });
+         * `object.set({ showFilterButton: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.3]
          */
@@ -6570,16 +6498,13 @@ declare namespace Excel {
         /**
          * Indicates whether the header row is visible or not. This value can be set to show or remove the header row.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setShowHeaders(<your data>);
+         * `object.setShowHeaders( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            showHeaders: <your data>,
-         *            ...
-         *        });
+         * `object.set({ showHeaders: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -6601,16 +6526,13 @@ declare namespace Excel {
         /**
          * Indicates whether the total row is visible or not. This value can be set to show or remove the total row.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setShowTotals(<your data>);
+         * `object.setShowTotals( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            showTotals: <your data>,
-         *            ...
-         *        });
+         * `object.set({ showTotals: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -6632,16 +6554,13 @@ declare namespace Excel {
         /**
          * Constant value that represents the Table style. Possible values are: TableStyleLight1 thru TableStyleLight21, TableStyleMedium1 thru TableStyleMedium28, TableStyleStyleDark1 thru TableStyleStyleDark11. A custom user-defined style present in the workbook can also be specified.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setStyle(<your data>);
+         * `object.setStyle( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            style: <your data>,
-         *            ...
-         *        });
+         * `object.set({ style: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -6902,16 +6821,13 @@ declare namespace Excel {
         /**
          * Represents the name of the table column.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setName(<your data>);
+         * `object.setName( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            name: <your data>,
-         *            ...
-         *        });
+         * `object.set({ name: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1 for getting the name; 1.4 for setting it.]
          */
@@ -6933,16 +6849,13 @@ declare namespace Excel {
         /**
          * Represents the raw values of the specified range. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setValues(<your data>);
+         * `object.setValues( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            values: <your data>,
-         *            ...
-         *        });
+         * `object.set({ values: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -7163,16 +7076,13 @@ declare namespace Excel {
         /**
          * Represents the raw values of the specified range. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setValues(<your data>);
+         * `object.setValues( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            values: <your data>,
-         *            ...
-         *        });
+         * `object.set({ values: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -7299,16 +7209,13 @@ declare namespace Excel {
         /**
          * Gets or sets the width of all colums within the range. If the column widths are not uniform, null will be returned.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setColumnWidth(<your data>);
+         * `object.setColumnWidth( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            columnWidth: <your data>,
-         *            ...
-         *        });
+         * `object.set({ columnWidth: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.2]
          */
@@ -7330,16 +7237,13 @@ declare namespace Excel {
         /**
          * Represents the horizontal alignment for the specified object. See Excel.HorizontalAlignment for details.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setHorizontalAlignment(<your data>);
+         * `object.setHorizontalAlignment( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            horizontalAlignment: <your data>,
-         *            ...
-         *        });
+         * `object.set({ horizontalAlignment: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -7361,16 +7265,13 @@ declare namespace Excel {
         /**
          * Gets or sets the height of all rows in the range. If the row heights are not uniform null will be returned.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setRowHeight(<your data>);
+         * `object.setRowHeight( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            rowHeight: <your data>,
-         *            ...
-         *        });
+         * `object.set({ rowHeight: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.2]
          */
@@ -7392,16 +7293,13 @@ declare namespace Excel {
         /**
          * Represents the vertical alignment for the specified object. See Excel.VerticalAlignment for details.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setVerticalAlignment(<your data>);
+         * `object.setVerticalAlignment( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            verticalAlignment: <your data>,
-         *            ...
-         *        });
+         * `object.set({ verticalAlignment: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -7423,16 +7321,13 @@ declare namespace Excel {
         /**
          * Indicates if Excel wraps the text in the object. A null value indicates that the entire range doesn't have uniform wrap setting
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setWrapText(<your data>);
+         * `object.setWrapText( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            wrapText: <your data>,
-         *            ...
-         *        });
+         * `object.set({ wrapText: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -7529,16 +7424,13 @@ declare namespace Excel {
         /**
          * Indicates if Excel hides the formula for the cells in the range. A null value indicates that the entire range doesn't have uniform formula hidden setting.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setFormulaHidden(<your data>);
+         * `object.setFormulaHidden( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            formulaHidden: <your data>,
-         *            ...
-         *        });
+         * `object.set({ formulaHidden: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.2]
          */
@@ -7560,16 +7452,13 @@ declare namespace Excel {
         /**
          * Indicates if Excel locks the cells in the object. A null value indicates that the entire range doesn't have uniform lock setting.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setLocked(<your data>);
+         * `object.setLocked( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            locked: <your data>,
-         *            ...
-         *        });
+         * `object.set({ locked: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.2]
          */
@@ -7648,16 +7537,13 @@ declare namespace Excel {
         /**
          * HTML color code representing the color of the border line, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange")
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setColor(<your data>);
+         * `object.setColor( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            color: <your data>,
-         *            ...
-         *        });
+         * `object.set({ color: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -7745,16 +7631,13 @@ declare namespace Excel {
         /**
          * HTML color code representing the color of the border line, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setColor(<your data>);
+         * `object.setColor( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            color: <your data>,
-         *            ...
-         *        });
+         * `object.set({ color: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -7784,16 +7667,13 @@ declare namespace Excel {
         /**
          * One of the constants of line style specifying the line style for the border. See Excel.BorderLineStyle for details.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setStyle(<your data>);
+         * `object.setStyle( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            style: <your data>,
-         *            ...
-         *        });
+         * `object.set({ style: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -7815,16 +7695,13 @@ declare namespace Excel {
         /**
          * Specifies the weight of the border around a range. See Excel.BorderWeight for details.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setWeight(<your data>);
+         * `object.setWeight( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            weight: <your data>,
-         *            ...
-         *        });
+         * `object.set({ weight: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -7981,16 +7858,13 @@ declare namespace Excel {
         /**
          * Represents the bold status of font.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setBold(<your data>);
+         * `object.setBold( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            bold: <your data>,
-         *            ...
-         *        });
+         * `object.set({ bold: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -8012,16 +7886,13 @@ declare namespace Excel {
         /**
          * HTML color code representation of the text color. E.g. #FF0000 represents Red.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setColor(<your data>);
+         * `object.setColor( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            color: <your data>,
-         *            ...
-         *        });
+         * `object.set({ color: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -8043,16 +7914,13 @@ declare namespace Excel {
         /**
          * Represents the italic status of the font.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setItalic(<your data>);
+         * `object.setItalic( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            italic: <your data>,
-         *            ...
-         *        });
+         * `object.set({ italic: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -8074,16 +7942,13 @@ declare namespace Excel {
         /**
          * Font name (e.g. "Calibri")
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setName(<your data>);
+         * `object.setName( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            name: <your data>,
-         *            ...
-         *        });
+         * `object.set({ name: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -8105,16 +7970,13 @@ declare namespace Excel {
         /**
          * Font size.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setSize(<your data>);
+         * `object.setSize( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            size: <your data>,
-         *            ...
-         *        });
+         * `object.set({ size: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -8136,16 +7998,13 @@ declare namespace Excel {
         /**
          * Type of underline applied to the font. See Excel.RangeUnderlineStyle for details.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setUnderline(<your data>);
+         * `object.setUnderline( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            underline: <your data>,
-         *            ...
-         *        });
+         * `object.set({ underline: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -8388,16 +8247,13 @@ declare namespace Excel {
         /**
          * Represents the height, in points, of the chart object.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setHeight(<your data>);
+         * `object.setHeight( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            height: <your data>,
-         *            ...
-         *        });
+         * `object.set({ height: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -8419,16 +8275,13 @@ declare namespace Excel {
         /**
          * The distance, in points, from the left side of the chart to the worksheet origin.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setLeft(<your data>);
+         * `object.setLeft( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            left: <your data>,
-         *            ...
-         *        });
+         * `object.set({ left: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -8450,16 +8303,13 @@ declare namespace Excel {
         /**
          * Represents the name of a chart object.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setName(<your data>);
+         * `object.setName( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            name: <your data>,
-         *            ...
-         *        });
+         * `object.set({ name: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -8481,16 +8331,13 @@ declare namespace Excel {
         /**
          * Represents the distance, in points, from the top edge of the object to the top of row 1 (on a worksheet) or the top of the chart area (on a chart).
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setTop(<your data>);
+         * `object.setTop( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            top: <your data>,
-         *            ...
-         *        });
+         * `object.set({ top: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -8512,16 +8359,13 @@ declare namespace Excel {
         /**
          * Represents the width, in points, of the chart object.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setWidth(<your data>);
+         * `object.setWidth( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            width: <your data>,
-         *            ...
-         *        });
+         * `object.set({ width: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -8821,16 +8665,13 @@ declare namespace Excel {
         /**
          * Represents the name of a series in a chart.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setName(<your data>);
+         * `object.setName( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            name: <your data>,
-         *            ...
-         *        });
+         * `object.set({ name: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -9233,16 +9074,13 @@ declare namespace Excel {
         /**
          * Represents the interval between two major tick marks. Can be set to a numeric value or an empty string.  The returned value is always a number.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setMajorUnit(<your data>);
+         * `object.setMajorUnit( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            majorUnit: <your data>,
-         *            ...
-         *        });
+         * `object.set({ majorUnit: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -9264,16 +9102,13 @@ declare namespace Excel {
         /**
          * Represents the maximum value on the value axis.  Can be set to a numeric value or an empty string (for automatic axis values).  The returned value is always a number.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setMaximum(<your data>);
+         * `object.setMaximum( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            maximum: <your data>,
-         *            ...
-         *        });
+         * `object.set({ maximum: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -9295,16 +9130,13 @@ declare namespace Excel {
         /**
          * Represents the minimum value on the value axis. Can be set to a numeric value or an empty string (for automatic axis values).  The returned value is always a number.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setMinimum(<your data>);
+         * `object.setMinimum( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            minimum: <your data>,
-         *            ...
-         *        });
+         * `object.set({ minimum: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -9326,16 +9158,13 @@ declare namespace Excel {
         /**
          * Represents the interval between two minor tick marks. "Can be set to a numeric value or an empty string (for automatic axis values). The returned value is always a number.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setMinorUnit(<your data>);
+         * `object.setMinorUnit( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            minorUnit: <your data>,
-         *            ...
-         *        });
+         * `object.set({ minorUnit: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -9491,16 +9320,13 @@ declare namespace Excel {
         /**
          * Represents the axis title.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setText(<your data>);
+         * `object.setText( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            text: <your data>,
-         *            ...
-         *        });
+         * `object.set({ text: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -9522,16 +9348,13 @@ declare namespace Excel {
         /**
          * A boolean that specifies the visibility of an axis title.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setVisible(<your data>);
+         * `object.setVisible( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            visible: <your data>,
-         *            ...
-         *        });
+         * `object.set({ visible: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -9679,16 +9502,13 @@ declare namespace Excel {
         /**
          * DataLabelPosition value that represents the position of the data label. See Excel.ChartDataLabelPosition for details.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setPosition(<your data>);
+         * `object.setPosition( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            position: <your data>,
-         *            ...
-         *        });
+         * `object.set({ position: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -9710,16 +9530,13 @@ declare namespace Excel {
         /**
          * String representing the separator used for the data labels on a chart.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setSeparator(<your data>);
+         * `object.setSeparator( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            separator: <your data>,
-         *            ...
-         *        });
+         * `object.set({ separator: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -9741,16 +9558,13 @@ declare namespace Excel {
         /**
          * Boolean value representing if the data label bubble size is visible or not.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setShowBubbleSize(<your data>);
+         * `object.setShowBubbleSize( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            showBubbleSize: <your data>,
-         *            ...
-         *        });
+         * `object.set({ showBubbleSize: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -9772,16 +9586,13 @@ declare namespace Excel {
         /**
          * Boolean value representing if the data label category name is visible or not.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setShowCategoryName(<your data>);
+         * `object.setShowCategoryName( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            showCategoryName: <your data>,
-         *            ...
-         *        });
+         * `object.set({ showCategoryName: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -9803,16 +9614,13 @@ declare namespace Excel {
         /**
          * Boolean value representing if the data label legend key is visible or not.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setShowLegendKey(<your data>);
+         * `object.setShowLegendKey( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            showLegendKey: <your data>,
-         *            ...
-         *        });
+         * `object.set({ showLegendKey: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -9834,16 +9642,13 @@ declare namespace Excel {
         /**
          * Boolean value representing if the data label percentage is visible or not.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setShowPercentage(<your data>);
+         * `object.setShowPercentage( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            showPercentage: <your data>,
-         *            ...
-         *        });
+         * `object.set({ showPercentage: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -9865,16 +9670,13 @@ declare namespace Excel {
         /**
          * Boolean value representing if the data label series name is visible or not.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setShowSeriesName(<your data>);
+         * `object.setShowSeriesName( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            showSeriesName: <your data>,
-         *            ...
-         *        });
+         * `object.set({ showSeriesName: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -9896,16 +9698,13 @@ declare namespace Excel {
         /**
          * Boolean value representing if the data label value is visible or not.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setShowValue(<your data>);
+         * `object.setShowValue( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            showValue: <your data>,
-         *            ...
-         *        });
+         * `object.set({ showValue: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -10061,16 +9860,13 @@ declare namespace Excel {
         /**
          * Boolean value representing if the axis gridlines are visible or not.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setVisible(<your data>);
+         * `object.setVisible( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            visible: <your data>,
-         *            ...
-         *        });
+         * `object.set({ visible: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -10218,16 +10014,13 @@ declare namespace Excel {
         /**
          * Boolean value for whether the chart legend should overlap with the main body of the chart.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setOverlay(<your data>);
+         * `object.setOverlay( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            overlay: <your data>,
-         *            ...
-         *        });
+         * `object.set({ overlay: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -10249,16 +10042,13 @@ declare namespace Excel {
         /**
          * Represents the position of the legend on the chart. See Excel.ChartLegendPosition for details.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setPosition(<your data>);
+         * `object.setPosition( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            position: <your data>,
-         *            ...
-         *        });
+         * `object.set({ position: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -10280,16 +10070,13 @@ declare namespace Excel {
         /**
          * A boolean value the represents the visibility of a ChartLegend object.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setVisible(<your data>);
+         * `object.setVisible( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            visible: <your data>,
-         *            ...
-         *        });
+         * `object.set({ visible: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -10445,16 +10232,13 @@ declare namespace Excel {
         /**
          * Boolean value representing if the chart title will overlay the chart or not.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setOverlay(<your data>);
+         * `object.setOverlay( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            overlay: <your data>,
-         *            ...
-         *        });
+         * `object.set({ overlay: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -10476,16 +10260,13 @@ declare namespace Excel {
         /**
          * Represents the title text of a chart.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setText(<your data>);
+         * `object.setText( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            text: <your data>,
-         *            ...
-         *        });
+         * `object.set({ text: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -10507,16 +10288,13 @@ declare namespace Excel {
         /**
          * A boolean value the represents the visibility of a chart title object.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setVisible(<your data>);
+         * `object.setVisible( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            visible: <your data>,
-         *            ...
-         *        });
+         * `object.set({ visible: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -10708,16 +10486,13 @@ declare namespace Excel {
         /**
          * HTML color code representing the color of lines in the chart.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setColor(<your data>);
+         * `object.setColor( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            color: <your data>,
-         *            ...
-         *        });
+         * `object.set({ color: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -10805,16 +10580,13 @@ declare namespace Excel {
         /**
          * Represents the bold status of font.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setBold(<your data>);
+         * `object.setBold( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            bold: <your data>,
-         *            ...
-         *        });
+         * `object.set({ bold: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -10836,16 +10608,13 @@ declare namespace Excel {
         /**
          * HTML color code representation of the text color. E.g. #FF0000 represents Red.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setColor(<your data>);
+         * `object.setColor( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            color: <your data>,
-         *            ...
-         *        });
+         * `object.set({ color: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -10867,16 +10636,13 @@ declare namespace Excel {
         /**
          * Represents the italic status of the font.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setItalic(<your data>);
+         * `object.setItalic( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            italic: <your data>,
-         *            ...
-         *        });
+         * `object.set({ italic: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -10898,16 +10664,13 @@ declare namespace Excel {
         /**
          * Font name (e.g. "Calibri")
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setName(<your data>);
+         * `object.setName( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            name: <your data>,
-         *            ...
-         *        });
+         * `object.set({ name: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -10929,16 +10692,13 @@ declare namespace Excel {
         /**
          * Size of the font (e.g. 11)
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setSize(<your data>);
+         * `object.setSize( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            size: <your data>,
-         *            ...
-         *        });
+         * `object.set({ size: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -10960,16 +10720,13 @@ declare namespace Excel {
         /**
          * Type of underline applied to the font. See Excel.ChartUnderlineStyle for details.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setUnderline(<your data>);
+         * `object.setUnderline( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            underline: <your data>,
-         *            ...
-         *        });
+         * `object.set({ underline: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -11900,16 +11657,13 @@ declare namespace Excel {
         /**
          * Name of the PivotTable.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setName(<your data>);
+         * `object.setName( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            name: <your data>,
-         *            ...
-         *        });
+         * `object.set({ name: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.3]
          */
@@ -12239,16 +11993,13 @@ declare namespace Excel {
          * Priorities greater than than bounds will get and set to the maximum (or minimum if negative) priority.
          * Also note that if you change the priority, you have to re-fetch a new copy of the object at that new priority location if you want to make further changes to it.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setPriority(<your data>);
+         * `object.setPriority( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            priority: <your data>,
-         *            ...
-         *        });
+         * `object.set({ priority: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -12275,16 +12026,13 @@ declare namespace Excel {
          * If the conditions of this conditional format are met, no lower-priority formats shall take effect on that cell.
          * Null on databars, icon sets, and colorscales as there's no concept of StopIfTrue for these
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setStopIfTrue(<your data>);
+         * `object.setStopIfTrue( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            stopIfTrue: <your data>,
-         *            ...
-         *        });
+         * `object.set({ stopIfTrue: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -12412,16 +12160,13 @@ declare namespace Excel {
          * HTML color code representing the color of the Axis line, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
          * "" (empty string) if no axis is present or set.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setAxisColor(<your data>);
+         * `object.setAxisColor( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            axisColor: <your data>,
-         *            ...
-         *        });
+         * `object.set({ axisColor: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -12444,16 +12189,13 @@ declare namespace Excel {
         /**
          * Representation of how the axis is determined for an Excel data bar.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setAxisFormat(<your data>);
+         * `object.setAxisFormat( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            axisFormat: <your data>,
-         *            ...
-         *        });
+         * `object.set({ axisFormat: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -12475,16 +12217,13 @@ declare namespace Excel {
         /**
          * Represents the direction that the data bar graphic should be based on.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setBarDirection(<your data>);
+         * `object.setBarDirection( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            barDirection: <your data>,
-         *            ...
-         *        });
+         * `object.set({ barDirection: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -12506,16 +12245,13 @@ declare namespace Excel {
         /**
          * The rule for what consistutes the lower bound (and how to calculate it, if applicable) for a data bar.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setLowerBoundRule(<your data>);
+         * `object.setLowerBoundRule( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            lowerBoundRule: <your data>,
-         *            ...
-         *        });
+         * `object.set({ lowerBoundRule: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -12537,16 +12273,13 @@ declare namespace Excel {
         /**
          * If true, hides the values from the cells where the data bar is applied.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setShowDataBarOnly(<your data>);
+         * `object.setShowDataBarOnly( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            showDataBarOnly: <your data>,
-         *            ...
-         *        });
+         * `object.set({ showDataBarOnly: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -12568,16 +12301,13 @@ declare namespace Excel {
         /**
          * The rule for what constitutes the upper bound (and how to calculate it, if applicable) for a data bar.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setUpperBoundRule(<your data>);
+         * `object.setUpperBoundRule( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            upperBoundRule: <your data>,
-         *            ...
-         *        });
+         * `object.set({ upperBoundRule: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -12657,16 +12387,13 @@ declare namespace Excel {
          * HTML color code representing the color of the border line, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
          * "" (empty string) if no border is present or set.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setBorderColor(<your data>);
+         * `object.setBorderColor( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            borderColor: <your data>,
-         *            ...
-         *        });
+         * `object.set({ borderColor: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -12689,16 +12416,13 @@ declare namespace Excel {
         /**
          * HTML color code representing the fill color, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setFillColor(<your data>);
+         * `object.setFillColor( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            fillColor: <your data>,
-         *            ...
-         *        });
+         * `object.set({ fillColor: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -12720,16 +12444,13 @@ declare namespace Excel {
         /**
          * Boolean representation of whether or not the DataBar has a gradient.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setGradientFill(<your data>);
+         * `object.setGradientFill( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            gradientFill: <your data>,
-         *            ...
-         *        });
+         * `object.set({ gradientFill: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -12809,16 +12530,13 @@ declare namespace Excel {
          * HTML color code representing the color of the border line, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
          * "Empty String" if no border is present or set.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setBorderColor(<your data>);
+         * `object.setBorderColor( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            borderColor: <your data>,
-         *            ...
-         *        });
+         * `object.set({ borderColor: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -12841,16 +12559,13 @@ declare namespace Excel {
         /**
          * HTML color code representing the fill color, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setFillColor(<your data>);
+         * `object.setFillColor( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            fillColor: <your data>,
-         *            ...
-         *        });
+         * `object.set({ fillColor: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -12872,16 +12587,13 @@ declare namespace Excel {
         /**
          * Boolean representation of whether or not the negative DataBar has the same border color as the positive DataBar.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setMatchPositiveBorderColor(<your data>);
+         * `object.setMatchPositiveBorderColor( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            matchPositiveBorderColor: <your data>,
-         *            ...
-         *        });
+         * `object.set({ matchPositiveBorderColor: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -12903,16 +12615,13 @@ declare namespace Excel {
         /**
          * Boolean representation of whether or not the negative DataBar has the same fill color as the positive DataBar.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setMatchPositiveFillColor(<your data>);
+         * `object.setMatchPositiveFillColor( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            matchPositiveFillColor: <your data>,
-         *            ...
-         *        });
+         * `object.set({ matchPositiveFillColor: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -13080,16 +12789,13 @@ declare namespace Excel {
         /**
          * The formula, if required, to evaluate the conditional format rule on.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setFormula(<your data>);
+         * `object.setFormula( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            formula: <your data>,
-         *            ...
-         *        });
+         * `object.set({ formula: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -13111,16 +12817,13 @@ declare namespace Excel {
         /**
          * The formula, if required, to evaluate the conditional format rule on in the user's language.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setFormulaLocal(<your data>);
+         * `object.setFormulaLocal( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            formulaLocal: <your data>,
-         *            ...
-         *        });
+         * `object.set({ formulaLocal: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -13142,16 +12845,13 @@ declare namespace Excel {
         /**
          * The formula, if required, to evaluate the conditional format rule on in R1C1-style notation.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setFormulaR1C1(<your data>);
+         * `object.setFormulaR1C1( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            formulaR1C1: <your data>,
-         *            ...
-         *        });
+         * `object.set({ formulaR1C1: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -13230,16 +12930,13 @@ declare namespace Excel {
         /**
          * An array of Criteria and IconSets for the rules and potential custom icons for conditional icons. Note that for the first criterion only the custom icon can be modified, while type, formula and operator will be ignored when set.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setCriteria(<your data>);
+         * `object.setCriteria( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            criteria: <your data>,
-         *            ...
-         *        });
+         * `object.set({ criteria: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -13261,16 +12958,13 @@ declare namespace Excel {
         /**
          * If true, reverses the icon orders for the IconSet. Note that this cannot be set if custom icons are used.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setReverseIconOrder(<your data>);
+         * `object.setReverseIconOrder( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            reverseIconOrder: <your data>,
-         *            ...
-         *        });
+         * `object.set({ reverseIconOrder: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -13292,16 +12986,13 @@ declare namespace Excel {
         /**
          * If true, hides the values and only shows icons.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setShowIconOnly(<your data>);
+         * `object.setShowIconOnly( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            showIconOnly: <your data>,
-         *            ...
-         *        });
+         * `object.set({ showIconOnly: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -13323,16 +13014,13 @@ declare namespace Excel {
         /**
          * If set, displays the IconSet option for the conditional format.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setStyle(<your data>);
+         * `object.setStyle( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            style: <your data>,
-         *            ...
-         *        });
+         * `object.set({ style: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -13443,16 +13131,13 @@ declare namespace Excel {
         /**
          * The criteria of the color scale. Midpoint is optional when using a two point color scale.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setCriteria(<your data>);
+         * `object.setCriteria( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            criteria: <your data>,
-         *            ...
-         *        });
+         * `object.set({ criteria: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -13599,16 +13284,13 @@ declare namespace Excel {
         /**
          * The criteria of the Top/Bottom conditional format.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setRule(<your data>);
+         * `object.setRule( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            rule: <your data>,
-         *            ...
-         *        });
+         * `object.set({ rule: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -13715,16 +13397,13 @@ declare namespace Excel {
         /**
          * The rule of the conditional format.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setRule(<your data>);
+         * `object.setRule( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            rule: <your data>,
-         *            ...
-         *        });
+         * `object.set({ rule: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -13825,16 +13504,13 @@ declare namespace Excel {
         /**
          * The rule of the conditional format.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setRule(<your data>);
+         * `object.setRule( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            rule: <your data>,
-         *            ...
-         *        });
+         * `object.set({ rule: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -13941,16 +13617,13 @@ declare namespace Excel {
         /**
          * Represents the Rule object on this conditional format.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setRule(<your data>);
+         * `object.setRule( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            rule: <your data>,
-         *            ...
-         *        });
+         * `object.set({ rule: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -14079,16 +13752,13 @@ declare namespace Excel {
         /**
          * Represents Excel's number format code for the given range. Cleared if null is passed in.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setNumberFormat(<your data>);
+         * `object.setNumberFormat( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            numberFormat: <your data>,
-         *            ...
-         *        });
+         * `object.set({ numberFormat: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -14167,16 +13837,13 @@ declare namespace Excel {
         /**
          * Represents the bold status of font.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setBold(<your data>);
+         * `object.setBold( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            bold: <your data>,
-         *            ...
-         *        });
+         * `object.set({ bold: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -14198,16 +13865,13 @@ declare namespace Excel {
         /**
          * HTML color code representation of the text color. E.g. #FF0000 represents Red.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setColor(<your data>);
+         * `object.setColor( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            color: <your data>,
-         *            ...
-         *        });
+         * `object.set({ color: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -14229,16 +13893,13 @@ declare namespace Excel {
         /**
          * Represents the italic status of the font.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setItalic(<your data>);
+         * `object.setItalic( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            italic: <your data>,
-         *            ...
-         *        });
+         * `object.set({ italic: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -14260,16 +13921,13 @@ declare namespace Excel {
         /**
          * Represents the strikethrough status of the font.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setStrikethrough(<your data>);
+         * `object.setStrikethrough( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            strikethrough: <your data>,
-         *            ...
-         *        });
+         * `object.set({ strikethrough: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -14291,16 +13949,13 @@ declare namespace Excel {
         /**
          * Type of underline applied to the font. See Excel.ConditionalRangeFontUnderlineStyle for details.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setUnderline(<your data>);
+         * `object.setUnderline( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            underline: <your data>,
-         *            ...
-         *        });
+         * `object.set({ underline: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -14388,16 +14043,13 @@ declare namespace Excel {
         /**
          * HTML color code representing the color of the fill, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setColor(<your data>);
+         * `object.setColor( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            color: <your data>,
-         *            ...
-         *        });
+         * `object.set({ color: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -14485,16 +14137,13 @@ declare namespace Excel {
         /**
          * HTML color code representing the color of the border line, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setColor(<your data>);
+         * `object.setColor( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            color: <your data>,
-         *            ...
-         *        });
+         * `object.set({ color: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -14524,16 +14173,13 @@ declare namespace Excel {
         /**
          * One of the constants of line style specifying the line style for the border. See Excel.BorderLineStyle for details.
          *
-         * To SET / UPDATE this property, use:
+         * **To SET or UPDATE this property**, use:
          *
-         *        object.setStyle(<your data>);
+         * `object.setStyle( <your data> );`
          *
-         *    or
+         * or
          *
-         *        object.set({
-         *            style: <your data>,
-         *            ...
-         *        });
+         * `object.set({ style: <your data>, ... })`
          *
          * [Api set: ExcelApi 1.6]
          */
