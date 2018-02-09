@@ -2578,18 +2578,18 @@ declare namespace OfficeExtension {
 		top?: number;
 		skip?: number;
 	}
+	export declare interface UpdateOptions {
+		/**
+		 * Throw an error if the passed-in property list includes read-only properties (default = true).
+		 */
+		throwOnReadOnly?: boolean
+	}
 	/** An abstract RequestContext object that facilitates requests to the host Office application. The "Excel.run" and "Word.run" methods provide a request context. */
 	class ClientRequestContext {
 		constructor(url?: string);
 
-		/** Collection of objects that are tracked for automatic adjustments based on surrounding changes in the document. */
-		trackedObjects: TrackedObjects;
-
 		/** Request headers */
 		requestHeaders: { [name: string]: string };
-
-		/** Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties. */
-		load(object: ClientObject, option?: string | string[]| LoadOption): void;
 
 		/**
 		* Queues up a command to recursively load the specified properties of the object and its navigation properties.
@@ -4772,7 +4772,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          */
-        readonly formulas: any[][];
+        readonly formulas: ReadonlyArray<ReadonlyArray<string>>;
         /**
          * Sets the **formulas** property:
          * > Represents the formula in A1-style notation.
@@ -4786,7 +4786,7 @@ declare namespace Excel {
          *
          * This method returns the object itself, so that you can chain this call with other method calls on the same object.
          */
-        setFormulas(value: any[][]): Excel.Range;
+        setFormulas(value: number | string | boolean | (number | string | boolean)[][]): Excel.Range;
         /**
          * Represents the formula in A1-style notation, in the user's language and number-formatting locale.  For example, the English "=SUM(A1, 1.5)" formula would become "=SUMME(A1; 1,5)" in German.
          *
@@ -4803,7 +4803,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          */
-        readonly formulasLocal: any[][];
+        readonly formulasLocal: ReadonlyArray<ReadonlyArray<string>>;
         /**
          * Sets the **formulasLocal** property:
          * > Represents the formula in A1-style notation, in the user's language and number-formatting locale.  For example, the English "=SUM(A1, 1.5)" formula would become "=SUMME(A1; 1,5)" in German.
@@ -4817,7 +4817,7 @@ declare namespace Excel {
          *
          * This method returns the object itself, so that you can chain this call with other method calls on the same object.
          */
-        setFormulasLocal(value: any[][]): Excel.Range;
+        setFormulasLocal(value: number | string | boolean | (number | string | boolean)[][]): Excel.Range;
         /**
          * Represents the formula in R1C1-style notation.
          *
@@ -4834,7 +4834,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.2]
          */
-        readonly formulasR1C1: any[][];
+        readonly formulasR1C1: ReadonlyArray<ReadonlyArray<string>>;
         /**
          * Sets the **formulasR1C1** property:
          * > Represents the formula in R1C1-style notation.
@@ -4848,7 +4848,7 @@ declare namespace Excel {
          *
          * This method returns the object itself, so that you can chain this call with other method calls on the same object.
          */
-        setFormulasR1C1(value: any[][]): Excel.Range;
+        setFormulasR1C1(value: number | string | boolean | (number | string | boolean)[][]): Excel.Range;
         /**
          * Represents if all cells of the current range are hidden.
          *
@@ -4873,7 +4873,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          */
-        readonly numberFormat: any[][];
+        readonly numberFormat: ReadonlyArray<ReadonlyArray<string>>;
         /**
          * Sets the **numberFormat** property:
          * > Represents Excel's number format code for the given cell.
@@ -4887,7 +4887,7 @@ declare namespace Excel {
          *
          * This method returns the object itself, so that you can chain this call with other method calls on the same object.
          */
-        setNumberFormat(value: any[][]): Excel.Range;
+        setNumberFormat(value: string | string[][]): Excel.Range;
         /**
          * Returns the total number of rows in the range.
          *
@@ -4942,7 +4942,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          */
-        readonly text: string[][];
+        readonly text: ReadonlyArray<ReadonlyArray<string>>;
         /**
          * Represents the type of data of each cell.
          *
@@ -4950,7 +4950,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          */
-        readonly valueTypes: Excel.RangeValueType[][];
+        readonly valueTypes: ReadonlyArray<ReadonlyArray<RangeValueType>>;
         /**
          * Represents the raw values of the specified range. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
          *
@@ -4967,7 +4967,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          */
-        readonly values: any[][];
+        readonly values: ReadonlyArray<ReadonlyArray<number | string | boolean>>;
         /**
          * Sets the **values** property:
          * > Represents the raw values of the specified range. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
@@ -4981,7 +4981,7 @@ declare namespace Excel {
          *
          * This method returns the object itself, so that you can chain this call with other method calls on the same object.
          */
-        setValues(value: any[][]): Excel.Range;
+        setValues(value: number | string | boolean | (number | string | boolean)[][]): Excel.Range;
         /**
          * Sets object properties **based on a JSON payload** with all the properties that you want to set at once.
          *
@@ -5341,7 +5341,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.3]
          */
-        readonly cellAddresses: any[][];
+        readonly cellAddresses: ReadonlyArray<ReadonlyArray<string>>;
         /**
          * Returns the number of visible columns.
          *
@@ -5366,7 +5366,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.3]
          */
-        readonly formulas: any[][];
+        readonly formulas: ReadonlyArray<ReadonlyArray<string>>;
         /**
          * Sets the **formulas** property:
          * > Represents the formula in A1-style notation.
@@ -5380,7 +5380,7 @@ declare namespace Excel {
          *
          * This method returns the object itself, so that you can chain this call with other method calls on the same object.
          */
-        setFormulas(value: any[][]): Excel.RangeView;
+        setFormulas(value: number | string | boolean | (number | string | boolean)[][]): Excel.RangeView;
         /**
          * Represents the formula in A1-style notation, in the user's language and number-formatting locale.  For example, the English "=SUM(A1, 1.5)" formula would become "=SUMME(A1; 1,5)" in German.
          *
@@ -5397,7 +5397,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.3]
          */
-        readonly formulasLocal: any[][];
+        readonly formulasLocal: ReadonlyArray<ReadonlyArray<string>>;
         /**
          * Sets the **formulasLocal** property:
          * > Represents the formula in A1-style notation, in the user's language and number-formatting locale.  For example, the English "=SUM(A1, 1.5)" formula would become "=SUMME(A1; 1,5)" in German.
@@ -5411,7 +5411,7 @@ declare namespace Excel {
          *
          * This method returns the object itself, so that you can chain this call with other method calls on the same object.
          */
-        setFormulasLocal(value: any[][]): Excel.RangeView;
+        setFormulasLocal(value: number | string | boolean | (number | string | boolean)[][]): Excel.RangeView;
         /**
          * Represents the formula in R1C1-style notation.
          *
@@ -5428,7 +5428,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.3]
          */
-        readonly formulasR1C1: any[][];
+        readonly formulasR1C1: ReadonlyArray<ReadonlyArray<string>>;
         /**
          * Sets the **formulasR1C1** property:
          * > Represents the formula in R1C1-style notation.
@@ -5442,7 +5442,7 @@ declare namespace Excel {
          *
          * This method returns the object itself, so that you can chain this call with other method calls on the same object.
          */
-        setFormulasR1C1(value: any[][]): Excel.RangeView;
+        setFormulasR1C1(value: number | string | boolean | (number | string | boolean)[][]): Excel.RangeView;
         /**
          * Returns a value that represents the index of the RangeView.
          *
@@ -5467,7 +5467,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.3]
          */
-        readonly numberFormat: any[][];
+        readonly numberFormat: ReadonlyArray<ReadonlyArray<string>>;
         /**
          * Sets the **numberFormat** property:
          * > Represents Excel's number format code for the given cell.
@@ -5481,7 +5481,7 @@ declare namespace Excel {
          *
          * This method returns the object itself, so that you can chain this call with other method calls on the same object.
          */
-        setNumberFormat(value: any[][]): Excel.RangeView;
+        setNumberFormat(value: string | string[][]): Excel.RangeView;
         /**
          * Returns the number of visible rows.
          *
@@ -5497,7 +5497,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.3]
          */
-        readonly text: string[][];
+        readonly text: ReadonlyArray<ReadonlyArray<string>>;
         /**
          * Represents the type of data of each cell.
          *
@@ -5505,7 +5505,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.3]
          */
-        readonly valueTypes: Excel.RangeValueType[][];
+        readonly valueTypes: ReadonlyArray<ReadonlyArray<Excel.RangeValueType>>;
         /**
          * Represents the raw values of the specified range view. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
          *
@@ -5522,7 +5522,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.3]
          */
-        readonly values: any[][];
+        readonly values: ReadonlyArray<ReadonlyArray<number | string | boolean>>;
         /**
          * Sets the **values** property:
          * > Represents the raw values of the specified range view. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
@@ -5536,7 +5536,7 @@ declare namespace Excel {
          *
          * This method returns the object itself, so that you can chain this call with other method calls on the same object.
          */
-        setValues(value: any[][]): Excel.RangeView;
+        setValues(value: number | string | boolean | (number | string | boolean)[][]): Excel.RangeView;
         /**
          * Sets object properties **based on a JSON payload** with all the properties that you want to set at once.
          *
@@ -7072,7 +7072,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          */
-        readonly values: any[][];
+        readonly values: ReadonlyArray<ReadonlyArray<number | string | boolean>>;
         /**
          * Sets the **values** property:
          * > Represents the raw values of the specified range. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
@@ -7086,7 +7086,7 @@ declare namespace Excel {
          *
          * This method returns the object itself, so that you can chain this call with other method calls on the same object.
          */
-        setValues(value: any[][]): Excel.TableColumn;
+        setValues(value: number | string | boolean | (number | string | boolean)[][]): Excel.TableColumn;
         /**
          * Sets object properties **based on a JSON payload** with all the properties that you want to set at once.
          *
@@ -7300,7 +7300,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          */
-        readonly values: any[][];
+        readonly values: ReadonlyArray<ReadonlyArray<number | string | boolean>>;
         /**
          * Sets the **values** property:
          * > Represents the raw values of the specified range. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
@@ -7314,7 +7314,7 @@ declare namespace Excel {
          *
          * This method returns the object itself, so that you can chain this call with other method calls on the same object.
          */
-        setValues(value: any[][]): Excel.TableRow;
+        setValues(value: number | string | boolean | (number | string | boolean)[][]): Excel.TableRow;
         /**
          * Sets object properties **based on a JSON payload** with all the properties that you want to set at once.
          *
@@ -11583,7 +11583,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.2]
          */
-        values?: Array<string | Excel.FilterDatetime>;
+        values?: (string | Excel.FilterDatetime)[];
     }
     /**
      *
@@ -19298,25 +19298,25 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            formulas?: any[][];
+            formulas?: number | string | boolean | (number | string | boolean)[][];
             /**
              * Represents the formula in A1-style notation, in the user's language and number-formatting locale.  For example, the English "=SUM(A1, 1.5)" formula would become "=SUMME(A1; 1,5)" in German.
              *
              * [Api set: ExcelApi 1.1]
              */
-            formulasLocal?: any[][];
+            formulasLocal?: number | string | boolean | (number | string | boolean)[][];
             /**
              * Represents the formula in R1C1-style notation.
              *
              * [Api set: ExcelApi 1.2]
              */
-            formulasR1C1?: any[][];
+            formulasR1C1?: number | string | boolean | (number | string | boolean)[][];
             /**
              * Represents Excel's number format code for the given cell.
              *
              * [Api set: ExcelApi 1.1]
              */
-            numberFormat?: any[][];
+            numberFormat?: string | string[][];
             /**
              * Represents if all rows of the current range are hidden.
              *
@@ -19328,7 +19328,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            values?: any[][];
+            values?: number | string | boolean | (number | string | boolean)[][];
         }
         /** An interface for updating data on the RangeView object, for use in "rangeView.set({ ... })". */
         interface RangeViewUpdateData {
@@ -19337,31 +19337,31 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.3]
              */
-            formulas?: any[][];
+            formulas?: number | string | boolean | (number | string | boolean)[][];
             /**
              * Represents the formula in A1-style notation, in the user's language and number-formatting locale.  For example, the English "=SUM(A1, 1.5)" formula would become "=SUMME(A1; 1,5)" in German.
              *
              * [Api set: ExcelApi 1.3]
              */
-            formulasLocal?: any[][];
+            formulasLocal?: number | string | boolean | (number | string | boolean)[][];
             /**
              * Represents the formula in R1C1-style notation.
              *
              * [Api set: ExcelApi 1.3]
              */
-            formulasR1C1?: any[][];
+            formulasR1C1?: number | string | boolean | (number | string | boolean)[][];
             /**
              * Represents Excel's number format code for the given cell.
              *
              * [Api set: ExcelApi 1.3]
              */
-            numberFormat?: any[][];
+            numberFormat?: string | string[][];
             /**
              * Represents the raw values of the specified range view. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
              *
              * [Api set: ExcelApi 1.3]
              */
-            values?: any[][];
+            values?: number | string | boolean | (number | string | boolean)[][];
         }
         /** An interface for updating data on the RangeViewCollection object, for use in "rangeViewCollection.set({ ... })". */
         interface RangeViewCollectionUpdateData {
@@ -19481,7 +19481,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            values?: any[][];
+            values?: number | string | boolean | (number | string | boolean)[][];
         }
         /** An interface for updating data on the TableRowCollection object, for use in "tableRowCollection.set({ ... })". */
         interface TableRowCollectionUpdateData {
@@ -19494,7 +19494,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            values?: any[][];
+            values?: number | string | boolean | (number | string | boolean)[][];
         }
         /** An interface for updating data on the RangeFormat object, for use in "rangeFormat.set({ ... })". */
         interface RangeFormatUpdateData {
@@ -20760,19 +20760,19 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            formulas?: any[][];
+            formulas?: ReadonlyArray<ReadonlyArray<string>>;
             /**
              * Represents the formula in A1-style notation, in the user's language and number-formatting locale.  For example, the English "=SUM(A1, 1.5)" formula would become "=SUMME(A1; 1,5)" in German.
              *
              * [Api set: ExcelApi 1.1]
              */
-            formulasLocal?: any[][];
+            formulasLocal?: ReadonlyArray<ReadonlyArray<string>>;
             /**
              * Represents the formula in R1C1-style notation.
              *
              * [Api set: ExcelApi 1.2]
              */
-            formulasR1C1?: any[][];
+            formulasR1C1?: ReadonlyArray<ReadonlyArray<string>>;
             /**
              * Represents if all cells of the current range are hidden.
              *
@@ -20784,7 +20784,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            numberFormat?: any[][];
+            numberFormat?: ReadonlyArray<ReadonlyArray<string>>;
             /**
              * Returns the total number of rows in the range.
              *
@@ -20808,19 +20808,19 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            text?: string[][];
+            text?: ReadonlyArray<ReadonlyArray<string>>;
             /**
              * Represents the type of data of each cell.
              *
              * [Api set: ExcelApi 1.1]
              */
-            valueTypes?: Excel.RangeValueType[][];
+            valueTypes?: ReadonlyArray<ReadonlyArray<RangeValueType>>;
             /**
              * Represents the raw values of the specified range. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
              *
              * [Api set: ExcelApi 1.1]
              */
-            values?: any[][];
+            values?: ReadonlyArray<ReadonlyArray<number | string | boolean>>;
         }
         /** An interface describing the data returned by calling "rangeView.toJSON()". */
         interface RangeViewData {
@@ -20835,7 +20835,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.3]
              */
-            cellAddresses?: any[][];
+            cellAddresses?: ReadonlyArray<ReadonlyArray<string>>;
             /**
              * Returns the number of visible columns.
              *
@@ -20847,19 +20847,19 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.3]
              */
-            formulas?: any[][];
+            formulas?: ReadonlyArray<ReadonlyArray<string>>;
             /**
              * Represents the formula in A1-style notation, in the user's language and number-formatting locale.  For example, the English "=SUM(A1, 1.5)" formula would become "=SUMME(A1; 1,5)" in German.
              *
              * [Api set: ExcelApi 1.3]
              */
-            formulasLocal?: any[][];
+            formulasLocal?: ReadonlyArray<ReadonlyArray<string>>;
             /**
              * Represents the formula in R1C1-style notation.
              *
              * [Api set: ExcelApi 1.3]
              */
-            formulasR1C1?: any[][];
+            formulasR1C1?: ReadonlyArray<ReadonlyArray<string>>;
             /**
              * Returns a value that represents the index of the RangeView.
              *
@@ -20871,7 +20871,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.3]
              */
-            numberFormat?: any[][];
+            numberFormat?: ReadonlyArray<ReadonlyArray<string>>;
             /**
              * Returns the number of visible rows.
              *
@@ -20883,19 +20883,19 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.3]
              */
-            text?: string[][];
+            text?: ReadonlyArray<ReadonlyArray<string>>;
             /**
              * Represents the type of data of each cell.
              *
              * [Api set: ExcelApi 1.3]
              */
-            valueTypes?: Excel.RangeValueType[][];
+            valueTypes?: ReadonlyArray<ReadonlyArray<Excel.RangeValueType>>;
             /**
              * Represents the raw values of the specified range view. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
              *
              * [Api set: ExcelApi 1.3]
              */
-            values?: any[][];
+            values?: ReadonlyArray<ReadonlyArray<number | string | boolean>>;
         }
         /** An interface describing the data returned by calling "rangeViewCollection.toJSON()". */
         interface RangeViewCollectionData {
@@ -21120,7 +21120,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            values?: any[][];
+            values?: ReadonlyArray<ReadonlyArray<number | string | boolean>>;
         }
         /** An interface describing the data returned by calling "tableRowCollection.toJSON()". */
         interface TableRowCollectionData {
@@ -21139,7 +21139,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.1]
              */
-            values?: any[][];
+            values?: ReadonlyArray<ReadonlyArray<number | string | boolean>>;
         }
         /** An interface describing the data returned by calling "rangeFormat.toJSON()". */
         interface RangeFormatData {
