@@ -8,6 +8,11 @@ office-js
 Copyright (c) Microsoft Corporation
 */
 
+
+////////////////////////////////////////////////////////////////
+//////////////////// Begin Office namespace ////////////////////
+////////////////////////////////////////////////////////////////
+
 declare namespace Office {
     export var context: Context;
     /**
@@ -1548,6 +1553,12 @@ declare namespace Office {
 }
 
 
+////////////////////////////////////////////////////////////////
+///////////////////// End Office namespace /////////////////////
+////////////////////////////////////////////////////////////////
+
+
+////////////////////////////////////////////////////////////////
 
 
 ////////////////////////////////////////////////////////////////
@@ -3728,6 +3739,91 @@ declare namespace OfficeCore {
 ////////////////////////////////////////////////////////////////
 
 
+////////////////////////////////////////////////////////////////
+
+
+////////////////////////////////////////////////////////////////
+////////////////////// Begin OfficeCore ////////////////////////
+////////////////////////////////////////////////////////////////
+
+
+declare namespace OfficeCore {
+    /**
+     * [Api set: Experimentation 1.1 (PREVIEW) (PREVIEW)]
+     */
+    class FlightingService extends OfficeExtension.ClientObject {
+        getFeature(featureName: string, type: string, defaultValue: number | boolean | string, possibleValues?: Array<number> | Array<string> | Array<boolean> | Array<ScopedValue>): OfficeCore.ABType;
+        getFeatureGate(featureName: string, scope?: string): OfficeCore.ABType;
+        resetOverride(featureName: string): void;
+        setOverride(featureName: string, type: string, value: number | boolean | string): void;
+        /**
+         * Create a new instance of OfficeCore.FlightingService object
+         */
+        static newObject(context: OfficeExtension.ClientRequestContext): OfficeCore.FlightingService;
+        toJSON(): {};
+    }
+    /**
+     *
+     * Provides information about the scoped value.
+     *
+     * [Api set: Experimentation 1.1 (PREVIEW) (PREVIEW)]
+     */
+    interface ScopedValue {
+        /**
+         *
+         * Gets the scope.
+         *
+         * [Api set: Experimentation 1.1 (PREVIEW) (PREVIEW)]
+         */
+        scope: string;
+        /**
+         *
+         * Gets the value.
+         *
+         * [Api set: Experimentation 1.1 (PREVIEW) (PREVIEW)]
+         */
+        value: string | number | boolean;
+    }
+    /**
+     * [Api set: Experimentation 1.1 (PREVIEW) (PREVIEW)]
+     */
+    class ABType extends OfficeExtension.ClientObject {
+        readonly value: string | number | boolean;
+        /**
+         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+         */
+        load(option?: string | string[] | OfficeExtension.LoadOption): OfficeCore.ABType;
+        toJSON(): {
+            "value": string | number | boolean;
+        };
+    }
+    /**
+     * [Api set: Experimentation 1.1 (PREVIEW) (PREVIEW)]
+     */
+    namespace FeatureType {
+        var boolean: string;
+        var integer: string;
+        var string: string;
+    }
+    namespace ExperimentErrorCodes {
+        var generalException: string;
+    }
+    module Interfaces {
+    }
+}
+declare namespace OfficeCore {
+    class RequestContext extends OfficeExtension.ClientRequestContext {
+        constructor(url?: string | OfficeExtension.RequestUrlAndHeaderInfo | any);
+        readonly flightingService: FlightingService;
+    }
+}
+
+
+////////////////////////////////////////////////////////////////
+/////////////////////// End OfficeCore /////////////////////////
+////////////////////////////////////////////////////////////////
+
+
 
 ////////////////////////////////////////////////////////////////
 
@@ -4598,56 +4694,56 @@ declare namespace Excel {
     class Workbook extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents the Excel application instance that contains this workbook. Read-only.
+         * Represents the Excel application instance that contains this workbook.
          *
          * [Api set: ExcelApi 1.1]
          */
         readonly application: Excel.Application;
         /**
          *
-         * Represents a collection of bindings that are part of the workbook. Read-only.
+         * Represents a collection of bindings that are part of the workbook.
          *
          * [Api set: ExcelApi 1.1]
          */
         readonly bindings: Excel.BindingCollection;
         /**
          *
-         * Represents the collection of custom functions defined in add-ins. Read-only.
+         * Represents the collection of custom functions defined in add-ins.
          *
          * [Api set: CustomFunctions 1.1]
          */
         readonly customFunctions: Excel.CustomFunctionCollection;
         /**
          *
-         * Represents the collection of custom XML parts contained by this workbook. Read-only.
+         * Represents the collection of custom XML parts contained by this workbook.
          *
          * [Api set: ExcelApi 1.5]
          */
         readonly customXmlParts: Excel.CustomXmlPartCollection;
         /**
          *
-         * Refreshes all data connections in the workbook.
+         * Represents all data connections in the workbook.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         readonly dataConnections: Excel.DataConnectionCollection;
         /**
          *
-         * Represents a collection of worksheet functions that can be used for computation. Read-only.
+         * Represents a collection of worksheet functions that can be used for computation.
          *
          * [Api set: ExcelApi 1.2]
          */
         readonly functions: Excel.Functions;
         /**
          *
-         * Represents a collection of workbook scoped named items (named ranges and constants). Read-only.
+         * Represents a collection of workbook scoped named items (named ranges and constants).
          *
          * [Api set: ExcelApi 1.1]
          */
         readonly names: Excel.NamedItemCollection;
         /**
          *
-         * Represents a collection of PivotTables associated with the workbook. Read-only.
+         * Represents a collection of PivotTables associated with the workbook.
          *
          * [Api set: ExcelApi 1.3]
          */
@@ -4668,28 +4764,28 @@ declare namespace Excel {
         readonly protection: Excel.WorkbookProtection;
         /**
          *
-         * Represents a collection of Settings associated with the workbook. Read-only.
+         * Represents a collection of Settings associated with the workbook.
          *
          * [Api set: ExcelApi 1.4]
          */
         readonly settings: Excel.SettingCollection;
         /**
          *
-         * Represents a collection of styles associated with the workbook. Read-only.
+         * Represents a collection of styles associated with the workbook.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         readonly styles: Excel.StyleCollection;
         /**
          *
-         * Represents a collection of tables associated with the workbook. Read-only.
+         * Represents a collection of tables associated with the workbook.
          *
          * [Api set: ExcelApi 1.1]
          */
         readonly tables: Excel.TableCollection;
         /**
          *
-         * Represents a collection of worksheets associated with the workbook. Read-only.
+         * Represents a collection of worksheets associated with the workbook.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -4752,7 +4848,7 @@ declare namespace Excel {
         getActiveCell(): Excel.Range;
         /**
          *
-         * True if the workbook is being edited by multiple users (co-authoring). Read-only.
+         * True if the workbook is being edited by multiple users (co-authoring).
             Please be aware there might be some delay between when the workbook status changes and when the changes are reflected on the result of the method.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
@@ -4867,35 +4963,35 @@ declare namespace Excel {
     class Worksheet extends OfficeExtension.ClientObject {
         /**
          *
-         * Returns collection of charts that are part of the worksheet. Read-only.
+         * Returns collection of charts that are part of the worksheet.
          *
          * [Api set: ExcelApi 1.1]
          */
         readonly charts: Excel.ChartCollection;
         /**
          *
-         * Gets an object that can be used to manipulate frozen panes on the worksheet
+         * Gets an object that can be used to manipulate frozen panes on the worksheet.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         readonly freezePanes: Excel.WorksheetFreezePanes;
         /**
          *
-         * Collection of names scoped to the current worksheet. Read-only.
+         * Collection of names scoped to the current worksheet.
          *
          * [Api set: ExcelApi 1.4]
          */
         readonly names: Excel.NamedItemCollection;
         /**
          *
-         * Gets the PageLayout object of the worksheet. Read-only.
+         * Gets the PageLayout object of the worksheet.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         readonly pageLayout: Excel.PageLayout;
         /**
          *
-         * Collection of PivotTables that are part of the worksheet. Read-only.
+         * Collection of PivotTables that are part of the worksheet.
          *
          * [Api set: ExcelApi 1.3]
          */
@@ -4909,7 +5005,7 @@ declare namespace Excel {
         readonly protection: Excel.WorksheetProtection;
         /**
          *
-         * Collection of tables that are part of the worksheet. Read-only.
+         * Collection of tables that are part of the worksheet.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -5142,12 +5238,6 @@ declare namespace Excel {
          */
         replaceAll(text: string, replacement: string, criteria: Excel.ReplaceCriteria): OfficeExtension.ClientResult<number>;
         /**
-         *
-         * [INTERNAL IMPLEMENTATION DETAIL]
-            Return another worksheet in the workbook with the specified id.
-            This is necessary to allow "worksheet.copy()" to re-map its object path to the ID of the
-            worksheet, so it doesn't keep creating new copies every time that a Range is accessed.
-        /**
          * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
          */
         load(option?: Excel.Interfaces.WorksheetLoadOptions): Excel.Worksheet;
@@ -5311,7 +5401,7 @@ declare namespace Excel {
     class WorksheetProtection extends OfficeExtension.ClientObject {
         /**
          *
-         * Sheet protection options. Read-Only.
+         * Sheet protection options.
          *
          * [Api set: ExcelApi 1.2]
          */
@@ -5528,21 +5618,21 @@ declare namespace Excel {
     class Range extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents a collection of contiguous areas for the range. Read-only.
+         * Represents a collection of contiguous areas for the range.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         readonly areas: Excel.AreaCollection;
         /**
          *
-         * Collection of ConditionalFormats that intersect the range. Read-only.
+         * Collection of ConditionalFormats that intersect the range.
          *
          * [Api set: ExcelApi 1.6]
          */
         readonly conditionalFormats: Excel.ConditionalFormatCollection;
         /**
          *
-         * Returns a data validation object. Read-only.
+         * Returns a data validation object.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
@@ -5563,7 +5653,7 @@ declare namespace Excel {
         readonly sort: Excel.RangeSort;
         /**
          *
-         * The worksheet containing the current range. Read-only.
+         * The worksheet containing the current range.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -5654,7 +5744,7 @@ declare namespace Excel {
         readonly hidden: boolean;
         /**
          *
-         * Represents the hyperlink set for the current range.
+         * Represents the hyperlink for the current range.
             When getting hyperlink, if the range has multiple areas, null will be returned.
             When setting hyperlink, if the range has multiple areas, the "InvalidReference" error will be returned.
          *
@@ -5722,7 +5812,7 @@ declare namespace Excel {
         readonly rowIndex: number;
         /**
          *
-         * Represents the style of the current range. This return either null or a string.
+         * Represents the style of the current range.
             If the styles of the cells are inconsistent, null will be returned.
             For custom styles, the style name will be returned. For built-in styles, a string representing a value in the BuiltInStyle enum will be returned.
          *
@@ -5922,7 +6012,7 @@ declare namespace Excel {
         getEntireRow(): Excel.Range;
         /**
          *
-         * Renders the range as a base64-encoded image.
+         * Renders the range as a base64-encoded png image.
             If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
@@ -6288,7 +6378,7 @@ declare namespace Excel {
     class RangeView extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents a collection of range views associated with the range. Read-only.
+         * Represents a collection of range views associated with the range.
          *
          * [Api set: ExcelApi 1.3]
          */
@@ -7067,14 +7157,14 @@ declare namespace Excel {
     class Table extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents a collection of all the columns in the table. Read-only.
+         * Represents a collection of all the columns in the table.
          *
          * [Api set: ExcelApi 1.1]
          */
         readonly columns: Excel.TableColumnCollection;
         /**
          *
-         * Represents a collection of all the rows in the table. Read-only.
+         * Represents a collection of all the rows in the table.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -7088,7 +7178,7 @@ declare namespace Excel {
         readonly sort: Excel.TableSort;
         /**
          *
-         * The worksheet containing the current table. Read-only.
+         * The worksheet containing the current table.
          *
          * [Api set: ExcelApi 1.2]
          */
@@ -7890,21 +7980,21 @@ declare namespace Excel {
     class RangeFormat extends OfficeExtension.ClientObject {
         /**
          *
-         * Collection of border objects that apply to the overall range. Read-only.
+         * Collection of border objects that apply to the overall range.
          *
          * [Api set: ExcelApi 1.1]
          */
         readonly borders: Excel.RangeBorderCollection;
         /**
          *
-         * Returns the fill object defined on the overall range. Read-only.
+         * Returns the fill object defined on the overall range.
          *
          * [Api set: ExcelApi 1.1]
          */
         readonly fill: Excel.RangeFill;
         /**
          *
-         * Returns the font object defined on the overall range. Read-only.
+         * Returns the font object defined on the overall range.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -7986,7 +8076,7 @@ declare namespace Excel {
         useStandardHeight: boolean;
         /**
          *
-         * Determines if the columnwidth of the Range object equals the standard width of the sheet.
+         * Indicates whether the columnwidth of the Range object equals the standard width of the sheet.
             Returns True if the column width of the Range object equals the standard width of the sheet.
             Returns Null if the range contains more than one column and the columns aren't all the same height.
             Returns False otherwise.
@@ -8392,14 +8482,14 @@ declare namespace Excel {
     class Chart extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents chart axes. Read-only.
+         * Represents chart axes.
          *
          * [Api set: ExcelApi 1.1]
          */
         readonly axes: Excel.ChartAxes;
         /**
          *
-         * Represents the datalabels on the chart. Read-only.
+         * Represents the datalabels on the chart.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -8413,35 +8503,35 @@ declare namespace Excel {
         readonly format: Excel.ChartAreaFormat;
         /**
          *
-         * Represents the legend for the chart. Read-only.
+         * Represents the legend for the chart.
          *
          * [Api set: ExcelApi 1.1]
          */
         readonly legend: Excel.ChartLegend;
         /**
          *
-         * Represents the plotArea for the chart. Read-only.
+         * Represents the plotArea for the chart.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         readonly plotArea: Excel.ChartPlotArea;
         /**
          *
-         * Represents either a single series or collection of series in the chart. Read-only.
+         * Represents either a single series or collection of series in the chart.
          *
          * [Api set: ExcelApi 1.1]
          */
         readonly series: Excel.ChartSeriesCollection;
         /**
          *
-         * Represents the title of the specified chart, including the text, visibility, position and formating of the title. Read-only.
+         * Represents the title of the specified chart, including the text, visibility, position and formating of the title.
          *
          * [Api set: ExcelApi 1.1]
          */
         readonly title: Excel.ChartTitle;
         /**
          *
-         * The worksheet containing the current chart. Read-only.
+         * The worksheet containing the current chart.
          *
          * [Api set: ExcelApi 1.2]
          */
@@ -8697,21 +8787,21 @@ declare namespace Excel {
     class ChartAreaFormat extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents the border format of chart area, which includes color, linestyle and weight. Read-only.
+         * Represents the border format of chart area, which includes color, linestyle and weight.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         readonly border: Excel.ChartBorder;
         /**
          *
-         * Represents the fill format of an object, which includes background formatting information. Read-only.
+         * Represents the fill format of an object, which includes background formatting information.
          *
          * [Api set: ExcelApi 1.1]
          */
         readonly fill: Excel.ChartFill;
         /**
          *
-         * Represents the font attributes (font name, font size, color, etc.) for the current object. Read-only.
+         * Represents the font attributes (font name, font size, color, etc.) for the current object.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -8790,42 +8880,42 @@ declare namespace Excel {
     class ChartSeries extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents a collection of all dataLabels in the series. Read-only.
+         * Represents a collection of all dataLabels in the series.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         readonly dataLabels: Excel.ChartDataLabels;
         /**
          *
-         * Represents the formatting of a chart series, which includes fill and line formatting. Read-only.
+         * Represents the formatting of a chart series, which includes fill and line formatting.
          *
          * [Api set: ExcelApi 1.1]
          */
         readonly format: Excel.ChartSeriesFormat;
         /**
          *
-         * Represents a collection of all points in the series. Read-only.
+         * Represents a collection of all points in the series.
          *
          * [Api set: ExcelApi 1.1]
          */
         readonly points: Excel.ChartPointsCollection;
         /**
          *
-         * Represents a collection of trendlines in the series. Read-only.
+         * Represents a collection of trendlines in the series.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         readonly trendlines: Excel.ChartTrendlineCollection;
         /**
          *
-         * Represents the error bar object for a chart series. Read-only.
+         * Represents the error bar object for a chart series.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         readonly xerrorBars: Excel.ChartErrorBars;
         /**
          *
-         * Represents the error bar object for a chart series. Read-only.
+         * Represents the error bar object for a chart series.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
@@ -8967,14 +9057,14 @@ declare namespace Excel {
         secondPlotSize: number;
         /**
          *
-         * Boolean value representing if the series has shadow or not.
+         * Boolean value representing if the series has a shadow or not.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         showShadow: boolean;
         /**
          *
-         * Boolean value representing if the series is smooth or not. Only for line and scatter charts.
+         * Boolean value representing if the series is smooth or not. Only applicable for line and scatter charts.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
@@ -8995,7 +9085,7 @@ declare namespace Excel {
         splitValue: number;
         /**
          *
-         * Returns the value that represents the series type. Read-only.
+         * Returns the value that represents the series type.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
@@ -9065,14 +9155,14 @@ declare namespace Excel {
     class ChartSeriesFormat extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents the fill format of a chart series, which includes background formating information. Read-only.
+         * Represents the fill format of a chart series, which includes background formating information.
          *
          * [Api set: ExcelApi 1.1]
          */
         readonly fill: Excel.ChartFill;
         /**
          *
-         * Represents line formatting. Read-only.
+         * Represents line formatting.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -9141,7 +9231,7 @@ declare namespace Excel {
     class ChartPoint extends OfficeExtension.ClientObject {
         /**
          *
-         * Returns the data label of a chart point. Read-only.
+         * Returns the data label of a chart point.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
@@ -9219,14 +9309,14 @@ declare namespace Excel {
     class ChartPointFormat extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents the border format of a chart data point, which includes color, style and weight information. Read-only.
+         * Represents the border format of a chart data point, which includes color, style and weight information.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         readonly border: Excel.ChartBorder;
         /**
          *
-         * Represents the fill format of a chart, which includes background formating information. Read-only.
+         * Represents the fill format of a chart, which includes background formating information.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -9255,21 +9345,21 @@ declare namespace Excel {
     class ChartAxes extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents the category axis in a chart. Read-only.
+         * Represents the category axis in a chart.
          *
          * [Api set: ExcelApi 1.1]
          */
         readonly categoryAxis: Excel.ChartAxis;
         /**
          *
-         * Represents the series axis of a 3-dimensional chart. Read-only.
+         * Represents the series axis of a 3-dimensional chart.
          *
          * [Api set: ExcelApi 1.1]
          */
         readonly seriesAxis: Excel.ChartAxis;
         /**
          *
-         * Represents the value axis in an axis. Read-only.
+         * Represents the value axis in an axis.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -9318,28 +9408,28 @@ declare namespace Excel {
     class ChartAxis extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents the formatting of a chart object, which includes line and font formatting. Read-only.
+         * Represents the formatting of a chart object, which includes line and font formatting.
          *
          * [Api set: ExcelApi 1.1]
          */
         readonly format: Excel.ChartAxisFormat;
         /**
          *
-         * Returns a gridlines object that represents the major gridlines for the specified axis. Read-only.
+         * Returns a gridlines object that represents the major gridlines for the specified axis.
          *
          * [Api set: ExcelApi 1.1]
          */
         readonly majorGridlines: Excel.ChartGridlines;
         /**
          *
-         * Returns a Gridlines object that represents the minor gridlines for the specified axis. Read-only.
+         * Returns a Gridlines object that represents the minor gridlines for the specified axis.
          *
          * [Api set: ExcelApi 1.1]
          */
         readonly minorGridlines: Excel.ChartGridlines;
         /**
          *
-         * Represents the axis title. Read-only.
+         * Represents the axis title.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -9640,21 +9730,21 @@ declare namespace Excel {
     class ChartAxisFormat extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents chart fill formatting. Read-only.
+         * Represents chart fill formatting.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         readonly fill: Excel.ChartFill;
         /**
          *
-         * Represents the font attributes (font name, font size, color, etc.) for a chart axis element. Read-only.
+         * Represents the font attributes (font name, font size, color, etc.) for a chart axis element.
          *
          * [Api set: ExcelApi 1.1]
          */
         readonly font: Excel.ChartFont;
         /**
          *
-         * Represents chart line formatting. Read-only.
+         * Represents chart line formatting.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -9683,7 +9773,7 @@ declare namespace Excel {
     class ChartAxisTitle extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents the formatting of chart axis title. Read-only.
+         * Represents the formatting of chart axis title.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -9735,21 +9825,21 @@ declare namespace Excel {
     class ChartAxisTitleFormat extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents the border format, which includes color, linestyle and weight. Read-only.
+         * Represents the border format, which includes color, linestyle and weight.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         readonly border: Excel.ChartBorder;
         /**
          *
-         * Represents chart fill formatting. Read-only.
+         * Represents chart fill formatting.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         readonly fill: Excel.ChartFill;
         /**
          *
-         * Represents the font attributes, such as font name, font size, color, etc. of chart axis title object. Read-only.
+         * Represents the font attributes, such as font name, font size, color, etc. of chart axis title object.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -9778,7 +9868,7 @@ declare namespace Excel {
     class ChartDataLabels extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents the format of chart data labels, which includes fill and font formatting. Read-only.
+         * Represents the format of chart data labels, which includes fill and font formatting.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -9907,7 +9997,7 @@ declare namespace Excel {
     class ChartDataLabel extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents the format of chart data label. Read-only.
+         * Represents the format of chart data label.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
@@ -10078,21 +10168,21 @@ declare namespace Excel {
     class ChartDataLabelFormat extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents the border format, which includes color, linestyle and weight. Read-only.
+         * Represents the border format, which includes color, linestyle and weight.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         readonly border: Excel.ChartBorder;
         /**
          *
-         * Represents the fill format of the current chart data label. Read-only.
+         * Represents the fill format of the current chart data label.
          *
          * [Api set: ExcelApi 1.1]
          */
         readonly fill: Excel.ChartFill;
         /**
          *
-         * Represents the font attributes (font name, font size, color, etc.) for a chart data label. Read-only.
+         * Represents the font attributes (font name, font size, color, etc.) for a chart data label.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -10121,7 +10211,7 @@ declare namespace Excel {
     class ChartErrorBars extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents the formatting of chart ErrorBars. Read-only.
+         * Represents the formatting of chart ErrorBars.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
@@ -10178,7 +10268,7 @@ declare namespace Excel {
     class ChartErrorBarsFormat extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents chart line formatting. Read-only.
+         * Represents chart line formatting.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
@@ -10207,7 +10297,7 @@ declare namespace Excel {
     class ChartGridlines extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents the formatting of chart gridlines. Read-only.
+         * Represents the formatting of chart gridlines.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -10243,7 +10333,7 @@ declare namespace Excel {
     class ChartGridlinesFormat extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents chart line formatting. Read-only.
+         * Represents chart line formatting.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -10272,14 +10362,14 @@ declare namespace Excel {
     class ChartLegend extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents the formatting of a chart legend, which includes fill and font formatting. Read-only.
+         * Represents the formatting of a chart legend, which includes fill and font formatting.
          *
          * [Api set: ExcelApi 1.1]
          */
         readonly format: Excel.ChartLegendFormat;
         /**
          *
-         * Represents a collection of legendEntries in the legend. Read-only.
+         * Represents a collection of legendEntries in the legend.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
@@ -10314,7 +10404,7 @@ declare namespace Excel {
         position: Excel.ChartLegendPosition | "Invalid" | "Top" | "Bottom" | "Left" | "Right" | "Corner" | "Custom";
         /**
          *
-         * Represents if the legend has shadow on the chart.
+         * Represents if the legend has a shadow on the chart.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
@@ -10461,21 +10551,21 @@ declare namespace Excel {
     class ChartLegendFormat extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents the border format, which includes color, linestyle and weight. Read-only.
+         * Represents the border format, which includes color, linestyle and weight.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         readonly border: Excel.ChartBorder;
         /**
          *
-         * Represents the fill format of an object, which includes background formating information. Read-only.
+         * Represents the fill format of an object, which includes background formating information.
          *
          * [Api set: ExcelApi 1.1]
          */
         readonly fill: Excel.ChartFill;
         /**
          *
-         * Represents the font attributes such as font name, font size, color, etc. of a chart legend. Read-only.
+         * Represents the font attributes such as font name, font size, color, etc. of a chart legend.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -10504,14 +10594,14 @@ declare namespace Excel {
     class ChartTitle extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents the formatting of a chart title, which includes fill and font formatting. Read-only.
+         * Represents the formatting of a chart title, which includes fill and font formatting.
          *
          * [Api set: ExcelApi 1.1]
          */
         readonly format: Excel.ChartTitleFormat;
         /**
          *
-         * Returns the height, in points, of the chart title. Read-only. Null if chart title's not visible.
+         * Returns the height, in points, of the chart title. Read-only. Null if chart title is not visible.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
@@ -10588,7 +10678,7 @@ declare namespace Excel {
         visible: boolean;
         /**
          *
-         * Returns the width, in points, of the chart title. Read-only. Null if chart title's not visible.
+         * Returns the width, in points, of the chart title. Read-only. Null if chart title is not visible.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
@@ -10636,7 +10726,7 @@ declare namespace Excel {
     class ChartFormatString extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents the font attributes, such as font name, font size, color, etc. of chart characters object. Read-only.
+         * Represents the font attributes, such as font name, font size, color, etc. of chart characters object.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
@@ -10665,21 +10755,21 @@ declare namespace Excel {
     class ChartTitleFormat extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents the border format of chart title, which includes color, linestyle and weight. Read-only.
+         * Represents the border format of chart title, which includes color, linestyle and weight.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         readonly border: Excel.ChartBorder;
         /**
          *
-         * Represents the fill format of an object, which includes background formating information. Read-only.
+         * Represents the fill format of an object, which includes background formating information.
          *
          * [Api set: ExcelApi 1.1]
          */
         readonly fill: Excel.ChartFill;
         /**
          *
-         * Represents the font attributes (font name, font size, color, etc.) for an object. Read-only.
+         * Represents the font attributes (font name, font size, color, etc.) for an object.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -10903,7 +10993,7 @@ declare namespace Excel {
     class ChartTrendline extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents the formatting of a chart trendline. Read-only.
+         * Represents the formatting of a chart trendline.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
@@ -10952,7 +11042,7 @@ declare namespace Excel {
         intercept: any;
         /**
          *
-         * Represents the period of a chart trendline, only for trendline with MovingAverage type.
+         * Represents the period of a chart trendline. Only applicable for trendline with MovingAverage type.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
@@ -10966,7 +11056,7 @@ declare namespace Excel {
         name: string;
         /**
          *
-         * Represents the order of a chart trendline, only for trendline with Polynomial type.
+         * Represents the order of a chart trendline. Only applicable for trendline with Polynomial type.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
@@ -11060,7 +11150,7 @@ declare namespace Excel {
     class ChartTrendlineFormat extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents chart line formatting. Read-only.
+         * Represents chart line formatting.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
@@ -11089,7 +11179,7 @@ declare namespace Excel {
     class ChartTrendlineLabel extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents the format of chart trendline label. Read-only.
+         * Represents the format of chart trendline label.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
@@ -11204,21 +11294,21 @@ declare namespace Excel {
     class ChartTrendlineLabelFormat extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents the border format, which includes color, linestyle and weight. Read-only.
+         * Represents the border format, which includes color, linestyle and weight.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         readonly border: Excel.ChartBorder;
         /**
          *
-         * Represents the fill format of the current chart trendline label. Read-only.
+         * Represents the fill format of the current chart trendline label.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         readonly fill: Excel.ChartFill;
         /**
          *
-         * Represents the font attributes (font name, font size, color, etc.) for a chart trendline label. Read-only.
+         * Represents the font attributes (font name, font size, color, etc.) for a chart trendline label.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
@@ -11247,7 +11337,7 @@ declare namespace Excel {
     class ChartPlotArea extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents the formatting of a chart plotArea. Read-only.
+         * Represents the formatting of a chart plotArea.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
@@ -11339,14 +11429,14 @@ declare namespace Excel {
     class ChartPlotAreaFormat extends OfficeExtension.ClientObject {
         /**
          *
-         * Represents the border attributes of a chart plotArea. Read-only.
+         * Represents the border attributes of a chart plotArea.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         readonly border: Excel.ChartBorder;
         /**
          *
-         * Represents the fill format of an object, which includes background formating information. Read-only.
+         * Represents the fill format of an object, which includes background formating information.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
@@ -12060,7 +12150,7 @@ declare namespace Excel {
         readonly rowHierarchies: Excel.RowColumnPivotHierarchyCollection;
         /**
          *
-         * The worksheet containing the current PivotTable. Read-only.
+         * The worksheet containing the current PivotTable.
          *
          * [Api set: ExcelApi 1.3]
          */
@@ -13723,7 +13813,7 @@ declare namespace Excel {
     class CustomConditionalFormat extends OfficeExtension.ClientObject {
         /**
          *
-         * Returns a format object, encapsulating the conditional formats font, fill, borders, and other properties. Read-only.
+         * Returns a format object, encapsulating the conditional formats font, fill, borders, and other properties.
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -13982,7 +14072,7 @@ declare namespace Excel {
     class TopBottomConditionalFormat extends OfficeExtension.ClientObject {
         /**
          *
-         * Returns a format object, encapsulating the conditional formats font, fill, borders, and other properties. Read-only.
+         * Returns a format object, encapsulating the conditional formats font, fill, borders, and other properties.
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -14040,7 +14130,7 @@ declare namespace Excel {
     class PresetCriteriaConditionalFormat extends OfficeExtension.ClientObject {
         /**
          *
-         * Returns a format object, encapsulating the conditional formats font, fill, borders, and other properties. Read-only.
+         * Returns a format object, encapsulating the conditional formats font, fill, borders, and other properties.
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -14091,7 +14181,7 @@ declare namespace Excel {
     class TextConditionalFormat extends OfficeExtension.ClientObject {
         /**
          *
-         * Returns a format object, encapsulating the conditional formats font, fill, borders, and other properties. Read-only.
+         * Returns a format object, encapsulating the conditional formats font, fill, borders, and other properties.
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -14149,7 +14239,7 @@ declare namespace Excel {
     class CellValueConditionalFormat extends OfficeExtension.ClientObject {
         /**
          *
-         * Returns a format object, encapsulating the conditional formats font, fill, borders, and other properties. Read-only.
+         * Returns a format object, encapsulating the conditional formats font, fill, borders, and other properties.
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -14214,21 +14304,21 @@ declare namespace Excel {
     class ConditionalRangeFormat extends OfficeExtension.ClientObject {
         /**
          *
-         * Collection of border objects that apply to the overall conditional format range. Read-only.
+         * Collection of border objects that apply to the overall conditional format range.
          *
          * [Api set: ExcelApi 1.6]
          */
         readonly borders: Excel.ConditionalRangeBorderCollection;
         /**
          *
-         * Returns the fill object defined on the overall conditional format range. Read-only.
+         * Returns the fill object defined on the overall conditional format range.
          *
          * [Api set: ExcelApi 1.6]
          */
         readonly fill: Excel.ConditionalRangeFill;
         /**
          *
-         * Returns the font object defined on the overall conditional format range. Read-only.
+         * Returns the font object defined on the overall conditional format range.
          *
          * [Api set: ExcelApi 1.6]
          */
@@ -16296,7 +16386,7 @@ declare namespace Excel {
         float = "Float",
     }
     /**
-     * [Api set: ExcelApi BETA (PREVIEW ONLY) for Local, Remote]
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
     enum EventSource {
         /**
@@ -16313,7 +16403,7 @@ declare namespace Excel {
         remote = "Remote",
     }
     /**
-     * [Api set: ExcelApi BETA (PREVIEW ONLY) for Others, RangeEdited, RowInserted, RowDeleted, ColumnInserted, ColumnDeleted, CellInserted, CellDeleted]
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
     enum DataChangeType {
         /**
@@ -16366,7 +16456,7 @@ declare namespace Excel {
         cellDeleted = "CellDeleted",
     }
     /**
-     * [Api set: ExcelApi BETA (PREVIEW ONLY) for WorksheetChanged, WorksheetSelectionChanged, WorksheetAdded, WorksheetActivated, WorksheetDeactivated, TableChanged, TableSelectionChanged]
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
     enum EventType {
         /**
@@ -20659,7 +20749,7 @@ declare namespace Excel {
             formulasR1C1?: any[][];
             /**
              *
-             * Represents the hyperlink set for the current range.
+             * Represents the hyperlink for the current range.
             When getting hyperlink, if the range has multiple areas, null will be returned.
             When setting hyperlink, if the range has multiple areas, the "InvalidReference" error will be returned.
              *
@@ -20695,7 +20785,7 @@ declare namespace Excel {
             rowHidden?: boolean;
             /**
              *
-             * Represents the style of the current range. This return either null or a string.
+             * Represents the style of the current range.
             If the styles of the cells are inconsistent, null will be returned.
             For custom styles, the style name will be returned. For built-in styles, a string representing a value in the BuiltInStyle enum will be returned.
              *
@@ -21034,7 +21124,7 @@ declare namespace Excel {
             useStandardHeight?: boolean;
             /**
              *
-             * Determines if the columnwidth of the Range object equals the standard width of the sheet.
+             * Indicates whether the columnwidth of the Range object equals the standard width of the sheet.
             Returns True if the column width of the Range object equals the standard width of the sheet.
             Returns Null if the range contains more than one column and the columns aren't all the same height.
             Returns False otherwise.
@@ -21539,14 +21629,14 @@ declare namespace Excel {
             secondPlotSize?: number;
             /**
              *
-             * Boolean value representing if the series has shadow or not.
+             * Boolean value representing if the series has a shadow or not.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             showShadow?: boolean;
             /**
              *
-             * Boolean value representing if the series is smooth or not. Only for line and scatter charts.
+             * Boolean value representing if the series is smooth or not. Only applicable for line and scatter charts.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -22330,7 +22420,7 @@ declare namespace Excel {
             position?: Excel.ChartLegendPosition | "Invalid" | "Top" | "Bottom" | "Left" | "Right" | "Corner" | "Custom";
             /**
              *
-             * Represents if the legend has shadow on the chart.
+             * Represents if the legend has a shadow on the chart.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -22641,7 +22731,7 @@ declare namespace Excel {
             intercept?: any;
             /**
              *
-             * Represents the period of a chart trendline, only for trendline with MovingAverage type.
+             * Represents the period of a chart trendline. Only applicable for trendline with MovingAverage type.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -22655,7 +22745,7 @@ declare namespace Excel {
             name?: string;
             /**
              *
-             * Represents the order of a chart trendline, only for trendline with Polynomial type.
+             * Represents the order of a chart trendline. Only applicable for trendline with Polynomial type.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -23960,42 +24050,42 @@ declare namespace Excel {
         interface WorkbookData {
             /**
             *
-            * Represents the Excel application instance that contains this workbook. Read-only.
+            * Represents the Excel application instance that contains this workbook.
             *
             * [Api set: ExcelApi 1.1]
             */
             application?: Excel.Interfaces.ApplicationData;
             /**
             *
-            * Represents a collection of bindings that are part of the workbook. Read-only.
+            * Represents a collection of bindings that are part of the workbook.
             *
             * [Api set: ExcelApi 1.1]
             */
             bindings?: Excel.Interfaces.BindingData[];
             /**
             *
-            * Represents the collection of custom functions defined in add-ins. Read-only.
+            * Represents the collection of custom functions defined in add-ins.
             *
             * [Api set: CustomFunctions 1.1]
             */
             customFunctions?: Excel.Interfaces.CustomFunctionData[];
             /**
             *
-            * Represents the collection of custom XML parts contained by this workbook. Read-only.
+            * Represents the collection of custom XML parts contained by this workbook.
             *
             * [Api set: ExcelApi 1.5]
             */
             customXmlParts?: Excel.Interfaces.CustomXmlPartData[];
             /**
             *
-            * Represents a collection of workbook scoped named items (named ranges and constants). Read-only.
+            * Represents a collection of workbook scoped named items (named ranges and constants).
             *
             * [Api set: ExcelApi 1.1]
             */
             names?: Excel.Interfaces.NamedItemData[];
             /**
             *
-            * Represents a collection of PivotTables associated with the workbook. Read-only.
+            * Represents a collection of PivotTables associated with the workbook.
             *
             * [Api set: ExcelApi 1.3]
             */
@@ -24016,28 +24106,28 @@ declare namespace Excel {
             protection?: Excel.Interfaces.WorkbookProtectionData;
             /**
             *
-            * Represents a collection of Settings associated with the workbook. Read-only.
+            * Represents a collection of Settings associated with the workbook.
             *
             * [Api set: ExcelApi 1.4]
             */
             settings?: Excel.Interfaces.SettingData[];
             /**
             *
-            * Represents a collection of styles associated with the workbook. Read-only.
+            * Represents a collection of styles associated with the workbook.
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
             styles?: Excel.Interfaces.StyleData[];
             /**
             *
-            * Represents a collection of tables associated with the workbook. Read-only.
+            * Represents a collection of tables associated with the workbook.
             *
             * [Api set: ExcelApi 1.1]
             */
             tables?: Excel.Interfaces.TableData[];
             /**
             *
-            * Represents a collection of worksheets associated with the workbook. Read-only.
+            * Represents a collection of worksheets associated with the workbook.
             *
             * [Api set: ExcelApi 1.1]
             */
@@ -24112,28 +24202,28 @@ declare namespace Excel {
         interface WorksheetData {
             /**
             *
-            * Returns collection of charts that are part of the worksheet. Read-only.
+            * Returns collection of charts that are part of the worksheet.
             *
             * [Api set: ExcelApi 1.1]
             */
             charts?: Excel.Interfaces.ChartData[];
             /**
             *
-            * Collection of names scoped to the current worksheet. Read-only.
+            * Collection of names scoped to the current worksheet.
             *
             * [Api set: ExcelApi 1.4]
             */
             names?: Excel.Interfaces.NamedItemData[];
             /**
             *
-            * Gets the PageLayout object of the worksheet. Read-only.
+            * Gets the PageLayout object of the worksheet.
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
             pageLayout?: Excel.Interfaces.PageLayoutData;
             /**
             *
-            * Collection of PivotTables that are part of the worksheet. Read-only.
+            * Collection of PivotTables that are part of the worksheet.
             *
             * [Api set: ExcelApi 1.3]
             */
@@ -24147,7 +24237,7 @@ declare namespace Excel {
             protection?: Excel.Interfaces.WorksheetProtectionData;
             /**
             *
-            * Collection of tables that are part of the worksheet. Read-only.
+            * Collection of tables that are part of the worksheet.
             *
             * [Api set: ExcelApi 1.1]
             */
@@ -24229,7 +24319,7 @@ declare namespace Excel {
         interface WorksheetProtectionData {
             /**
              *
-             * Sheet protection options. Read-Only.
+             * Sheet protection options.
              *
              * [Api set: ExcelApi 1.2]
              */
@@ -24246,21 +24336,21 @@ declare namespace Excel {
         interface RangeData {
             /**
             *
-            * Represents a collection of contiguous areas for the range. Read-only.
+            * Represents a collection of contiguous areas for the range.
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
             areas?: Excel.Interfaces.RangeData[];
             /**
             *
-            * Collection of ConditionalFormats that intersect the range. Read-only.
+            * Collection of ConditionalFormats that intersect the range.
             *
             * [Api set: ExcelApi 1.6]
             */
             conditionalFormats?: Excel.Interfaces.ConditionalFormatData[];
             /**
             *
-            * Returns a data validation object. Read-only.
+            * Returns a data validation object.
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
@@ -24274,7 +24364,7 @@ declare namespace Excel {
             format?: Excel.Interfaces.RangeFormatData;
             /**
             *
-            * The worksheet containing the current range. Read-only.
+            * The worksheet containing the current range.
             *
             * [Api set: ExcelApi 1.1]
             */
@@ -24365,7 +24455,7 @@ declare namespace Excel {
             hidden?: boolean;
             /**
              *
-             * Represents the hyperlink set for the current range.
+             * Represents the hyperlink for the current range.
             When getting hyperlink, if the range has multiple areas, null will be returned.
             When setting hyperlink, if the range has multiple areas, the "InvalidReference" error will be returned.
              *
@@ -24433,7 +24523,7 @@ declare namespace Excel {
             rowIndex?: number;
             /**
              *
-             * Represents the style of the current range. This return either null or a string.
+             * Represents the style of the current range.
             If the styles of the cells are inconsistent, null will be returned.
             For custom styles, the style name will be returned. For built-in styles, a string representing a value in the BuiltInStyle enum will be returned.
              *
@@ -24471,7 +24561,7 @@ declare namespace Excel {
         interface RangeViewData {
             /**
             *
-            * Represents a collection of range views associated with the range. Read-only.
+            * Represents a collection of range views associated with the range.
             *
             * [Api set: ExcelApi 1.3]
             */
@@ -24706,14 +24796,14 @@ declare namespace Excel {
         interface TableData {
             /**
             *
-            * Represents a collection of all the columns in the table. Read-only.
+            * Represents a collection of all the columns in the table.
             *
             * [Api set: ExcelApi 1.1]
             */
             columns?: Excel.Interfaces.TableColumnData[];
             /**
             *
-            * Represents a collection of all the rows in the table. Read-only.
+            * Represents a collection of all the rows in the table.
             *
             * [Api set: ExcelApi 1.1]
             */
@@ -24727,7 +24817,7 @@ declare namespace Excel {
             sort?: Excel.Interfaces.TableSortData;
             /**
             *
-            * The worksheet containing the current table. Read-only.
+            * The worksheet containing the current table.
             *
             * [Api set: ExcelApi 1.2]
             */
@@ -24941,21 +25031,21 @@ declare namespace Excel {
         interface RangeFormatData {
             /**
             *
-            * Collection of border objects that apply to the overall range. Read-only.
+            * Collection of border objects that apply to the overall range.
             *
             * [Api set: ExcelApi 1.1]
             */
             borders?: Excel.Interfaces.RangeBorderData[];
             /**
             *
-            * Returns the fill object defined on the overall range. Read-only.
+            * Returns the fill object defined on the overall range.
             *
             * [Api set: ExcelApi 1.1]
             */
             fill?: Excel.Interfaces.RangeFillData;
             /**
             *
-            * Returns the font object defined on the overall range. Read-only.
+            * Returns the font object defined on the overall range.
             *
             * [Api set: ExcelApi 1.1]
             */
@@ -25037,7 +25127,7 @@ declare namespace Excel {
             useStandardHeight?: boolean;
             /**
              *
-             * Determines if the columnwidth of the Range object equals the standard width of the sheet.
+             * Indicates whether the columnwidth of the Range object equals the standard width of the sheet.
             Returns True if the column width of the Range object equals the standard width of the sheet.
             Returns Null if the range contains more than one column and the columns aren't all the same height.
             Returns False otherwise.
@@ -25175,14 +25265,14 @@ declare namespace Excel {
         interface ChartData {
             /**
             *
-            * Represents chart axes. Read-only.
+            * Represents chart axes.
             *
             * [Api set: ExcelApi 1.1]
             */
             axes?: Excel.Interfaces.ChartAxesData;
             /**
             *
-            * Represents the datalabels on the chart. Read-only.
+            * Represents the datalabels on the chart.
             *
             * [Api set: ExcelApi 1.1]
             */
@@ -25196,35 +25286,35 @@ declare namespace Excel {
             format?: Excel.Interfaces.ChartAreaFormatData;
             /**
             *
-            * Represents the legend for the chart. Read-only.
+            * Represents the legend for the chart.
             *
             * [Api set: ExcelApi 1.1]
             */
             legend?: Excel.Interfaces.ChartLegendData;
             /**
             *
-            * Represents the plotArea for the chart. Read-only.
+            * Represents the plotArea for the chart.
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
             plotArea?: Excel.Interfaces.ChartPlotAreaData;
             /**
             *
-            * Represents either a single series or collection of series in the chart. Read-only.
+            * Represents either a single series or collection of series in the chart.
             *
             * [Api set: ExcelApi 1.1]
             */
             series?: Excel.Interfaces.ChartSeriesData[];
             /**
             *
-            * Represents the title of the specified chart, including the text, visibility, position and formating of the title. Read-only.
+            * Represents the title of the specified chart, including the text, visibility, position and formating of the title.
             *
             * [Api set: ExcelApi 1.1]
             */
             title?: Excel.Interfaces.ChartTitleData;
             /**
             *
-            * The worksheet containing the current chart. Read-only.
+            * The worksheet containing the current chart.
             *
             * [Api set: ExcelApi 1.2]
             */
@@ -25386,14 +25476,14 @@ declare namespace Excel {
         interface ChartAreaFormatData {
             /**
             *
-            * Represents the border format of chart area, which includes color, linestyle and weight. Read-only.
+            * Represents the border format of chart area, which includes color, linestyle and weight.
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
             border?: Excel.Interfaces.ChartBorderData;
             /**
             *
-            * Represents the font attributes (font name, font size, color, etc.) for the current object. Read-only.
+            * Represents the font attributes (font name, font size, color, etc.) for the current object.
             *
             * [Api set: ExcelApi 1.1]
             */
@@ -25407,42 +25497,42 @@ declare namespace Excel {
         interface ChartSeriesData {
             /**
             *
-            * Represents a collection of all dataLabels in the series. Read-only.
+            * Represents a collection of all dataLabels in the series.
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
             dataLabels?: Excel.Interfaces.ChartDataLabelsData;
             /**
             *
-            * Represents the formatting of a chart series, which includes fill and line formatting. Read-only.
+            * Represents the formatting of a chart series, which includes fill and line formatting.
             *
             * [Api set: ExcelApi 1.1]
             */
             format?: Excel.Interfaces.ChartSeriesFormatData;
             /**
             *
-            * Represents a collection of all points in the series. Read-only.
+            * Represents a collection of all points in the series.
             *
             * [Api set: ExcelApi 1.1]
             */
             points?: Excel.Interfaces.ChartPointData[];
             /**
             *
-            * Represents a collection of trendlines in the series. Read-only.
+            * Represents a collection of trendlines in the series.
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
             trendlines?: Excel.Interfaces.ChartTrendlineData[];
             /**
             *
-            * Represents the error bar object for a chart series. Read-only.
+            * Represents the error bar object for a chart series.
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
             xerrorBars?: Excel.Interfaces.ChartErrorBarsData;
             /**
             *
-            * Represents the error bar object for a chart series. Read-only.
+            * Represents the error bar object for a chart series.
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
@@ -25584,14 +25674,14 @@ declare namespace Excel {
             secondPlotSize?: number;
             /**
              *
-             * Boolean value representing if the series has shadow or not.
+             * Boolean value representing if the series has a shadow or not.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             showShadow?: boolean;
             /**
              *
-             * Boolean value representing if the series is smooth or not. Only for line and scatter charts.
+             * Boolean value representing if the series is smooth or not. Only applicable for line and scatter charts.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -25612,7 +25702,7 @@ declare namespace Excel {
             splitValue?: number;
             /**
              *
-             * Returns the value that represents the series type. Read-only.
+             * Returns the value that represents the series type.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -25629,7 +25719,7 @@ declare namespace Excel {
         interface ChartSeriesFormatData {
             /**
             *
-            * Represents line formatting. Read-only.
+            * Represents line formatting.
             *
             * [Api set: ExcelApi 1.1]
             */
@@ -25643,7 +25733,7 @@ declare namespace Excel {
         interface ChartPointData {
             /**
             *
-            * Returns the data label of a chart point. Read-only.
+            * Returns the data label of a chart point.
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
@@ -25702,7 +25792,7 @@ declare namespace Excel {
         interface ChartPointFormatData {
             /**
             *
-            * Represents the border format of a chart data point, which includes color, style and weight information. Read-only.
+            * Represents the border format of a chart data point, which includes color, style and weight information.
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
@@ -25712,21 +25802,21 @@ declare namespace Excel {
         interface ChartAxesData {
             /**
             *
-            * Represents the category axis in a chart. Read-only.
+            * Represents the category axis in a chart.
             *
             * [Api set: ExcelApi 1.1]
             */
             categoryAxis?: Excel.Interfaces.ChartAxisData;
             /**
             *
-            * Represents the series axis of a 3-dimensional chart. Read-only.
+            * Represents the series axis of a 3-dimensional chart.
             *
             * [Api set: ExcelApi 1.1]
             */
             seriesAxis?: Excel.Interfaces.ChartAxisData;
             /**
             *
-            * Represents the value axis in an axis. Read-only.
+            * Represents the value axis in an axis.
             *
             * [Api set: ExcelApi 1.1]
             */
@@ -25736,28 +25826,28 @@ declare namespace Excel {
         interface ChartAxisData {
             /**
             *
-            * Represents the formatting of a chart object, which includes line and font formatting. Read-only.
+            * Represents the formatting of a chart object, which includes line and font formatting.
             *
             * [Api set: ExcelApi 1.1]
             */
             format?: Excel.Interfaces.ChartAxisFormatData;
             /**
             *
-            * Returns a gridlines object that represents the major gridlines for the specified axis. Read-only.
+            * Returns a gridlines object that represents the major gridlines for the specified axis.
             *
             * [Api set: ExcelApi 1.1]
             */
             majorGridlines?: Excel.Interfaces.ChartGridlinesData;
             /**
             *
-            * Returns a Gridlines object that represents the minor gridlines for the specified axis. Read-only.
+            * Returns a Gridlines object that represents the minor gridlines for the specified axis.
             *
             * [Api set: ExcelApi 1.1]
             */
             minorGridlines?: Excel.Interfaces.ChartGridlinesData;
             /**
             *
-            * Represents the axis title. Read-only.
+            * Represents the axis title.
             *
             * [Api set: ExcelApi 1.1]
             */
@@ -26012,14 +26102,14 @@ declare namespace Excel {
         interface ChartAxisFormatData {
             /**
             *
-            * Represents the font attributes (font name, font size, color, etc.) for a chart axis element. Read-only.
+            * Represents the font attributes (font name, font size, color, etc.) for a chart axis element.
             *
             * [Api set: ExcelApi 1.1]
             */
             font?: Excel.Interfaces.ChartFontData;
             /**
             *
-            * Represents chart line formatting. Read-only.
+            * Represents chart line formatting.
             *
             * [Api set: ExcelApi 1.1]
             */
@@ -26029,7 +26119,7 @@ declare namespace Excel {
         interface ChartAxisTitleData {
             /**
             *
-            * Represents the formatting of chart axis title. Read-only.
+            * Represents the formatting of chart axis title.
             *
             * [Api set: ExcelApi 1.1]
             */
@@ -26053,14 +26143,14 @@ declare namespace Excel {
         interface ChartAxisTitleFormatData {
             /**
             *
-            * Represents the border format, which includes color, linestyle and weight. Read-only.
+            * Represents the border format, which includes color, linestyle and weight.
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
             border?: Excel.Interfaces.ChartBorderData;
             /**
             *
-            * Represents the font attributes, such as font name, font size, color, etc. of chart axis title object. Read-only.
+            * Represents the font attributes, such as font name, font size, color, etc. of chart axis title object.
             *
             * [Api set: ExcelApi 1.1]
             */
@@ -26070,7 +26160,7 @@ declare namespace Excel {
         interface ChartDataLabelsData {
             /**
             *
-            * Represents the format of chart data labels, which includes fill and font formatting. Read-only.
+            * Represents the format of chart data labels, which includes fill and font formatting.
             *
             * [Api set: ExcelApi 1.1]
             */
@@ -26180,7 +26270,7 @@ declare namespace Excel {
         interface ChartDataLabelData {
             /**
             *
-            * Represents the format of chart data label. Read-only.
+            * Represents the format of chart data label.
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
@@ -26332,14 +26422,14 @@ declare namespace Excel {
         interface ChartDataLabelFormatData {
             /**
             *
-            * Represents the border format, which includes color, linestyle and weight. Read-only.
+            * Represents the border format, which includes color, linestyle and weight.
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
             border?: Excel.Interfaces.ChartBorderData;
             /**
             *
-            * Represents the font attributes (font name, font size, color, etc.) for a chart data label. Read-only.
+            * Represents the font attributes (font name, font size, color, etc.) for a chart data label.
             *
             * [Api set: ExcelApi 1.1]
             */
@@ -26349,7 +26439,7 @@ declare namespace Excel {
         interface ChartErrorBarsData {
             /**
             *
-            * Represents the formatting of chart ErrorBars. Read-only.
+            * Represents the formatting of chart ErrorBars.
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
@@ -26387,7 +26477,7 @@ declare namespace Excel {
         interface ChartErrorBarsFormatData {
             /**
             *
-            * Represents chart line formatting. Read-only.
+            * Represents chart line formatting.
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
@@ -26397,7 +26487,7 @@ declare namespace Excel {
         interface ChartGridlinesData {
             /**
             *
-            * Represents the formatting of chart gridlines. Read-only.
+            * Represents the formatting of chart gridlines.
             *
             * [Api set: ExcelApi 1.1]
             */
@@ -26414,7 +26504,7 @@ declare namespace Excel {
         interface ChartGridlinesFormatData {
             /**
             *
-            * Represents chart line formatting. Read-only.
+            * Represents chart line formatting.
             *
             * [Api set: ExcelApi 1.1]
             */
@@ -26424,14 +26514,14 @@ declare namespace Excel {
         interface ChartLegendData {
             /**
             *
-            * Represents the formatting of a chart legend, which includes fill and font formatting. Read-only.
+            * Represents the formatting of a chart legend, which includes fill and font formatting.
             *
             * [Api set: ExcelApi 1.1]
             */
             format?: Excel.Interfaces.ChartLegendFormatData;
             /**
             *
-            * Represents a collection of legendEntries in the legend. Read-only.
+            * Represents a collection of legendEntries in the legend.
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
@@ -26466,7 +26556,7 @@ declare namespace Excel {
             position?: Excel.ChartLegendPosition | "Invalid" | "Top" | "Bottom" | "Left" | "Right" | "Corner" | "Custom";
             /**
              *
-             * Represents if the legend has shadow on the chart.
+             * Represents if the legend has a shadow on the chart.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -26546,14 +26636,14 @@ declare namespace Excel {
         interface ChartLegendFormatData {
             /**
             *
-            * Represents the border format, which includes color, linestyle and weight. Read-only.
+            * Represents the border format, which includes color, linestyle and weight.
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
             border?: Excel.Interfaces.ChartBorderData;
             /**
             *
-            * Represents the font attributes such as font name, font size, color, etc. of a chart legend. Read-only.
+            * Represents the font attributes such as font name, font size, color, etc. of a chart legend.
             *
             * [Api set: ExcelApi 1.1]
             */
@@ -26563,14 +26653,14 @@ declare namespace Excel {
         interface ChartTitleData {
             /**
             *
-            * Represents the formatting of a chart title, which includes fill and font formatting. Read-only.
+            * Represents the formatting of a chart title, which includes fill and font formatting.
             *
             * [Api set: ExcelApi 1.1]
             */
             format?: Excel.Interfaces.ChartTitleFormatData;
             /**
              *
-             * Returns the height, in points, of the chart title. Read-only. Null if chart title's not visible.
+             * Returns the height, in points, of the chart title. Read-only. Null if chart title is not visible.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -26647,7 +26737,7 @@ declare namespace Excel {
             visible?: boolean;
             /**
              *
-             * Returns the width, in points, of the chart title. Read-only. Null if chart title's not visible.
+             * Returns the width, in points, of the chart title. Read-only. Null if chart title is not visible.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -26657,7 +26747,7 @@ declare namespace Excel {
         interface ChartFormatStringData {
             /**
             *
-            * Represents the font attributes, such as font name, font size, color, etc. of chart characters object. Read-only.
+            * Represents the font attributes, such as font name, font size, color, etc. of chart characters object.
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
@@ -26667,14 +26757,14 @@ declare namespace Excel {
         interface ChartTitleFormatData {
             /**
             *
-            * Represents the border format of chart title, which includes color, linestyle and weight. Read-only.
+            * Represents the border format of chart title, which includes color, linestyle and weight.
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
             border?: Excel.Interfaces.ChartBorderData;
             /**
             *
-            * Represents the font attributes (font name, font size, color, etc.) for an object. Read-only.
+            * Represents the font attributes (font name, font size, color, etc.) for an object.
             *
             * [Api set: ExcelApi 1.1]
             */
@@ -26777,7 +26867,7 @@ declare namespace Excel {
         interface ChartTrendlineData {
             /**
             *
-            * Represents the formatting of a chart trendline. Read-only.
+            * Represents the formatting of a chart trendline.
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
@@ -26826,7 +26916,7 @@ declare namespace Excel {
             intercept?: any;
             /**
              *
-             * Represents the period of a chart trendline, only for trendline with MovingAverage type.
+             * Represents the period of a chart trendline. Only applicable for trendline with MovingAverage type.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -26840,7 +26930,7 @@ declare namespace Excel {
             name?: string;
             /**
              *
-             * Represents the order of a chart trendline, only for trendline with Polynomial type.
+             * Represents the order of a chart trendline. Only applicable for trendline with Polynomial type.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -26861,7 +26951,7 @@ declare namespace Excel {
         interface ChartTrendlineFormatData {
             /**
             *
-            * Represents chart line formatting. Read-only.
+            * Represents chart line formatting.
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
@@ -26871,7 +26961,7 @@ declare namespace Excel {
         interface ChartTrendlineLabelData {
             /**
             *
-            * Represents the format of chart trendline label. Read-only.
+            * Represents the format of chart trendline label.
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
@@ -26967,14 +27057,14 @@ declare namespace Excel {
         interface ChartTrendlineLabelFormatData {
             /**
             *
-            * Represents the border format, which includes color, linestyle and weight. Read-only.
+            * Represents the border format, which includes color, linestyle and weight.
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
             border?: Excel.Interfaces.ChartBorderData;
             /**
             *
-            * Represents the font attributes (font name, font size, color, etc.) for a chart trendline label. Read-only.
+            * Represents the font attributes (font name, font size, color, etc.) for a chart trendline label.
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
@@ -26984,7 +27074,7 @@ declare namespace Excel {
         interface ChartPlotAreaData {
             /**
             *
-            * Represents the formatting of a chart plotArea. Read-only.
+            * Represents the formatting of a chart plotArea.
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
@@ -27057,7 +27147,7 @@ declare namespace Excel {
         interface ChartPlotAreaFormatData {
             /**
             *
-            * Represents the border attributes of a chart plotArea. Read-only.
+            * Represents the border attributes of a chart plotArea.
             *
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
@@ -27151,7 +27241,7 @@ declare namespace Excel {
             rowHierarchies?: Excel.Interfaces.RowColumnPivotHierarchyData[];
             /**
             *
-            * The worksheet containing the current PivotTable. Read-only.
+            * The worksheet containing the current PivotTable.
             *
             * [Api set: ExcelApi 1.3]
             */
@@ -27859,7 +27949,7 @@ declare namespace Excel {
         interface CustomConditionalFormatData {
             /**
             *
-            * Returns a format object, encapsulating the conditional formats font, fill, borders, and other properties. Read-only.
+            * Returns a format object, encapsulating the conditional formats font, fill, borders, and other properties.
             *
             * [Api set: ExcelApi 1.6]
             */
@@ -27948,7 +28038,7 @@ declare namespace Excel {
         interface TopBottomConditionalFormatData {
             /**
             *
-            * Returns a format object, encapsulating the conditional formats font, fill, borders, and other properties. Read-only.
+            * Returns a format object, encapsulating the conditional formats font, fill, borders, and other properties.
             *
             * [Api set: ExcelApi 1.6]
             */
@@ -27965,7 +28055,7 @@ declare namespace Excel {
         interface PresetCriteriaConditionalFormatData {
             /**
             *
-            * Returns a format object, encapsulating the conditional formats font, fill, borders, and other properties. Read-only.
+            * Returns a format object, encapsulating the conditional formats font, fill, borders, and other properties.
             *
             * [Api set: ExcelApi 1.6]
             */
@@ -27982,7 +28072,7 @@ declare namespace Excel {
         interface TextConditionalFormatData {
             /**
             *
-            * Returns a format object, encapsulating the conditional formats font, fill, borders, and other properties. Read-only.
+            * Returns a format object, encapsulating the conditional formats font, fill, borders, and other properties.
             *
             * [Api set: ExcelApi 1.6]
             */
@@ -27999,7 +28089,7 @@ declare namespace Excel {
         interface CellValueConditionalFormatData {
             /**
             *
-            * Returns a format object, encapsulating the conditional formats font, fill, borders, and other properties. Read-only.
+            * Returns a format object, encapsulating the conditional formats font, fill, borders, and other properties.
             *
             * [Api set: ExcelApi 1.6]
             */
@@ -28016,21 +28106,21 @@ declare namespace Excel {
         interface ConditionalRangeFormatData {
             /**
             *
-            * Collection of border objects that apply to the overall conditional format range. Read-only.
+            * Collection of border objects that apply to the overall conditional format range.
             *
             * [Api set: ExcelApi 1.6]
             */
             borders?: Excel.Interfaces.ConditionalRangeBorderData[];
             /**
             *
-            * Returns the fill object defined on the overall conditional format range. Read-only.
+            * Returns the fill object defined on the overall conditional format range.
             *
             * [Api set: ExcelApi 1.6]
             */
             fill?: Excel.Interfaces.ConditionalRangeFillData;
             /**
             *
-            * Returns the font object defined on the overall conditional format range. Read-only.
+            * Returns the font object defined on the overall conditional format range.
             *
             * [Api set: ExcelApi 1.6]
             */
@@ -28789,7 +28879,7 @@ declare namespace Excel {
             $all?: boolean;
             /**
              *
-             * Sheet protection options. Read-Only.
+             * Sheet protection options.
              *
              * [Api set: ExcelApi 1.2]
              */
@@ -28917,7 +29007,7 @@ declare namespace Excel {
             hidden?: boolean;
             /**
              *
-             * Represents the hyperlink set for the current range.
+             * Represents the hyperlink for the current range.
                 When getting hyperlink, if the range has multiple areas, null will be returned.
                 When setting hyperlink, if the range has multiple areas, the "InvalidReference" error will be returned.
              *
@@ -28985,7 +29075,7 @@ declare namespace Excel {
             rowIndex?: boolean;
             /**
              *
-             * Represents the style of the current range. This return either null or a string.
+             * Represents the style of the current range.
                 If the styles of the cells are inconsistent, null will be returned.
                 For custom styles, the style name will be returned. For built-in styles, a string representing a value in the BuiltInStyle enum will be returned.
              *
@@ -30132,7 +30222,7 @@ declare namespace Excel {
             useStandardHeight?: boolean;
             /**
              *
-             * Determines if the columnwidth of the Range object equals the standard width of the sheet.
+             * Indicates whether the columnwidth of the Range object equals the standard width of the sheet.
                 Returns True if the column width of the Range object equals the standard width of the sheet.
                 Returns Null if the range contains more than one column and the columns aren't all the same height.
                 Returns False otherwise.
@@ -30956,14 +31046,14 @@ declare namespace Excel {
             secondPlotSize?: boolean;
             /**
              *
-             * For EACH ITEM in the collection: Boolean value representing if the series has shadow or not.
+             * For EACH ITEM in the collection: Boolean value representing if the series has a shadow or not.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             showShadow?: boolean;
             /**
              *
-             * For EACH ITEM in the collection: Boolean value representing if the series is smooth or not. Only for line and scatter charts.
+             * For EACH ITEM in the collection: Boolean value representing if the series is smooth or not. Only applicable for line and scatter charts.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -30984,7 +31074,7 @@ declare namespace Excel {
             splitValue?: boolean;
             /**
              *
-             * For EACH ITEM in the collection: Returns the value that represents the series type. Read-only.
+             * For EACH ITEM in the collection: Returns the value that represents the series type.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -31177,14 +31267,14 @@ declare namespace Excel {
             secondPlotSize?: boolean;
             /**
              *
-             * Boolean value representing if the series has shadow or not.
+             * Boolean value representing if the series has a shadow or not.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             showShadow?: boolean;
             /**
              *
-             * Boolean value representing if the series is smooth or not. Only for line and scatter charts.
+             * Boolean value representing if the series is smooth or not. Only applicable for line and scatter charts.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -31205,7 +31295,7 @@ declare namespace Excel {
             splitValue?: boolean;
             /**
              *
-             * Returns the value that represents the series type. Read-only.
+             * Returns the value that represents the series type.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -32209,7 +32299,7 @@ declare namespace Excel {
             position?: boolean;
             /**
              *
-             * Represents if the legend has shadow on the chart.
+             * Represents if the legend has a shadow on the chart.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -32378,7 +32468,7 @@ declare namespace Excel {
             format?: Excel.Interfaces.ChartTitleFormatLoadOptions;
             /**
              *
-             * Returns the height, in points, of the chart title. Read-only. Null if chart title's not visible.
+             * Returns the height, in points, of the chart title. Read-only. Null if chart title is not visible.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -32455,7 +32545,7 @@ declare namespace Excel {
             visible?: boolean;
             /**
              *
-             * Returns the width, in points, of the chart title. Read-only. Null if chart title's not visible.
+             * Returns the width, in points, of the chart title. Read-only. Null if chart title is not visible.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -32670,7 +32760,7 @@ declare namespace Excel {
             intercept?: boolean;
             /**
              *
-             * Represents the period of a chart trendline, only for trendline with MovingAverage type.
+             * Represents the period of a chart trendline. Only applicable for trendline with MovingAverage type.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -32684,7 +32774,7 @@ declare namespace Excel {
             name?: boolean;
             /**
              *
-             * Represents the order of a chart trendline, only for trendline with Polynomial type.
+             * Represents the order of a chart trendline. Only applicable for trendline with Polynomial type.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -32756,7 +32846,7 @@ declare namespace Excel {
             intercept?: boolean;
             /**
              *
-             * For EACH ITEM in the collection: Represents the period of a chart trendline, only for trendline with MovingAverage type.
+             * For EACH ITEM in the collection: Represents the period of a chart trendline. Only applicable for trendline with MovingAverage type.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -32770,7 +32860,7 @@ declare namespace Excel {
             name?: boolean;
             /**
              *
-             * For EACH ITEM in the collection: Represents the order of a chart trendline, only for trendline with Polynomial type.
+             * For EACH ITEM in the collection: Represents the order of a chart trendline. Only applicable for trendline with Polynomial type.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
@@ -35387,7 +35477,7 @@ declare namespace Excel {
             hidden?: boolean;
             /**
              *
-             * For EACH ITEM in the collection: Represents the hyperlink set for the current range.
+             * For EACH ITEM in the collection: Represents the hyperlink for the current range.
                 When getting hyperlink, if the range has multiple areas, null will be returned.
                 When setting hyperlink, if the range has multiple areas, the "InvalidReference" error will be returned.
              *
@@ -35455,7 +35545,7 @@ declare namespace Excel {
             rowIndex?: boolean;
             /**
              *
-             * For EACH ITEM in the collection: Represents the style of the current range. This return either null or a string.
+             * For EACH ITEM in the collection: Represents the style of the current range.
                 If the styles of the cells are inconsistent, null will be returned.
                 For custom styles, the style name will be returned. For built-in styles, a string representing a value in the BuiltInStyle enum will be returned.
              *
@@ -52579,6 +52669,10 @@ declare module OneNote {
 
 ////////////////////////////////////////////////////////////////
 /////////////////////// End OneNote APIs ///////////////////////
+////////////////////////////////////////////////////////////////
+
+
+
 ////////////////////////////////////////////////////////////////
 
 
