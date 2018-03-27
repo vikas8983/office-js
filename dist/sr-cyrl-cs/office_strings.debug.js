@@ -1,4 +1,4 @@
-/* Version: 16.0.9220.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -20,7 +20,7 @@ Strings.OfficeOM.L_BindingCreationError = "Binding Creation Error";
 Strings.OfficeOM.L_BindingNotExist = "The specified binding does not exist.";
 Strings.OfficeOM.L_BindingToMultipleSelection = "Noncontiguous selections are not supported.";
 Strings.OfficeOM.L_BrowserAPINotSupported = "This browser does not support the requested API.";
-Strings.OfficeOM.L_CallbackNotAFunction = "Callback must be of type function, was of type {0}."
+Strings.OfficeOM.L_CallbackNotAFunction = "Callback must be of type function, was of type {0}.";
 Strings.OfficeOM.L_CannotApplyPropertyThroughSetMethod = "Changes to property '{0}' cannot be applied through an \"object.set\" method.";
 Strings.OfficeOM.L_CannotNavigateTo = "The object is located in a place where navigation is not supported.";
 Strings.OfficeOM.L_CannotRegisterEvent = "The event handler cannot be registered.";
@@ -87,7 +87,7 @@ Strings.OfficeOM.L_InvalidBindingError = "Invalid Binding Error";
 Strings.OfficeOM.L_InvalidBindingOperation = "Invalid Binding Operation";
 Strings.OfficeOM.L_InvalidCellsValue = "One or more of the cells parameters have values that aren't allowed. Double-check the values and try again.";
 Strings.OfficeOM.L_InvalidCoercion = "Invalid Coercion Type";
-Strings.OfficeOM.L_InvalidColumnsForBinding = "The specified columns are invalid.";
+Strings.OfficeOM.L_InvalidColumnsForBinding = "The specified columns are invalid."
 Strings.OfficeOM.L_InvalidDataFormat = "The format of the specified data object is invalid.";
 Strings.OfficeOM.L_InvalidDataObject = "Invalid Data Object";
 Strings.OfficeOM.L_InvalidFormat = "Invalid Format Error";

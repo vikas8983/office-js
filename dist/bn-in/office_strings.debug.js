@@ -1,4 +1,4 @@
-/* Version: 16.0.9220.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -20,7 +20,7 @@ Strings.OfficeOM.L_BindingCreationError = "বাইন্ডিং তৈরী
 Strings.OfficeOM.L_BindingNotExist = "নির্দিষ্ট বাইন্ডিংটি বিদ্যমান নেই।";
 Strings.OfficeOM.L_BindingToMultipleSelection = "অসংলগ্ন নির্বাচনগুলি সমর্থিত নয়।";
 Strings.OfficeOM.L_BrowserAPINotSupported = "অনুরোধকৃত APIকে এই ব্রাউজারটি সমর্থন করে না।";
-Strings.OfficeOM.L_CallbackNotAFunction = "কলব্যাক অবশ্যই প্রকারের কার্যকারিতা হতে হবে, {0} প্রকারের ছিল।"
+Strings.OfficeOM.L_CallbackNotAFunction = "কলব্যাক অবশ্যই প্রকারের কার্যকারিতা হতে হবে, {0} প্রকারের ছিল।";
 Strings.OfficeOM.L_CannotApplyPropertyThroughSetMethod = "'{0}' বৈশিষ্ট্যের পরিবর্তনগুলো একটি \"অবজেক্ট.সেট\" পদ্ধতির মাধ্যমে প্রয়োগ করা যাবে না।";
 Strings.OfficeOM.L_CannotNavigateTo = "নেভিগেশন সমর্থিত নয় এমন একটি স্থানে অবজেক্ট অবস্থিত।";
 Strings.OfficeOM.L_CannotRegisterEvent = "ইভেন্ট হ্যান্ডলারটিকে নিবন্ধন করা যায় নি৷";
@@ -65,7 +65,7 @@ Strings.OfficeOM.L_EventHandlerNotExist = "এই বাইন্ডিংয়ে
 Strings.OfficeOM.L_EventHandlerRemovalFailed = "ঘটনা পরিচালককে অপসারণ করতে ব্যর্থ হয়েছে।";
 Strings.OfficeOM.L_EventRegistrationError = "ঘটনা নিবন্ধীকরণ ত্রুটি";
 Strings.OfficeOM.L_FileTypeNotSupported = "নির্দিষ্ট ফাইল প্রকার সমর্থিত নয়।";
-Strings.OfficeOM.L_FormatValueOutOfRange = "মানটি অনুমোদিত সীমার বাইরে।";
+Strings.OfficeOM.L_FormatValueOutOfRange = "মানটি অনুমোদিত সীমার বাইরে।"
 Strings.OfficeOM.L_FormattingReminder = "বিন্যাসকরণ অনুস্মারক";
 Strings.OfficeOM.L_FunctionCallFailed = "ক্রিয়াকলাপ {0}-কে কল করা ব্যর্থ হয়েছে, ত্রুটি কোড: {1}।";
 Strings.OfficeOM.L_GetDataIsTooLarge = "অনুরোধ করা ডাটা সেটটি অত্যন্ত বৃহত।";

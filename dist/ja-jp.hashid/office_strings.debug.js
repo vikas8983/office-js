@@ -1,4 +1,4 @@
-/* Version: 16.0.9220.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -20,7 +20,7 @@ Strings.OfficeOM.L_BindingCreationError = "[Ef1V2]［Binding Creation Error］";
 Strings.OfficeOM.L_BindingNotExist = "[wLGkW]［The specified binding does not exist.］";
 Strings.OfficeOM.L_BindingToMultipleSelection = "[b0tWL]［Noncontiguous selections are not supported.］";
 Strings.OfficeOM.L_BrowserAPINotSupported = "[w9Nwv]［This browser does not support the requested API.］";
-Strings.OfficeOM.L_CallbackNotAFunction = "[mjEM1]［Callback must be of type function, was of type {0}.］"
+Strings.OfficeOM.L_CallbackNotAFunction = "[mjEM1]［Callback must be of type function, was of type {0}.］";
 Strings.OfficeOM.L_CannotApplyPropertyThroughSetMethod = "[Z072K]［Changes to property '{0}' cannot be applied through an \"object.set\" method.］";
 Strings.OfficeOM.L_CannotNavigateTo = "[2J8ro]［The object is located in a place where navigation is not supported.］";
 Strings.OfficeOM.L_CannotRegisterEvent = "[7oStX]［The event handler cannot be registered.］";
@@ -51,7 +51,7 @@ Strings.OfficeOM.L_DataReadError = "[O6ydk]［Data Read Error］";
 Strings.OfficeOM.L_DataStale = "[CPq31]［Data Not Current］";
 Strings.OfficeOM.L_DataWriteError = "[Xc0RN]［Data Write Error］";
 Strings.OfficeOM.L_DataWriteReminder = "[6x3Rl]［Data Write Reminder］";
-Strings.OfficeOM.L_DialogAddressNotTrusted = "[giVvL]［The domain of the URL is not included in the AppDomains element in the manifest.］";
+Strings.OfficeOM.L_DialogAddressNotTrusted = "[giVvL]［The domain of the URL is not included in the AppDomains element in the manifest.］"
 Strings.OfficeOM.L_DialogAlreadyOpened = "[0B7Sm]［The operation failed because this add-in already has an active dialog.］";
 Strings.OfficeOM.L_DialogInvalidScheme = "[bewBN]［The URL scheme is not supported. Use HTTPS instead.］";
 Strings.OfficeOM.L_DialogNavigateError = "[uzg7N]［Dialog Navigation Error］";

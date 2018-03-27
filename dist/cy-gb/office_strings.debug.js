@@ -1,4 +1,4 @@
-/* Version: 16.0.9220.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -20,7 +20,7 @@ Strings.OfficeOM.L_BindingCreationError = "Gwall Creu Rhwymiad";
 Strings.OfficeOM.L_BindingNotExist = "Dydy'r rhwymo a bennwyd ddim yn bodoli.";
 Strings.OfficeOM.L_BindingToMultipleSelection = "Does dim modd delio ag adrannau sydd ddim yn agos at ei gilydd.";
 Strings.OfficeOM.L_BrowserAPINotSupported = "Dydy'r porwr hwn ddim yn gallu delio â'r API dan sylw.";
-Strings.OfficeOM.L_CallbackNotAFunction = "Rhaid i alw yn ôl fod yn fath swyddogaeth, roedd yn fath {0}."
+Strings.OfficeOM.L_CallbackNotAFunction = "Rhaid i alw yn ôl fod yn fath swyddogaeth, roedd yn fath {0}.";
 Strings.OfficeOM.L_CannotApplyPropertyThroughSetMethod = "Does dim modd gwneud newidiadau i’r briodwedd '{0}' drwy ddefnyddio’r dull \"object.set\".";
 Strings.OfficeOM.L_CannotNavigateTo = "Mae'r gwrthrych mewn lleoliad lle does dim modd delio â llywio.";
 Strings.OfficeOM.L_CannotRegisterEvent = "Does dim modd cofrestru’r dynodydd digwyddiad.";
@@ -162,7 +162,7 @@ Strings.OfficeOM.L_SSOUserConsentNotSupportedByCurrentAddinCategoryMessage = "Ma
 Strings.OfficeOM.L_SaveSettingsError = "Gwall Gosodiadau Cadw";
 Strings.OfficeOM.L_SelectionCannotBound = "Does dim modd rhwymo i'r dewis dan sylw.";
 Strings.OfficeOM.L_SelectionNotSupportCoercionType = "Dydy'r dewis dan sylw ddim yn cyd-fynd â'r math o orfodaeth a bennwyd.";
-Strings.OfficeOM.L_SetDataIsTooLarge = "Mae'r gwrthrych data a bennwyd yn rhy fawr.";
+Strings.OfficeOM.L_SetDataIsTooLarge = "Mae'r gwrthrych data a bennwyd yn rhy fawr."
 Strings.OfficeOM.L_SetDataParametersConflict = "Mae'r paramedrau a bennwyd yn gwrthdaro.";
 Strings.OfficeOM.L_SettingNameNotExist = "Dydy'r enw gosodiad a bennwyd ddim yn bodoli.";
 Strings.OfficeOM.L_SettingsAreStale = "Doedd dim modd cadw'r gosodiadau oherwydd dydyn nhw ddim yn gyfredol.";

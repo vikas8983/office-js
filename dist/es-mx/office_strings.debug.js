@@ -1,4 +1,4 @@
-/* Version: 16.0.9220.1000 */
+/* Version: 16.0.9027.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -20,7 +20,7 @@ Strings.OfficeOM.L_BindingCreationError = "No se pudo crear el enlace";
 Strings.OfficeOM.L_BindingNotExist = "El enlace especificado no existe.";
 Strings.OfficeOM.L_BindingToMultipleSelection = "No se admiten las selecciones discontinuas.";
 Strings.OfficeOM.L_BrowserAPINotSupported = "Este navegador no es compatible con la API solicitada.";
-Strings.OfficeOM.L_CallbackNotAFunction = "La devolución de llamada debe ser de tipo función. Era de tipo {0}."
+Strings.OfficeOM.L_CallbackNotAFunction = "La devolución de llamada debe ser de tipo función. Era de tipo {0}.";
 Strings.OfficeOM.L_CannotApplyPropertyThroughSetMethod = 'Los cambios en la propiedad "{0}" no se pueden aplicar a través de un método "object.set".';
 Strings.OfficeOM.L_CannotNavigateTo = "El objeto se encuentra en una ubicación donde no se admite la navegación.";
 Strings.OfficeOM.L_CannotRegisterEvent = "No se puede registrar el controlador de eventos.";
@@ -181,7 +181,7 @@ Strings.OfficeOM.L_TooManyOptionalFunction = "existen varias funciones opcionale
 Strings.OfficeOM.L_TooManyOptionalObjects = "existen varios objetos opcionales en la lista de parámetros";
 Strings.OfficeOM.L_UnknownBindingType = "El tipo de enlace no es compatible.";
 Strings.OfficeOM.L_UnsupportedDataObject = "No se admite el tipo de objeto de datos proporcionado.";
-Strings.OfficeOM.L_UnsupportedEnumeration = "Enumeración no compatible";
+Strings.OfficeOM.L_UnsupportedEnumeration = "Enumeración no compatible"
 Strings.OfficeOM.L_UnsupportedEnumerationMessage = "La enumeración no se admite la aplicación host actual.";
 Strings.OfficeOM.L_UnsupportedUserIdentity = "No se admite el tipo de identidad del usuario.";
 Strings.OfficeOM.L_UnsupportedUserIdentityMessage = "No se admite el tipo de identidad del usuario.";
