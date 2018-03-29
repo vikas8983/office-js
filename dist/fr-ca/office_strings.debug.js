@@ -1,4 +1,4 @@
-/* Version: 16.0.9027.1000 */
+/* Version: 16.0.9227.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -20,7 +20,7 @@ Strings.OfficeOM.L_BindingCreationError = "Une erreur s'est produite lors de la 
 Strings.OfficeOM.L_BindingNotExist = "La liaison spécifiée n’existe pas.";
 Strings.OfficeOM.L_BindingToMultipleSelection = "Les sélections non contiguës ne sont pas prises en charge.";
 Strings.OfficeOM.L_BrowserAPINotSupported = "Ce navigateur ne prend pas en charge l’API demandée.";
-Strings.OfficeOM.L_CallbackNotAFunction = "Le rappel était de type {0}, alors qu'il doit être de type fonction.";
+Strings.OfficeOM.L_CallbackNotAFunction = "Le rappel était de type {0}, alors qu'il doit être de type fonction."
 Strings.OfficeOM.L_CannotApplyPropertyThroughSetMethod = "Les modifications apportées à la propriété « {0} » ne peuvent pas être appliquées via une méthode « object.set ».";
 Strings.OfficeOM.L_CannotNavigateTo = "L’objet est situé dans un emplacement où la navigation n’est pas prise en charge.";
 Strings.OfficeOM.L_CannotRegisterEvent = "Le gestionnaire d’événements ne peut pas être inscrit.";
@@ -67,7 +67,7 @@ Strings.OfficeOM.L_EventRegistrationError = "Une erreur s'est produite lors de l
 Strings.OfficeOM.L_FileTypeNotSupported = "Le type de fichier spécifié n’est pas pris en charge.";
 Strings.OfficeOM.L_FormatValueOutOfRange = "La valeur se trouve en dehors de la plage autorisée.";
 Strings.OfficeOM.L_FormattingReminder = "Mise en forme du rappel";
-Strings.OfficeOM.L_FunctionCallFailed = "Nous n'avons pas pu appeler la fonction {0}. Le code d'erreur est le suivant : {1}."
+Strings.OfficeOM.L_FunctionCallFailed = "Nous n'avons pas pu appeler la fonction {0}. Le code d'erreur est le suivant : {1}.";
 Strings.OfficeOM.L_GetDataIsTooLarge = "Le jeu de données demandé est trop volumineux.";
 Strings.OfficeOM.L_GetDataParametersConflict = "Les paramètres spécifiés sont en conflit.";
 Strings.OfficeOM.L_GetSelectionNotSupported = "La sélection actuelle n'est pas prise en charge.";

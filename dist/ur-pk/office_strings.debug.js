@@ -1,4 +1,4 @@
-/* Version: 16.0.9027.1000 */
+/* Version: 16.0.9227.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -20,7 +20,7 @@ Strings.OfficeOM.L_BindingCreationError = "بائنڈنگ تخلیقی نقص";
 Strings.OfficeOM.L_BindingNotExist = "اختصاصی بائنڈنگ موجود نہیں۔";
 Strings.OfficeOM.L_BindingToMultipleSelection = "نونکونٹگواس انتخابات کی معاونت نہیں کی جاتی۔";
 Strings.OfficeOM.L_BrowserAPINotSupported = "یہ براؤزر درخواست کردہ API کی معاونت نہیں کرتا۔";
-Strings.OfficeOM.L_CallbackNotAFunction = "واپس کال فعل کی قسم ہونی چاہئے، جو {0} کی قسم تھی۔";
+Strings.OfficeOM.L_CallbackNotAFunction = "واپس کال فعل کی قسم ہونی چاہئے، جو {0} کی قسم تھی۔"
 Strings.OfficeOM.L_CannotApplyPropertyThroughSetMethod = "خاصیت '{0}' میں تبدیلیوں کا اطلاق \"object.set\" طریقے کے ذریعہ نہیں کیا جا سکتا ہے۔";
 Strings.OfficeOM.L_CannotNavigateTo = "آبجیکٹ جہاں گشت معاون نہیں ہے ایک جگہ میں واقع ہے۔";
 Strings.OfficeOM.L_CannotRegisterEvent = "وقوعہ ہینڈلر رجسٹر نہیں ہوسکتا۔";
@@ -49,7 +49,7 @@ Strings.OfficeOM.L_DataNotMatchCoercionType = "اختصاصی کوائف آبج�
 Strings.OfficeOM.L_DataNotMatchSelection = "فراہم کردہ کوائف آبجیکٹ حالیہ انتخاب کے ابعاد یا شیپ کے ساتھ ہم آہنگ نہیں ہے۔";
 Strings.OfficeOM.L_DataReadError = "کوائف مطالعہ نقص";
 Strings.OfficeOM.L_DataStale = "کوائف موجودہ نہیں";
-Strings.OfficeOM.L_DataWriteError = "نقص کوائف کی تحریر"
+Strings.OfficeOM.L_DataWriteError = "نقص کوائف کی تحریر";
 Strings.OfficeOM.L_DataWriteReminder = "یاد دہانی کوائف کی تحریر";
 Strings.OfficeOM.L_DialogAddressNotTrusted = "آشکار میں ایپ ڈومینز عنصر میں URL کا ڈومین شامل نہیں کیا گیا ہے۔";
 Strings.OfficeOM.L_DialogAlreadyOpened = "عمل ناکام ہوگیا ہے کیونکہ اس ایڈ-ان میں پہلے ہی سے ایک فعال ڈائلاگ ہے۔";

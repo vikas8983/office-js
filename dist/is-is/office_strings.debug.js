@@ -1,4 +1,4 @@
-/* Version: 16.0.9027.1000 */
+/* Version: 16.0.9227.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -20,7 +20,7 @@ Strings.OfficeOM.L_BindingCreationError = "Villa við stofnun bindingar";
 Strings.OfficeOM.L_BindingNotExist = "Tilgreind binding er ekki til.";
 Strings.OfficeOM.L_BindingToMultipleSelection = "Ósamlægt val er ekki stutt.";
 Strings.OfficeOM.L_BrowserAPINotSupported = "Þessi vafri styður ekki umbeðið API.";
-Strings.OfficeOM.L_CallbackNotAFunction = "Svarhringing verður að vera af gerð aðgerðar, var af gerð {0}.";
+Strings.OfficeOM.L_CallbackNotAFunction = "Svarhringing verður að vera af gerð aðgerðar, var af gerð {0}."
 Strings.OfficeOM.L_CannotApplyPropertyThroughSetMethod = "Ekki er hægt að gera breytingar á eiginleikanum „{0}“ með „object.set“-aðferð.";
 Strings.OfficeOM.L_CannotNavigateTo = "Hluturinn er staðsettur á stað þar sem yfirlit er ekki stutt.";
 Strings.OfficeOM.L_CannotRegisterEvent = "Ekki er hægt að skrá tilviksstjóra.";
@@ -88,7 +88,7 @@ Strings.OfficeOM.L_InvalidBindingOperation = "Ógild aðgerð bindingar";
 Strings.OfficeOM.L_InvalidCellsValue = "Ein eða fleiri af breytum fyrir hólf hafa gildi sem eru ekki leyfð. Athugaðu gildin og reyndu aftur.";
 Strings.OfficeOM.L_InvalidCoercion = "Ógild gerð þvingunar";
 Strings.OfficeOM.L_InvalidColumnsForBinding = "Tilgreindir dálkar eru ógildir.";
-Strings.OfficeOM.L_InvalidDataFormat = "Snið skilgreinds gagnahlutar er ógilt."
+Strings.OfficeOM.L_InvalidDataFormat = "Snið skilgreinds gagnahlutar er ógilt.";
 Strings.OfficeOM.L_InvalidDataObject = "Ógildur gagnahlutur";
 Strings.OfficeOM.L_InvalidFormat = "Villa ógilt snið";
 Strings.OfficeOM.L_InvalidFormatValue = "Ein eða fleiri af sniðbreytum fyrir hólf hafa gildi sem eru ekki leyfð. Athugaðu gildin og reyndu aftur.";

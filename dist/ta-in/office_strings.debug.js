@@ -1,4 +1,4 @@
-/* Version: 16.0.9027.1000 */
+/* Version: 16.0.9227.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -20,7 +20,7 @@ Strings.OfficeOM.L_BindingCreationError = "பிணைத்தல் உரு
 Strings.OfficeOM.L_BindingNotExist = "குறிப்பிடப்பட்ட பைண்டிங் இல்லை.";
 Strings.OfficeOM.L_BindingToMultipleSelection = "தொடர்ச்சியற்ற தேர்வுகள் ஆதரிக்கப்படாது.";
 Strings.OfficeOM.L_BrowserAPINotSupported = "கோரப்பட்ட API ஐ இந்த உலாவி ஆதரிக்காது.";
-Strings.OfficeOM.L_CallbackNotAFunction = "Callback என்பது ஒரு வகை செயல்பாடாக இருக்க வேண்டும், {0} வகையில் இருந்தது.";
+Strings.OfficeOM.L_CallbackNotAFunction = "Callback என்பது ஒரு வகை செயல்பாடாக இருக்க வேண்டும், {0} வகையில் இருந்தது."
 Strings.OfficeOM.L_CannotApplyPropertyThroughSetMethod = "குணம் '{0}'-க்கான மாற்றங்களை \"object.set\" முறை மூலம் பயன்படுத்த முடியாது.";
 Strings.OfficeOM.L_CannotNavigateTo = "வழிசெலுத்தல் ஆதரிக்கப்படாத இடத்தில் பொருள் அமைந்துள்ளது.";
 Strings.OfficeOM.L_CannotRegisterEvent = "நிகழ்வு நடத்தியைப் பதிவுசெய்ய முடியவில்லை.";
@@ -174,7 +174,7 @@ Strings.OfficeOM.L_ShowWindowDialogNotificationIgnore = "தவிர்";
 Strings.OfficeOM.L_ShuttingDown = "செயல்பாடு தோல்வியுற்றது, ஏனெனில் தரவு சேவையகத்தில், சமீபத்தியதாக இல்லை.";
 Strings.OfficeOM.L_SliceSizeNotSupported = "குறிப்பிட்ட ஸ்லைஸ் அளவுக்கு ஆதரவில்லை.";
 Strings.OfficeOM.L_SpecifiedIdNotExist = "குறிப்பிடப்பட்ட ஐடி இப்போது இல்லை.";
-Strings.OfficeOM.L_Timeout = "இயக்கம் நேரம் முடிந்தது."
+Strings.OfficeOM.L_Timeout = "இயக்கம் நேரம் முடிந்தது.";
 Strings.OfficeOM.L_TooManyArguments = "மிக அதிகமான அளவுருக்கள்";
 Strings.OfficeOM.L_TooManyIncompleteRequests = "முந்தைய அழைப்பு முடிவடையும் வரை காத்திருக்கவும்.";
 Strings.OfficeOM.L_TooManyOptionalFunction = "அளவுருக்கள் பட்டியலில் பல விருப்ப செயல்பாடுகள் உள்ளன";

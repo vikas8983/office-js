@@ -1,4 +1,4 @@
-/* Version: 16.0.9027.1000 */
+/* Version: 16.0.9227.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -20,7 +20,7 @@ Strings.OfficeOM.L_BindingCreationError = "Greška u stvaranju povezivanja";
 Strings.OfficeOM.L_BindingNotExist = "Navedeno povezivanje ne postoji.";
 Strings.OfficeOM.L_BindingToMultipleSelection = "Nekontinuirane selekcije nisu podržane.";
 Strings.OfficeOM.L_BrowserAPINotSupported = "This browser does not support the requested API.";
-Strings.OfficeOM.L_CallbackNotAFunction = "Povratni poziv mora biti funkcija tipa, bila je tipa {0}.";
+Strings.OfficeOM.L_CallbackNotAFunction = "Povratni poziv mora biti funkcija tipa, bila je tipa {0}."
 Strings.OfficeOM.L_CannotApplyPropertyThroughSetMethod = "Changes to property '{0}' cannot be applied through an \"object.set\" method.";
 Strings.OfficeOM.L_CannotNavigateTo = "Objekat se nalazi na lokaciji na kojoj navigacija nije podržana.";
 Strings.OfficeOM.L_CannotRegisterEvent = "The event handler cannot be registered.";
@@ -61,7 +61,7 @@ Strings.OfficeOM.L_DisplayDialogError = "Display Dialog Error";
 Strings.OfficeOM.L_DocumentReadOnly = "Zahtevana operacija nije dozvoljena u trenutnom režimu dokumenta.";
 Strings.OfficeOM.L_ElementMissing = "Nismo mogli da oblikujemo ćeliju tabele zato što nedostaju neke vrednosti parametara. Proverite parametre još jednom i probajte ponovo.";
 Strings.OfficeOM.L_EventHandlerAdditionFailed = "Dodavanje rukovaoca događajem nije uspelo.";
-Strings.OfficeOM.L_EventHandlerNotExist = "Navedeni tip događaja nije podržan na ovom objektu."
+Strings.OfficeOM.L_EventHandlerNotExist = "Navedeni tip događaja nije podržan na ovom objektu.";
 Strings.OfficeOM.L_EventHandlerRemovalFailed = "Uklanjanje rukovaoca događajem nije uspelo.";
 Strings.OfficeOM.L_EventRegistrationError = "Greška pri registraciji događaja";
 Strings.OfficeOM.L_FileTypeNotSupported = "Navedeni tip datoteke nije podržan.";
