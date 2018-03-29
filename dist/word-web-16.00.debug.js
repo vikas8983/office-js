@@ -10409,10 +10409,10 @@ var __extends=(this && this.__extends) || function (d, b) {
 var OfficeExtension;
 (function (OfficeExtension) {
 	var Action=(function () {
-		function Action(actionInfo, isWriteOperation, isRestrictedResourceAccess) {
+		function Action(actionInfo, operationType, flags) {
 			this.m_actionInfo=actionInfo;
-			this.m_isWriteOperation=isWriteOperation;
-			this.m_isRestrictedResourceAccess=isRestrictedResourceAccess;
+			this.m_operationType=operationType;
+			this.m_flags=flags;
 		}
 		Object.defineProperty(Action.prototype, "actionInfo", {
 			get: function () {
@@ -10421,16 +10421,16 @@ var OfficeExtension;
 			enumerable: true,
 			configurable: true
 		});
-		Object.defineProperty(Action.prototype, "isWriteOperation", {
+		Object.defineProperty(Action.prototype, "operationType", {
 			get: function () {
-				return this.m_isWriteOperation;
+				return this.m_operationType;
 			},
 			enumerable: true,
 			configurable: true
 		});
-		Object.defineProperty(Action.prototype, "isRestrictedResourceAccess", {
+		Object.defineProperty(Action.prototype, "flags", {
 			get: function () {
-				return this.m_isRestrictedResourceAccess;
+				return this.m_flags;
 			},
 			enumerable: true,
 			configurable: true
@@ -10455,7 +10455,7 @@ var OfficeExtension;
 	var ActionFactory=(function () {
 		function ActionFactory() {
 		}
-		ActionFactory.createSetPropertyAction=function (context, parent, propertyName, value) {
+		ActionFactory.createSetPropertyAction=function (context, parent, propertyName, value, flags) {
 			OfficeExtension.Utility.validateObjectPath(parent);
 			var actionInfo={
 				Id: context._nextId(),
@@ -10469,7 +10469,7 @@ var OfficeExtension;
 			OfficeExtension.Utility.validateReferencedObjectPaths(referencedArgumentObjectPaths);
 			context._pendingRequest.ensureInstantiateObjectPath(parent._objectPath);
 			context._pendingRequest.ensureInstantiateObjectPaths(referencedArgumentObjectPaths);
-			var ret=new OfficeExtension.Action(actionInfo, true, false);
+			var ret=new OfficeExtension.Action(actionInfo, 0, flags);
 			context._pendingRequest.addAction(ret);
 			context._pendingRequest.addReferencedObjectPath(parent._objectPath);
 			context._pendingRequest.addReferencedObjectPaths(referencedArgumentObjectPaths);
@@ -10477,7 +10477,7 @@ var OfficeExtension;
 			ret.referencedArgumentObjectPaths=referencedArgumentObjectPaths;
 			return ret;
 		};
-		ActionFactory.createMethodAction=function (context, parent, methodName, operationType, args, isRestrictedResourceAccess) {
+		ActionFactory.createMethodAction=function (context, parent, methodName, operationType, args, flags) {
 			OfficeExtension.Utility.validateObjectPath(parent);
 			var actionInfo={
 				Id: context._nextId(),
@@ -10490,8 +10490,7 @@ var OfficeExtension;
 			OfficeExtension.Utility.validateReferencedObjectPaths(referencedArgumentObjectPaths);
 			context._pendingRequest.ensureInstantiateObjectPath(parent._objectPath);
 			context._pendingRequest.ensureInstantiateObjectPaths(referencedArgumentObjectPaths);
-			var isWriteOperation=operationType !=1;
-			var ret=new OfficeExtension.Action(actionInfo, isWriteOperation, isRestrictedResourceAccess);
+			var ret=new OfficeExtension.Action(actionInfo, operationType, OfficeExtension.Utility._fixupApiFlags(flags));
 			context._pendingRequest.addAction(ret);
 			context._pendingRequest.addReferencedObjectPath(parent._objectPath);
 			context._pendingRequest.addReferencedObjectPaths(referencedArgumentObjectPaths);
@@ -10509,7 +10508,7 @@ var OfficeExtension;
 				ObjectPathId: parent._objectPath.objectPathInfo.Id,
 			};
 			actionInfo.QueryInfo=queryOption;
-			var ret=new OfficeExtension.Action(actionInfo, false, false);
+			var ret=new OfficeExtension.Action(actionInfo, 1, 4);
 			context._pendingRequest.addAction(ret);
 			context._pendingRequest.addReferencedObjectPath(parent._objectPath);
 			ret.referencedObjectPath=parent._objectPath;
@@ -10525,7 +10524,7 @@ var OfficeExtension;
 				ObjectPathId: parent._objectPath.objectPathInfo.Id,
 				RecursiveQueryInfo: query
 			};
-			var ret=new OfficeExtension.Action(actionInfo, false, false);
+			var ret=new OfficeExtension.Action(actionInfo, 1, 4);
 			context._pendingRequest.addAction(ret);
 			context._pendingRequest.addReferencedObjectPath(parent._objectPath);
 			ret.referencedObjectPath=parent._objectPath;
@@ -10541,7 +10540,7 @@ var OfficeExtension;
 				ObjectPathId: parent._objectPath.objectPathInfo.Id,
 			};
 			actionInfo.QueryInfo=queryOption;
-			var ret=new OfficeExtension.Action(actionInfo, false, false);
+			var ret=new OfficeExtension.Action(actionInfo, 1, 4);
 			context._pendingRequest.addAction(ret);
 			context._pendingRequest.addReferencedObjectPath(parent._objectPath);
 			ret.referencedObjectPath=parent._objectPath;
@@ -10557,7 +10556,7 @@ var OfficeExtension;
 				ObjectPathId: parent._objectPath.objectPathInfo.Id,
 				ObjectState: objectState
 			};
-			var ret=new OfficeExtension.Action(actionInfo, false, false);
+			var ret=new OfficeExtension.Action(actionInfo, 1, 4);
 			context._pendingRequest.addAction(ret);
 			context._pendingRequest.addReferencedObjectPath(parent._objectPath);
 			ret.referencedObjectPath=parent._objectPath;
@@ -10573,7 +10572,7 @@ var OfficeExtension;
 				ObjectPathId: parent._objectPath.objectPathInfo.Id,
 				ObjectState: objectState
 			};
-			var ret=new OfficeExtension.Action(actionInfo, true, false);
+			var ret=new OfficeExtension.Action(actionInfo, 0, 0);
 			context._pendingRequest.addAction(ret);
 			context._pendingRequest.addReferencedObjectPath(parent._objectPath);
 			ret.referencedObjectPath=parent._objectPath;
@@ -10589,7 +10588,7 @@ var OfficeExtension;
 				Name: "",
 				ObjectPathId: obj._objectPath.objectPathInfo.Id
 			};
-			var ret=new OfficeExtension.Action(actionInfo, false, false);
+			var ret=new OfficeExtension.Action(actionInfo, 1, 4);
 			ret.referencedObjectPath=obj._objectPath;
 			context._pendingRequest.addAction(ret);
 			context._pendingRequest.addReferencedObjectPath(obj._objectPath);
@@ -10603,7 +10602,7 @@ var OfficeExtension;
 				Name: "Trace",
 				ObjectPathId: 0
 			};
-			var ret=new OfficeExtension.Action(actionInfo, false, false);
+			var ret=new OfficeExtension.Action(actionInfo, 1, 4);
 			context._pendingRequest.addAction(ret);
 			if (addTraceMessage) {
 				context._pendingRequest.addTrace(actionInfo.Id, message);
@@ -10874,7 +10873,6 @@ var OfficeExtension;
 			this.m_actionResultHandler={};
 			this.m_referencedObjectPaths={};
 			this.m_instantiatedObjectPaths={};
-			this.m_flags=0;
 			this.m_traceInfos={};
 			this.m_pendingProcessEventHandlers=[];
 			this.m_pendingEventHandlerActions={};
@@ -10882,13 +10880,6 @@ var OfficeExtension;
 			this.m_responseTraceMessages=[];
 			this.m_preSyncPromises=[];
 		}
-		Object.defineProperty(ClientRequest.prototype, "flags", {
-			get: function () {
-				return this.m_flags;
-			},
-			enumerable: true,
-			configurable: true
-		});
 		Object.defineProperty(ClientRequest.prototype, "traceInfos", {
 			get: function () {
 				return this.m_traceInfos;
@@ -10933,12 +10924,6 @@ var OfficeExtension;
 					this.m_context.ensureInProgressBatchIfBatchMode();
 				}
 			}
-			if (action.isWriteOperation) {
-				this.m_flags=this.m_flags | 1;
-			}
-			if (action.isRestrictedResourceAccess) {
-				this.m_flags=this.m_flags | 2;
-			}
 			this.m_actions.push(action);
 			if (action.actionInfo.ActionType==1) {
 				this.m_instantiatedObjectPaths[action.actionInfo.ObjectPathId]=action;
@@ -10971,7 +10956,7 @@ var OfficeExtension;
 						Name: "",
 						ObjectPathId: objectPath.objectPathInfo.Id
 					};
-					var instantiateAction=new OfficeExtension.Action(actionInfo, false, false);
+					var instantiateAction=new OfficeExtension.Action(actionInfo, 1, 4);
 					instantiateAction.referencedObjectPath=objectPath;
 					this.addReferencedObjectPath(objectPath);
 					this.addAction(instantiateAction);
@@ -10999,12 +10984,6 @@ var OfficeExtension;
 				});
 			}
 			while (objectPath) {
-				if (objectPath.isWriteOperation) {
-					this.m_flags=this.m_flags | 1;
-				}
-				if (objectPath.isRestrictedResourceAccess) {
-					this.m_flags=this.m_flags | 2;
-				}
 				this.m_referencedObjectPaths[objectPath.objectPathInfo.Id]=objectPath;
 				if (objectPath.objectPathInfo.ObjectPathType==3) {
 					this.addReferencedObjectPaths(objectPath.argumentObjectPaths);
@@ -11022,24 +11001,67 @@ var OfficeExtension;
 		ClientRequest.prototype.addActionResultHandler=function (action, resultHandler) {
 			this.m_actionResultHandler[action.actionInfo.Id]=resultHandler;
 		};
-		ClientRequest.prototype.buildRequestMessageBody=function () {
+		ClientRequest.prototype.aggregrateRequestFlags=function (requestFlags, operationType, flags) {
+			if (operationType===0) {
+				requestFlags=requestFlags | 1;
+				if ((flags & 2)===0) {
+					requestFlags=requestFlags & ~(16);
+				}
+				requestFlags=requestFlags & ~(4);
+			}
+			if (flags & 1) {
+				requestFlags=requestFlags | 2;
+			}
+			if ((flags & 4)===0) {
+				requestFlags=requestFlags & ~(4);
+			}
+			return requestFlags;
+		};
+		ClientRequest.prototype.finallyNormalizeFlags=function (requestFlags) {
+			if ((requestFlags & 1)===0) {
+				requestFlags=requestFlags & ~16;
+			}
+			if (!OfficeExtension._internalConfig.enableConcurrentFlag) {
+				requestFlags=requestFlags & ~4;
+			}
+			if (!OfficeExtension._internalConfig.enableUndoableFlag) {
+				requestFlags=requestFlags & ~16;
+			}
+			if (typeof (this.m_flagsForTesting)==="number") {
+				requestFlags=this.m_flagsForTesting;
+			}
+			return requestFlags;
+		};
+		ClientRequest.prototype.buildRequestMessageBodyAndRequestFlags=function () {
 			if (OfficeExtension._internalConfig.enableEarlyDispose) {
 				ClientRequest._calculateLastUsedObjectPathIds(this.m_actions);
 			}
+			var requestFlags=4 | 16;
 			var objectPaths={};
 			for (var i in this.m_referencedObjectPaths) {
+				requestFlags=this.aggregrateRequestFlags(requestFlags, this.m_referencedObjectPaths[i].operationType, this.m_referencedObjectPaths[i].flags);
 				objectPaths[i]=this.m_referencedObjectPaths[i].objectPathInfo;
 			}
 			var actions=[];
+			var hasKeepReference=false;
 			for (var index=0; index < this.m_actions.length; index++) {
-				actions.push(this.m_actions[index].actionInfo);
+				var action=this.m_actions[index];
+				if (action.actionInfo.ActionType===3 && action.actionInfo.Name===OfficeExtension.Constants.keepReference) {
+					hasKeepReference=true;
+				}
+				requestFlags=this.aggregrateRequestFlags(requestFlags, action.operationType, action.flags);
+				actions.push(action.actionInfo);
 			}
-			var ret={
-				AutoKeepReference: this.m_context._autoCleanup,
+			requestFlags=this.finallyNormalizeFlags(requestFlags);
+			var body={
+				AutoKeepReference: this.m_context._autoCleanup && hasKeepReference,
 				Actions: actions,
 				ObjectPaths: objectPaths
 			};
-			return ret;
+			return {
+				body: body,
+				flags: requestFlags
+			};
 		};
 		ClientRequest.prototype.processResponse=function (actionResults) {
 			if (actionResults) {
@@ -11174,7 +11196,9 @@ var OfficeExtension;
 		showInternalApiInDebugInfo: false,
 		enableEarlyDispose: true,
 		alwaysPolyfillClientObjectUpdateMethod: false,
-		alwaysPolyfillClientObjectRetrieveMethod: false
+		alwaysPolyfillClientObjectRetrieveMethod: false,
+		enableConcurrentFlag: true,
+		enableUndoableFlag: true,
 	};
 	OfficeExtension.config={
 		extendedErrorLogging: false
@@ -11492,8 +11516,7 @@ var OfficeExtension;
 			if (!req.hasActions) {
 				return this.processPendingEventHandlers(req);
 			}
-			var msgBody=req.buildRequestMessageBody();
-			var requestFlags=req.flags;
+			var _a=req.buildRequestMessageBodyAndRequestFlags(), msgBody=_a.body, requestFlags=_a.flags;
 			if (!this._requestExecutor) {
 				if (OfficeExtension.Utility._isLocalDocumentUrl(this.m_requestUrlAndHeaderInfo.url)) {
 					this._requestExecutor=new OfficeExtension.OfficeJsRequestExecutor(this);
@@ -11515,6 +11538,7 @@ var OfficeExtension;
 			var errorFromResponse=null;
 			var errorFromProcessEventHandlers=null;
 			this._lastSyncStart=performance.now();
+			this._lastRequestFlags=requestFlags;
 			return requestExecutor.executeAsync(this._customData, requestFlags, requestExecutorRequestMessage)
 				.then(function (response) {
 				_this._lastSyncEnd=performance.now();
@@ -13285,13 +13309,14 @@ var OfficeExtension;
 var OfficeExtension;
 (function (OfficeExtension) {
 	var ObjectPath=(function () {
-		function ObjectPath(objectPathInfo, parentObjectPath, isCollection, isInvalidAfterRequest) {
+		function ObjectPath(objectPathInfo, parentObjectPath, isCollection, isInvalidAfterRequest, operationType, flags) {
 			this.m_objectPathInfo=objectPathInfo;
 			this.m_parentObjectPath=parentObjectPath;
-			this.m_isWriteOperation=false;
 			this.m_isCollection=isCollection;
 			this.m_isInvalidAfterRequest=isInvalidAfterRequest;
 			this.m_isValid=true;
+			this.m_operationType=operationType;
+			this.m_flags=flags;
 		}
 		Object.defineProperty(ObjectPath.prototype, "objectPathInfo", {
 			get: function () {
@@ -13300,22 +13325,16 @@ var OfficeExtension;
 			enumerable: true,
 			configurable: true
 		});
-		Object.defineProperty(ObjectPath.prototype, "isWriteOperation", {
+		Object.defineProperty(ObjectPath.prototype, "operationType", {
 			get: function () {
-				return this.m_isWriteOperation;
-			},
-			set: function (value) {
-				this.m_isWriteOperation=value;
+				return this.m_operationType;
 			},
 			enumerable: true,
 			configurable: true
 		});
-		Object.defineProperty(ObjectPath.prototype, "isRestrictedResourceAccess", {
+		Object.defineProperty(ObjectPath.prototype, "flags", {
 			get: function () {
-				return this.m_isRestrictedResourceAccess;
-			},
-			set: function (value) {
-				this.m_isRestrictedResourceAccess=value;
+				return this.m_flags;
 			},
 			enumerable: true,
 			configurable: true
@@ -13462,7 +13481,8 @@ var OfficeExtension;
 		ObjectPath.prototype.resetForUpdateUsingObjectData=function () {
 			this.m_isInvalidAfterRequest=false;
 			this.m_isValid=true;
-			this.m_isWriteOperation=false;
+			this.m_operationType=1;
+			this.m_flags=4;
 			this.m_objectPathInfo.ArgumentInfo={};
 			this.m_argumentObjectPaths=null;
 		};
@@ -13490,23 +13510,21 @@ var OfficeExtension;
 		}
 		ObjectPathFactory.createGlobalObjectObjectPath=function (context) {
 			var objectPathInfo={ Id: context._nextId(), ObjectPathType: 1, Name: "" };
-			return new OfficeExtension.ObjectPath(objectPathInfo, null, false, false);
+			return new OfficeExtension.ObjectPath(objectPathInfo, null, false, false, 1, 4);
 		};
-		ObjectPathFactory.createNewObjectObjectPath=function (context, typeName, isCollection, isRestrictedResourceAccess) {
+		ObjectPathFactory.createNewObjectObjectPath=function (context, typeName, isCollection, flags) {
 			var objectPathInfo={ Id: context._nextId(), ObjectPathType: 2, Name: typeName };
-			var ret=new OfficeExtension.ObjectPath(objectPathInfo, null, isCollection, false);
-			ret.isRestrictedResourceAccess=isRestrictedResourceAccess;
+			var ret=new OfficeExtension.ObjectPath(objectPathInfo, null, isCollection, false, 1, OfficeExtension.Utility._fixupApiFlags(flags));
 			return ret;
 		};
-		ObjectPathFactory.createPropertyObjectPath=function (context, parent, propertyName, isCollection, isInvalidAfterRequest, isRestrictedResourceAccess) {
+		ObjectPathFactory.createPropertyObjectPath=function (context, parent, propertyName, isCollection, isInvalidAfterRequest, flags) {
 			var objectPathInfo={
 				Id: context._nextId(),
 				ObjectPathType: 4,
 				Name: propertyName,
 				ParentObjectPathId: parent._objectPath.objectPathInfo.Id,
 			};
-			var ret=new OfficeExtension.ObjectPath(objectPathInfo, parent._objectPath, isCollection, isInvalidAfterRequest);
-			ret.isRestrictedResourceAccess=isRestrictedResourceAccess;
+			var ret=new OfficeExtension.ObjectPath(objectPathInfo, parent._objectPath, isCollection, isInvalidAfterRequest, 1, OfficeExtension.Utility._fixupApiFlags(flags));
 			return ret;
 		};
 		ObjectPathFactory.createIndexerObjectPath=function (context, parent, args) {
@@ -13518,7 +13536,7 @@ var OfficeExtension;
 				ArgumentInfo: {}
 			};
 			objectPathInfo.ArgumentInfo.Arguments=args;
-			return new OfficeExtension.ObjectPath(objectPathInfo, parent._objectPath, false, false);
+			return new OfficeExtension.ObjectPath(objectPathInfo, parent._objectPath, false, false, 1, 4);
 		};
 		ObjectPathFactory.createIndexerObjectPathUsingParentPath=function (context, parentObjectPath, args) {
 			var objectPathInfo={
@@ -13529,9 +13547,9 @@ var OfficeExtension;
 				ArgumentInfo: {}
 			};
 			objectPathInfo.ArgumentInfo.Arguments=args;
-			return new OfficeExtension.ObjectPath(objectPathInfo, parentObjectPath, false, false);
+			return new OfficeExtension.ObjectPath(objectPathInfo, parentObjectPath, false, false, 1, 4);
 		};
-		ObjectPathFactory.createMethodObjectPath=function (context, parent, methodName, operationType, args, isCollection, isInvalidAfterRequest, getByIdMethodName, isRestrictedResourceAccess) {
+		ObjectPathFactory.createMethodObjectPath=function (context, parent, methodName, operationType, args, isCollection, isInvalidAfterRequest, getByIdMethodName, flags) {
 			var objectPathInfo={
 				Id: context._nextId(),
 				ObjectPathType: 3,
@@ -13540,11 +13558,9 @@ var OfficeExtension;
 				ArgumentInfo: {}
 			};
 			var argumentObjectPaths=OfficeExtension.Utility.setMethodArguments(context, objectPathInfo.ArgumentInfo, args);
-			var ret=new OfficeExtension.ObjectPath(objectPathInfo, parent._objectPath, isCollection, isInvalidAfterRequest);
+			var ret=new OfficeExtension.ObjectPath(objectPathInfo, parent._objectPath, isCollection, isInvalidAfterRequest, operationType, OfficeExtension.Utility._fixupApiFlags(flags));
 			ret.argumentObjectPaths=argumentObjectPaths;
-			ret.isWriteOperation=(operationType !=1);
 			ret.getByIdMethodName=getByIdMethodName;
-			ret.isRestrictedResourceAccess=isRestrictedResourceAccess;
 			return ret;
 		};
 		ObjectPathFactory.createReferenceIdObjectPath=function (context, referenceId) {
@@ -13554,7 +13570,7 @@ var OfficeExtension;
 				Name: referenceId,
 				ArgumentInfo: {}
 			};
-			var ret=new OfficeExtension.ObjectPath(objectPathInfo, null, false, false);
+			var ret=new OfficeExtension.ObjectPath(objectPathInfo, null, false, false, 1, 4);
 			return ret;
 		};
 		ObjectPathFactory.createChildItemObjectPathUsingIndexerOrGetItemAt=function (hasIndexerMethod, context, parent, childItem, index) {
@@ -13576,7 +13592,7 @@ var OfficeExtension;
 					ArgumentInfo: {}
 				};
 			objectPathInfo.ArgumentInfo.Arguments=[id];
-			return new OfficeExtension.ObjectPath(objectPathInfo, parent._objectPath, false, false);
+			return new OfficeExtension.ObjectPath(objectPathInfo, parent._objectPath, false, false, 1, 4);
 		};
 		ObjectPathFactory.createChildItemObjectPathUsingGetItemAt=function (context, parent, childItem, index) {
 			var indexFromServer=childItem[OfficeExtension.Constants.index];
@@ -13591,7 +13607,7 @@ var OfficeExtension;
 				ArgumentInfo: {}
 			};
 			objectPathInfo.ArgumentInfo.Arguments=[index];
-			return new OfficeExtension.ObjectPath(objectPathInfo, parent._objectPath, false, false);
+			return new OfficeExtension.ObjectPath(objectPathInfo, parent._objectPath, false, false, 1, 4);
 		};
 		return ObjectPathFactory;
 	}());
@@ -15358,6 +15374,17 @@ var OfficeExtension;
 			else {
 				return name.toLowerCase();
 			}
+		};
+		Utility._fixupApiFlags=function (flags) {
+			if (typeof (flags)==="boolean") {
+				if (flags) {
+					flags=1;
+				}
+				else {
+					flags=0;
+				}
+			}
+			return flags;
 		};
 		Utility.definePropertyThrowUnloadedException=function (obj, typeName, propertyName) {
 			Object.defineProperty(obj, propertyName, {

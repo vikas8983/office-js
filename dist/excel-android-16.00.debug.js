@@ -18831,6 +18831,10 @@ var Excel;
 			_throwIfApiNotSupported("Table.clearFilters", _defaultApiSetName, "1.2", _hostName);
 			_createMethodAction(this.context, this, "ClearFilters", 0, [], 0);
 		};
+		Table.prototype.clearStyle=function () {
+			_throwIfApiNotSupported("Table.clearStyle", _defaultApiSetName, "1.9", _hostName);
+			_createMethodAction(this.context, this, "ClearStyle", 0, [], false);
+		};
 		Table.prototype.convertToRange=function () {
 			_throwIfApiNotSupported("Table.convertToRange", _defaultApiSetName, "1.2", _hostName);
 			return new Excel.Range(this.context, _createMethodObjectPath(this.context, this, "ConvertToRange", 0, [], false, true, null, 0));
@@ -28061,7 +28065,7 @@ var Excel;
 		});
 		Object.defineProperty(PivotTable.prototype, "_navigationPropertyNames", {
 			get: function () {
-				return ["worksheet", "hierarchies", "rowHierarchies", "columnHierarchies"];
+				return ["worksheet", "hierarchies", "rowHierarchies", "columnHierarchies", "dataHierarchies", "filterHierarchies"];
 			},
 			enumerable: true,
 			configurable: true
@@ -28073,6 +28077,28 @@ var Excel;
 					this._Co=new Excel.RowColumnPivotHierarchyCollection(this.context, _createPropertyObjectPath(this.context, this, "ColumnHierarchies", true, false, 4));
 				}
 				return this._Co;
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(PivotTable.prototype, "dataHierarchies", {
+			get: function () {
+				_throwIfApiNotSupported("PivotTable.dataHierarchies", _defaultApiSetName, "1.8", _hostName);
+				if (!this._D) {
+					this._D=new Excel.DataPivotHierarchyCollection(this.context, _createPropertyObjectPath(this.context, this, "DataHierarchies", true, false, 4));
+				}
+				return this._D;
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(PivotTable.prototype, "filterHierarchies", {
+			get: function () {
+				_throwIfApiNotSupported("PivotTable.filterHierarchies", _defaultApiSetName, "1.8", _hostName);
+				if (!this._F) {
+					this._F=new Excel.FilterPivotHierarchyCollection(this.context, _createPropertyObjectPath(this.context, this, "FilterHierarchies", true, false, 4));
+				}
+				return this._F;
 			},
 			enumerable: true,
 			configurable: true
@@ -28172,6 +28198,8 @@ var Excel;
 		PivotTable.prototype.set=function (properties, options) {
 			this._recursivelySet(properties, options, ["name", "columnGrandTotals", "rowGrandTotals", "enableFieldList"], [], [
 				"columnHierarchies",
+				"dataHierarchies",
+				"filterHierarchies",
 				"hierarchies",
 				"rowHierarchies",
 				"worksheet"
@@ -28216,7 +28244,7 @@ var Excel;
 			if (!_isUndefined(obj["RowGrandTotals"])) {
 				this._R=obj["RowGrandTotals"];
 			}
-			_handleNavigationPropertyResults(this, obj, ["columnHierarchies", "ColumnHierarchies", "hierarchies", "Hierarchies", "rowHierarchies", "RowHierarchies", "worksheet", "Worksheet"]);
+			_handleNavigationPropertyResults(this, obj, ["columnHierarchies", "ColumnHierarchies", "dataHierarchies", "DataHierarchies", "filterHierarchies", "FilterHierarchies", "hierarchies", "Hierarchies", "rowHierarchies", "RowHierarchies", "worksheet", "Worksheet"]);
 		};
 		PivotTable.prototype.load=function (option) {
 			return _load(this, option);
@@ -28246,6 +28274,8 @@ var Excel;
 				"rowGrandTotals": this._R,
 			}, {
 				"columnHierarchies": this._Co,
+				"dataHierarchies": this._D,
+				"filterHierarchies": this._F,
 				"hierarchies": this._H,
 				"rowHierarchies": this._Ro,
 			});
@@ -32639,7 +32669,7 @@ var Excel;
 			if (_isNullOrUndefined(definition)) {
 				throw OfficeExtension.Utility.createRuntimeError(ErrorCodes.invalidOperation, OfficeExtension.Utility._getResourceString(OfficeExtension.ResourceStrings.customFunctionDefintionMissing), "CustomFunctionProxy.add");
 			}
-			this._ensureInit(context);
+			this.ensureInit(context);
 			var apiCustomFunction=context.workbook.customFunctions._Add(Excel.CustomFunctionType.script, name, definition.description, definition.result.resultType, (definition.result.resultDimensionality ? definition.result.resultDimensionality : Excel.CustomFunctionDimensionality.scalar), definition.options && definition.options.stream ? definition.options.stream : false, definition.options && definition.options.batch ? definition.options.batch : false, definition.options && definition.options.cancelable ? definition.options.cancelable : false, definition.parameters);
 			return apiCustomFunction;
 		};
@@ -32658,15 +32688,7 @@ var Excel;
 			};
 			return nameSplit;
 		};
-		CustomFunctionProxy.ensureInit=function () {
-			var context=new Excel.RequestContext();
-			Excel.customFunctionProxy._ensureInit(context);
-			return Excel.customFunctionProxy._whenInit.then(function () {
-				var apiDummyCustomFunction=context.workbook.customFunctions._Add(Excel.CustomFunctionType.script, "", "", Excel.CustomFunctionType.invalid, Excel.CustomFunctionDimensionality.invalid, false, false, false, []);
-				context.sync();
-			});
-		};
-		CustomFunctionProxy.prototype._ensureInit=function (context) {
+		CustomFunctionProxy.prototype.ensureInit=function (context) {
 			var _this=this;
 			if (typeof (Excel.Script)==="object" && typeof (Excel.Script._CustomFunctionSettings)==="object") {
 				if (typeof (Excel.Script._CustomFunctionSettings.resultSetterDelayMillis)==="number") {
@@ -32702,6 +32724,7 @@ var Excel;
 			if (!this._isInit) {
 				context._pendingRequest._addPreSyncPromise(this._whenInit);
 			}
+			return this._whenInit;
 		};
 		CustomFunctionProxy.prototype._handleMessage=function (args) {
 			OfficeExtension.Utility.checkArgumentNull(args, "args");
@@ -32954,14 +32977,22 @@ var Excel;
 	}());
 	Excel.CustomFunctionProxy=CustomFunctionProxy;
 	Excel.customFunctionProxy=new CustomFunctionProxy();
-	var _addinOfficeInitialize=window["Office"]["initialize"];
-	window["Office"]["initialize"]=function (reason) {
-		Excel.CustomFunctionProxy.ensureInit().then(function () {
-			if (typeof (_addinOfficeInitialize)==="function") {
-				return _addinOfficeInitialize(reason);
-			}
-		});
-	};
+	var CustomFunctions=(function () {
+		function CustomFunctions() {
+		}
+		CustomFunctions.initialize=function () {
+			var context=new Excel.RequestContext();
+			return Excel.customFunctionProxy.ensureInit(context)
+				.then(function () {
+				var apiDummyCustomFunction=context.workbook.customFunctions._Add(Excel.CustomFunctionType.script, "", "", Excel.CustomFunctionType.invalid, Excel.CustomFunctionDimensionality.invalid, false, false, false, []);
+				return context.sync()
+					.catch(function (error) {
+				});
+			});
+		};
+		return CustomFunctions;
+	}());
+	Excel.CustomFunctions=CustomFunctions;
 	var CustomFunctionCollection=(function (_super) {
 		__extends(CustomFunctionCollection, _super);
 		function CustomFunctionCollection() {
