@@ -13730,14 +13730,13 @@ var OfficeCore;
 	var _throwIfNotLoaded=OfficeExtension.Utility.throwIfNotLoaded;
 	var _throwIfApiNotSupported=OfficeExtension.Utility.throwIfApiNotSupported;
 	var _load=OfficeExtension.Utility.load;
-	var _loadAndSync=OfficeExtension.Utility.loadAndSync;
 	var _retrieve=OfficeExtension.Utility.retrieve;
-	var _retrieveAndSync=OfficeExtension.Utility.retrieveAndSync;
 	var _toJson=OfficeExtension.Utility.toJson;
 	var _fixObjectPathIfNecessary=OfficeExtension.Utility.fixObjectPathIfNecessary;
 	var _addActionResultHandler=OfficeExtension.Utility._addActionResultHandler;
 	var _handleNavigationPropertyResults=OfficeExtension.Utility._handleNavigationPropertyResults;
 	var _adjustToDateTime=OfficeExtension.Utility.adjustToDateTime;
+	var _processRetrieveResult=OfficeExtension.Utility.processRetrieveResult;
 	var _typeBiShim="BiShim";
 	var BiShim=(function (_super) {
 		__extends(BiShim, _super);
@@ -13754,14 +13753,14 @@ var OfficeCore;
 		BiShim.prototype.initialize=function (capabilities) {
 			_createMethodAction(this.context, this, "Initialize", 0, [capabilities], false);
 		};
-		BiShim.prototype.uninitialize=function () {
-			_createMethodAction(this.context, this, "Uninitialize", 0, [], false);
-		};
 		BiShim.prototype.getData=function () {
 			var action=_createMethodAction(this.context, this, "getData", 1, [], false);
 			var ret=new OfficeExtension.ClientResult();
 			_addActionResultHandler(this, action, ret);
 			return ret;
+		};
+		BiShim.prototype.setVisualObjects=function (visualObjects) {
+			_createMethodAction(this.context, this, "setVisualObjects", 0, [visualObjects], false);
 		};
 		BiShim.prototype._handleResult=function (value) {
 			_super.prototype._handleResult.call(this, value);
@@ -13769,6 +13768,10 @@ var OfficeCore;
 				return;
 			var obj=value;
 			_fixObjectPathIfNecessary(this, obj);
+		};
+		BiShim.prototype._handleRetrieveResult=function (value, result) {
+			_super.prototype._handleRetrieveResult.call(this, value, result);
+			_processRetrieveResult(this, value, result);
 		};
 		BiShim.newObject=function (context) {
 			var ret=new OfficeCore.BiShim(context, _createNewObjectObjectPath(context, "Microsoft.AgaveVisual.BiShim", false, false));
@@ -13780,10 +13783,10 @@ var OfficeCore;
 		return BiShim;
 	}(OfficeExtension.ClientObject));
 	OfficeCore.BiShim=BiShim;
-	var ErrorCodes;
-	(function (ErrorCodes) {
-		ErrorCodes["generalException"]="GeneralException";
-	})(ErrorCodes=OfficeCore.ErrorCodes || (OfficeCore.ErrorCodes={}));
+	var AgaveVisualErrorCodes;
+	(function (AgaveVisualErrorCodes) {
+		AgaveVisualErrorCodes["generalException"]="GeneralException";
+	})(AgaveVisualErrorCodes=OfficeCore.AgaveVisualErrorCodes || (OfficeCore.AgaveVisualErrorCodes={}));
 })(OfficeCore || (OfficeCore={}));
 var OfficeCore;
 (function (OfficeCore) {
@@ -14075,6 +14078,27 @@ var OfficeFirstPartyAuth;
 		});
 	}
 	OfficeFirstPartyAuth.getAccessToken=getAccessToken;
+	function getPrimaryIdentityInfo() {
+		var context=new OfficeCore.RequestContext();
+		var auth=OfficeCore.AuthenticationService.newObject(context);
+		context._customData="WacPartition";
+		var promise=new OfficeExtension.Promise(function (resolve, reject) {
+			var result=auth.getPrimaryIdentityInfo();
+			context.sync()
+				.then(function () {
+				resolve(result);
+			})
+				.catch(function (e) {
+				throw e;
+			});
+		});
+		return promise.then(function (idInfoResult) {
+			return new OfficeExtension.Promise(function (resolve, reject) {
+				resolve(idInfoResult);
+			});
+		});
+	}
+	OfficeFirstPartyAuth.getPrimaryIdentityInfo=getPrimaryIdentityInfo;
 })(OfficeFirstPartyAuth || (OfficeFirstPartyAuth={}));
 var OfficeCore;
 (function (OfficeCore) {
@@ -20026,9 +20050,6 @@ var Excel;
 			configurable: true
 		});
 		ChartCollection.prototype.add=function (type, sourceData, seriesBy) {
-			if (!(sourceData instanceof Range)) {
-				throw OfficeExtension.Utility.createRuntimeError(OfficeExtension.ResourceStrings.invalidArgument, "sourceData", "Charts.Add");
-			}
 			return new Excel.Chart(this.context, _createMethodObjectPath(this.context, this, "Add", 0, [type, sourceData, seriesBy], false, true, null, 0));
 		};
 		ChartCollection.prototype.getCount=function () {
@@ -20283,9 +20304,6 @@ var Excel;
 			return ret;
 		};
 		Chart.prototype.setData=function (sourceData, seriesBy) {
-			if (!(sourceData instanceof Range)) {
-				throw OfficeExtension.Utility.createRuntimeError(OfficeExtension.ResourceStrings.invalidArgument, "sourceData", "Chart.setData");
-			}
 			_createMethodAction(this.context, this, "SetData", 0, [sourceData, seriesBy], 0);
 		};
 		Chart.prototype.setPosition=function (startCell, endCell) {

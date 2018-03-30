@@ -2929,8 +2929,8 @@ declare namespace OfficeCore {
      */
     class BiShim extends OfficeExtension.ClientObject {
         initialize(capabilities: string): void;
-        uninitialize(): void;
         getData(): OfficeExtension.ClientResult<string>;
+        setVisualObjects(visualObjects: string): void;
         /**
          * Create a new instance of OfficeCore.BiShim object
          */
@@ -2939,7 +2939,7 @@ declare namespace OfficeCore {
             [key: string]: string;
         };
     }
-    enum ErrorCodes {
+    enum AgaveVisualErrorCodes {
         generalException = "GeneralException",
     }
     module Interfaces {
@@ -3095,6 +3095,7 @@ declare namespace OfficeCore {
 }
 declare namespace OfficeFirstPartyAuth {
     function getAccessToken<T>(options: object): OfficeExtension.IPromise<T>;
+    function getPrimaryIdentityInfo<T>(): OfficeExtension.IPromise<T>;
 }
 declare namespace OfficeCore {
     /**
@@ -5334,7 +5335,6 @@ declare namespace Excel {
         /**
          *
          * Represents the total number of columns in the range. Read-only.
-            If the range has multiple areas, null will be returned.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -5342,8 +5342,6 @@ declare namespace Excel {
         /**
          *
          * Represents if all columns of the current range are hidden.
-            When getting columnHidden, if the range has multiple areas, null will be returned.
-            When setting columnHidden, if the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.2]
          */
@@ -5351,7 +5349,6 @@ declare namespace Excel {
         /**
          *
          * Represents the column number of the first cell in the range. Zero-indexed. Read-only.
-            If the range has multiple areas, the ColumnIndex of the first area will be returned.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -5359,9 +5356,7 @@ declare namespace Excel {
         /**
          *
          * Represents the formula in A1-style notation.
-            When getting formulas, if the range has multiple areas, null will be returned.
             When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -5369,9 +5364,7 @@ declare namespace Excel {
         /**
          *
          * Represents the formula in A1-style notation, in the user's language and number-formatting locale.  For example, the English "=SUM(A1, 1.5)" formula would become "=SUMME(A1; 1,5)" in German.
-            When getting formulas, if the range has multiple areas, null will be returned.
             When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -5379,9 +5372,7 @@ declare namespace Excel {
         /**
          *
          * Represents the formula in R1C1-style notation.
-            When getting formulas, if the range has multiple areas, null will be returned.
             When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.2]
          */
@@ -5389,7 +5380,6 @@ declare namespace Excel {
         /**
          *
          * Represents if all cells of the current range are hidden.
-            If the range has multiple areas, null will be returned.
          *
          * [Api set: ExcelApi 1.2]
          */
@@ -5397,8 +5387,6 @@ declare namespace Excel {
         /**
          *
          * Represents the hyperlink for the current range.
-            When getting hyperlink, if the range has multiple areas, null will be returned.
-            When setting hyperlink, if the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.7]
          */
@@ -5406,7 +5394,6 @@ declare namespace Excel {
         /**
          *
          * Represents if the current range is an entire column.
-            If the range has multiple areas, null will be returned.
          *
          * [Api set: ExcelApi 1.7]
          */
@@ -5414,7 +5401,6 @@ declare namespace Excel {
         /**
          *
          * Represents if the current range is an entire row.
-            If the range has multiple areas, null will be returned.
          *
          * [Api set: ExcelApi 1.7]
          */
@@ -5422,7 +5408,6 @@ declare namespace Excel {
         /**
          *
          * Represents Excel's number format code for the given range.
-            When getting number format, if the range has multiple areas, null will be returned.
             When setting number format to a range, the value argument can be either a single value (string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
          *
          * [Api set: ExcelApi 1.1]
@@ -5431,7 +5416,6 @@ declare namespace Excel {
         /**
          *
          * Represents Excel's number format code for the given range as a string in the language of the user.
-            When getting number format local, if the range has multiple areas, null will be returned.
             When setting number format local to a range, the value argument can be either a single value (string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
          *
          * [Api set: ExcelApi 1.7]
@@ -5440,7 +5424,6 @@ declare namespace Excel {
         /**
          *
          * Returns the total number of rows in the range. Read-only.
-            If the range has multiple areas, null will be returned.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -5448,8 +5431,6 @@ declare namespace Excel {
         /**
          *
          * Represents if all rows of the current range are hidden.
-            When getting rowHidden, if the range has multiple areas, null will be returned.
-            When setting rowHidden, if the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.2]
          */
@@ -5457,7 +5438,6 @@ declare namespace Excel {
         /**
          *
          * Returns the row number of the first cell in the range. Zero-indexed. Read-only.
-            If the range has multiple areas, the RowIndex of the first area will be returned.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -5474,7 +5454,6 @@ declare namespace Excel {
         /**
          *
          * Text values of the specified range. The Text value will not depend on the cell width. The # sign substitution that happens in Excel UI will not affect the text value returned by the API. Read-only.
-            If the range has multiple areas, null will be returned.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -5482,7 +5461,6 @@ declare namespace Excel {
         /**
          *
          * Represents the type of data of each cell. Read-only.
-            If the range has multiple areas, null will be returned.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -5490,9 +5468,7 @@ declare namespace Excel {
         /**
          *
          * Represents the raw values of the specified range. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
-            When getting values, if the range has multiple areas, null will be returned.
             When setting values to a range, the value argument can be either a single value (string, number or boolean) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -5529,7 +5505,6 @@ declare namespace Excel {
         /**
          *
          * Deletes the cells associated with the range.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.1]
          *
@@ -5539,7 +5514,6 @@ declare namespace Excel {
         /**
          *
          * Deletes the cells associated with the range.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.1]
          *
@@ -5549,7 +5523,6 @@ declare namespace Excel {
         /**
          *
          * Gets a Range object with the same top-left cell as the current Range object, but with the specified numbers of rows and columns.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.7]
          *
@@ -5569,7 +5542,6 @@ declare namespace Excel {
         /**
          *
          * Gets the range object containing the single cell based on row and column numbers. The cell can be outside the bounds of its parent range, so long as it's stays within the worksheet grid. The returned cell is located relative to the top left cell of the range.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.1]
          *
@@ -5580,7 +5552,6 @@ declare namespace Excel {
         /**
          *
          * Gets a column contained in the range.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.1]
          *
@@ -5590,7 +5561,6 @@ declare namespace Excel {
         /**
          *
          * Gets a certain number of columns to the right of the current Range object.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.2]
          *
@@ -5600,7 +5570,6 @@ declare namespace Excel {
         /**
          *
          * Gets a certain number of columns to the left of the current Range object.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.2]
          *
@@ -5610,7 +5579,6 @@ declare namespace Excel {
         /**
          *
          * Gets an object that represents the entire column of the range (for example, if the current range represents cells "B4:E11", it's `getEntireColumn` is a range that represents columns "B:E").
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -5618,7 +5586,6 @@ declare namespace Excel {
         /**
          *
          * Gets an object that represents the entire row of the range (for example, if the current range represents cells "B4:E11", it's `GetEntireRow` is a range that represents rows "4:11").
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -5626,7 +5593,6 @@ declare namespace Excel {
         /**
          *
          * Renders the range as a base64-encoded png image.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.7]
          */
@@ -5652,7 +5618,6 @@ declare namespace Excel {
         /**
          *
          * Gets the last cell within the range. For example, the last cell of "B2:D5" is "D5".
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -5660,7 +5625,6 @@ declare namespace Excel {
         /**
          *
          * Gets the last column within the range. For example, the last column of "B2:D5" is "D2:D5".
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -5668,7 +5632,6 @@ declare namespace Excel {
         /**
          *
          * Gets the last row within the range. For example, the last row of "B2:D5" is "B5:D5".
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.1]
          */
@@ -5686,7 +5649,6 @@ declare namespace Excel {
         /**
          *
          * Gets a Range object similar to the current Range object, but with its bottom-right corner expanded (or contracted) by some number of rows and columns.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.2]
          *
@@ -5697,7 +5659,6 @@ declare namespace Excel {
         /**
          *
          * Gets a row contained in the range.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.1]
          *
@@ -5707,7 +5668,6 @@ declare namespace Excel {
         /**
          *
          * Gets a certain number of rows above the current Range object.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.2]
          *
@@ -5717,7 +5677,6 @@ declare namespace Excel {
         /**
          *
          * Gets a certain number of rows below the current Range object.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.2]
          *
@@ -5727,7 +5686,6 @@ declare namespace Excel {
         /**
          *
          * Returns a Range object that represents the surrounding region for the top-left cell in this range. A surrounding region is a range bounded by any combination of blank rows and blank columns relative to this range.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.7]
          */
@@ -5753,7 +5711,6 @@ declare namespace Excel {
         /**
          *
          * Represents the visible rows of the current range.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.3]
          */
@@ -5761,7 +5718,6 @@ declare namespace Excel {
         /**
          *
          * Inserts a cell or a range of cells into the worksheet in place of this range, and shifts the other cells to make space. Returns a new Range object at the now blank space.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.1]
          *
@@ -5771,7 +5727,6 @@ declare namespace Excel {
         /**
          *
          * Inserts a cell or a range of cells into the worksheet in place of this range, and shifts the other cells to make space. Returns a new Range object at the now blank space.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.1]
          *
@@ -5781,7 +5736,6 @@ declare namespace Excel {
         /**
          *
          * Merge the range cells into one region in the worksheet.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.2]
          *
@@ -5799,7 +5753,6 @@ declare namespace Excel {
         /**
          *
          * Displays the card for an active cell if it has rich value content.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.7]
          */
@@ -5807,7 +5760,6 @@ declare namespace Excel {
         /**
          *
          * Unmerge the range cells into separate cells.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.2]
          */
@@ -6431,7 +6383,6 @@ declare namespace Excel {
         /**
          *
          * Add a new binding to a particular Range.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.3]
          *
@@ -6443,7 +6394,6 @@ declare namespace Excel {
         /**
          *
          * Add a new binding to a particular Range.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi 1.3]
          *
@@ -7474,10 +7424,10 @@ declare namespace Excel {
          * [Api set: ExcelApi 1.1]
          *
          * @param type Represents the type of a chart. See Excel.ChartType for details.
-         * @param sourceData The Range object corresponding to the source data.
+         * @param sourceData The range corresponding to the source data.
          * @param seriesBy Specifies the way columns or rows are used as data series on the chart. See Excel.ChartSeriesBy for details.
          */
-        add(type: Excel.ChartType, sourceData: Excel.Range, seriesBy?: Excel.ChartSeriesBy): Excel.Chart;
+        add(type: Excel.ChartType, sourceData: Excel.Range | string, seriesBy?: Excel.ChartSeriesBy): Excel.Chart;
         /**
          *
          * Creates a new chart.
@@ -7485,10 +7435,10 @@ declare namespace Excel {
          * [Api set: ExcelApi 1.1]
          *
          * @param type Represents the type of a chart. See Excel.ChartType for details.
-         * @param sourceData The Range object corresponding to the source data.
+         * @param sourceData The range corresponding to the source data.
          * @param seriesBy Specifies the way columns or rows are used as data series on the chart. See Excel.ChartSeriesBy for details.
          */
-        add(type: "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar", sourceData: Excel.Range, seriesBy?: "Auto" | "Columns" | "Rows"): Excel.Chart;
+        add(type: "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar", sourceData: Excel.Range | string, seriesBy?: "Auto" | "Columns" | "Rows"): Excel.Chart;
         /**
          *
          * Returns the number of charts in the worksheet.
@@ -7671,20 +7621,20 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          *
-         * @param sourceData The Range object corresponding to the source data.
+         * @param sourceData The range corresponding to the source data.
          * @param seriesBy Specifies the way columns or rows are used as data series on the chart. Can be one of the following: Auto (default), Rows, Columns. See Excel.ChartSeriesBy for details.
          */
-        setData(sourceData: Excel.Range, seriesBy?: Excel.ChartSeriesBy): void;
+        setData(sourceData: Excel.Range | string, seriesBy?: Excel.ChartSeriesBy): void;
         /**
          *
          * Resets the source data for the chart.
          *
          * [Api set: ExcelApi 1.1]
          *
-         * @param sourceData The Range object corresponding to the source data.
+         * @param sourceData The range corresponding to the source data.
          * @param seriesBy Specifies the way columns or rows are used as data series on the chart. Can be one of the following: Auto (default), Rows, Columns. See Excel.ChartSeriesBy for details.
          */
-        setData(sourceData: Excel.Range, seriesBy?: "Auto" | "Columns" | "Rows"): void;
+        setData(sourceData: Excel.Range | string, seriesBy?: "Auto" | "Columns" | "Rows"): void;
         /**
          *
          * Positions the chart relative to cells on the worksheet.
@@ -16927,8 +16877,6 @@ declare namespace Excel {
             /**
              *
              * Represents if all columns of the current range are hidden.
-            When getting columnHidden, if the range has multiple areas, null will be returned.
-            When setting columnHidden, if the range has multiple areas, the "InvalidReference" error will be returned.
              *
              * [Api set: ExcelApi 1.2]
              */
@@ -16936,9 +16884,7 @@ declare namespace Excel {
             /**
              *
              * Represents the formula in A1-style notation.
-            When getting formulas, if the range has multiple areas, null will be returned.
             When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
              *
              * [Api set: ExcelApi 1.1]
              */
@@ -16946,9 +16892,7 @@ declare namespace Excel {
             /**
              *
              * Represents the formula in A1-style notation, in the user's language and number-formatting locale.  For example, the English "=SUM(A1, 1.5)" formula would become "=SUMME(A1; 1,5)" in German.
-            When getting formulas, if the range has multiple areas, null will be returned.
             When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
              *
              * [Api set: ExcelApi 1.1]
              */
@@ -16956,9 +16900,7 @@ declare namespace Excel {
             /**
              *
              * Represents the formula in R1C1-style notation.
-            When getting formulas, if the range has multiple areas, null will be returned.
             When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
              *
              * [Api set: ExcelApi 1.2]
              */
@@ -16966,8 +16908,6 @@ declare namespace Excel {
             /**
              *
              * Represents the hyperlink for the current range.
-            When getting hyperlink, if the range has multiple areas, null will be returned.
-            When setting hyperlink, if the range has multiple areas, the "InvalidReference" error will be returned.
              *
              * [Api set: ExcelApi 1.7]
              */
@@ -16975,7 +16915,6 @@ declare namespace Excel {
             /**
              *
              * Represents Excel's number format code for the given range.
-            When getting number format, if the range has multiple areas, null will be returned.
             When setting number format to a range, the value argument can be either a single value (string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
              *
              * [Api set: ExcelApi 1.1]
@@ -16984,7 +16923,6 @@ declare namespace Excel {
             /**
              *
              * Represents Excel's number format code for the given range as a string in the language of the user.
-            When getting number format local, if the range has multiple areas, null will be returned.
             When setting number format local to a range, the value argument can be either a single value (string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
              *
              * [Api set: ExcelApi 1.7]
@@ -16993,8 +16931,6 @@ declare namespace Excel {
             /**
              *
              * Represents if all rows of the current range are hidden.
-            When getting rowHidden, if the range has multiple areas, null will be returned.
-            When setting rowHidden, if the range has multiple areas, the "InvalidReference" error will be returned.
              *
              * [Api set: ExcelApi 1.2]
              */
@@ -17011,9 +16947,7 @@ declare namespace Excel {
             /**
              *
              * Represents the raw values of the specified range. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
-            When getting values, if the range has multiple areas, null will be returned.
             When setting values to a range, the value argument can be either a single value (string, number or boolean) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
              *
              * [Api set: ExcelApi 1.1]
              */
@@ -19420,7 +19354,6 @@ declare namespace Excel {
             /**
              *
              * Represents the total number of columns in the range. Read-only.
-            If the range has multiple areas, null will be returned.
              *
              * [Api set: ExcelApi 1.1]
              */
@@ -19428,8 +19361,6 @@ declare namespace Excel {
             /**
              *
              * Represents if all columns of the current range are hidden.
-            When getting columnHidden, if the range has multiple areas, null will be returned.
-            When setting columnHidden, if the range has multiple areas, the "InvalidReference" error will be returned.
              *
              * [Api set: ExcelApi 1.2]
              */
@@ -19437,7 +19368,6 @@ declare namespace Excel {
             /**
              *
              * Represents the column number of the first cell in the range. Zero-indexed. Read-only.
-            If the range has multiple areas, the ColumnIndex of the first area will be returned.
              *
              * [Api set: ExcelApi 1.1]
              */
@@ -19445,9 +19375,7 @@ declare namespace Excel {
             /**
              *
              * Represents the formula in A1-style notation.
-            When getting formulas, if the range has multiple areas, null will be returned.
             When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
              *
              * [Api set: ExcelApi 1.1]
              */
@@ -19455,9 +19383,7 @@ declare namespace Excel {
             /**
              *
              * Represents the formula in A1-style notation, in the user's language and number-formatting locale.  For example, the English "=SUM(A1, 1.5)" formula would become "=SUMME(A1; 1,5)" in German.
-            When getting formulas, if the range has multiple areas, null will be returned.
             When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
              *
              * [Api set: ExcelApi 1.1]
              */
@@ -19465,9 +19391,7 @@ declare namespace Excel {
             /**
              *
              * Represents the formula in R1C1-style notation.
-            When getting formulas, if the range has multiple areas, null will be returned.
             When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
              *
              * [Api set: ExcelApi 1.2]
              */
@@ -19475,7 +19399,6 @@ declare namespace Excel {
             /**
              *
              * Represents if all cells of the current range are hidden.
-            If the range has multiple areas, null will be returned.
              *
              * [Api set: ExcelApi 1.2]
              */
@@ -19483,8 +19406,6 @@ declare namespace Excel {
             /**
              *
              * Represents the hyperlink for the current range.
-            When getting hyperlink, if the range has multiple areas, null will be returned.
-            When setting hyperlink, if the range has multiple areas, the "InvalidReference" error will be returned.
              *
              * [Api set: ExcelApi 1.7]
              */
@@ -19492,7 +19413,6 @@ declare namespace Excel {
             /**
              *
              * Represents if the current range is an entire column.
-            If the range has multiple areas, null will be returned.
              *
              * [Api set: ExcelApi 1.7]
              */
@@ -19500,7 +19420,6 @@ declare namespace Excel {
             /**
              *
              * Represents if the current range is an entire row.
-            If the range has multiple areas, null will be returned.
              *
              * [Api set: ExcelApi 1.7]
              */
@@ -19508,7 +19427,6 @@ declare namespace Excel {
             /**
              *
              * Represents Excel's number format code for the given range.
-            When getting number format, if the range has multiple areas, null will be returned.
             When setting number format to a range, the value argument can be either a single value (string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
              *
              * [Api set: ExcelApi 1.1]
@@ -19517,7 +19435,6 @@ declare namespace Excel {
             /**
              *
              * Represents Excel's number format code for the given range as a string in the language of the user.
-            When getting number format local, if the range has multiple areas, null will be returned.
             When setting number format local to a range, the value argument can be either a single value (string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
              *
              * [Api set: ExcelApi 1.7]
@@ -19526,7 +19443,6 @@ declare namespace Excel {
             /**
              *
              * Returns the total number of rows in the range. Read-only.
-            If the range has multiple areas, null will be returned.
              *
              * [Api set: ExcelApi 1.1]
              */
@@ -19534,8 +19450,6 @@ declare namespace Excel {
             /**
              *
              * Represents if all rows of the current range are hidden.
-            When getting rowHidden, if the range has multiple areas, null will be returned.
-            When setting rowHidden, if the range has multiple areas, the "InvalidReference" error will be returned.
              *
              * [Api set: ExcelApi 1.2]
              */
@@ -19543,7 +19457,6 @@ declare namespace Excel {
             /**
              *
              * Returns the row number of the first cell in the range. Zero-indexed. Read-only.
-            If the range has multiple areas, the RowIndex of the first area will be returned.
              *
              * [Api set: ExcelApi 1.1]
              */
@@ -19560,7 +19473,6 @@ declare namespace Excel {
             /**
              *
              * Text values of the specified range. The Text value will not depend on the cell width. The # sign substitution that happens in Excel UI will not affect the text value returned by the API. Read-only.
-            If the range has multiple areas, null will be returned.
              *
              * [Api set: ExcelApi 1.1]
              */
@@ -19568,7 +19480,6 @@ declare namespace Excel {
             /**
              *
              * Represents the type of data of each cell. Read-only.
-            If the range has multiple areas, null will be returned.
              *
              * [Api set: ExcelApi 1.1]
              */
@@ -19576,9 +19487,7 @@ declare namespace Excel {
             /**
              *
              * Represents the raw values of the specified range. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
-            When getting values, if the range has multiple areas, null will be returned.
             When setting values to a range, the value argument can be either a single value (string, number or boolean) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
              *
              * [Api set: ExcelApi 1.1]
              */
@@ -22505,7 +22414,6 @@ declare namespace Excel {
             /**
              *
              * Represents the total number of columns in the range. Read-only.
-                If the range has multiple areas, null will be returned.
              *
              * [Api set: ExcelApi 1.1]
              */
@@ -22513,8 +22421,6 @@ declare namespace Excel {
             /**
              *
              * Represents if all columns of the current range are hidden.
-                When getting columnHidden, if the range has multiple areas, null will be returned.
-                When setting columnHidden, if the range has multiple areas, the "InvalidReference" error will be returned.
              *
              * [Api set: ExcelApi 1.2]
              */
@@ -22522,7 +22428,6 @@ declare namespace Excel {
             /**
              *
              * Represents the column number of the first cell in the range. Zero-indexed. Read-only.
-                If the range has multiple areas, the ColumnIndex of the first area will be returned.
              *
              * [Api set: ExcelApi 1.1]
              */
@@ -22530,9 +22435,7 @@ declare namespace Excel {
             /**
              *
              * Represents the formula in A1-style notation.
-                When getting formulas, if the range has multiple areas, null will be returned.
                 When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
-                If the range has multiple areas, the "InvalidReference" error will be returned.
              *
              * [Api set: ExcelApi 1.1]
              */
@@ -22540,9 +22443,7 @@ declare namespace Excel {
             /**
              *
              * Represents the formula in A1-style notation, in the user's language and number-formatting locale.  For example, the English "=SUM(A1, 1.5)" formula would become "=SUMME(A1; 1,5)" in German.
-                When getting formulas, if the range has multiple areas, null will be returned.
                 When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
-                If the range has multiple areas, the "InvalidReference" error will be returned.
              *
              * [Api set: ExcelApi 1.1]
              */
@@ -22550,9 +22451,7 @@ declare namespace Excel {
             /**
              *
              * Represents the formula in R1C1-style notation.
-                When getting formulas, if the range has multiple areas, null will be returned.
                 When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
-                If the range has multiple areas, the "InvalidReference" error will be returned.
              *
              * [Api set: ExcelApi 1.2]
              */
@@ -22560,7 +22459,6 @@ declare namespace Excel {
             /**
              *
              * Represents if all cells of the current range are hidden.
-                If the range has multiple areas, null will be returned.
              *
              * [Api set: ExcelApi 1.2]
              */
@@ -22568,8 +22466,6 @@ declare namespace Excel {
             /**
              *
              * Represents the hyperlink for the current range.
-                When getting hyperlink, if the range has multiple areas, null will be returned.
-                When setting hyperlink, if the range has multiple areas, the "InvalidReference" error will be returned.
              *
              * [Api set: ExcelApi 1.7]
              */
@@ -22577,7 +22473,6 @@ declare namespace Excel {
             /**
              *
              * Represents if the current range is an entire column.
-                If the range has multiple areas, null will be returned.
              *
              * [Api set: ExcelApi 1.7]
              */
@@ -22585,7 +22480,6 @@ declare namespace Excel {
             /**
              *
              * Represents if the current range is an entire row.
-                If the range has multiple areas, null will be returned.
              *
              * [Api set: ExcelApi 1.7]
              */
@@ -22593,7 +22487,6 @@ declare namespace Excel {
             /**
              *
              * Represents Excel's number format code for the given range.
-                When getting number format, if the range has multiple areas, null will be returned.
                 When setting number format to a range, the value argument can be either a single value (string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
              *
              * [Api set: ExcelApi 1.1]
@@ -22602,7 +22495,6 @@ declare namespace Excel {
             /**
              *
              * Represents Excel's number format code for the given range as a string in the language of the user.
-                When getting number format local, if the range has multiple areas, null will be returned.
                 When setting number format local to a range, the value argument can be either a single value (string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
              *
              * [Api set: ExcelApi 1.7]
@@ -22611,7 +22503,6 @@ declare namespace Excel {
             /**
              *
              * Returns the total number of rows in the range. Read-only.
-                If the range has multiple areas, null will be returned.
              *
              * [Api set: ExcelApi 1.1]
              */
@@ -22619,8 +22510,6 @@ declare namespace Excel {
             /**
              *
              * Represents if all rows of the current range are hidden.
-                When getting rowHidden, if the range has multiple areas, null will be returned.
-                When setting rowHidden, if the range has multiple areas, the "InvalidReference" error will be returned.
              *
              * [Api set: ExcelApi 1.2]
              */
@@ -22628,7 +22517,6 @@ declare namespace Excel {
             /**
              *
              * Returns the row number of the first cell in the range. Zero-indexed. Read-only.
-                If the range has multiple areas, the RowIndex of the first area will be returned.
              *
              * [Api set: ExcelApi 1.1]
              */
@@ -22645,7 +22533,6 @@ declare namespace Excel {
             /**
              *
              * Text values of the specified range. The Text value will not depend on the cell width. The # sign substitution that happens in Excel UI will not affect the text value returned by the API. Read-only.
-                If the range has multiple areas, null will be returned.
              *
              * [Api set: ExcelApi 1.1]
              */
@@ -22653,7 +22540,6 @@ declare namespace Excel {
             /**
              *
              * Represents the type of data of each cell. Read-only.
-                If the range has multiple areas, null will be returned.
              *
              * [Api set: ExcelApi 1.1]
              */
@@ -22661,9 +22547,7 @@ declare namespace Excel {
             /**
              *
              * Represents the raw values of the specified range. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
-                When getting values, if the range has multiple areas, null will be returned.
                 When setting values to a range, the value argument can be either a single value (string, number or boolean) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
-                If the range has multiple areas, the "InvalidReference" error will be returned.
              *
              * [Api set: ExcelApi 1.1]
              */

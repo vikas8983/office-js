@@ -1,4 +1,4 @@
-/* Version: 16.0.9227.1000 */
+/* Version: 16.0.9229.1000 */
 /*
 	Copyright (c) Microsoft Corporation.  All rights reserved.
 */
@@ -3410,7 +3410,7 @@ var Excel;
 		}
 		BindingCollection.prototype.add = function(range, bindingType, id) {
 			/// <summary>
-			/// Add a new binding to a particular Range.              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.3]
+			/// Add a new binding to a particular Range.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.3]
 			/// </summary>
 			/// <param name="range" >Range to bind the binding to. May be an Excel Range object, or a string. If string, must contain the full address, including the sheet name</param>
 			/// <param name="bindingType" type="String">Type of binding. See Excel.BindingType.</param>
@@ -3759,7 +3759,7 @@ var Excel;
 			/// <summary>
 			/// Resets the source data for the chart. [Api set: ExcelApi 1.1]
 			/// </summary>
-			/// <param name="sourceData" >The Range object corresponding to the source data.</param>
+			/// <param name="sourceData" >The range corresponding to the source data.</param>
 			/// <param name="seriesBy" type="String" optional="true">Specifies the way columns or rows are used as data series on the chart. Can be one of the following: Auto (default), Rows, Columns. See Excel.ChartSeriesBy for details.</param>
 			/// <returns ></returns>
 		}
@@ -4165,7 +4165,7 @@ var Excel;
 			/// Creates a new chart. [Api set: ExcelApi 1.1]
 			/// </summary>
 			/// <param name="type" type="String">Represents the type of a chart. See Excel.ChartType for details.</param>
-			/// <param name="sourceData" >The Range object corresponding to the source data.</param>
+			/// <param name="sourceData" >The range corresponding to the source data.</param>
 			/// <param name="seriesBy" type="String" optional="true">Specifies the way columns or rows are used as data series on the chart. See Excel.ChartSeriesBy for details.</param>
 			/// <returns type="Excel.Chart"></returns>
 		}
@@ -10846,28 +10846,28 @@ var Excel;
 			/// <field name="address" type="String">Represents the range reference in A1-style. Address value will contain the Sheet reference (e.g. Sheet1!A1:B4). Read-only. [Api set: ExcelApi 1.1]</field>
 			/// <field name="addressLocal" type="String">Represents range reference for the specified range in the language of the user. Read-only. [Api set: ExcelApi 1.1]</field>
 			/// <field name="cellCount" type="Number">Number of cells in the range. This API will return -1 if the cell count exceeds 2^31-1 (2,147,483,647). Read-only. [Api set: ExcelApi 1.1]</field>
-			/// <field name="columnCount" type="Number">Represents the total number of columns in the range. Read-only.              If the range has multiple areas, null will be returned. [Api set: ExcelApi 1.1]</field>
-			/// <field name="columnHidden" type="Boolean">Represents if all columns of the current range are hidden.              When getting columnHidden, if the range has multiple areas, null will be returned.              When setting columnHidden, if the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.2]</field>
-			/// <field name="columnIndex" type="Number">Represents the column number of the first cell in the range. Zero-indexed. Read-only.              If the range has multiple areas, the ColumnIndex of the first area will be returned. [Api set: ExcelApi 1.1]</field>
+			/// <field name="columnCount" type="Number">Represents the total number of columns in the range. Read-only.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, null will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.1]</field>
+			/// <field name="columnHidden" type="Boolean">Represents if all columns of the current range are hidden.              BeginIgnoreIntelliSense_MULTIAREA              When getting columnHidden, if the range has multiple areas, null will be returned.              When setting columnHidden, if the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.2]</field>
+			/// <field name="columnIndex" type="Number">Represents the column number of the first cell in the range. Zero-indexed. Read-only.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the ColumnIndex of the first area will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.1]</field>
 			/// <field name="conditionalFormats" type="Excel.ConditionalFormatCollection">Collection of ConditionalFormats that intersect the range. [Api set: ExcelApi 1.6]</field>
 			/// <field name="format" type="Excel.RangeFormat">Returns a format object, encapsulating the range&apos;s font, fill, borders, alignment, and other properties. Read-only. [Api set: ExcelApi 1.1]</field>
-			/// <field name="formulas" type="Array" elementType="Array">Represents the formula in A1-style notation.              When getting formulas, if the range has multiple areas, null will be returned.              When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.1]</field>
-			/// <field name="formulasLocal" type="Array" elementType="Array">Represents the formula in A1-style notation, in the user&apos;s language and number-formatting locale.  For example, the English &quot;=SUM(A1, 1.5)&quot; formula would become &quot;=SUMME(A1; 1,5)&quot; in German.              When getting formulas, if the range has multiple areas, null will be returned.              When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.1]</field>
-			/// <field name="formulasR1C1" type="Array" elementType="Array">Represents the formula in R1C1-style notation.              When getting formulas, if the range has multiple areas, null will be returned.              When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.2]</field>
-			/// <field name="hidden" type="Boolean">Represents if all cells of the current range are hidden.              If the range has multiple areas, null will be returned. [Api set: ExcelApi 1.2]</field>
-			/// <field name="hyperlink" type="Excel.Interfaces.RangeHyperlink">Represents the hyperlink for the current range.              When getting hyperlink, if the range has multiple areas, null will be returned.              When setting hyperlink, if the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.7]</field>
-			/// <field name="isEntireColumn" type="Boolean">Represents if the current range is an entire column.              If the range has multiple areas, null will be returned. [Api set: ExcelApi 1.7]</field>
-			/// <field name="isEntireRow" type="Boolean">Represents if the current range is an entire row.              If the range has multiple areas, null will be returned. [Api set: ExcelApi 1.7]</field>
-			/// <field name="numberFormat" type="Array" elementType="Array">Represents Excel&apos;s number format code for the given range.              When getting number format, if the range has multiple areas, null will be returned.              When setting number format to a range, the value argument can be either a single value (string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range. [Api set: ExcelApi 1.1]</field>
-			/// <field name="numberFormatLocal" type="Array" elementType="Array">Represents Excel&apos;s number format code for the given range as a string in the language of the user.              When getting number format local, if the range has multiple areas, null will be returned.              When setting number format local to a range, the value argument can be either a single value (string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range. [Api set: ExcelApi 1.7]</field>
-			/// <field name="rowCount" type="Number">Returns the total number of rows in the range. Read-only.              If the range has multiple areas, null will be returned. [Api set: ExcelApi 1.1]</field>
-			/// <field name="rowHidden" type="Boolean">Represents if all rows of the current range are hidden.              When getting rowHidden, if the range has multiple areas, null will be returned.              When setting rowHidden, if the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.2]</field>
-			/// <field name="rowIndex" type="Number">Returns the row number of the first cell in the range. Zero-indexed. Read-only.              If the range has multiple areas, the RowIndex of the first area will be returned. [Api set: ExcelApi 1.1]</field>
+			/// <field name="formulas" type="Array" elementType="Array">Represents the formula in A1-style notation.              BeginIgnoreIntelliSense_MULTIAREA              When getting formulas, if the range has multiple areas, null will be returned.              EndIgnoreIntelliSense_MULTIAREA              When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.1]</field>
+			/// <field name="formulasLocal" type="Array" elementType="Array">Represents the formula in A1-style notation, in the user&apos;s language and number-formatting locale.  For example, the English &quot;=SUM(A1, 1.5)&quot; formula would become &quot;=SUMME(A1; 1,5)&quot; in German.              BeginIgnoreIntelliSense_MULTIAREA              When getting formulas, if the range has multiple areas, null will be returned.              EndIgnoreIntelliSense_MULTIAREA              When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.1]</field>
+			/// <field name="formulasR1C1" type="Array" elementType="Array">Represents the formula in R1C1-style notation.              BeginIgnoreIntelliSense_MULTIAREA              When getting formulas, if the range has multiple areas, null will be returned.              EndIgnoreIntelliSense_MULTIAREA              When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.2]</field>
+			/// <field name="hidden" type="Boolean">Represents if all cells of the current range are hidden.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, null will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.2]</field>
+			/// <field name="hyperlink" type="Excel.Interfaces.RangeHyperlink">Represents the hyperlink for the current range.              BeginIgnoreIntelliSense_MULTIAREA              When getting hyperlink, if the range has multiple areas, null will be returned.              When setting hyperlink, if the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.7]</field>
+			/// <field name="isEntireColumn" type="Boolean">Represents if the current range is an entire column.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, null will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.7]</field>
+			/// <field name="isEntireRow" type="Boolean">Represents if the current range is an entire row.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, null will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.7]</field>
+			/// <field name="numberFormat" type="Array" elementType="Array">Represents Excel&apos;s number format code for the given range.              BeginIgnoreIntelliSense_MULTIAREA              When getting number format, if the range has multiple areas, null will be returned.              EndIgnoreIntelliSense_MULTIAREA              When setting number format to a range, the value argument can be either a single value (string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range. [Api set: ExcelApi 1.1]</field>
+			/// <field name="numberFormatLocal" type="Array" elementType="Array">Represents Excel&apos;s number format code for the given range as a string in the language of the user.              BeginIgnoreIntelliSense_MULTIAREA              When getting number format local, if the range has multiple areas, null will be returned.              EndIgnoreIntelliSense_MULTIAREA              When setting number format local to a range, the value argument can be either a single value (string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range. [Api set: ExcelApi 1.7]</field>
+			/// <field name="rowCount" type="Number">Returns the total number of rows in the range. Read-only.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, null will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.1]</field>
+			/// <field name="rowHidden" type="Boolean">Represents if all rows of the current range are hidden.              BeginIgnoreIntelliSense_MULTIAREA              When getting rowHidden, if the range has multiple areas, null will be returned.              When setting rowHidden, if the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.2]</field>
+			/// <field name="rowIndex" type="Number">Returns the row number of the first cell in the range. Zero-indexed. Read-only.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the RowIndex of the first area will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.1]</field>
 			/// <field name="sort" type="Excel.RangeSort">Represents the range sort of the current range. [Api set: ExcelApi 1.2]</field>
 			/// <field name="style" type="String">Represents the style of the current range.              If the styles of the cells are inconsistent, null will be returned.              For custom styles, the style name will be returned. For built-in styles, a string representing a value in the BuiltInStyle enum will be returned. [Api set: ExcelApi 1.7]</field>
-			/// <field name="text" type="Array" elementType="Array">Text values of the specified range. The Text value will not depend on the cell width. The # sign substitution that happens in Excel UI will not affect the text value returned by the API. Read-only.              If the range has multiple areas, null will be returned. [Api set: ExcelApi 1.1]</field>
-			/// <field name="valueTypes" type="Array" elementType="Array">Represents the type of data of each cell. Read-only.              If the range has multiple areas, null will be returned. [Api set: ExcelApi 1.1]</field>
-			/// <field name="values" type="Array" elementType="Array">Represents the raw values of the specified range. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.              When getting values, if the range has multiple areas, null will be returned.              When setting values to a range, the value argument can be either a single value (string, number or boolean) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.1]</field>
+			/// <field name="text" type="Array" elementType="Array">Text values of the specified range. The Text value will not depend on the cell width. The # sign substitution that happens in Excel UI will not affect the text value returned by the API. Read-only.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, null will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.1]</field>
+			/// <field name="valueTypes" type="Array" elementType="Array">Represents the type of data of each cell. Read-only.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, null will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.1]</field>
+			/// <field name="values" type="Array" elementType="Array">Represents the raw values of the specified range. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.              BeginIgnoreIntelliSense_MULTIAREA              When getting values, if the range has multiple areas, null will be returned.              EndIgnoreIntelliSense_MULTIAREA              When setting values to a range, the value argument can be either a single value (string, number or boolean) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.1]</field>
 			/// <field name="worksheet" type="Excel.Worksheet">The worksheet containing the current range. [Api set: ExcelApi 1.1]</field>
 		}
 
@@ -10908,14 +10908,14 @@ var Excel;
 		}
 		Range.prototype.delete = function(shift) {
 			/// <summary>
-			/// Deletes the cells associated with the range.              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.1]
+			/// Deletes the cells associated with the range.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.1]
 			/// </summary>
 			/// <param name="shift" type="String">Specifies which way to shift the cells. See Excel.DeleteShiftDirection for details.</param>
 			/// <returns ></returns>
 		}
 		Range.prototype.getAbsoluteResizedRange = function(numRows, numColumns) {
 			/// <summary>
-			/// Gets a Range object with the same top-left cell as the current Range object, but with the specified numbers of rows and columns.              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.7]
+			/// Gets a Range object with the same top-left cell as the current Range object, but with the specified numbers of rows and columns.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.7]
 			/// </summary>
 			/// <param name="numRows" type="Number">The number of rows of the new range size.</param>
 			/// <param name="numColumns" type="Number">The number of columns of the new range size.</param>
@@ -10930,7 +10930,7 @@ var Excel;
 		}
 		Range.prototype.getCell = function(row, column) {
 			/// <summary>
-			/// Gets the range object containing the single cell based on row and column numbers. The cell can be outside the bounds of its parent range, so long as it&apos;s stays within the worksheet grid. The returned cell is located relative to the top left cell of the range.              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.1]
+			/// Gets the range object containing the single cell based on row and column numbers. The cell can be outside the bounds of its parent range, so long as it&apos;s stays within the worksheet grid. The returned cell is located relative to the top left cell of the range.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.1]
 			/// </summary>
 			/// <param name="row" type="Number">Row number of the cell to be retrieved. Zero-indexed.</param>
 			/// <param name="column" type="Number">Column number of the cell to be retrieved. Zero-indexed.</param>
@@ -10938,40 +10938,40 @@ var Excel;
 		}
 		Range.prototype.getColumn = function(column) {
 			/// <summary>
-			/// Gets a column contained in the range.              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.1]
+			/// Gets a column contained in the range.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.1]
 			/// </summary>
 			/// <param name="column" type="Number">Column number of the range to be retrieved. Zero-indexed.</param>
 			/// <returns type="Excel.Range"></returns>
 		}
 		Range.prototype.getColumnsAfter = function(count) {
 			/// <summary>
-			/// Gets a certain number of columns to the right of the current Range object.              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.2]
+			/// Gets a certain number of columns to the right of the current Range object.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.2]
 			/// </summary>
 			/// <param name="count" type="Number" optional="true">The number of columns to include in the resulting range. In general, use a positive number to create a range outside the current range. You can also use a negative number to create a range within the current range. The default value is 1.</param>
 			/// <returns type="Excel.Range"></returns>
 		}
 		Range.prototype.getColumnsBefore = function(count) {
 			/// <summary>
-			/// Gets a certain number of columns to the left of the current Range object.              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.2]
+			/// Gets a certain number of columns to the left of the current Range object.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.2]
 			/// </summary>
 			/// <param name="count" type="Number" optional="true">The number of columns to include in the resulting range. In general, use a positive number to create a range outside the current range. You can also use a negative number to create a range within the current range. The default value is 1.</param>
 			/// <returns type="Excel.Range"></returns>
 		}
 		Range.prototype.getEntireColumn = function() {
 			/// <summary>
-			/// Gets an object that represents the entire column of the range (for example, if the current range represents cells &quot;B4:E11&quot;, it&apos;s `getEntireColumn` is a range that represents columns &quot;B:E&quot;).              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.1]
+			/// Gets an object that represents the entire column of the range (for example, if the current range represents cells &quot;B4:E11&quot;, it&apos;s `getEntireColumn` is a range that represents columns &quot;B:E&quot;).              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.1]
 			/// </summary>
 			/// <returns type="Excel.Range"></returns>
 		}
 		Range.prototype.getEntireRow = function() {
 			/// <summary>
-			/// Gets an object that represents the entire row of the range (for example, if the current range represents cells &quot;B4:E11&quot;, it&apos;s `GetEntireRow` is a range that represents rows &quot;4:11&quot;).              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.1]
+			/// Gets an object that represents the entire row of the range (for example, if the current range represents cells &quot;B4:E11&quot;, it&apos;s `GetEntireRow` is a range that represents rows &quot;4:11&quot;).              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.1]
 			/// </summary>
 			/// <returns type="Excel.Range"></returns>
 		}
 		Range.prototype.getImage = function() {
 			/// <summary>
-			/// Renders the range as a base64-encoded png image.              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.7]
+			/// Renders the range as a base64-encoded png image.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.7]
 			/// </summary>
 			/// <returns type="OfficeExtension.ClientResult&lt;string&gt;"></returns>
 			var result = new OfficeExtension.ClientResult();
@@ -10995,19 +10995,19 @@ var Excel;
 		}
 		Range.prototype.getLastCell = function() {
 			/// <summary>
-			/// Gets the last cell within the range. For example, the last cell of &quot;B2:D5&quot; is &quot;D5&quot;.              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.1]
+			/// Gets the last cell within the range. For example, the last cell of &quot;B2:D5&quot; is &quot;D5&quot;.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.1]
 			/// </summary>
 			/// <returns type="Excel.Range"></returns>
 		}
 		Range.prototype.getLastColumn = function() {
 			/// <summary>
-			/// Gets the last column within the range. For example, the last column of &quot;B2:D5&quot; is &quot;D2:D5&quot;.              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.1]
+			/// Gets the last column within the range. For example, the last column of &quot;B2:D5&quot; is &quot;D2:D5&quot;.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.1]
 			/// </summary>
 			/// <returns type="Excel.Range"></returns>
 		}
 		Range.prototype.getLastRow = function() {
 			/// <summary>
-			/// Gets the last row within the range. For example, the last row of &quot;B2:D5&quot; is &quot;B5:D5&quot;.              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.1]
+			/// Gets the last row within the range. For example, the last row of &quot;B2:D5&quot; is &quot;B5:D5&quot;.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.1]
 			/// </summary>
 			/// <returns type="Excel.Range"></returns>
 		}
@@ -11021,7 +11021,7 @@ var Excel;
 		}
 		Range.prototype.getResizedRange = function(deltaRows, deltaColumns) {
 			/// <summary>
-			/// Gets a Range object similar to the current Range object, but with its bottom-right corner expanded (or contracted) by some number of rows and columns.              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.2]
+			/// Gets a Range object similar to the current Range object, but with its bottom-right corner expanded (or contracted) by some number of rows and columns.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.2]
 			/// </summary>
 			/// <param name="deltaRows" type="Number">The number of rows by which to expand the bottom-right corner, relative to the current range. Use a positive number to expand the range, or a negative number to decrease it.</param>
 			/// <param name="deltaColumns" type="Number">The number of columnsby which to expand the bottom-right corner, relative to the current range. Use a positive number to expand the range, or a negative number to decrease it.</param>
@@ -11029,28 +11029,28 @@ var Excel;
 		}
 		Range.prototype.getRow = function(row) {
 			/// <summary>
-			/// Gets a row contained in the range.              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.1]
+			/// Gets a row contained in the range.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.1]
 			/// </summary>
 			/// <param name="row" type="Number">Row number of the range to be retrieved. Zero-indexed.</param>
 			/// <returns type="Excel.Range"></returns>
 		}
 		Range.prototype.getRowsAbove = function(count) {
 			/// <summary>
-			/// Gets a certain number of rows above the current Range object.              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.2]
+			/// Gets a certain number of rows above the current Range object.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.2]
 			/// </summary>
 			/// <param name="count" type="Number" optional="true">The number of rows to include in the resulting range. In general, use a positive number to create a range outside the current range. You can also use a negative number to create a range within the current range. The default value is 1.</param>
 			/// <returns type="Excel.Range"></returns>
 		}
 		Range.prototype.getRowsBelow = function(count) {
 			/// <summary>
-			/// Gets a certain number of rows below the current Range object.              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.2]
+			/// Gets a certain number of rows below the current Range object.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.2]
 			/// </summary>
 			/// <param name="count" type="Number" optional="true">The number of rows to include in the resulting range. In general, use a positive number to create a range outside the current range. You can also use a negative number to create a range within the current range. The default value is 1.</param>
 			/// <returns type="Excel.Range"></returns>
 		}
 		Range.prototype.getSurroundingRegion = function() {
 			/// <summary>
-			/// Returns a Range object that represents the surrounding region for the top-left cell in this range. A surrounding region is a range bounded by any combination of blank rows and blank columns relative to this range.              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.7]
+			/// Returns a Range object that represents the surrounding region for the top-left cell in this range. A surrounding region is a range bounded by any combination of blank rows and blank columns relative to this range.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.7]
 			/// </summary>
 			/// <returns type="Excel.Range"></returns>
 		}
@@ -11070,20 +11070,20 @@ var Excel;
 		}
 		Range.prototype.getVisibleView = function() {
 			/// <summary>
-			/// Represents the visible rows of the current range.              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.3]
+			/// Represents the visible rows of the current range.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.3]
 			/// </summary>
 			/// <returns type="Excel.RangeView"></returns>
 		}
 		Range.prototype.insert = function(shift) {
 			/// <summary>
-			/// Inserts a cell or a range of cells into the worksheet in place of this range, and shifts the other cells to make space. Returns a new Range object at the now blank space.              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.1]
+			/// Inserts a cell or a range of cells into the worksheet in place of this range, and shifts the other cells to make space. Returns a new Range object at the now blank space.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.1]
 			/// </summary>
 			/// <param name="shift" type="String">Specifies which way to shift the cells. See Excel.InsertShiftDirection for details.</param>
 			/// <returns type="Excel.Range"></returns>
 		}
 		Range.prototype.merge = function(across) {
 			/// <summary>
-			/// Merge the range cells into one region in the worksheet.              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.2]
+			/// Merge the range cells into one region in the worksheet.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.2]
 			/// </summary>
 			/// <param name="across" type="Boolean" optional="true">Set true to merge cells in each row of the specified range as separate merged cells. The default value is false.</param>
 			/// <returns ></returns>
@@ -11096,13 +11096,13 @@ var Excel;
 		}
 		Range.prototype.showCard = function() {
 			/// <summary>
-			/// Displays the card for an active cell if it has rich value content.              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.7]
+			/// Displays the card for an active cell if it has rich value content.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.7]
 			/// </summary>
 			/// <returns ></returns>
 		}
 		Range.prototype.unmerge = function() {
 			/// <summary>
-			/// Unmerge the range cells into separate cells.              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.2]
+			/// Unmerge the range cells into separate cells.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.2]
 			/// </summary>
 			/// <returns ></returns>
 		}
@@ -13347,16 +13347,16 @@ var Excel;
 			function RangeUpdateData() {
 				/// <summary>An interface for updating data on the Range object, for use in "range.set({ ... })".</summary>
 				/// <field name="format" type="Excel.Interfaces.RangeFormatUpdateData">Returns a format object, encapsulating the range&apos;s font, fill, borders, alignment, and other properties. [Api set: ExcelApi 1.1]</field>
-				/// <field name="columnHidden" type="Boolean">Represents if all columns of the current range are hidden.              When getting columnHidden, if the range has multiple areas, null will be returned.              When setting columnHidden, if the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.2]</field>;
-				/// <field name="formulas" type="Array" elementType="Array">Represents the formula in A1-style notation.              When getting formulas, if the range has multiple areas, null will be returned.              When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.1]</field>;
-				/// <field name="formulasLocal" type="Array" elementType="Array">Represents the formula in A1-style notation, in the user&apos;s language and number-formatting locale.  For example, the English &quot;=SUM(A1, 1.5)&quot; formula would become &quot;=SUMME(A1; 1,5)&quot; in German.              When getting formulas, if the range has multiple areas, null will be returned.              When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.1]</field>;
-				/// <field name="formulasR1C1" type="Array" elementType="Array">Represents the formula in R1C1-style notation.              When getting formulas, if the range has multiple areas, null will be returned.              When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.2]</field>;
-				/// <field name="hyperlink" type="Excel.Interfaces.RangeHyperlink">Represents the hyperlink for the current range.              When getting hyperlink, if the range has multiple areas, null will be returned.              When setting hyperlink, if the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.7]</field>;
-				/// <field name="numberFormat" type="Array" elementType="Array">Represents Excel&apos;s number format code for the given range.              When getting number format, if the range has multiple areas, null will be returned.              When setting number format to a range, the value argument can be either a single value (string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range. [Api set: ExcelApi 1.1]</field>;
-				/// <field name="numberFormatLocal" type="Array" elementType="Array">Represents Excel&apos;s number format code for the given range as a string in the language of the user.              When getting number format local, if the range has multiple areas, null will be returned.              When setting number format local to a range, the value argument can be either a single value (string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range. [Api set: ExcelApi 1.7]</field>;
-				/// <field name="rowHidden" type="Boolean">Represents if all rows of the current range are hidden.              When getting rowHidden, if the range has multiple areas, null will be returned.              When setting rowHidden, if the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.2]</field>;
+				/// <field name="columnHidden" type="Boolean">Represents if all columns of the current range are hidden.              BeginIgnoreIntelliSense_MULTIAREA              When getting columnHidden, if the range has multiple areas, null will be returned.              When setting columnHidden, if the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.2]</field>;
+				/// <field name="formulas" type="Array" elementType="Array">Represents the formula in A1-style notation.              BeginIgnoreIntelliSense_MULTIAREA              When getting formulas, if the range has multiple areas, null will be returned.              EndIgnoreIntelliSense_MULTIAREA              When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.1]</field>;
+				/// <field name="formulasLocal" type="Array" elementType="Array">Represents the formula in A1-style notation, in the user&apos;s language and number-formatting locale.  For example, the English &quot;=SUM(A1, 1.5)&quot; formula would become &quot;=SUMME(A1; 1,5)&quot; in German.              BeginIgnoreIntelliSense_MULTIAREA              When getting formulas, if the range has multiple areas, null will be returned.              EndIgnoreIntelliSense_MULTIAREA              When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.1]</field>;
+				/// <field name="formulasR1C1" type="Array" elementType="Array">Represents the formula in R1C1-style notation.              BeginIgnoreIntelliSense_MULTIAREA              When getting formulas, if the range has multiple areas, null will be returned.              EndIgnoreIntelliSense_MULTIAREA              When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.2]</field>;
+				/// <field name="hyperlink" type="Excel.Interfaces.RangeHyperlink">Represents the hyperlink for the current range.              BeginIgnoreIntelliSense_MULTIAREA              When getting hyperlink, if the range has multiple areas, null will be returned.              When setting hyperlink, if the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.7]</field>;
+				/// <field name="numberFormat" type="Array" elementType="Array">Represents Excel&apos;s number format code for the given range.              BeginIgnoreIntelliSense_MULTIAREA              When getting number format, if the range has multiple areas, null will be returned.              EndIgnoreIntelliSense_MULTIAREA              When setting number format to a range, the value argument can be either a single value (string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range. [Api set: ExcelApi 1.1]</field>;
+				/// <field name="numberFormatLocal" type="Array" elementType="Array">Represents Excel&apos;s number format code for the given range as a string in the language of the user.              BeginIgnoreIntelliSense_MULTIAREA              When getting number format local, if the range has multiple areas, null will be returned.              EndIgnoreIntelliSense_MULTIAREA              When setting number format local to a range, the value argument can be either a single value (string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range. [Api set: ExcelApi 1.7]</field>;
+				/// <field name="rowHidden" type="Boolean">Represents if all rows of the current range are hidden.              BeginIgnoreIntelliSense_MULTIAREA              When getting rowHidden, if the range has multiple areas, null will be returned.              When setting rowHidden, if the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.2]</field>;
 				/// <field name="style" type="String">Represents the style of the current range.              If the styles of the cells are inconsistent, null will be returned.              For custom styles, the style name will be returned. For built-in styles, a string representing a value in the BuiltInStyle enum will be returned. [Api set: ExcelApi 1.7]</field>;
-				/// <field name="values" type="Array" elementType="Array">Represents the raw values of the specified range. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.              When getting values, if the range has multiple areas, null will be returned.              When setting values to a range, the value argument can be either a single value (string, number or boolean) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.1]</field>;
+				/// <field name="values" type="Array" elementType="Array">Represents the raw values of the specified range. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.              BeginIgnoreIntelliSense_MULTIAREA              When getting values, if the range has multiple areas, null will be returned.              EndIgnoreIntelliSense_MULTIAREA              When setting values to a range, the value argument can be either a single value (string, number or boolean) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.              BeginIgnoreIntelliSense_MULTIAREA              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned.              EndIgnoreIntelliSense_MULTIAREA [Api set: ExcelApi 1.1]</field>;
 			}
 			return RangeUpdateData;
 		})();
