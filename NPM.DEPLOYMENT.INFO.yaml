@@ -1,4 +1,9 @@
+version: 1.1.5-adhoc.23
 tag: adhoc
+githubReleaseUrl: https://github.com/OfficeDev/office-js/releases/tag/v1.1.5-adhoc.23
+githubViewUrl: https://github.com/OfficeDev/office-js/tree/v1.1.5-adhoc.23
+deployedAt: 2018-04-11 8:14 pm UTC  (2018-04-11 1:14 pm Pacific Time)
+
 history:
     adhocBranchName: __adhoc--current--local--2018-04-11--1.11pm--shaozhu-op
     commitMessage: Operation API in Excel
@@ -25,3 +30,11 @@ history:
             sha: >-
                 https://github.com/OfficeDev/office-js/commits/e72b172679cae655c47505b9459eabfdd9d7667b
             message: '[BEGIN PUBLISH UPDATES] -- Operation API in Excel'
+
+
+unpkgUrls: |-
+    this specific build number:
+        https://unpkg.com/@microsoft/office-js@1.1.5-adhoc.23/dist/office.js
+        https://unpkg.com/@microsoft/office-js@1.1.5-adhoc.23/dist/office.d.ts
+
+buildLog: https://travis-ci.org/OfficeDev/office-js/builds/365300699
