@@ -38422,5 +38422,4756 @@ var Excel;
 		ErrorCodes["invalidOperationInCellEditMode"]="InvalidOperationInCellEditMode";
 	})(ErrorCodes=Excel.ErrorCodes || (Excel.ErrorCodes={}));
 })(Excel || (Excel={}));
+var ExcelOp;
+(function (ExcelOp) {
+	var _hostName="Excel";
+	var _defaultApiSetName="ExcelApi";
+	var _throwIfApiNotSupported=OfficeExtension.CommonUtility.throwIfApiNotSupported;
+	var _invokeGet=OfficeExtension.OperationApiHelper.invokeGet;
+	var _invokeMethod=OfficeExtension.OperationApiHelper.invokeMethod;
+	var _invokeUpdate=OfficeExtension.OperationApiHelper.invokeUpdate;
+	var _createRootServiceObject=OfficeExtension.OperationApiHelper.createRootServiceObject;
+	var _localDocumentContext=OfficeExtension.OperationApiHelper.localDocumentContext;
+	var Runtime=(function (_super) {
+		__extends(Runtime, _super);
+		function Runtime() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Runtime.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		Runtime.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return Runtime;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.Runtime=Runtime;
+	var Application=(function (_super) {
+		__extends(Application, _super);
+		function Application() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Application.prototype.createWorkbook=function (base64File) {
+			_throwIfApiNotSupported("Application.createWorkbook", _defaultApiSetName, "1.8", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.WorkbookCreated, this, "CreateWorkbook", 1, [base64File], false, true, "_GetWorkbookCreatedById", 0);
+		};
+		Application.prototype._GetWorkbookCreatedById=function (id) {
+			_throwIfApiNotSupported("Application._GetWorkbookCreatedById", _defaultApiSetName, "1.8", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.WorkbookCreated, this, "_GetWorkbookCreatedById", 1, [id], false, false, null, 4);
+		};
+		Application.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		Application.prototype.doCalculate=function (calculationType) {
+			return _invokeMethod(this, "Calculate", 0, [calculationType], 0, 0);
+		};
+		Application.prototype.doSuspendApiCalculationUntilNextSync=function () {
+			_throwIfApiNotSupported("Application.suspendApiCalculationUntilNextSync", _defaultApiSetName, "1.6", _hostName);
+			return _invokeMethod(this, "SuspendApiCalculationUntilNextSync", 0, [], 0, 0);
+		};
+		Application.prototype.doSuspendScreenUpdatingUntilNextSync=function () {
+			_throwIfApiNotSupported("Application.suspendScreenUpdatingUntilNextSync", _defaultApiSetName, "1.9", _hostName);
+			return _invokeMethod(this, "SuspendScreenUpdatingUntilNextSync", 0, [], 0, 0);
+		};
+		Application.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return Application;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.Application=Application;
+	var Workbook=(function (_super) {
+		__extends(Workbook, _super);
+		function Workbook() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(Workbook.prototype, "application", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.Application, this, "Application", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Workbook.prototype, "bindings", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.BindingCollection, this, "Bindings", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Workbook.prototype, "customFunctions", {
+			get: function () {
+				_throwIfApiNotSupported("Workbook.customFunctions", "CustomFunctions", "1.1", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.CustomFunctionCollection, this, "CustomFunctions", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Workbook.prototype, "customXmlParts", {
+			get: function () {
+				_throwIfApiNotSupported("Workbook.customXmlParts", _defaultApiSetName, "1.5", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.CustomXmlPartCollection, this, "CustomXmlParts", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Workbook.prototype, "dataConnections", {
+			get: function () {
+				_throwIfApiNotSupported("Workbook.dataConnections", _defaultApiSetName, "1.7", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.DataConnectionCollection, this, "DataConnections", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Workbook.prototype, "functions", {
+			get: function () {
+				_throwIfApiNotSupported("Workbook.functions", _defaultApiSetName, "1.2", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.Functions, this, "Functions", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Workbook.prototype, "internalTest", {
+			get: function () {
+				_throwIfApiNotSupported("Workbook.internalTest", _defaultApiSetName, "1.6", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.InternalTest, this, "InternalTest", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Workbook.prototype, "names", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.NamedItemCollection, this, "Names", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Workbook.prototype, "pivotTables", {
+			get: function () {
+				_throwIfApiNotSupported("Workbook.pivotTables", _defaultApiSetName, "1.3", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.PivotTableCollection, this, "PivotTables", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Workbook.prototype, "properties", {
+			get: function () {
+				_throwIfApiNotSupported("Workbook.properties", _defaultApiSetName, "1.7", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.DocumentProperties, this, "Properties", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Workbook.prototype, "protection", {
+			get: function () {
+				_throwIfApiNotSupported("Workbook.protection", _defaultApiSetName, "1.7", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.WorkbookProtection, this, "Protection", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Workbook.prototype, "settings", {
+			get: function () {
+				_throwIfApiNotSupported("Workbook.settings", _defaultApiSetName, "1.4", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.SettingCollection, this, "Settings", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Workbook.prototype, "styles", {
+			get: function () {
+				_throwIfApiNotSupported("Workbook.styles", _defaultApiSetName, "1.7", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.StyleCollection, this, "Styles", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Workbook.prototype, "tables", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.TableCollection, this, "Tables", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Workbook.prototype, "worksheets", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.WorksheetCollection, this, "Worksheets", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Workbook.prototype, "_Runtime", {
+			get: function () {
+				_throwIfApiNotSupported("Workbook._Runtime", _defaultApiSetName, "1.5", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.Runtime, this, "_Runtime", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Workbook.prototype, "_V1Api", {
+			get: function () {
+				_throwIfApiNotSupported("Workbook._V1Api", _defaultApiSetName, "1.3", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp._V1Api, this, "_V1Api", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Workbook.prototype.getActiveCell=function () {
+			_throwIfApiNotSupported("Workbook.getActiveCell", _defaultApiSetName, "1.7", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetActiveCell", 1, [], false, true, null, 4);
+		};
+		Workbook.prototype.getSelectedRange=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetSelectedRange", 1, [], false, true, null, 4);
+		};
+		Workbook.prototype._GetRangeForEventByReferenceId=function (bstrReferenceId) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "_GetRangeForEventByReferenceId", 1, [bstrReferenceId], false, false, null, 4);
+		};
+		Workbook.prototype._GetRangeOrNullObjectForEventByReferenceId=function (bstrReferenceId) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "_GetRangeOrNullObjectForEventByReferenceId", 1, [bstrReferenceId], false, false, null, 4);
+		};
+		Workbook.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		Workbook.prototype.doGetIsActiveCollabSession=function () {
+			_throwIfApiNotSupported("Workbook.getIsActiveCollabSession", _defaultApiSetName, "1.9", _hostName);
+			return _invokeMethod(this, "GetIsActiveCollabSession", 0, [], 0, 0);
+		};
+		Workbook.prototype.doRegisterCustomFunctions=function (addinNamespace, metadataContent, addinId) {
+			_throwIfApiNotSupported("Workbook.registerCustomFunctions", "CustomFunctions", "1.1", _hostName);
+			return _invokeMethod(this, "RegisterCustomFunctions", 0, [addinNamespace, metadataContent, addinId], 0, 0);
+		};
+		Workbook.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return Workbook;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.Workbook=Workbook;
+	ExcelOp.workbook=_createRootServiceObject(Workbook, _localDocumentContext);
+	var WorkbookProtection=(function (_super) {
+		__extends(WorkbookProtection, _super);
+		function WorkbookProtection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		WorkbookProtection.prototype.doProtect=function (password) {
+			return _invokeMethod(this, "Protect", 0, [password], 0, 0);
+		};
+		WorkbookProtection.prototype.doUnprotect=function (password) {
+			return _invokeMethod(this, "Unprotect", 0, [password], 0, 0);
+		};
+		WorkbookProtection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return WorkbookProtection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.WorkbookProtection=WorkbookProtection;
+	var WorkbookCreated=(function (_super) {
+		__extends(WorkbookCreated, _super);
+		function WorkbookCreated() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		WorkbookCreated.prototype.doOpen=function () {
+			return _invokeMethod(this, "Open", 1, [], 4, 0);
+		};
+		WorkbookCreated.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return WorkbookCreated;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.WorkbookCreated=WorkbookCreated;
+	var Worksheet=(function (_super) {
+		__extends(Worksheet, _super);
+		function Worksheet() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(Worksheet.prototype, "charts", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartCollection, this, "Charts", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Worksheet.prototype, "freezePanes", {
+			get: function () {
+				_throwIfApiNotSupported("Worksheet.freezePanes", _defaultApiSetName, "1.7", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.WorksheetFreezePanes, this, "FreezePanes", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Worksheet.prototype, "names", {
+			get: function () {
+				_throwIfApiNotSupported("Worksheet.names", _defaultApiSetName, "1.4", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.NamedItemCollection, this, "Names", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Worksheet.prototype, "pageLayout", {
+			get: function () {
+				_throwIfApiNotSupported("Worksheet.pageLayout", _defaultApiSetName, "1.8", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.PageLayout, this, "PageLayout", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Worksheet.prototype, "pivotTables", {
+			get: function () {
+				_throwIfApiNotSupported("Worksheet.pivotTables", _defaultApiSetName, "1.3", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.PivotTableCollection, this, "PivotTables", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Worksheet.prototype, "protection", {
+			get: function () {
+				_throwIfApiNotSupported("Worksheet.protection", _defaultApiSetName, "1.2", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.WorksheetProtection, this, "Protection", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Worksheet.prototype, "tables", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.TableCollection, this, "Tables", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Worksheet.prototype, "visuals", {
+			get: function () {
+				_throwIfApiNotSupported("Worksheet.visuals", _defaultApiSetName, "99.9", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.VisualCollection, this, "Visuals", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Worksheet.prototype.findAll=function (text, criteria) {
+			_throwIfApiNotSupported("Worksheet.findAll", _defaultApiSetName, "1.9", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "FindAll", 1, [text, criteria], false, true, null, 4);
+		};
+		Worksheet.prototype.findAllOrNullObject=function (text, criteria) {
+			_throwIfApiNotSupported("Worksheet.findAllOrNullObject", _defaultApiSetName, "1.9", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "FindAllOrNullObject", 1, [text, criteria], false, true, null, 4);
+		};
+		Worksheet.prototype.getCell=function (row, column) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetCell", 1, [row, column], false, true, null, 4);
+		};
+		Worksheet.prototype.getNext=function (visibleOnly) {
+			_throwIfApiNotSupported("Worksheet.getNext", _defaultApiSetName, "1.5", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Worksheet, this, "GetNext", 1, [visibleOnly], false, true, "_GetSheetById", 4);
+		};
+		Worksheet.prototype.getNextOrNullObject=function (visibleOnly) {
+			_throwIfApiNotSupported("Worksheet.getNextOrNullObject", _defaultApiSetName, "1.5", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Worksheet, this, "GetNextOrNullObject", 1, [visibleOnly], false, true, "_GetSheetById", 4);
+		};
+		Worksheet.prototype.getPrevious=function (visibleOnly) {
+			_throwIfApiNotSupported("Worksheet.getPrevious", _defaultApiSetName, "1.5", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Worksheet, this, "GetPrevious", 1, [visibleOnly], false, true, "_GetSheetById", 4);
+		};
+		Worksheet.prototype.getPreviousOrNullObject=function (visibleOnly) {
+			_throwIfApiNotSupported("Worksheet.getPreviousOrNullObject", _defaultApiSetName, "1.5", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Worksheet, this, "GetPreviousOrNullObject", 1, [visibleOnly], false, true, "_GetSheetById", 4);
+		};
+		Worksheet.prototype.getRange=function (address) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetRange", 1, [address], false, true, null, 4);
+		};
+		Worksheet.prototype.getRangeByIndexes=function (startRow, startColumn, rowCount, columnCount) {
+			_throwIfApiNotSupported("Worksheet.getRangeByIndexes", _defaultApiSetName, "1.7", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetRangeByIndexes", 1, [startRow, startColumn, rowCount, columnCount], false, true, null, 4);
+		};
+		Worksheet.prototype.getUsedRange=function (valuesOnly) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetUsedRange", 1, [valuesOnly], false, true, null, 4);
+		};
+		Worksheet.prototype.getUsedRangeOrNullObject=function (valuesOnly) {
+			_throwIfApiNotSupported("Worksheet.getUsedRangeOrNullObject", _defaultApiSetName, "1.4", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetUsedRangeOrNullObject", 1, [valuesOnly], false, true, null, 4);
+		};
+		Worksheet.prototype._GetSheetById=function (id) {
+			_throwIfApiNotSupported("Worksheet._GetSheetById", _defaultApiSetName, "1.7", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Worksheet, this, "_GetSheetById", 1, [id], false, false, null, 4);
+		};
+		Worksheet.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		Worksheet.prototype.doActivate=function () {
+			return _invokeMethod(this, "Activate", 1, [], 0, 0);
+		};
+		Worksheet.prototype.doCalculate=function (markAllDirty) {
+			_throwIfApiNotSupported("Worksheet.calculate", _defaultApiSetName, "1.6", _hostName);
+			return _invokeMethod(this, "Calculate", 0, [markAllDirty], 0, 0);
+		};
+		Worksheet.prototype.doDelete=function () {
+			return _invokeMethod(this, "Delete", 0, [], 0, 0);
+		};
+		Worksheet.prototype.doReplaceAll=function (text, replacement, criteria) {
+			_throwIfApiNotSupported("Worksheet.replaceAll", _defaultApiSetName, "1.9", _hostName);
+			return _invokeMethod(this, "ReplaceAll", 0, [text, replacement, criteria], 0, 0);
+		};
+		Worksheet.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return Worksheet;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.Worksheet=Worksheet;
+	var WorksheetCollection=(function (_super) {
+		__extends(WorksheetCollection, _super);
+		function WorksheetCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		WorksheetCollection.prototype.getActiveWorksheet=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Worksheet, this, "GetActiveWorksheet", 1, [], false, false, null, 4);
+		};
+		WorksheetCollection.prototype.getFirst=function (visibleOnly) {
+			_throwIfApiNotSupported("WorksheetCollection.getFirst", _defaultApiSetName, "1.5", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Worksheet, this, "GetFirst", 1, [visibleOnly], false, true, null, 4);
+		};
+		WorksheetCollection.prototype.getItem=function (key) {
+			return OfficeExtension.OperationApiHelper.createIndexerObject(ExcelOp.Worksheet, this, [key]);
+		};
+		WorksheetCollection.prototype.getItemOrNullObject=function (key) {
+			_throwIfApiNotSupported("WorksheetCollection.getItemOrNullObject", _defaultApiSetName, "1.4", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Worksheet, this, "GetItemOrNullObject", 1, [key], false, false, null, 4);
+		};
+		WorksheetCollection.prototype.getLast=function (visibleOnly) {
+			_throwIfApiNotSupported("WorksheetCollection.getLast", _defaultApiSetName, "1.5", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Worksheet, this, "GetLast", 1, [visibleOnly], false, true, null, 4);
+		};
+		WorksheetCollection.prototype.doGetCount=function (visibleOnly) {
+			_throwIfApiNotSupported("WorksheetCollection.getCount", _defaultApiSetName, "1.4", _hostName);
+			return _invokeMethod(this, "GetCount", 1, [visibleOnly], 4, 0);
+		};
+		WorksheetCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return WorksheetCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.WorksheetCollection=WorksheetCollection;
+	var WorksheetProtection=(function (_super) {
+		__extends(WorksheetProtection, _super);
+		function WorksheetProtection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		WorksheetProtection.prototype.doProtect=function (options, password) {
+			return _invokeMethod(this, "Protect", 0, [options, password], 0, 0);
+		};
+		WorksheetProtection.prototype.doUnprotect=function (password) {
+			return _invokeMethod(this, "Unprotect", 0, [password], 0, 0);
+		};
+		WorksheetProtection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return WorksheetProtection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.WorksheetProtection=WorksheetProtection;
+	var WorksheetFreezePanes=(function (_super) {
+		__extends(WorksheetFreezePanes, _super);
+		function WorksheetFreezePanes() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		WorksheetFreezePanes.prototype.getLocation=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetLocation", 1, [], false, true, null, 4);
+		};
+		WorksheetFreezePanes.prototype.getLocationOrNullObject=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetLocationOrNullObject", 1, [], false, true, null, 4);
+		};
+		WorksheetFreezePanes.prototype.doFreezeAt=function (frozenRange) {
+			return _invokeMethod(this, "FreezeAt", 0, [frozenRange], 0, 0);
+		};
+		WorksheetFreezePanes.prototype.doFreezeColumns=function (count) {
+			return _invokeMethod(this, "FreezeColumns", 0, [count], 0, 0);
+		};
+		WorksheetFreezePanes.prototype.doFreezeRows=function (count) {
+			return _invokeMethod(this, "FreezeRows", 0, [count], 0, 0);
+		};
+		WorksheetFreezePanes.prototype.doUnfreeze=function () {
+			return _invokeMethod(this, "Unfreeze", 0, [], 0, 0);
+		};
+		return WorksheetFreezePanes;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.WorksheetFreezePanes=WorksheetFreezePanes;
+	var Range=(function (_super) {
+		__extends(Range, _super);
+		function Range() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(Range.prototype, "areas", {
+			get: function () {
+				_throwIfApiNotSupported("Range.areas", _defaultApiSetName, "1.8", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.AreaCollection, this, "Areas", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Range.prototype, "conditionalFormats", {
+			get: function () {
+				_throwIfApiNotSupported("Range.conditionalFormats", _defaultApiSetName, "1.6", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ConditionalFormatCollection, this, "ConditionalFormats", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Range.prototype, "dataValidation", {
+			get: function () {
+				_throwIfApiNotSupported("Range.dataValidation", _defaultApiSetName, "1.8", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.DataValidation, this, "DataValidation", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Range.prototype, "format", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.RangeFormat, this, "Format", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Range.prototype, "sort", {
+			get: function () {
+				_throwIfApiNotSupported("Range.sort", _defaultApiSetName, "1.2", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.RangeSort, this, "Sort", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Range.prototype, "worksheet", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.Worksheet, this, "Worksheet", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Range.prototype.find=function (text, criteria) {
+			_throwIfApiNotSupported("Range.find", _defaultApiSetName, "1.9", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "Find", 1, [text, criteria], false, true, null, 4);
+		};
+		Range.prototype.findOrNullObject=function (text, criteria) {
+			_throwIfApiNotSupported("Range.findOrNullObject", _defaultApiSetName, "1.9", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "FindOrNullObject", 1, [text, criteria], false, true, null, 4);
+		};
+		Range.prototype.getAbsoluteResizedRange=function (numRows, numColumns) {
+			_throwIfApiNotSupported("Range.getAbsoluteResizedRange", _defaultApiSetName, "1.7", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetAbsoluteResizedRange", 1, [numRows, numColumns], false, true, null, 4);
+		};
+		Range.prototype.getBoundingRect=function (anotherRange) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetBoundingRect", 1, [anotherRange], false, true, null, 4);
+		};
+		Range.prototype.getCell=function (row, column) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetCell", 1, [row, column], false, true, null, 4);
+		};
+		Range.prototype.getColumn=function (column) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetColumn", 1, [column], false, true, null, 4);
+		};
+		Range.prototype.getColumnsAfter=function (count) {
+			_throwIfApiNotSupported("Range.getColumnsAfter", _defaultApiSetName, "1.3", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetColumnsAfter", 1, [count], false, true, null, 4);
+		};
+		Range.prototype.getColumnsBefore=function (count) {
+			_throwIfApiNotSupported("Range.getColumnsBefore", _defaultApiSetName, "1.3", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetColumnsBefore", 1, [count], false, true, null, 4);
+		};
+		Range.prototype.getDataValidationRange=function () {
+			_throwIfApiNotSupported("Range.getDataValidationRange", _defaultApiSetName, "1.8", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetDataValidationRange", 1, [], false, true, null, 4);
+		};
+		Range.prototype.getDataValidationRangeOrNullObject=function () {
+			_throwIfApiNotSupported("Range.getDataValidationRangeOrNullObject", _defaultApiSetName, "1.8", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetDataValidationRangeOrNullObject", 1, [], false, true, null, 4);
+		};
+		Range.prototype.getEntireColumn=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetEntireColumn", 1, [], false, true, null, 4);
+		};
+		Range.prototype.getEntireRow=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetEntireRow", 1, [], false, true, null, 4);
+		};
+		Range.prototype.getIntersection=function (anotherRange) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetIntersection", 1, [anotherRange], false, true, null, 4);
+		};
+		Range.prototype.getIntersectionOrNullObject=function (anotherRange) {
+			_throwIfApiNotSupported("Range.getIntersectionOrNullObject", _defaultApiSetName, "1.4", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetIntersectionOrNullObject", 1, [anotherRange], false, true, null, 4);
+		};
+		Range.prototype.getLastCell=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetLastCell", 1, [], false, true, null, 4);
+		};
+		Range.prototype.getLastColumn=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetLastColumn", 1, [], false, true, null, 4);
+		};
+		Range.prototype.getLastRow=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetLastRow", 1, [], false, true, null, 4);
+		};
+		Range.prototype.getOffsetRange=function (rowOffset, columnOffset) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetOffsetRange", 1, [rowOffset, columnOffset], false, true, null, 4);
+		};
+		Range.prototype.getResizedRange=function (deltaRows, deltaColumns) {
+			_throwIfApiNotSupported("Range.getResizedRange", _defaultApiSetName, "1.3", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetResizedRange", 1, [deltaRows, deltaColumns], false, true, null, 4);
+		};
+		Range.prototype.getRow=function (row) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetRow", 1, [row], false, true, null, 4);
+		};
+		Range.prototype.getRowsAbove=function (count) {
+			_throwIfApiNotSupported("Range.getRowsAbove", _defaultApiSetName, "1.3", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetRowsAbove", 1, [count], false, true, null, 4);
+		};
+		Range.prototype.getRowsBelow=function (count) {
+			_throwIfApiNotSupported("Range.getRowsBelow", _defaultApiSetName, "1.3", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetRowsBelow", 1, [count], false, true, null, 4);
+		};
+		Range.prototype.getSurroundingRegion=function () {
+			_throwIfApiNotSupported("Range.getSurroundingRegion", _defaultApiSetName, "1.7", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetSurroundingRegion", 1, [], false, true, null, 4);
+		};
+		Range.prototype.getTables=function (fullyContained) {
+			_throwIfApiNotSupported("Range.getTables", _defaultApiSetName, "1.9", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.TableScopedCollection, this, "GetTables", 1, [fullyContained], true, false, null, 4);
+		};
+		Range.prototype.getUsedRange=function (valuesOnly) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetUsedRange", 1, [valuesOnly], false, true, null, 4);
+		};
+		Range.prototype.getUsedRangeOrNullObject=function (valuesOnly) {
+			_throwIfApiNotSupported("Range.getUsedRangeOrNullObject", _defaultApiSetName, "1.4", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetUsedRangeOrNullObject", 1, [valuesOnly], false, true, null, 4);
+		};
+		Range.prototype.getVisibleView=function () {
+			_throwIfApiNotSupported("Range.getVisibleView", _defaultApiSetName, "1.3", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.RangeView, this, "GetVisibleView", 1, [], false, false, null, 4);
+		};
+		Range.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		Range.prototype.doCalculate=function () {
+			_throwIfApiNotSupported("Range.calculate", _defaultApiSetName, "1.6", _hostName);
+			return _invokeMethod(this, "Calculate", 0, [], 0, 0);
+		};
+		Range.prototype.doClear=function (applyTo) {
+			return _invokeMethod(this, "Clear", 0, [applyTo], 0, 0);
+		};
+		Range.prototype.doDelete=function (shift) {
+			return _invokeMethod(this, "Delete", 0, [shift], 0, 0);
+		};
+		Range.prototype.doGetImage=function () {
+			_throwIfApiNotSupported("Range.getImage", _defaultApiSetName, "1.7", _hostName);
+			return _invokeMethod(this, "GetImage", 1, [], 4, 0);
+		};
+		Range.prototype.doMerge=function (across) {
+			_throwIfApiNotSupported("Range.merge", _defaultApiSetName, "1.2", _hostName);
+			return _invokeMethod(this, "Merge", 0, [across], 0, 0);
+		};
+		Range.prototype.doReplaceAll=function (text, replacement, criteria) {
+			_throwIfApiNotSupported("Range.replaceAll", _defaultApiSetName, "1.9", _hostName);
+			return _invokeMethod(this, "ReplaceAll", 0, [text, replacement, criteria], 0, 0);
+		};
+		Range.prototype.doSelect=function () {
+			return _invokeMethod(this, "Select", 1, [], 0, 0);
+		};
+		Range.prototype.doShowCard=function () {
+			_throwIfApiNotSupported("Range.showCard", _defaultApiSetName, "1.7", _hostName);
+			return _invokeMethod(this, "ShowCard", 0, [], 0, 0);
+		};
+		Range.prototype.doUnmerge=function () {
+			_throwIfApiNotSupported("Range.unmerge", _defaultApiSetName, "1.2", _hostName);
+			return _invokeMethod(this, "Unmerge", 0, [], 0, 0);
+		};
+		Range.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return Range;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.Range=Range;
+	var RangeView=(function (_super) {
+		__extends(RangeView, _super);
+		function RangeView() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(RangeView.prototype, "rows", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.RangeViewCollection, this, "Rows", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		RangeView.prototype.getRange=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetRange", 1, [], false, true, null, 4);
+		};
+		RangeView.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		RangeView.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return RangeView;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.RangeView=RangeView;
+	var RangeViewCollection=(function (_super) {
+		__extends(RangeViewCollection, _super);
+		function RangeViewCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		RangeViewCollection.prototype.getItemAt=function (index) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.RangeView, this, "GetItemAt", 1, [index], false, false, null, 4);
+		};
+		RangeViewCollection.prototype.doGetCount=function () {
+			_throwIfApiNotSupported("RangeViewCollection.getCount", _defaultApiSetName, "1.4", _hostName);
+			return _invokeMethod(this, "GetCount", 1, [], 4, 0);
+		};
+		RangeViewCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return RangeViewCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.RangeViewCollection=RangeViewCollection;
+	var SettingCollection=(function (_super) {
+		__extends(SettingCollection, _super);
+		function SettingCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		SettingCollection.prototype.getItem=function (key) {
+			return OfficeExtension.OperationApiHelper.createIndexerObject(ExcelOp.Setting, this, [key]);
+		};
+		SettingCollection.prototype.getItemOrNullObject=function (key) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Setting, this, "GetItemOrNullObject", 1, [key], false, false, null, 4);
+		};
+		SettingCollection.prototype.doGetCount=function () {
+			return _invokeMethod(this, "GetCount", 1, [], 4, 0);
+		};
+		SettingCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return SettingCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.SettingCollection=SettingCollection;
+	var Setting=(function (_super) {
+		__extends(Setting, _super);
+		function Setting() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Setting.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		Setting.prototype.doDelete=function () {
+			return _invokeMethod(this, "Delete", 0, [], 0, 0);
+		};
+		Setting.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return Setting;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.Setting=Setting;
+	var NamedItemCollection=(function (_super) {
+		__extends(NamedItemCollection, _super);
+		function NamedItemCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		NamedItemCollection.prototype.getItem=function (name) {
+			return OfficeExtension.OperationApiHelper.createIndexerObject(ExcelOp.NamedItem, this, [name]);
+		};
+		NamedItemCollection.prototype.getItemOrNullObject=function (name) {
+			_throwIfApiNotSupported("NamedItemCollection.getItemOrNullObject", _defaultApiSetName, "1.4", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.NamedItem, this, "GetItemOrNullObject", 1, [name], false, false, null, 4);
+		};
+		NamedItemCollection.prototype.doGetCount=function () {
+			_throwIfApiNotSupported("NamedItemCollection.getCount", _defaultApiSetName, "1.4", _hostName);
+			return _invokeMethod(this, "GetCount", 1, [], 4, 0);
+		};
+		NamedItemCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return NamedItemCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.NamedItemCollection=NamedItemCollection;
+	var NamedItem=(function (_super) {
+		__extends(NamedItem, _super);
+		function NamedItem() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(NamedItem.prototype, "arrayValues", {
+			get: function () {
+				_throwIfApiNotSupported("NamedItem.arrayValues", _defaultApiSetName, "1.7", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.NamedItemArrayValues, this, "ArrayValues", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(NamedItem.prototype, "worksheet", {
+			get: function () {
+				_throwIfApiNotSupported("NamedItem.worksheet", _defaultApiSetName, "1.4", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.Worksheet, this, "Worksheet", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(NamedItem.prototype, "worksheetOrNullObject", {
+			get: function () {
+				_throwIfApiNotSupported("NamedItem.worksheetOrNullObject", _defaultApiSetName, "1.4", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.Worksheet, this, "WorksheetOrNullObject", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		NamedItem.prototype.getRange=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetRange", 1, [], false, true, null, 4);
+		};
+		NamedItem.prototype.getRangeOrNullObject=function () {
+			_throwIfApiNotSupported("NamedItem.getRangeOrNullObject", _defaultApiSetName, "1.4", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetRangeOrNullObject", 1, [], false, true, null, 4);
+		};
+		NamedItem.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		NamedItem.prototype.doDelete=function () {
+			_throwIfApiNotSupported("NamedItem.delete", _defaultApiSetName, "1.4", _hostName);
+			return _invokeMethod(this, "Delete", 0, [], 0, 0);
+		};
+		NamedItem.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return NamedItem;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.NamedItem=NamedItem;
+	var NamedItemArrayValues=(function (_super) {
+		__extends(NamedItemArrayValues, _super);
+		function NamedItemArrayValues() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		NamedItemArrayValues.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return NamedItemArrayValues;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.NamedItemArrayValues=NamedItemArrayValues;
+	var Binding=(function (_super) {
+		__extends(Binding, _super);
+		function Binding() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Binding.prototype.getRange=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetRange", 1, [], false, false, null, 4);
+		};
+		Binding.prototype.getTable=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Table, this, "GetTable", 1, [], false, false, null, 4);
+		};
+		Binding.prototype.doDelete=function () {
+			_throwIfApiNotSupported("Binding.delete", _defaultApiSetName, "1.3", _hostName);
+			return _invokeMethod(this, "Delete", 0, [], 0, 0);
+		};
+		Binding.prototype.doGetText=function () {
+			return _invokeMethod(this, "GetText", 1, [], 4, 0);
+		};
+		Binding.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return Binding;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.Binding=Binding;
+	var BindingCollection=(function (_super) {
+		__extends(BindingCollection, _super);
+		function BindingCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		BindingCollection.prototype.getItem=function (id) {
+			return OfficeExtension.OperationApiHelper.createIndexerObject(ExcelOp.Binding, this, [id]);
+		};
+		BindingCollection.prototype.getItemAt=function (index) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Binding, this, "GetItemAt", 1, [index], false, false, null, 4);
+		};
+		BindingCollection.prototype.getItemOrNullObject=function (id) {
+			_throwIfApiNotSupported("BindingCollection.getItemOrNullObject", _defaultApiSetName, "1.4", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Binding, this, "GetItemOrNullObject", 1, [id], false, false, null, 4);
+		};
+		BindingCollection.prototype.doGetCount=function () {
+			_throwIfApiNotSupported("BindingCollection.getCount", _defaultApiSetName, "1.4", _hostName);
+			return _invokeMethod(this, "GetCount", 1, [], 4, 0);
+		};
+		BindingCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return BindingCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.BindingCollection=BindingCollection;
+	var TableCollection=(function (_super) {
+		__extends(TableCollection, _super);
+		function TableCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		TableCollection.prototype.getItem=function (key) {
+			return OfficeExtension.OperationApiHelper.createIndexerObject(ExcelOp.Table, this, [key]);
+		};
+		TableCollection.prototype.getItemAt=function (index) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Table, this, "GetItemAt", 1, [index], false, false, null, 4);
+		};
+		TableCollection.prototype.getItemOrNullObject=function (key) {
+			_throwIfApiNotSupported("TableCollection.getItemOrNullObject", _defaultApiSetName, "1.4", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Table, this, "GetItemOrNullObject", 1, [key], false, false, null, 4);
+		};
+		TableCollection.prototype.doGetCount=function () {
+			_throwIfApiNotSupported("TableCollection.getCount", _defaultApiSetName, "1.4", _hostName);
+			return _invokeMethod(this, "GetCount", 1, [], 4, 0);
+		};
+		TableCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return TableCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.TableCollection=TableCollection;
+	var TableScopedCollection=(function (_super) {
+		__extends(TableScopedCollection, _super);
+		function TableScopedCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		TableScopedCollection.prototype.getFirst=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Table, this, "GetFirst", 1, [], false, true, null, 4);
+		};
+		TableScopedCollection.prototype.getItem=function (key) {
+			return OfficeExtension.OperationApiHelper.createIndexerObject(ExcelOp.Table, this, [key]);
+		};
+		TableScopedCollection.prototype.doGetCount=function () {
+			return _invokeMethod(this, "GetCount", 1, [], 4, 0);
+		};
+		TableScopedCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return TableScopedCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.TableScopedCollection=TableScopedCollection;
+	var Table=(function (_super) {
+		__extends(Table, _super);
+		function Table() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(Table.prototype, "columns", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.TableColumnCollection, this, "Columns", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Table.prototype, "rows", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.TableRowCollection, this, "Rows", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Table.prototype, "sort", {
+			get: function () {
+				_throwIfApiNotSupported("Table.sort", _defaultApiSetName, "1.2", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.TableSort, this, "Sort", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Table.prototype, "worksheet", {
+			get: function () {
+				_throwIfApiNotSupported("Table.worksheet", _defaultApiSetName, "1.2", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.Worksheet, this, "Worksheet", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Table.prototype.getDataBodyRange=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetDataBodyRange", 1, [], false, true, null, 4);
+		};
+		Table.prototype.getHeaderRowRange=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetHeaderRowRange", 1, [], false, true, null, 4);
+		};
+		Table.prototype.getRange=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetRange", 1, [], false, true, null, 4);
+		};
+		Table.prototype.getTotalRowRange=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetTotalRowRange", 1, [], false, true, null, 4);
+		};
+		Table.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		Table.prototype.doClearFilters=function () {
+			_throwIfApiNotSupported("Table.clearFilters", _defaultApiSetName, "1.2", _hostName);
+			return _invokeMethod(this, "ClearFilters", 0, [], 0, 0);
+		};
+		Table.prototype.doClearStyle=function () {
+			_throwIfApiNotSupported("Table.clearStyle", _defaultApiSetName, "1.9", _hostName);
+			return _invokeMethod(this, "ClearStyle", 0, [], 0, 0);
+		};
+		Table.prototype.doDelete=function () {
+			return _invokeMethod(this, "Delete", 0, [], 0, 0);
+		};
+		Table.prototype.doReapplyFilters=function () {
+			_throwIfApiNotSupported("Table.reapplyFilters", _defaultApiSetName, "1.2", _hostName);
+			return _invokeMethod(this, "ReapplyFilters", 0, [], 0, 0);
+		};
+		Table.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return Table;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.Table=Table;
+	var TableColumnCollection=(function (_super) {
+		__extends(TableColumnCollection, _super);
+		function TableColumnCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		TableColumnCollection.prototype.getItem=function (key) {
+			return OfficeExtension.OperationApiHelper.createIndexerObject(ExcelOp.TableColumn, this, [key]);
+		};
+		TableColumnCollection.prototype.getItemAt=function (index) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.TableColumn, this, "GetItemAt", 1, [index], false, false, null, 4);
+		};
+		TableColumnCollection.prototype.getItemOrNullObject=function (key) {
+			_throwIfApiNotSupported("TableColumnCollection.getItemOrNullObject", _defaultApiSetName, "1.4", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.TableColumn, this, "GetItemOrNullObject", 1, [key], false, false, null, 4);
+		};
+		TableColumnCollection.prototype.doGetCount=function () {
+			_throwIfApiNotSupported("TableColumnCollection.getCount", _defaultApiSetName, "1.4", _hostName);
+			return _invokeMethod(this, "GetCount", 1, [], 4, 0);
+		};
+		TableColumnCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return TableColumnCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.TableColumnCollection=TableColumnCollection;
+	var TableColumn=(function (_super) {
+		__extends(TableColumn, _super);
+		function TableColumn() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(TableColumn.prototype, "filter", {
+			get: function () {
+				_throwIfApiNotSupported("TableColumn.filter", _defaultApiSetName, "1.2", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.Filter, this, "Filter", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		TableColumn.prototype.getDataBodyRange=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetDataBodyRange", 1, [], false, true, null, 4);
+		};
+		TableColumn.prototype.getHeaderRowRange=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetHeaderRowRange", 1, [], false, true, null, 4);
+		};
+		TableColumn.prototype.getRange=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetRange", 1, [], false, true, null, 4);
+		};
+		TableColumn.prototype.getTotalRowRange=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetTotalRowRange", 1, [], false, true, null, 4);
+		};
+		TableColumn.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		TableColumn.prototype.doDelete=function () {
+			return _invokeMethod(this, "Delete", 0, [], 0, 0);
+		};
+		TableColumn.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return TableColumn;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.TableColumn=TableColumn;
+	var TableRowCollection=(function (_super) {
+		__extends(TableRowCollection, _super);
+		function TableRowCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		TableRowCollection.prototype.getItemAt=function (index) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.TableRow, this, "GetItemAt", 1, [index], false, false, null, 4);
+		};
+		TableRowCollection.prototype.doGetCount=function () {
+			_throwIfApiNotSupported("TableRowCollection.getCount", _defaultApiSetName, "1.4", _hostName);
+			return _invokeMethod(this, "GetCount", 1, [], 4, 0);
+		};
+		TableRowCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return TableRowCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.TableRowCollection=TableRowCollection;
+	var TableRow=(function (_super) {
+		__extends(TableRow, _super);
+		function TableRow() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		TableRow.prototype.getRange=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetRange", 1, [], false, true, null, 4);
+		};
+		TableRow.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		TableRow.prototype.doDelete=function () {
+			return _invokeMethod(this, "Delete", 0, [], 0, 0);
+		};
+		TableRow.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return TableRow;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.TableRow=TableRow;
+	var DataValidation=(function (_super) {
+		__extends(DataValidation, _super);
+		function DataValidation() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		DataValidation.prototype.getInvalidCells=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetInvalidCells", 1, [], false, true, null, 4);
+		};
+		DataValidation.prototype.getInvalidCellsOrNullObject=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetInvalidCellsOrNullObject", 1, [], false, true, null, 4);
+		};
+		DataValidation.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		DataValidation.prototype.doClear=function () {
+			return _invokeMethod(this, "Clear", 0, [], 0, 0);
+		};
+		DataValidation.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return DataValidation;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.DataValidation=DataValidation;
+	var RemoveDuplicatesResult=(function (_super) {
+		__extends(RemoveDuplicatesResult, _super);
+		function RemoveDuplicatesResult() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		RemoveDuplicatesResult.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return RemoveDuplicatesResult;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.RemoveDuplicatesResult=RemoveDuplicatesResult;
+	var RangeFormat=(function (_super) {
+		__extends(RangeFormat, _super);
+		function RangeFormat() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(RangeFormat.prototype, "borders", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.RangeBorderCollection, this, "Borders", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(RangeFormat.prototype, "fill", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.RangeFill, this, "Fill", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(RangeFormat.prototype, "font", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.RangeFont, this, "Font", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(RangeFormat.prototype, "protection", {
+			get: function () {
+				_throwIfApiNotSupported("RangeFormat.protection", _defaultApiSetName, "1.2", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.FormatProtection, this, "Protection", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		RangeFormat.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		RangeFormat.prototype.doAutofitColumns=function () {
+			_throwIfApiNotSupported("RangeFormat.autofitColumns", _defaultApiSetName, "1.2", _hostName);
+			return _invokeMethod(this, "AutofitColumns", 0, [], 0, 0);
+		};
+		RangeFormat.prototype.doAutofitRows=function () {
+			_throwIfApiNotSupported("RangeFormat.autofitRows", _defaultApiSetName, "1.2", _hostName);
+			return _invokeMethod(this, "AutofitRows", 0, [], 0, 0);
+		};
+		RangeFormat.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return RangeFormat;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.RangeFormat=RangeFormat;
+	var FormatProtection=(function (_super) {
+		__extends(FormatProtection, _super);
+		function FormatProtection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		FormatProtection.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		FormatProtection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return FormatProtection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.FormatProtection=FormatProtection;
+	var RangeFill=(function (_super) {
+		__extends(RangeFill, _super);
+		function RangeFill() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		RangeFill.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		RangeFill.prototype.doClear=function () {
+			return _invokeMethod(this, "Clear", 0, [], 0, 0);
+		};
+		RangeFill.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return RangeFill;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.RangeFill=RangeFill;
+	var RangeBorder=(function (_super) {
+		__extends(RangeBorder, _super);
+		function RangeBorder() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		RangeBorder.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		RangeBorder.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return RangeBorder;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.RangeBorder=RangeBorder;
+	var RangeBorderCollection=(function (_super) {
+		__extends(RangeBorderCollection, _super);
+		function RangeBorderCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		RangeBorderCollection.prototype.getItem=function (index) {
+			return OfficeExtension.OperationApiHelper.createIndexerObject(ExcelOp.RangeBorder, this, [index]);
+		};
+		RangeBorderCollection.prototype.getItemAt=function (index) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.RangeBorder, this, "GetItemAt", 1, [index], false, false, null, 4);
+		};
+		RangeBorderCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return RangeBorderCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.RangeBorderCollection=RangeBorderCollection;
+	var RangeFont=(function (_super) {
+		__extends(RangeFont, _super);
+		function RangeFont() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		RangeFont.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		RangeFont.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return RangeFont;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.RangeFont=RangeFont;
+	var ChartCollection=(function (_super) {
+		__extends(ChartCollection, _super);
+		function ChartCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		ChartCollection.prototype.getItem=function (name) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Chart, this, "GetItem", 1, [name], false, false, null, 4);
+		};
+		ChartCollection.prototype.getItemAt=function (index) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Chart, this, "GetItemAt", 1, [index], false, false, null, 4);
+		};
+		ChartCollection.prototype.getItemOrNullObject=function (name) {
+			_throwIfApiNotSupported("ChartCollection.getItemOrNullObject", _defaultApiSetName, "1.4", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Chart, this, "GetItemOrNullObject", 1, [name], false, false, null, 4);
+		};
+		ChartCollection.prototype._GetItem=function (key) {
+			return OfficeExtension.OperationApiHelper.createIndexerObject(ExcelOp.Chart, this, [key]);
+		};
+		ChartCollection.prototype.doGetCount=function () {
+			_throwIfApiNotSupported("ChartCollection.getCount", _defaultApiSetName, "1.4", _hostName);
+			return _invokeMethod(this, "GetCount", 1, [], 4, 0);
+		};
+		ChartCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ChartCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartCollection=ChartCollection;
+	var Chart=(function (_super) {
+		__extends(Chart, _super);
+		function Chart() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(Chart.prototype, "axes", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartAxes, this, "Axes", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Chart.prototype, "dataLabels", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartDataLabels, this, "DataLabels", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Chart.prototype, "format", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartAreaFormat, this, "Format", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Chart.prototype, "legend", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartLegend, this, "Legend", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Chart.prototype, "plotArea", {
+			get: function () {
+				_throwIfApiNotSupported("Chart.plotArea", _defaultApiSetName, "1.8", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartPlotArea, this, "PlotArea", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Chart.prototype, "series", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartSeriesCollection, this, "Series", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Chart.prototype, "title", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartTitle, this, "Title", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Chart.prototype, "worksheet", {
+			get: function () {
+				_throwIfApiNotSupported("Chart.worksheet", _defaultApiSetName, "1.2", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.Worksheet, this, "Worksheet", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Chart.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		Chart.prototype.doDelete=function () {
+			return _invokeMethod(this, "Delete", 0, [], 0, 0);
+		};
+		Chart.prototype.doGetImage=function (width, height, fittingMode) {
+			_throwIfApiNotSupported("Chart.getImage", _defaultApiSetName, "1.2", _hostName);
+			return _invokeMethod(this, "GetImage", 1, [width, height, fittingMode], 4, 0);
+		};
+		Chart.prototype.doSetData=function (sourceData, seriesBy) {
+			return _invokeMethod(this, "SetData", 0, [sourceData, seriesBy], 0, 0);
+		};
+		Chart.prototype.doSetPosition=function (startCell, endCell) {
+			return _invokeMethod(this, "SetPosition", 0, [startCell, endCell], 0, 0);
+		};
+		Chart.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return Chart;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.Chart=Chart;
+	var ChartAreaFormat=(function (_super) {
+		__extends(ChartAreaFormat, _super);
+		function ChartAreaFormat() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ChartAreaFormat.prototype, "border", {
+			get: function () {
+				_throwIfApiNotSupported("ChartAreaFormat.border", _defaultApiSetName, "1.7", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartBorder, this, "Border", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartAreaFormat.prototype, "fill", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartFill, this, "Fill", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartAreaFormat.prototype, "font", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartFont, this, "Font", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		return ChartAreaFormat;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartAreaFormat=ChartAreaFormat;
+	var ChartSeriesCollection=(function (_super) {
+		__extends(ChartSeriesCollection, _super);
+		function ChartSeriesCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		ChartSeriesCollection.prototype.getItemAt=function (index) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.ChartSeries, this, "GetItemAt", 1, [index], false, false, null, 4);
+		};
+		ChartSeriesCollection.prototype.doGetCount=function () {
+			_throwIfApiNotSupported("ChartSeriesCollection.getCount", _defaultApiSetName, "1.4", _hostName);
+			return _invokeMethod(this, "GetCount", 1, [], 4, 0);
+		};
+		ChartSeriesCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ChartSeriesCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartSeriesCollection=ChartSeriesCollection;
+	var ChartSeries=(function (_super) {
+		__extends(ChartSeries, _super);
+		function ChartSeries() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ChartSeries.prototype, "dataLabels", {
+			get: function () {
+				_throwIfApiNotSupported("ChartSeries.dataLabels", _defaultApiSetName, "1.8", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartDataLabels, this, "DataLabels", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartSeries.prototype, "format", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartSeriesFormat, this, "Format", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartSeries.prototype, "points", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartPointsCollection, this, "Points", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartSeries.prototype, "trendlines", {
+			get: function () {
+				_throwIfApiNotSupported("ChartSeries.trendlines", _defaultApiSetName, "1.7", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartTrendlineCollection, this, "Trendlines", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartSeries.prototype, "xerrorBars", {
+			get: function () {
+				_throwIfApiNotSupported("ChartSeries.xerrorBars", _defaultApiSetName, "1.8", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartErrorBars, this, "XErrorBars", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartSeries.prototype, "yerrorBars", {
+			get: function () {
+				_throwIfApiNotSupported("ChartSeries.yerrorBars", _defaultApiSetName, "1.8", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartErrorBars, this, "YErrorBars", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		ChartSeries.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		ChartSeries.prototype.doDelete=function () {
+			_throwIfApiNotSupported("ChartSeries.delete", _defaultApiSetName, "1.7", _hostName);
+			return _invokeMethod(this, "Delete", 0, [], 0, 0);
+		};
+		ChartSeries.prototype.doSetBubbleSizes=function (sourceData) {
+			_throwIfApiNotSupported("ChartSeries.setBubbleSizes", _defaultApiSetName, "1.7", _hostName);
+			return _invokeMethod(this, "SetBubbleSizes", 0, [sourceData], 0, 0);
+		};
+		ChartSeries.prototype.doSetValues=function (sourceData) {
+			_throwIfApiNotSupported("ChartSeries.setValues", _defaultApiSetName, "1.7", _hostName);
+			return _invokeMethod(this, "SetValues", 0, [sourceData], 0, 0);
+		};
+		ChartSeries.prototype.doSetXAxisValues=function (sourceData) {
+			_throwIfApiNotSupported("ChartSeries.setXAxisValues", _defaultApiSetName, "1.7", _hostName);
+			return _invokeMethod(this, "SetXAxisValues", 0, [sourceData], 0, 0);
+		};
+		ChartSeries.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ChartSeries;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartSeries=ChartSeries;
+	var ChartSeriesFormat=(function (_super) {
+		__extends(ChartSeriesFormat, _super);
+		function ChartSeriesFormat() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ChartSeriesFormat.prototype, "fill", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartFill, this, "Fill", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartSeriesFormat.prototype, "line", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartLineFormat, this, "Line", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		return ChartSeriesFormat;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartSeriesFormat=ChartSeriesFormat;
+	var ChartPointsCollection=(function (_super) {
+		__extends(ChartPointsCollection, _super);
+		function ChartPointsCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		ChartPointsCollection.prototype.getItemAt=function (index) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.ChartPoint, this, "GetItemAt", 1, [index], false, false, null, 4);
+		};
+		ChartPointsCollection.prototype.doGetCount=function () {
+			_throwIfApiNotSupported("ChartPointsCollection.getCount", _defaultApiSetName, "1.4", _hostName);
+			return _invokeMethod(this, "GetCount", 1, [], 4, 0);
+		};
+		ChartPointsCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ChartPointsCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartPointsCollection=ChartPointsCollection;
+	var ChartPoint=(function (_super) {
+		__extends(ChartPoint, _super);
+		function ChartPoint() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ChartPoint.prototype, "dataLabel", {
+			get: function () {
+				_throwIfApiNotSupported("ChartPoint.dataLabel", _defaultApiSetName, "1.7", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartDataLabel, this, "DataLabel", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartPoint.prototype, "format", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartPointFormat, this, "Format", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		ChartPoint.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		ChartPoint.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ChartPoint;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartPoint=ChartPoint;
+	var ChartPointFormat=(function (_super) {
+		__extends(ChartPointFormat, _super);
+		function ChartPointFormat() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ChartPointFormat.prototype, "border", {
+			get: function () {
+				_throwIfApiNotSupported("ChartPointFormat.border", _defaultApiSetName, "1.7", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartBorder, this, "Border", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartPointFormat.prototype, "fill", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartFill, this, "Fill", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		return ChartPointFormat;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartPointFormat=ChartPointFormat;
+	var ChartAxes=(function (_super) {
+		__extends(ChartAxes, _super);
+		function ChartAxes() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ChartAxes.prototype, "categoryAxis", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartAxis, this, "CategoryAxis", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartAxes.prototype, "seriesAxis", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartAxis, this, "SeriesAxis", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartAxes.prototype, "valueAxis", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartAxis, this, "ValueAxis", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		ChartAxes.prototype.getItem=function (type, group) {
+			_throwIfApiNotSupported("ChartAxes.getItem", _defaultApiSetName, "1.8", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.ChartAxis, this, "GetItem", 1, [type, group], false, false, null, 4);
+		};
+		return ChartAxes;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartAxes=ChartAxes;
+	var ChartAxis=(function (_super) {
+		__extends(ChartAxis, _super);
+		function ChartAxis() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ChartAxis.prototype, "format", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartAxisFormat, this, "Format", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartAxis.prototype, "majorGridlines", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartGridlines, this, "MajorGridlines", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartAxis.prototype, "minorGridlines", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartGridlines, this, "MinorGridlines", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartAxis.prototype, "title", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartAxisTitle, this, "Title", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		ChartAxis.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		ChartAxis.prototype.doSetCategoryNames=function (sourceData) {
+			_throwIfApiNotSupported("ChartAxis.setCategoryNames", _defaultApiSetName, "1.7", _hostName);
+			return _invokeMethod(this, "SetCategoryNames", 0, [sourceData], 0, 0);
+		};
+		ChartAxis.prototype.doSetCrossesAt=function (value) {
+			_throwIfApiNotSupported("ChartAxis.setCrossesAt", _defaultApiSetName, "1.7", _hostName);
+			return _invokeMethod(this, "SetCrossesAt", 0, [value], 0, 0);
+		};
+		ChartAxis.prototype.doSetCustomDisplayUnit=function (value) {
+			_throwIfApiNotSupported("ChartAxis.setCustomDisplayUnit", _defaultApiSetName, "1.8", _hostName);
+			return _invokeMethod(this, "SetCustomDisplayUnit", 0, [value], 0, 0);
+		};
+		ChartAxis.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ChartAxis;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartAxis=ChartAxis;
+	var ChartAxisFormat=(function (_super) {
+		__extends(ChartAxisFormat, _super);
+		function ChartAxisFormat() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ChartAxisFormat.prototype, "fill", {
+			get: function () {
+				_throwIfApiNotSupported("ChartAxisFormat.fill", _defaultApiSetName, "1.8", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartFill, this, "Fill", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartAxisFormat.prototype, "font", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartFont, this, "Font", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartAxisFormat.prototype, "line", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartLineFormat, this, "Line", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		return ChartAxisFormat;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartAxisFormat=ChartAxisFormat;
+	var ChartAxisTitle=(function (_super) {
+		__extends(ChartAxisTitle, _super);
+		function ChartAxisTitle() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ChartAxisTitle.prototype, "format", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartAxisTitleFormat, this, "Format", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		ChartAxisTitle.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		ChartAxisTitle.prototype.doSetFormula=function (formula) {
+			_throwIfApiNotSupported("ChartAxisTitle.setFormula", _defaultApiSetName, "1.8", _hostName);
+			return _invokeMethod(this, "SetFormula", 0, [formula], 0, 0);
+		};
+		ChartAxisTitle.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ChartAxisTitle;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartAxisTitle=ChartAxisTitle;
+	var ChartAxisTitleFormat=(function (_super) {
+		__extends(ChartAxisTitleFormat, _super);
+		function ChartAxisTitleFormat() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ChartAxisTitleFormat.prototype, "border", {
+			get: function () {
+				_throwIfApiNotSupported("ChartAxisTitleFormat.border", _defaultApiSetName, "1.8", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartBorder, this, "Border", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartAxisTitleFormat.prototype, "fill", {
+			get: function () {
+				_throwIfApiNotSupported("ChartAxisTitleFormat.fill", _defaultApiSetName, "1.8", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartFill, this, "Fill", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartAxisTitleFormat.prototype, "font", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartFont, this, "Font", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		return ChartAxisTitleFormat;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartAxisTitleFormat=ChartAxisTitleFormat;
+	var ChartDataLabels=(function (_super) {
+		__extends(ChartDataLabels, _super);
+		function ChartDataLabels() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ChartDataLabels.prototype, "format", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartDataLabelFormat, this, "Format", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		ChartDataLabels.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		ChartDataLabels.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ChartDataLabels;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartDataLabels=ChartDataLabels;
+	var ChartDataLabel=(function (_super) {
+		__extends(ChartDataLabel, _super);
+		function ChartDataLabel() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ChartDataLabel.prototype, "format", {
+			get: function () {
+				_throwIfApiNotSupported("ChartDataLabel.format", _defaultApiSetName, "1.8", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartDataLabelFormat, this, "Format", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		ChartDataLabel.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		ChartDataLabel.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ChartDataLabel;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartDataLabel=ChartDataLabel;
+	var ChartDataLabelFormat=(function (_super) {
+		__extends(ChartDataLabelFormat, _super);
+		function ChartDataLabelFormat() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ChartDataLabelFormat.prototype, "border", {
+			get: function () {
+				_throwIfApiNotSupported("ChartDataLabelFormat.border", _defaultApiSetName, "1.8", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartBorder, this, "Border", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartDataLabelFormat.prototype, "fill", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartFill, this, "Fill", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartDataLabelFormat.prototype, "font", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartFont, this, "Font", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		return ChartDataLabelFormat;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartDataLabelFormat=ChartDataLabelFormat;
+	var ChartErrorBars=(function (_super) {
+		__extends(ChartErrorBars, _super);
+		function ChartErrorBars() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ChartErrorBars.prototype, "format", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartErrorBarsFormat, this, "Format", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		ChartErrorBars.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		ChartErrorBars.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ChartErrorBars;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartErrorBars=ChartErrorBars;
+	var ChartErrorBarsFormat=(function (_super) {
+		__extends(ChartErrorBarsFormat, _super);
+		function ChartErrorBarsFormat() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ChartErrorBarsFormat.prototype, "line", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartLineFormat, this, "Line", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		return ChartErrorBarsFormat;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartErrorBarsFormat=ChartErrorBarsFormat;
+	var ChartGridlines=(function (_super) {
+		__extends(ChartGridlines, _super);
+		function ChartGridlines() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ChartGridlines.prototype, "format", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartGridlinesFormat, this, "Format", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		ChartGridlines.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		ChartGridlines.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ChartGridlines;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartGridlines=ChartGridlines;
+	var ChartGridlinesFormat=(function (_super) {
+		__extends(ChartGridlinesFormat, _super);
+		function ChartGridlinesFormat() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ChartGridlinesFormat.prototype, "line", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartLineFormat, this, "Line", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		return ChartGridlinesFormat;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartGridlinesFormat=ChartGridlinesFormat;
+	var ChartLegend=(function (_super) {
+		__extends(ChartLegend, _super);
+		function ChartLegend() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ChartLegend.prototype, "format", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartLegendFormat, this, "Format", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartLegend.prototype, "legendEntries", {
+			get: function () {
+				_throwIfApiNotSupported("ChartLegend.legendEntries", _defaultApiSetName, "1.7", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartLegendEntryCollection, this, "LegendEntries", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		ChartLegend.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		ChartLegend.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ChartLegend;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartLegend=ChartLegend;
+	var ChartLegendEntry=(function (_super) {
+		__extends(ChartLegendEntry, _super);
+		function ChartLegendEntry() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		ChartLegendEntry.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		ChartLegendEntry.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ChartLegendEntry;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartLegendEntry=ChartLegendEntry;
+	var ChartLegendEntryCollection=(function (_super) {
+		__extends(ChartLegendEntryCollection, _super);
+		function ChartLegendEntryCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		ChartLegendEntryCollection.prototype.getItemAt=function (index) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.ChartLegendEntry, this, "GetItemAt", 1, [index], false, false, null, 4);
+		};
+		ChartLegendEntryCollection.prototype.doGetCount=function () {
+			return _invokeMethod(this, "GetCount", 1, [], 4, 0);
+		};
+		ChartLegendEntryCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ChartLegendEntryCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartLegendEntryCollection=ChartLegendEntryCollection;
+	var ChartLegendFormat=(function (_super) {
+		__extends(ChartLegendFormat, _super);
+		function ChartLegendFormat() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ChartLegendFormat.prototype, "border", {
+			get: function () {
+				_throwIfApiNotSupported("ChartLegendFormat.border", _defaultApiSetName, "1.8", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartBorder, this, "Border", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartLegendFormat.prototype, "fill", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartFill, this, "Fill", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartLegendFormat.prototype, "font", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartFont, this, "Font", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		return ChartLegendFormat;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartLegendFormat=ChartLegendFormat;
+	var ChartTitle=(function (_super) {
+		__extends(ChartTitle, _super);
+		function ChartTitle() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ChartTitle.prototype, "format", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartTitleFormat, this, "Format", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		ChartTitle.prototype.getSubstring=function (start, length) {
+			_throwIfApiNotSupported("ChartTitle.getSubstring", _defaultApiSetName, "1.8", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.ChartFormatString, this, "GetSubstring", 1, [start, length], false, false, null, 4);
+		};
+		ChartTitle.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		ChartTitle.prototype.doSetFormula=function (formula) {
+			_throwIfApiNotSupported("ChartTitle.setFormula", _defaultApiSetName, "1.8", _hostName);
+			return _invokeMethod(this, "SetFormula", 0, [formula], 0, 0);
+		};
+		ChartTitle.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ChartTitle;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartTitle=ChartTitle;
+	var ChartFormatString=(function (_super) {
+		__extends(ChartFormatString, _super);
+		function ChartFormatString() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ChartFormatString.prototype, "font", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartFont, this, "Font", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		return ChartFormatString;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartFormatString=ChartFormatString;
+	var ChartTitleFormat=(function (_super) {
+		__extends(ChartTitleFormat, _super);
+		function ChartTitleFormat() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ChartTitleFormat.prototype, "border", {
+			get: function () {
+				_throwIfApiNotSupported("ChartTitleFormat.border", _defaultApiSetName, "1.7", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartBorder, this, "Border", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartTitleFormat.prototype, "fill", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartFill, this, "Fill", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartTitleFormat.prototype, "font", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartFont, this, "Font", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		return ChartTitleFormat;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartTitleFormat=ChartTitleFormat;
+	var ChartFill=(function (_super) {
+		__extends(ChartFill, _super);
+		function ChartFill() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		ChartFill.prototype.doClear=function () {
+			return _invokeMethod(this, "Clear", 0, [], 0, 0);
+		};
+		ChartFill.prototype.doSetSolidColor=function (color) {
+			return _invokeMethod(this, "SetSolidColor", 0, [color], 0, 0);
+		};
+		return ChartFill;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartFill=ChartFill;
+	var ChartBorder=(function (_super) {
+		__extends(ChartBorder, _super);
+		function ChartBorder() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		ChartBorder.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		ChartBorder.prototype.doClear=function () {
+			_throwIfApiNotSupported("ChartBorder.clear", _defaultApiSetName, "1.8", _hostName);
+			return _invokeMethod(this, "Clear", 0, [], 0, 0);
+		};
+		ChartBorder.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ChartBorder;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartBorder=ChartBorder;
+	var ChartLineFormat=(function (_super) {
+		__extends(ChartLineFormat, _super);
+		function ChartLineFormat() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		ChartLineFormat.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		ChartLineFormat.prototype.doClear=function () {
+			return _invokeMethod(this, "Clear", 0, [], 0, 0);
+		};
+		ChartLineFormat.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ChartLineFormat;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartLineFormat=ChartLineFormat;
+	var ChartFont=(function (_super) {
+		__extends(ChartFont, _super);
+		function ChartFont() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		ChartFont.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		ChartFont.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ChartFont;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartFont=ChartFont;
+	var ChartTrendline=(function (_super) {
+		__extends(ChartTrendline, _super);
+		function ChartTrendline() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ChartTrendline.prototype, "format", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartTrendlineFormat, this, "Format", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartTrendline.prototype, "label", {
+			get: function () {
+				_throwIfApiNotSupported("ChartTrendline.label", _defaultApiSetName, "1.8", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartTrendlineLabel, this, "Label", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		ChartTrendline.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		ChartTrendline.prototype.doDelete=function () {
+			return _invokeMethod(this, "Delete", 0, [], 0, 0);
+		};
+		ChartTrendline.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ChartTrendline;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartTrendline=ChartTrendline;
+	var ChartTrendlineCollection=(function (_super) {
+		__extends(ChartTrendlineCollection, _super);
+		function ChartTrendlineCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		ChartTrendlineCollection.prototype.getItem=function (index) {
+			return OfficeExtension.OperationApiHelper.createIndexerObject(ExcelOp.ChartTrendline, this, [index]);
+		};
+		ChartTrendlineCollection.prototype.doGetCount=function () {
+			return _invokeMethod(this, "GetCount", 1, [], 4, 0);
+		};
+		ChartTrendlineCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ChartTrendlineCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartTrendlineCollection=ChartTrendlineCollection;
+	var ChartTrendlineFormat=(function (_super) {
+		__extends(ChartTrendlineFormat, _super);
+		function ChartTrendlineFormat() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ChartTrendlineFormat.prototype, "line", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartLineFormat, this, "Line", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		return ChartTrendlineFormat;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartTrendlineFormat=ChartTrendlineFormat;
+	var ChartTrendlineLabel=(function (_super) {
+		__extends(ChartTrendlineLabel, _super);
+		function ChartTrendlineLabel() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ChartTrendlineLabel.prototype, "format", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartTrendlineLabelFormat, this, "Format", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		ChartTrendlineLabel.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		ChartTrendlineLabel.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ChartTrendlineLabel;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartTrendlineLabel=ChartTrendlineLabel;
+	var ChartTrendlineLabelFormat=(function (_super) {
+		__extends(ChartTrendlineLabelFormat, _super);
+		function ChartTrendlineLabelFormat() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ChartTrendlineLabelFormat.prototype, "border", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartBorder, this, "Border", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartTrendlineLabelFormat.prototype, "fill", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartFill, this, "Fill", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartTrendlineLabelFormat.prototype, "font", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartFont, this, "Font", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		return ChartTrendlineLabelFormat;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartTrendlineLabelFormat=ChartTrendlineLabelFormat;
+	var ChartPlotArea=(function (_super) {
+		__extends(ChartPlotArea, _super);
+		function ChartPlotArea() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ChartPlotArea.prototype, "format", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartPlotAreaFormat, this, "Format", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		ChartPlotArea.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		ChartPlotArea.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ChartPlotArea;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartPlotArea=ChartPlotArea;
+	var ChartPlotAreaFormat=(function (_super) {
+		__extends(ChartPlotAreaFormat, _super);
+		function ChartPlotAreaFormat() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ChartPlotAreaFormat.prototype, "border", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartBorder, this, "Border", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartPlotAreaFormat.prototype, "fill", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ChartFill, this, "Fill", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		return ChartPlotAreaFormat;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ChartPlotAreaFormat=ChartPlotAreaFormat;
+	var VisualCollection=(function (_super) {
+		__extends(VisualCollection, _super);
+		function VisualCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		VisualCollection.prototype._GetItem=function (id) {
+			return OfficeExtension.OperationApiHelper.createIndexerObject(ExcelOp.Visual, this, [id]);
+		};
+		VisualCollection.prototype.doBootstrapAgaveVisual=function (dataSourceType, dataSourceContent) {
+			return _invokeMethod(this, "BootstrapAgaveVisual", 0, [dataSourceType, dataSourceContent], 0, 0);
+		};
+		VisualCollection.prototype.doGetCount=function () {
+			return _invokeMethod(this, "GetCount", 1, [], 4, 0);
+		};
+		VisualCollection.prototype.doGetDefinitions=function () {
+			return _invokeMethod(this, "GetDefinitions", 1, [], 4, 0);
+		};
+		VisualCollection.prototype.doGetPreview=function (visualDefinitionGuid, width, height, dpi) {
+			return _invokeMethod(this, "GetPreview", 0, [visualDefinitionGuid, width, height, dpi], 0, 0);
+		};
+		VisualCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return VisualCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.VisualCollection=VisualCollection;
+	var Visual=(function (_super) {
+		__extends(Visual, _super);
+		function Visual() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(Visual.prototype, "properties", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.VisualPropertyCollection, this, "Properties", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Visual.prototype.doChangeDataSource=function (dataSourceType, dataSourceContent) {
+			return _invokeMethod(this, "ChangeDataSource", 0, [dataSourceType, dataSourceContent], 0, 0);
+		};
+		Visual.prototype.doDelete=function () {
+			return _invokeMethod(this, "Delete", 0, [], 0, 0);
+		};
+		Visual.prototype.doGetDataSource=function () {
+			return _invokeMethod(this, "GetDataSource", 0, [], 0, 0);
+		};
+		Visual.prototype.doGetProperty=function (propName) {
+			return _invokeMethod(this, "GetProperty", 0, [propName], 0, 0);
+		};
+		Visual.prototype.doSetProperty=function (propName, value) {
+			return _invokeMethod(this, "SetProperty", 0, [propName, value], 0, 0);
+		};
+		Visual.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return Visual;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.Visual=Visual;
+	var VisualProperty=(function (_super) {
+		__extends(VisualProperty, _super);
+		function VisualProperty() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		VisualProperty.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return VisualProperty;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.VisualProperty=VisualProperty;
+	var VisualPropertyCollection=(function (_super) {
+		__extends(VisualPropertyCollection, _super);
+		function VisualPropertyCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		VisualPropertyCollection.prototype.getItem=function (index) {
+			return OfficeExtension.OperationApiHelper.createIndexerObject(ExcelOp.VisualProperty, this, [index]);
+		};
+		VisualPropertyCollection.prototype.getItemAt=function (index) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.VisualProperty, this, "GetItemAt", 1, [index], false, false, null, 4);
+		};
+		VisualPropertyCollection.prototype.doGetCount=function () {
+			return _invokeMethod(this, "GetCount", 1, [], 4, 0);
+		};
+		VisualPropertyCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return VisualPropertyCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.VisualPropertyCollection=VisualPropertyCollection;
+	var DataControllerClient=(function (_super) {
+		__extends(DataControllerClient, _super);
+		function DataControllerClient() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		DataControllerClient.prototype.doAddField=function (wellId, fieldId, position) {
+			return _invokeMethod(this, "AddField", 0, [wellId, fieldId, position], 0, 0);
+		};
+		DataControllerClient.prototype.doGetAssociatedFields=function (wellId) {
+			return _invokeMethod(this, "GetAssociatedFields", 0, [wellId], 0, 0);
+		};
+		DataControllerClient.prototype.doGetAvailableFields=function (wellId) {
+			return _invokeMethod(this, "GetAvailableFields", 0, [wellId], 0, 0);
+		};
+		DataControllerClient.prototype.doGetWells=function () {
+			return _invokeMethod(this, "GetWells", 0, [], 0, 0);
+		};
+		DataControllerClient.prototype.doMoveField=function (wellId, fromPosition, toPosition) {
+			return _invokeMethod(this, "MoveField", 0, [wellId, fromPosition, toPosition], 0, 0);
+		};
+		DataControllerClient.prototype.doRemoveField=function (wellId, position) {
+			return _invokeMethod(this, "RemoveField", 0, [wellId, position], 0, 0);
+		};
+		return DataControllerClient;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.DataControllerClient=DataControllerClient;
+	var RangeSort=(function (_super) {
+		__extends(RangeSort, _super);
+		function RangeSort() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		RangeSort.prototype.doApply=function (fields, matchCase, hasHeaders, orientation, method) {
+			return _invokeMethod(this, "Apply", 0, [fields, matchCase, hasHeaders, orientation, method], 0, 0);
+		};
+		return RangeSort;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.RangeSort=RangeSort;
+	var TableSort=(function (_super) {
+		__extends(TableSort, _super);
+		function TableSort() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		TableSort.prototype.doApply=function (fields, matchCase, method) {
+			return _invokeMethod(this, "Apply", 0, [fields, matchCase, method], 0, 0);
+		};
+		TableSort.prototype.doClear=function () {
+			return _invokeMethod(this, "Clear", 0, [], 0, 0);
+		};
+		TableSort.prototype.doReapply=function () {
+			return _invokeMethod(this, "Reapply", 0, [], 0, 0);
+		};
+		TableSort.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return TableSort;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.TableSort=TableSort;
+	var Filter=(function (_super) {
+		__extends(Filter, _super);
+		function Filter() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Filter.prototype.doApply=function (criteria) {
+			return _invokeMethod(this, "Apply", 0, [criteria], 0, 0);
+		};
+		Filter.prototype.doApplyBottomItemsFilter=function (count) {
+			return _invokeMethod(this, "ApplyBottomItemsFilter", 0, [count], 0, 0);
+		};
+		Filter.prototype.doApplyBottomPercentFilter=function (percent) {
+			return _invokeMethod(this, "ApplyBottomPercentFilter", 0, [percent], 0, 0);
+		};
+		Filter.prototype.doApplyCellColorFilter=function (color) {
+			return _invokeMethod(this, "ApplyCellColorFilter", 0, [color], 0, 0);
+		};
+		Filter.prototype.doApplyCustomFilter=function (criteria1, criteria2, oper) {
+			return _invokeMethod(this, "ApplyCustomFilter", 0, [criteria1, criteria2, oper], 0, 0);
+		};
+		Filter.prototype.doApplyDynamicFilter=function (criteria) {
+			return _invokeMethod(this, "ApplyDynamicFilter", 0, [criteria], 0, 0);
+		};
+		Filter.prototype.doApplyFontColorFilter=function (color) {
+			return _invokeMethod(this, "ApplyFontColorFilter", 0, [color], 0, 0);
+		};
+		Filter.prototype.doApplyIconFilter=function (icon) {
+			return _invokeMethod(this, "ApplyIconFilter", 0, [icon], 0, 0);
+		};
+		Filter.prototype.doApplyTopItemsFilter=function (count) {
+			return _invokeMethod(this, "ApplyTopItemsFilter", 0, [count], 0, 0);
+		};
+		Filter.prototype.doApplyTopPercentFilter=function (percent) {
+			return _invokeMethod(this, "ApplyTopPercentFilter", 0, [percent], 0, 0);
+		};
+		Filter.prototype.doApplyValuesFilter=function (values) {
+			return _invokeMethod(this, "ApplyValuesFilter", 0, [values], 0, 0);
+		};
+		Filter.prototype.doClear=function () {
+			return _invokeMethod(this, "Clear", 0, [], 0, 0);
+		};
+		Filter.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return Filter;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.Filter=Filter;
+	var CustomXmlPartScopedCollection=(function (_super) {
+		__extends(CustomXmlPartScopedCollection, _super);
+		function CustomXmlPartScopedCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		CustomXmlPartScopedCollection.prototype.getItem=function (id) {
+			return OfficeExtension.OperationApiHelper.createIndexerObject(ExcelOp.CustomXmlPart, this, [id]);
+		};
+		CustomXmlPartScopedCollection.prototype.getItemOrNullObject=function (id) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.CustomXmlPart, this, "GetItemOrNullObject", 1, [id], false, false, null, 4);
+		};
+		CustomXmlPartScopedCollection.prototype.getOnlyItem=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.CustomXmlPart, this, "GetOnlyItem", 1, [], false, false, null, 4);
+		};
+		CustomXmlPartScopedCollection.prototype.getOnlyItemOrNullObject=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.CustomXmlPart, this, "GetOnlyItemOrNullObject", 1, [], false, false, null, 4);
+		};
+		CustomXmlPartScopedCollection.prototype.doGetCount=function () {
+			return _invokeMethod(this, "GetCount", 1, [], 4, 0);
+		};
+		CustomXmlPartScopedCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return CustomXmlPartScopedCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.CustomXmlPartScopedCollection=CustomXmlPartScopedCollection;
+	var CustomXmlPartCollection=(function (_super) {
+		__extends(CustomXmlPartCollection, _super);
+		function CustomXmlPartCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		CustomXmlPartCollection.prototype.getByNamespace=function (namespaceUri) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.CustomXmlPartScopedCollection, this, "GetByNamespace", 1, [namespaceUri], true, false, null, 4);
+		};
+		CustomXmlPartCollection.prototype.getItem=function (id) {
+			return OfficeExtension.OperationApiHelper.createIndexerObject(ExcelOp.CustomXmlPart, this, [id]);
+		};
+		CustomXmlPartCollection.prototype.getItemOrNullObject=function (id) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.CustomXmlPart, this, "GetItemOrNullObject", 1, [id], false, false, null, 4);
+		};
+		CustomXmlPartCollection.prototype.doGetCount=function () {
+			return _invokeMethod(this, "GetCount", 1, [], 4, 0);
+		};
+		CustomXmlPartCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return CustomXmlPartCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.CustomXmlPartCollection=CustomXmlPartCollection;
+	var CustomXmlPart=(function (_super) {
+		__extends(CustomXmlPart, _super);
+		function CustomXmlPart() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		CustomXmlPart.prototype.doDelete=function () {
+			return _invokeMethod(this, "Delete", 0, [], 0, 0);
+		};
+		CustomXmlPart.prototype.doGetXml=function () {
+			return _invokeMethod(this, "GetXml", 1, [], 4, 0);
+		};
+		CustomXmlPart.prototype.doSetXml=function (xml) {
+			return _invokeMethod(this, "SetXml", 0, [xml], 0, 0);
+		};
+		CustomXmlPart.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return CustomXmlPart;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.CustomXmlPart=CustomXmlPart;
+	var _V1Api=(function (_super) {
+		__extends(_V1Api, _super);
+		function _V1Api() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		_V1Api.prototype.doBindingAddColumns=function (input) {
+			return _invokeMethod(this, "BindingAddColumns", 0, [input], 0, 0);
+		};
+		_V1Api.prototype.doBindingAddFromNamedItem=function (input) {
+			return _invokeMethod(this, "BindingAddFromNamedItem", 1, [input], 0, 0);
+		};
+		_V1Api.prototype.doBindingAddFromPrompt=function (input) {
+			return _invokeMethod(this, "BindingAddFromPrompt", 1, [input], 0, 0);
+		};
+		_V1Api.prototype.doBindingAddFromSelection=function (input) {
+			return _invokeMethod(this, "BindingAddFromSelection", 1, [input], 0, 0);
+		};
+		_V1Api.prototype.doBindingAddRows=function (input) {
+			return _invokeMethod(this, "BindingAddRows", 0, [input], 0, 0);
+		};
+		_V1Api.prototype.doBindingClearFormats=function (input) {
+			return _invokeMethod(this, "BindingClearFormats", 0, [input], 0, 0);
+		};
+		_V1Api.prototype.doBindingDeleteAllDataValues=function (input) {
+			return _invokeMethod(this, "BindingDeleteAllDataValues", 0, [input], 0, 0);
+		};
+		_V1Api.prototype.doBindingGetAll=function () {
+			return _invokeMethod(this, "BindingGetAll", 1, [], 4, 0);
+		};
+		_V1Api.prototype.doBindingGetById=function (input) {
+			return _invokeMethod(this, "BindingGetById", 1, [input], 4, 0);
+		};
+		_V1Api.prototype.doBindingGetData=function (input) {
+			return _invokeMethod(this, "BindingGetData", 1, [input], 4, 0);
+		};
+		_V1Api.prototype.doBindingReleaseById=function (input) {
+			return _invokeMethod(this, "BindingReleaseById", 1, [input], 0, 0);
+		};
+		_V1Api.prototype.doBindingSetData=function (input) {
+			return _invokeMethod(this, "BindingSetData", 0, [input], 0, 0);
+		};
+		_V1Api.prototype.doBindingSetFormats=function (input) {
+			return _invokeMethod(this, "BindingSetFormats", 0, [input], 0, 0);
+		};
+		_V1Api.prototype.doBindingSetTableOptions=function (input) {
+			return _invokeMethod(this, "BindingSetTableOptions", 0, [input], 0, 0);
+		};
+		_V1Api.prototype.doGetFilePropertiesAsync=function () {
+			_throwIfApiNotSupported("_V1Api.getFilePropertiesAsync", _defaultApiSetName, "1.6", _hostName);
+			return _invokeMethod(this, "GetFilePropertiesAsync", 1, [], 4, 0);
+		};
+		_V1Api.prototype.doGetSelectedData=function (input) {
+			return _invokeMethod(this, "GetSelectedData", 1, [input], 4, 0);
+		};
+		_V1Api.prototype.doGotoById=function (input) {
+			return _invokeMethod(this, "GotoById", 1, [input], 4, 0);
+		};
+		_V1Api.prototype.doSetSelectedData=function (input) {
+			return _invokeMethod(this, "SetSelectedData", 0, [input], 0, 0);
+		};
+		return _V1Api;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp._V1Api=_V1Api;
+	var PivotTableCollection=(function (_super) {
+		__extends(PivotTableCollection, _super);
+		function PivotTableCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		PivotTableCollection.prototype.getItem=function (name) {
+			return OfficeExtension.OperationApiHelper.createIndexerObject(ExcelOp.PivotTable, this, [name]);
+		};
+		PivotTableCollection.prototype.getItemOrNullObject=function (name) {
+			_throwIfApiNotSupported("PivotTableCollection.getItemOrNullObject", _defaultApiSetName, "1.4", _hostName);
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.PivotTable, this, "GetItemOrNullObject", 1, [name], false, false, null, 4);
+		};
+		PivotTableCollection.prototype.doGetCount=function () {
+			_throwIfApiNotSupported("PivotTableCollection.getCount", _defaultApiSetName, "1.4", _hostName);
+			return _invokeMethod(this, "GetCount", 1, [], 4, 0);
+		};
+		PivotTableCollection.prototype.doRefreshAll=function () {
+			return _invokeMethod(this, "RefreshAll", 0, [], 0, 0);
+		};
+		PivotTableCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return PivotTableCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.PivotTableCollection=PivotTableCollection;
+	var PivotTable=(function (_super) {
+		__extends(PivotTable, _super);
+		function PivotTable() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(PivotTable.prototype, "columnHierarchies", {
+			get: function () {
+				_throwIfApiNotSupported("PivotTable.columnHierarchies", _defaultApiSetName, "1.8", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.RowColumnPivotHierarchyCollection, this, "ColumnHierarchies", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(PivotTable.prototype, "dataHierarchies", {
+			get: function () {
+				_throwIfApiNotSupported("PivotTable.dataHierarchies", _defaultApiSetName, "1.8", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.DataPivotHierarchyCollection, this, "DataHierarchies", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(PivotTable.prototype, "filterHierarchies", {
+			get: function () {
+				_throwIfApiNotSupported("PivotTable.filterHierarchies", _defaultApiSetName, "1.8", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.FilterPivotHierarchyCollection, this, "FilterHierarchies", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(PivotTable.prototype, "hierarchies", {
+			get: function () {
+				_throwIfApiNotSupported("PivotTable.hierarchies", _defaultApiSetName, "1.8", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.PivotHierarchyCollection, this, "Hierarchies", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(PivotTable.prototype, "rowHierarchies", {
+			get: function () {
+				_throwIfApiNotSupported("PivotTable.rowHierarchies", _defaultApiSetName, "1.8", _hostName);
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.RowColumnPivotHierarchyCollection, this, "RowHierarchies", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(PivotTable.prototype, "worksheet", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.Worksheet, this, "Worksheet", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		PivotTable.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		PivotTable.prototype.doDelete=function () {
+			_throwIfApiNotSupported("PivotTable.delete", _defaultApiSetName, "1.8", _hostName);
+			return _invokeMethod(this, "Delete", 0, [], 0, 0);
+		};
+		PivotTable.prototype.doRefresh=function () {
+			return _invokeMethod(this, "Refresh", 0, [], 0, 0);
+		};
+		PivotTable.prototype.doRowAxisLayout=function (RowLayout) {
+			_throwIfApiNotSupported("PivotTable.rowAxisLayout", _defaultApiSetName, "1.8", _hostName);
+			return _invokeMethod(this, "RowAxisLayout", 0, [RowLayout], 0, 0);
+		};
+		PivotTable.prototype.doSubtotalLocation=function (Location) {
+			_throwIfApiNotSupported("PivotTable.subtotalLocation", _defaultApiSetName, "1.8", _hostName);
+			return _invokeMethod(this, "SubtotalLocation", 0, [Location], 0, 0);
+		};
+		PivotTable.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return PivotTable;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.PivotTable=PivotTable;
+	var PivotHierarchyCollection=(function (_super) {
+		__extends(PivotHierarchyCollection, _super);
+		function PivotHierarchyCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		PivotHierarchyCollection.prototype.getItem=function (name) {
+			return OfficeExtension.OperationApiHelper.createIndexerObject(ExcelOp.PivotHierarchy, this, [name]);
+		};
+		PivotHierarchyCollection.prototype.getItemOrNullObject=function (name) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.PivotHierarchy, this, "GetItemOrNullObject", 1, [name], false, false, null, 4);
+		};
+		PivotHierarchyCollection.prototype.doGetCount=function () {
+			return _invokeMethod(this, "GetCount", 1, [], 4, 0);
+		};
+		PivotHierarchyCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return PivotHierarchyCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.PivotHierarchyCollection=PivotHierarchyCollection;
+	var PivotHierarchy=(function (_super) {
+		__extends(PivotHierarchy, _super);
+		function PivotHierarchy() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(PivotHierarchy.prototype, "fields", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.PivotFieldCollection, this, "Fields", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		PivotHierarchy.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		PivotHierarchy.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return PivotHierarchy;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.PivotHierarchy=PivotHierarchy;
+	var RowColumnPivotHierarchyCollection=(function (_super) {
+		__extends(RowColumnPivotHierarchyCollection, _super);
+		function RowColumnPivotHierarchyCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		RowColumnPivotHierarchyCollection.prototype.getItem=function (name) {
+			return OfficeExtension.OperationApiHelper.createIndexerObject(ExcelOp.RowColumnPivotHierarchy, this, [name]);
+		};
+		RowColumnPivotHierarchyCollection.prototype.getItemOrNullObject=function (name) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.RowColumnPivotHierarchy, this, "GetItemOrNullObject", 1, [name], false, false, null, 4);
+		};
+		RowColumnPivotHierarchyCollection.prototype.doGetCount=function () {
+			return _invokeMethod(this, "GetCount", 1, [], 4, 0);
+		};
+		RowColumnPivotHierarchyCollection.prototype.doRemove=function (rowColumnPivotHierarchy) {
+			return _invokeMethod(this, "Remove", 0, [rowColumnPivotHierarchy], 0, 0);
+		};
+		RowColumnPivotHierarchyCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return RowColumnPivotHierarchyCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.RowColumnPivotHierarchyCollection=RowColumnPivotHierarchyCollection;
+	var RowColumnPivotHierarchy=(function (_super) {
+		__extends(RowColumnPivotHierarchy, _super);
+		function RowColumnPivotHierarchy() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(RowColumnPivotHierarchy.prototype, "fields", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.PivotFieldCollection, this, "Fields", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		RowColumnPivotHierarchy.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		RowColumnPivotHierarchy.prototype.doSetToDefault=function () {
+			return _invokeMethod(this, "SetToDefault", 0, [], 0, 0);
+		};
+		RowColumnPivotHierarchy.prototype.doSetTopBottomValueFilter=function (criteriontype, rank, dataPivotHierarchy) {
+			return _invokeMethod(this, "SetTopBottomValueFilter", 0, [criteriontype, rank, dataPivotHierarchy], 0, 0);
+		};
+		RowColumnPivotHierarchy.prototype.doSort=function (ascending, dataPivotHierarchy) {
+			return _invokeMethod(this, "Sort", 0, [ascending, dataPivotHierarchy], 0, 0);
+		};
+		RowColumnPivotHierarchy.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return RowColumnPivotHierarchy;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.RowColumnPivotHierarchy=RowColumnPivotHierarchy;
+	var FilterPivotHierarchyCollection=(function (_super) {
+		__extends(FilterPivotHierarchyCollection, _super);
+		function FilterPivotHierarchyCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		FilterPivotHierarchyCollection.prototype.getItem=function (name) {
+			return OfficeExtension.OperationApiHelper.createIndexerObject(ExcelOp.FilterPivotHierarchy, this, [name]);
+		};
+		FilterPivotHierarchyCollection.prototype.getItemOrNullObject=function (name) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.FilterPivotHierarchy, this, "GetItemOrNullObject", 1, [name], false, false, null, 4);
+		};
+		FilterPivotHierarchyCollection.prototype.doGetCount=function () {
+			return _invokeMethod(this, "GetCount", 1, [], 4, 0);
+		};
+		FilterPivotHierarchyCollection.prototype.doRemove=function (FilterPivotHierarchy) {
+			return _invokeMethod(this, "Remove", 0, [FilterPivotHierarchy], 0, 0);
+		};
+		FilterPivotHierarchyCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return FilterPivotHierarchyCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.FilterPivotHierarchyCollection=FilterPivotHierarchyCollection;
+	var FilterPivotHierarchy=(function (_super) {
+		__extends(FilterPivotHierarchy, _super);
+		function FilterPivotHierarchy() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(FilterPivotHierarchy.prototype, "currentFilter", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.PivotItem, this, "CurrentFilter", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(FilterPivotHierarchy.prototype, "fields", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.PivotFieldCollection, this, "Fields", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		FilterPivotHierarchy.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		FilterPivotHierarchy.prototype.doSetToDefault=function () {
+			return _invokeMethod(this, "SetToDefault", 0, [], 0, 0);
+		};
+		FilterPivotHierarchy.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return FilterPivotHierarchy;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.FilterPivotHierarchy=FilterPivotHierarchy;
+	var DataPivotHierarchyCollection=(function (_super) {
+		__extends(DataPivotHierarchyCollection, _super);
+		function DataPivotHierarchyCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		DataPivotHierarchyCollection.prototype.getItem=function (name) {
+			return OfficeExtension.OperationApiHelper.createIndexerObject(ExcelOp.DataPivotHierarchy, this, [name]);
+		};
+		DataPivotHierarchyCollection.prototype.getItemOrNullObject=function (name) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.DataPivotHierarchy, this, "GetItemOrNullObject", 1, [name], false, false, null, 4);
+		};
+		DataPivotHierarchyCollection.prototype.doGetCount=function () {
+			return _invokeMethod(this, "GetCount", 1, [], 4, 0);
+		};
+		DataPivotHierarchyCollection.prototype.doRemove=function (DataPivotHierarchy) {
+			return _invokeMethod(this, "Remove", 0, [DataPivotHierarchy], 0, 0);
+		};
+		DataPivotHierarchyCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return DataPivotHierarchyCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.DataPivotHierarchyCollection=DataPivotHierarchyCollection;
+	var DataPivotHierarchy=(function (_super) {
+		__extends(DataPivotHierarchy, _super);
+		function DataPivotHierarchy() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(DataPivotHierarchy.prototype, "field", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.PivotField, this, "Field", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		DataPivotHierarchy.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		DataPivotHierarchy.prototype.doSetToDefault=function () {
+			return _invokeMethod(this, "SetToDefault", 0, [], 0, 0);
+		};
+		DataPivotHierarchy.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return DataPivotHierarchy;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.DataPivotHierarchy=DataPivotHierarchy;
+	var PivotFieldCollection=(function (_super) {
+		__extends(PivotFieldCollection, _super);
+		function PivotFieldCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		PivotFieldCollection.prototype.getItem=function (name) {
+			return OfficeExtension.OperationApiHelper.createIndexerObject(ExcelOp.PivotField, this, [name]);
+		};
+		PivotFieldCollection.prototype.getItemOrNullObject=function (name) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.PivotField, this, "GetItemOrNullObject", 1, [name], false, false, null, 4);
+		};
+		PivotFieldCollection.prototype.doGetCount=function () {
+			return _invokeMethod(this, "GetCount", 1, [], 4, 0);
+		};
+		PivotFieldCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return PivotFieldCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.PivotFieldCollection=PivotFieldCollection;
+	var PivotField=(function (_super) {
+		__extends(PivotField, _super);
+		function PivotField() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(PivotField.prototype, "items", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.PivotItemCollection, this, "Items", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		PivotField.prototype.getRange=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetRange", 1, [], false, true, null, 4);
+		};
+		PivotField.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		PivotField.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return PivotField;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.PivotField=PivotField;
+	var PivotItemCollection=(function (_super) {
+		__extends(PivotItemCollection, _super);
+		function PivotItemCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		PivotItemCollection.prototype.getItem=function (name) {
+			return OfficeExtension.OperationApiHelper.createIndexerObject(ExcelOp.PivotItem, this, [name]);
+		};
+		PivotItemCollection.prototype.getItemOrNullObject=function (name) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.PivotItem, this, "GetItemOrNullObject", 1, [name], false, false, null, 4);
+		};
+		PivotItemCollection.prototype.doGetCount=function () {
+			return _invokeMethod(this, "GetCount", 1, [], 4, 0);
+		};
+		PivotItemCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return PivotItemCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.PivotItemCollection=PivotItemCollection;
+	var PivotItem=(function (_super) {
+		__extends(PivotItem, _super);
+		function PivotItem() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		PivotItem.prototype.getRange=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetRange", 1, [], false, true, null, 4);
+		};
+		PivotItem.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		PivotItem.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return PivotItem;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.PivotItem=PivotItem;
+	var PivotFilterTopBottomCriterion;
+	(function (PivotFilterTopBottomCriterion) {
+		PivotFilterTopBottomCriterion["invalid"]="Invalid";
+		PivotFilterTopBottomCriterion["topItems"]="TopItems";
+		PivotFilterTopBottomCriterion["topPercent"]="TopPercent";
+		PivotFilterTopBottomCriterion["topSum"]="TopSum";
+		PivotFilterTopBottomCriterion["bottomItems"]="BottomItems";
+		PivotFilterTopBottomCriterion["bottomPercent"]="BottomPercent";
+		PivotFilterTopBottomCriterion["bottomSum"]="BottomSum";
+	})(PivotFilterTopBottomCriterion=ExcelOp.PivotFilterTopBottomCriterion || (ExcelOp.PivotFilterTopBottomCriterion={}));
+	var AggregationFunction;
+	(function (AggregationFunction) {
+		AggregationFunction["automatic"]="Automatic";
+		AggregationFunction["sum"]="Sum";
+		AggregationFunction["count"]="Count";
+		AggregationFunction["average"]="Average";
+		AggregationFunction["max"]="Max";
+		AggregationFunction["min"]="Min";
+		AggregationFunction["product"]="Product";
+		AggregationFunction["countNumbers"]="CountNumbers";
+		AggregationFunction["standardDeviation"]="StandardDeviation";
+		AggregationFunction["standardDeviationP"]="StandardDeviationP";
+		AggregationFunction["variation"]="Variation";
+		AggregationFunction["variationP"]="VariationP";
+	})(AggregationFunction=ExcelOp.AggregationFunction || (ExcelOp.AggregationFunction={}));
+	var ShowAsCalculation;
+	(function (ShowAsCalculation) {
+		ShowAsCalculation["none"]="None";
+		ShowAsCalculation["percentOfGrandTotal"]="PercentOfGrandTotal";
+		ShowAsCalculation["percentOfRowTotal"]="PercentOfRowTotal";
+		ShowAsCalculation["percentOfColumnTotal"]="PercentOfColumnTotal";
+		ShowAsCalculation["percentOfParentRowTotal"]="PercentOfParentRowTotal";
+		ShowAsCalculation["percentOfParentColumnTotal"]="PercentOfParentColumnTotal";
+		ShowAsCalculation["percentOfParentTotal"]="PercentOfParentTotal";
+		ShowAsCalculation["percentOf"]="PercentOf";
+		ShowAsCalculation["runningTotal"]="RunningTotal";
+		ShowAsCalculation["percentRunningTotal"]="PercentRunningTotal";
+		ShowAsCalculation["differenceFrom"]="DifferenceFrom";
+		ShowAsCalculation["percentDifferenceFrom"]="PercentDifferenceFrom";
+		ShowAsCalculation["rankAscending"]="RankAscending";
+		ShowAsCalculation["rankDecending"]="RankDecending";
+		ShowAsCalculation["index"]="Index";
+	})(ShowAsCalculation=ExcelOp.ShowAsCalculation || (ExcelOp.ShowAsCalculation={}));
+	var DocumentProperties=(function (_super) {
+		__extends(DocumentProperties, _super);
+		function DocumentProperties() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(DocumentProperties.prototype, "custom", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.CustomPropertyCollection, this, "Custom", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		DocumentProperties.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		DocumentProperties.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return DocumentProperties;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.DocumentProperties=DocumentProperties;
+	var CustomProperty=(function (_super) {
+		__extends(CustomProperty, _super);
+		function CustomProperty() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		CustomProperty.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		CustomProperty.prototype.doDelete=function () {
+			return _invokeMethod(this, "Delete", 0, [], 0, 0);
+		};
+		CustomProperty.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return CustomProperty;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.CustomProperty=CustomProperty;
+	var CustomPropertyCollection=(function (_super) {
+		__extends(CustomPropertyCollection, _super);
+		function CustomPropertyCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		CustomPropertyCollection.prototype.getItem=function (key) {
+			return OfficeExtension.OperationApiHelper.createIndexerObject(ExcelOp.CustomProperty, this, [key]);
+		};
+		CustomPropertyCollection.prototype.getItemOrNullObject=function (key) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.CustomProperty, this, "GetItemOrNullObject", 1, [key], false, false, null, 4);
+		};
+		CustomPropertyCollection.prototype.doDeleteAll=function () {
+			return _invokeMethod(this, "DeleteAll", 0, [], 0, 0);
+		};
+		CustomPropertyCollection.prototype.doGetCount=function () {
+			return _invokeMethod(this, "GetCount", 1, [], 4, 0);
+		};
+		CustomPropertyCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return CustomPropertyCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.CustomPropertyCollection=CustomPropertyCollection;
+	var ConditionalFormatCollection=(function (_super) {
+		__extends(ConditionalFormatCollection, _super);
+		function ConditionalFormatCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		ConditionalFormatCollection.prototype.getItem=function (id) {
+			return OfficeExtension.OperationApiHelper.createIndexerObject(ExcelOp.ConditionalFormat, this, [id]);
+		};
+		ConditionalFormatCollection.prototype.getItemAt=function (index) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.ConditionalFormat, this, "GetItemAt", 1, [index], false, false, null, 4);
+		};
+		ConditionalFormatCollection.prototype.doClearAll=function () {
+			return _invokeMethod(this, "ClearAll", 0, [], 0, 0);
+		};
+		ConditionalFormatCollection.prototype.doGetCount=function () {
+			return _invokeMethod(this, "GetCount", 1, [], 4, 0);
+		};
+		ConditionalFormatCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ConditionalFormatCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ConditionalFormatCollection=ConditionalFormatCollection;
+	var ConditionalFormat=(function (_super) {
+		__extends(ConditionalFormat, _super);
+		function ConditionalFormat() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ConditionalFormat.prototype, "cellValue", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.CellValueConditionalFormat, this, "CellValue", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ConditionalFormat.prototype, "cellValueOrNullObject", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.CellValueConditionalFormat, this, "CellValueOrNullObject", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ConditionalFormat.prototype, "colorScale", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ColorScaleConditionalFormat, this, "ColorScale", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ConditionalFormat.prototype, "colorScaleOrNullObject", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ColorScaleConditionalFormat, this, "ColorScaleOrNullObject", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ConditionalFormat.prototype, "custom", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.CustomConditionalFormat, this, "Custom", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ConditionalFormat.prototype, "customOrNullObject", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.CustomConditionalFormat, this, "CustomOrNullObject", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ConditionalFormat.prototype, "dataBar", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.DataBarConditionalFormat, this, "DataBar", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ConditionalFormat.prototype, "dataBarOrNullObject", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.DataBarConditionalFormat, this, "DataBarOrNullObject", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ConditionalFormat.prototype, "iconSet", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.IconSetConditionalFormat, this, "IconSet", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ConditionalFormat.prototype, "iconSetOrNullObject", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.IconSetConditionalFormat, this, "IconSetOrNullObject", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ConditionalFormat.prototype, "preset", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.PresetCriteriaConditionalFormat, this, "Preset", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ConditionalFormat.prototype, "presetOrNullObject", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.PresetCriteriaConditionalFormat, this, "PresetOrNullObject", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ConditionalFormat.prototype, "textComparison", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.TextConditionalFormat, this, "TextComparison", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ConditionalFormat.prototype, "textComparisonOrNullObject", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.TextConditionalFormat, this, "TextComparisonOrNullObject", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ConditionalFormat.prototype, "topBottom", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.TopBottomConditionalFormat, this, "TopBottom", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ConditionalFormat.prototype, "topBottomOrNullObject", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.TopBottomConditionalFormat, this, "TopBottomOrNullObject", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		ConditionalFormat.prototype.getRange=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetRange", 1, [], false, true, null, 4);
+		};
+		ConditionalFormat.prototype.getRangeOrNullObject=function () {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetRangeOrNullObject", 1, [], false, true, null, 4);
+		};
+		ConditionalFormat.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		ConditionalFormat.prototype.doDelete=function () {
+			return _invokeMethod(this, "Delete", 0, [], 0, 0);
+		};
+		ConditionalFormat.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ConditionalFormat;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ConditionalFormat=ConditionalFormat;
+	var DataBarConditionalFormat=(function (_super) {
+		__extends(DataBarConditionalFormat, _super);
+		function DataBarConditionalFormat() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(DataBarConditionalFormat.prototype, "negativeFormat", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ConditionalDataBarNegativeFormat, this, "NegativeFormat", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(DataBarConditionalFormat.prototype, "positiveFormat", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ConditionalDataBarPositiveFormat, this, "PositiveFormat", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		DataBarConditionalFormat.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		DataBarConditionalFormat.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return DataBarConditionalFormat;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.DataBarConditionalFormat=DataBarConditionalFormat;
+	var ConditionalDataBarPositiveFormat=(function (_super) {
+		__extends(ConditionalDataBarPositiveFormat, _super);
+		function ConditionalDataBarPositiveFormat() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		ConditionalDataBarPositiveFormat.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		ConditionalDataBarPositiveFormat.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ConditionalDataBarPositiveFormat;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ConditionalDataBarPositiveFormat=ConditionalDataBarPositiveFormat;
+	var ConditionalDataBarNegativeFormat=(function (_super) {
+		__extends(ConditionalDataBarNegativeFormat, _super);
+		function ConditionalDataBarNegativeFormat() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		ConditionalDataBarNegativeFormat.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		ConditionalDataBarNegativeFormat.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ConditionalDataBarNegativeFormat;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ConditionalDataBarNegativeFormat=ConditionalDataBarNegativeFormat;
+	var CustomConditionalFormat=(function (_super) {
+		__extends(CustomConditionalFormat, _super);
+		function CustomConditionalFormat() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(CustomConditionalFormat.prototype, "format", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ConditionalRangeFormat, this, "Format", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(CustomConditionalFormat.prototype, "rule", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ConditionalFormatRule, this, "Rule", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		return CustomConditionalFormat;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.CustomConditionalFormat=CustomConditionalFormat;
+	var ConditionalFormatRule=(function (_super) {
+		__extends(ConditionalFormatRule, _super);
+		function ConditionalFormatRule() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		ConditionalFormatRule.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		ConditionalFormatRule.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ConditionalFormatRule;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ConditionalFormatRule=ConditionalFormatRule;
+	var IconSetConditionalFormat=(function (_super) {
+		__extends(IconSetConditionalFormat, _super);
+		function IconSetConditionalFormat() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		IconSetConditionalFormat.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		IconSetConditionalFormat.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return IconSetConditionalFormat;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.IconSetConditionalFormat=IconSetConditionalFormat;
+	var ColorScaleConditionalFormat=(function (_super) {
+		__extends(ColorScaleConditionalFormat, _super);
+		function ColorScaleConditionalFormat() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		ColorScaleConditionalFormat.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		ColorScaleConditionalFormat.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ColorScaleConditionalFormat;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ColorScaleConditionalFormat=ColorScaleConditionalFormat;
+	var TopBottomConditionalFormat=(function (_super) {
+		__extends(TopBottomConditionalFormat, _super);
+		function TopBottomConditionalFormat() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(TopBottomConditionalFormat.prototype, "format", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ConditionalRangeFormat, this, "Format", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		TopBottomConditionalFormat.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		TopBottomConditionalFormat.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return TopBottomConditionalFormat;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.TopBottomConditionalFormat=TopBottomConditionalFormat;
+	var PresetCriteriaConditionalFormat=(function (_super) {
+		__extends(PresetCriteriaConditionalFormat, _super);
+		function PresetCriteriaConditionalFormat() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(PresetCriteriaConditionalFormat.prototype, "format", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ConditionalRangeFormat, this, "Format", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		PresetCriteriaConditionalFormat.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		PresetCriteriaConditionalFormat.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return PresetCriteriaConditionalFormat;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.PresetCriteriaConditionalFormat=PresetCriteriaConditionalFormat;
+	var TextConditionalFormat=(function (_super) {
+		__extends(TextConditionalFormat, _super);
+		function TextConditionalFormat() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(TextConditionalFormat.prototype, "format", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ConditionalRangeFormat, this, "Format", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		TextConditionalFormat.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		TextConditionalFormat.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return TextConditionalFormat;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.TextConditionalFormat=TextConditionalFormat;
+	var CellValueConditionalFormat=(function (_super) {
+		__extends(CellValueConditionalFormat, _super);
+		function CellValueConditionalFormat() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(CellValueConditionalFormat.prototype, "format", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ConditionalRangeFormat, this, "Format", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		CellValueConditionalFormat.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		CellValueConditionalFormat.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return CellValueConditionalFormat;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.CellValueConditionalFormat=CellValueConditionalFormat;
+	var ConditionalRangeFormat=(function (_super) {
+		__extends(ConditionalRangeFormat, _super);
+		function ConditionalRangeFormat() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ConditionalRangeFormat.prototype, "borders", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ConditionalRangeBorderCollection, this, "Borders", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ConditionalRangeFormat.prototype, "fill", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ConditionalRangeFill, this, "Fill", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ConditionalRangeFormat.prototype, "font", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ConditionalRangeFont, this, "Font", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		ConditionalRangeFormat.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		ConditionalRangeFormat.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ConditionalRangeFormat;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ConditionalRangeFormat=ConditionalRangeFormat;
+	var ConditionalRangeFont=(function (_super) {
+		__extends(ConditionalRangeFont, _super);
+		function ConditionalRangeFont() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		ConditionalRangeFont.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		ConditionalRangeFont.prototype.doClear=function () {
+			return _invokeMethod(this, "Clear", 0, [], 0, 0);
+		};
+		ConditionalRangeFont.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ConditionalRangeFont;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ConditionalRangeFont=ConditionalRangeFont;
+	var ConditionalRangeFill=(function (_super) {
+		__extends(ConditionalRangeFill, _super);
+		function ConditionalRangeFill() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		ConditionalRangeFill.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		ConditionalRangeFill.prototype.doClear=function () {
+			return _invokeMethod(this, "Clear", 0, [], 0, 0);
+		};
+		ConditionalRangeFill.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ConditionalRangeFill;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ConditionalRangeFill=ConditionalRangeFill;
+	var ConditionalRangeBorder=(function (_super) {
+		__extends(ConditionalRangeBorder, _super);
+		function ConditionalRangeBorder() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		ConditionalRangeBorder.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		ConditionalRangeBorder.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ConditionalRangeBorder;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ConditionalRangeBorder=ConditionalRangeBorder;
+	var ConditionalRangeBorderCollection=(function (_super) {
+		__extends(ConditionalRangeBorderCollection, _super);
+		function ConditionalRangeBorderCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(ConditionalRangeBorderCollection.prototype, "bottom", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ConditionalRangeBorder, this, "Bottom", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ConditionalRangeBorderCollection.prototype, "left", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ConditionalRangeBorder, this, "Left", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ConditionalRangeBorderCollection.prototype, "right", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ConditionalRangeBorder, this, "Right", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ConditionalRangeBorderCollection.prototype, "top", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.ConditionalRangeBorder, this, "Top", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		ConditionalRangeBorderCollection.prototype.getItem=function (index) {
+			return OfficeExtension.OperationApiHelper.createIndexerObject(ExcelOp.ConditionalRangeBorder, this, [index]);
+		};
+		ConditionalRangeBorderCollection.prototype.getItemAt=function (index) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.ConditionalRangeBorder, this, "GetItemAt", 1, [index], false, false, null, 4);
+		};
+		ConditionalRangeBorderCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return ConditionalRangeBorderCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.ConditionalRangeBorderCollection=ConditionalRangeBorderCollection;
+	var CustomFunction=(function (_super) {
+		__extends(CustomFunction, _super);
+		function CustomFunction() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		CustomFunction.prototype.doDelete=function () {
+			return _invokeMethod(this, "Delete", 0, [], 0, 0);
+		};
+		CustomFunction.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return CustomFunction;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.CustomFunction=CustomFunction;
+	var CustomFunctionCollection=(function (_super) {
+		__extends(CustomFunctionCollection, _super);
+		function CustomFunctionCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		CustomFunctionCollection.prototype.getItem=function (name) {
+			return OfficeExtension.OperationApiHelper.createIndexerObject(ExcelOp.CustomFunction, this, [name]);
+		};
+		CustomFunctionCollection.prototype.getItemOrNullObject=function (name) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.CustomFunction, this, "GetItemOrNullObject", 1, [name], false, false, null, 4);
+		};
+		CustomFunctionCollection.prototype.doDeleteAll=function () {
+			return _invokeMethod(this, "DeleteAll", 0, [], 0, 0);
+		};
+		CustomFunctionCollection.prototype.doGetCount=function () {
+			return _invokeMethod(this, "GetCount", 1, [], 4, 0);
+		};
+		CustomFunctionCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return CustomFunctionCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.CustomFunctionCollection=CustomFunctionCollection;
+	var Style=(function (_super) {
+		__extends(Style, _super);
+		function Style() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(Style.prototype, "borders", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.RangeBorderCollection, this, "Borders", true, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Style.prototype, "fill", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.RangeFill, this, "Fill", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Style.prototype, "font", {
+			get: function () {
+				return OfficeExtension.OperationApiHelper.createPropertyObject(ExcelOp.RangeFont, this, "Font", false, 4);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Style.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		Style.prototype.doDelete=function () {
+			return _invokeMethod(this, "Delete", 0, [], 0, 0);
+		};
+		Style.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return Style;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.Style=Style;
+	var StyleCollection=(function (_super) {
+		__extends(StyleCollection, _super);
+		function StyleCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		StyleCollection.prototype.getItem=function (name) {
+			return OfficeExtension.OperationApiHelper.createIndexerObject(ExcelOp.Style, this, [name]);
+		};
+		StyleCollection.prototype.doAdd=function (name) {
+			return _invokeMethod(this, "Add", 0, [name], 0, 0);
+		};
+		StyleCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return StyleCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.StyleCollection=StyleCollection;
+	var InternalTest=(function (_super) {
+		__extends(InternalTest, _super);
+		function InternalTest() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		InternalTest.prototype.doCompareTempFilesAreIdentical=function (filename1, filename2) {
+			_throwIfApiNotSupported("InternalTest.compareTempFilesAreIdentical", _defaultApiSetName, "1.8", _hostName);
+			return _invokeMethod(this, "CompareTempFilesAreIdentical", 0, [filename1, filename2], 0, 0);
+		};
+		InternalTest.prototype.doDelay=function (seconds) {
+			return _invokeMethod(this, "Delay", 0, [seconds], 0, 0);
+		};
+		InternalTest.prototype.doDeserializeCustomFunctions=function (serializedString) {
+			_throwIfApiNotSupported("InternalTest.deserializeCustomFunctions", "CustomFunctions", "1.1", _hostName);
+			return _invokeMethod(this, "DeserializeCustomFunctions", 0, [serializedString], 0, 0);
+		};
+		InternalTest.prototype.doFirstPartyMethod=function () {
+			_throwIfApiNotSupported("InternalTest.firstPartyMethod", _defaultApiSetName, "1.7", _hostName);
+			return _invokeMethod(this, "FirstPartyMethod", 1, [], 4 | 1, 0);
+		};
+		InternalTest.prototype.doSaveWorkbookToTempFile=function (filename) {
+			_throwIfApiNotSupported("InternalTest.saveWorkbookToTempFile", _defaultApiSetName, "1.8", _hostName);
+			return _invokeMethod(this, "SaveWorkbookToTempFile", 0, [filename], 0, 0);
+		};
+		InternalTest.prototype.doSerializeCustomFunctions=function () {
+			_throwIfApiNotSupported("InternalTest.serializeCustomFunctions", "CustomFunctions", "1.1", _hostName);
+			return _invokeMethod(this, "SerializeCustomFunctions", 0, [], 0, 0);
+		};
+		InternalTest.prototype.doTriggerMessage=function (messageCategory, messageType, targetId, message) {
+			_throwIfApiNotSupported("InternalTest.triggerMessage", _defaultApiSetName, "1.7", _hostName);
+			return _invokeMethod(this, "TriggerMessage", 0, [messageCategory, messageType, targetId, message], 0, 0);
+		};
+		InternalTest.prototype.doTriggerPostProcess=function () {
+			_throwIfApiNotSupported("InternalTest.triggerPostProcess", _defaultApiSetName, "1.7", _hostName);
+			return _invokeMethod(this, "TriggerPostProcess", 0, [], 0, 0);
+		};
+		InternalTest.prototype.doTriggerTestEvent=function (prop1, worksheet) {
+			_throwIfApiNotSupported("InternalTest.triggerTestEvent", _defaultApiSetName, "1.7", _hostName);
+			return _invokeMethod(this, "TriggerTestEvent", 0, [prop1, worksheet], 0, 0);
+		};
+		InternalTest.prototype.doTriggerTestEventWithFilter=function (prop1, msgType, worksheet) {
+			_throwIfApiNotSupported("InternalTest.triggerTestEventWithFilter", _defaultApiSetName, "1.7", _hostName);
+			return _invokeMethod(this, "TriggerTestEventWithFilter", 0, [prop1, msgType, worksheet], 0, 0);
+		};
+		InternalTest.prototype.doUnregisterAllCustomFunctionExecutionEvents=function () {
+			_throwIfApiNotSupported("InternalTest.unregisterAllCustomFunctionExecutionEvents", "CustomFunctions", "1.1", _hostName);
+			return _invokeMethod(this, "UnregisterAllCustomFunctionExecutionEvents", 0, [], 0, 0);
+		};
+		return InternalTest;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.InternalTest=InternalTest;
+	var PageLayout=(function (_super) {
+		__extends(PageLayout, _super);
+		function PageLayout() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		PageLayout.prototype.doUpdate=function (properties) {
+			return _invokeUpdate(this, properties);
+		};
+		PageLayout.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return PageLayout;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.PageLayout=PageLayout;
+	var DataConnectionCollection=(function (_super) {
+		__extends(DataConnectionCollection, _super);
+		function DataConnectionCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		DataConnectionCollection.prototype.doRefreshAll=function () {
+			return _invokeMethod(this, "RefreshAll", 0, [], 0, 0);
+		};
+		return DataConnectionCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.DataConnectionCollection=DataConnectionCollection;
+	var AreaCollection=(function (_super) {
+		__extends(AreaCollection, _super);
+		function AreaCollection() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		AreaCollection.prototype.getItemAt=function (index) {
+			return OfficeExtension.OperationApiHelper.createMethodObject(ExcelOp.Range, this, "GetItemAt", 1, [index], false, false, null, 4);
+		};
+		AreaCollection.prototype.doGetCount=function () {
+			return _invokeMethod(this, "GetCount", 1, [], 4, 0);
+		};
+		AreaCollection.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return AreaCollection;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.AreaCollection=AreaCollection;
+	var AxisType;
+	(function (AxisType) {
+		AxisType["invalid"]="Invalid";
+		AxisType["category"]="Category";
+		AxisType["value"]="Value";
+		AxisType["series"]="Series";
+	})(AxisType=ExcelOp.AxisType || (ExcelOp.AxisType={}));
+	var AxisGroup;
+	(function (AxisGroup) {
+		AxisGroup["primary"]="Primary";
+		AxisGroup["secondary"]="Secondary";
+	})(AxisGroup=ExcelOp.AxisGroup || (ExcelOp.AxisGroup={}));
+	var AxisScaleType;
+	(function (AxisScaleType) {
+		AxisScaleType["linear"]="Linear";
+		AxisScaleType["logarithmic"]="Logarithmic";
+	})(AxisScaleType=ExcelOp.AxisScaleType || (ExcelOp.AxisScaleType={}));
+	var AxisCrosses;
+	(function (AxisCrosses) {
+		AxisCrosses["automatic"]="Automatic";
+		AxisCrosses["maximum"]="Maximum";
+		AxisCrosses["minimum"]="Minimum";
+		AxisCrosses["custom"]="Custom";
+	})(AxisCrosses=ExcelOp.AxisCrosses || (ExcelOp.AxisCrosses={}));
+	var AxisTickMark;
+	(function (AxisTickMark) {
+		AxisTickMark["none"]="None";
+		AxisTickMark["cross"]="Cross";
+		AxisTickMark["inside"]="Inside";
+		AxisTickMark["outside"]="Outside";
+	})(AxisTickMark=ExcelOp.AxisTickMark || (ExcelOp.AxisTickMark={}));
+	var AxisTickLabelPosition;
+	(function (AxisTickLabelPosition) {
+		AxisTickLabelPosition["nextToAxis"]="NextToAxis";
+		AxisTickLabelPosition["high"]="High";
+		AxisTickLabelPosition["low"]="Low";
+		AxisTickLabelPosition["none"]="None";
+	})(AxisTickLabelPosition=ExcelOp.AxisTickLabelPosition || (ExcelOp.AxisTickLabelPosition={}));
+	var BindingType;
+	(function (BindingType) {
+		BindingType["range"]="Range";
+		BindingType["table"]="Table";
+		BindingType["text"]="Text";
+	})(BindingType=ExcelOp.BindingType || (ExcelOp.BindingType={}));
+	var BorderIndex;
+	(function (BorderIndex) {
+		BorderIndex["edgeTop"]="EdgeTop";
+		BorderIndex["edgeBottom"]="EdgeBottom";
+		BorderIndex["edgeLeft"]="EdgeLeft";
+		BorderIndex["edgeRight"]="EdgeRight";
+		BorderIndex["insideVertical"]="InsideVertical";
+		BorderIndex["insideHorizontal"]="InsideHorizontal";
+		BorderIndex["diagonalDown"]="DiagonalDown";
+		BorderIndex["diagonalUp"]="DiagonalUp";
+	})(BorderIndex=ExcelOp.BorderIndex || (ExcelOp.BorderIndex={}));
+	var BorderLineStyle;
+	(function (BorderLineStyle) {
+		BorderLineStyle["none"]="None";
+		BorderLineStyle["continuous"]="Continuous";
+		BorderLineStyle["dash"]="Dash";
+		BorderLineStyle["dashDot"]="DashDot";
+		BorderLineStyle["dashDotDot"]="DashDotDot";
+		BorderLineStyle["dot"]="Dot";
+		BorderLineStyle["double"]="Double";
+		BorderLineStyle["slantDashDot"]="SlantDashDot";
+	})(BorderLineStyle=ExcelOp.BorderLineStyle || (ExcelOp.BorderLineStyle={}));
+	var BorderWeight;
+	(function (BorderWeight) {
+		BorderWeight["hairline"]="Hairline";
+		BorderWeight["thin"]="Thin";
+		BorderWeight["medium"]="Medium";
+		BorderWeight["thick"]="Thick";
+	})(BorderWeight=ExcelOp.BorderWeight || (ExcelOp.BorderWeight={}));
+	var CalculationMode;
+	(function (CalculationMode) {
+		CalculationMode["automatic"]="Automatic";
+		CalculationMode["automaticExceptTables"]="AutomaticExceptTables";
+		CalculationMode["manual"]="Manual";
+	})(CalculationMode=ExcelOp.CalculationMode || (ExcelOp.CalculationMode={}));
+	var CalculationType;
+	(function (CalculationType) {
+		CalculationType["recalculate"]="Recalculate";
+		CalculationType["full"]="Full";
+		CalculationType["fullRebuild"]="FullRebuild";
+	})(CalculationType=ExcelOp.CalculationType || (ExcelOp.CalculationType={}));
+	var ClearApplyTo;
+	(function (ClearApplyTo) {
+		ClearApplyTo["all"]="All";
+		ClearApplyTo["formats"]="Formats";
+		ClearApplyTo["contents"]="Contents";
+		ClearApplyTo["hyperlinks"]="Hyperlinks";
+		ClearApplyTo["removeHyperlinks"]="RemoveHyperlinks";
+	})(ClearApplyTo=ExcelOp.ClearApplyTo || (ExcelOp.ClearApplyTo={}));
+	var ChartAxisDisplayUnit;
+	(function (ChartAxisDisplayUnit) {
+		ChartAxisDisplayUnit["none"]="None";
+		ChartAxisDisplayUnit["hundreds"]="Hundreds";
+		ChartAxisDisplayUnit["thousands"]="Thousands";
+		ChartAxisDisplayUnit["tenThousands"]="TenThousands";
+		ChartAxisDisplayUnit["hundredThousands"]="HundredThousands";
+		ChartAxisDisplayUnit["millions"]="Millions";
+		ChartAxisDisplayUnit["tenMillions"]="TenMillions";
+		ChartAxisDisplayUnit["hundredMillions"]="HundredMillions";
+		ChartAxisDisplayUnit["billions"]="Billions";
+		ChartAxisDisplayUnit["trillions"]="Trillions";
+		ChartAxisDisplayUnit["custom"]="Custom";
+	})(ChartAxisDisplayUnit=ExcelOp.ChartAxisDisplayUnit || (ExcelOp.ChartAxisDisplayUnit={}));
+	var ChartAxisTimeUnit;
+	(function (ChartAxisTimeUnit) {
+		ChartAxisTimeUnit["days"]="Days";
+		ChartAxisTimeUnit["months"]="Months";
+		ChartAxisTimeUnit["years"]="Years";
+	})(ChartAxisTimeUnit=ExcelOp.ChartAxisTimeUnit || (ExcelOp.ChartAxisTimeUnit={}));
+	var ChartAxisCategoryType;
+	(function (ChartAxisCategoryType) {
+		ChartAxisCategoryType["automatic"]="Automatic";
+		ChartAxisCategoryType["textAxis"]="TextAxis";
+		ChartAxisCategoryType["dateAxis"]="DateAxis";
+	})(ChartAxisCategoryType=ExcelOp.ChartAxisCategoryType || (ExcelOp.ChartAxisCategoryType={}));
+	var ChartLineStyle;
+	(function (ChartLineStyle) {
+		ChartLineStyle["none"]="None";
+		ChartLineStyle["continuous"]="Continuous";
+		ChartLineStyle["dash"]="Dash";
+		ChartLineStyle["dashDot"]="DashDot";
+		ChartLineStyle["dashDotDot"]="DashDotDot";
+		ChartLineStyle["dot"]="Dot";
+		ChartLineStyle["grey25"]="Grey25";
+		ChartLineStyle["grey50"]="Grey50";
+		ChartLineStyle["grey75"]="Grey75";
+		ChartLineStyle["automatic"]="Automatic";
+		ChartLineStyle["roundDot"]="RoundDot";
+	})(ChartLineStyle=ExcelOp.ChartLineStyle || (ExcelOp.ChartLineStyle={}));
+	var ChartDataLabelPosition;
+	(function (ChartDataLabelPosition) {
+		ChartDataLabelPosition["invalid"]="Invalid";
+		ChartDataLabelPosition["none"]="None";
+		ChartDataLabelPosition["center"]="Center";
+		ChartDataLabelPosition["insideEnd"]="InsideEnd";
+		ChartDataLabelPosition["insideBase"]="InsideBase";
+		ChartDataLabelPosition["outsideEnd"]="OutsideEnd";
+		ChartDataLabelPosition["left"]="Left";
+		ChartDataLabelPosition["right"]="Right";
+		ChartDataLabelPosition["top"]="Top";
+		ChartDataLabelPosition["bottom"]="Bottom";
+		ChartDataLabelPosition["bestFit"]="BestFit";
+		ChartDataLabelPosition["callout"]="Callout";
+	})(ChartDataLabelPosition=ExcelOp.ChartDataLabelPosition || (ExcelOp.ChartDataLabelPosition={}));
+	var ChartErrorBarsInclude;
+	(function (ChartErrorBarsInclude) {
+		ChartErrorBarsInclude["both"]="Both";
+		ChartErrorBarsInclude["minusValues"]="MinusValues";
+		ChartErrorBarsInclude["plusValues"]="PlusValues";
+	})(ChartErrorBarsInclude=ExcelOp.ChartErrorBarsInclude || (ExcelOp.ChartErrorBarsInclude={}));
+	var ChartErrorBarsType;
+	(function (ChartErrorBarsType) {
+		ChartErrorBarsType["fixedValue"]="FixedValue";
+		ChartErrorBarsType["percent"]="Percent";
+		ChartErrorBarsType["stDev"]="StDev";
+		ChartErrorBarsType["stError"]="StError";
+		ChartErrorBarsType["custom"]="Custom";
+	})(ChartErrorBarsType=ExcelOp.ChartErrorBarsType || (ExcelOp.ChartErrorBarsType={}));
+	var ChartTitlePosition;
+	(function (ChartTitlePosition) {
+		ChartTitlePosition["automatic"]="Automatic";
+		ChartTitlePosition["top"]="Top";
+		ChartTitlePosition["bottom"]="Bottom";
+		ChartTitlePosition["left"]="Left";
+		ChartTitlePosition["right"]="Right";
+	})(ChartTitlePosition=ExcelOp.ChartTitlePosition || (ExcelOp.ChartTitlePosition={}));
+	var ChartLegendPosition;
+	(function (ChartLegendPosition) {
+		ChartLegendPosition["invalid"]="Invalid";
+		ChartLegendPosition["top"]="Top";
+		ChartLegendPosition["bottom"]="Bottom";
+		ChartLegendPosition["left"]="Left";
+		ChartLegendPosition["right"]="Right";
+		ChartLegendPosition["corner"]="Corner";
+		ChartLegendPosition["custom"]="Custom";
+	})(ChartLegendPosition=ExcelOp.ChartLegendPosition || (ExcelOp.ChartLegendPosition={}));
+	var ChartMarkerStyle;
+	(function (ChartMarkerStyle) {
+		ChartMarkerStyle["invalid"]="Invalid";
+		ChartMarkerStyle["automatic"]="Automatic";
+		ChartMarkerStyle["none"]="None";
+		ChartMarkerStyle["square"]="Square";
+		ChartMarkerStyle["diamond"]="Diamond";
+		ChartMarkerStyle["triangle"]="Triangle";
+		ChartMarkerStyle["x"]="X";
+		ChartMarkerStyle["star"]="Star";
+		ChartMarkerStyle["dot"]="Dot";
+		ChartMarkerStyle["dash"]="Dash";
+		ChartMarkerStyle["circle"]="Circle";
+		ChartMarkerStyle["plus"]="Plus";
+		ChartMarkerStyle["picture"]="Picture";
+	})(ChartMarkerStyle=ExcelOp.ChartMarkerStyle || (ExcelOp.ChartMarkerStyle={}));
+	var ChartPlotAreaPosition;
+	(function (ChartPlotAreaPosition) {
+		ChartPlotAreaPosition["automatic"]="Automatic";
+		ChartPlotAreaPosition["custom"]="Custom";
+	})(ChartPlotAreaPosition=ExcelOp.ChartPlotAreaPosition || (ExcelOp.ChartPlotAreaPosition={}));
+	var ChartSeriesBy;
+	(function (ChartSeriesBy) {
+		ChartSeriesBy["auto"]="Auto";
+		ChartSeriesBy["columns"]="Columns";
+		ChartSeriesBy["rows"]="Rows";
+	})(ChartSeriesBy=ExcelOp.ChartSeriesBy || (ExcelOp.ChartSeriesBy={}));
+	var ChartTextHorizontalAlignment;
+	(function (ChartTextHorizontalAlignment) {
+		ChartTextHorizontalAlignment["center"]="Center";
+		ChartTextHorizontalAlignment["left"]="Left";
+		ChartTextHorizontalAlignment["right"]="Right";
+		ChartTextHorizontalAlignment["justify"]="Justify";
+		ChartTextHorizontalAlignment["distributed"]="Distributed";
+	})(ChartTextHorizontalAlignment=ExcelOp.ChartTextHorizontalAlignment || (ExcelOp.ChartTextHorizontalAlignment={}));
+	var ChartTextVerticalAlignment;
+	(function (ChartTextVerticalAlignment) {
+		ChartTextVerticalAlignment["center"]="Center";
+		ChartTextVerticalAlignment["bottom"]="Bottom";
+		ChartTextVerticalAlignment["top"]="Top";
+		ChartTextVerticalAlignment["justify"]="Justify";
+		ChartTextVerticalAlignment["distributed"]="Distributed";
+	})(ChartTextVerticalAlignment=ExcelOp.ChartTextVerticalAlignment || (ExcelOp.ChartTextVerticalAlignment={}));
+	var ChartTickLabelAlignment;
+	(function (ChartTickLabelAlignment) {
+		ChartTickLabelAlignment["center"]="Center";
+		ChartTickLabelAlignment["left"]="Left";
+		ChartTickLabelAlignment["right"]="Right";
+	})(ChartTickLabelAlignment=ExcelOp.ChartTickLabelAlignment || (ExcelOp.ChartTickLabelAlignment={}));
+	var ChartType;
+	(function (ChartType) {
+		ChartType["invalid"]="Invalid";
+		ChartType["columnClustered"]="ColumnClustered";
+		ChartType["columnStacked"]="ColumnStacked";
+		ChartType["columnStacked100"]="ColumnStacked100";
+		ChartType["_3DColumnClustered"]="3DColumnClustered";
+		ChartType["_3DColumnStacked"]="3DColumnStacked";
+		ChartType["_3DColumnStacked100"]="3DColumnStacked100";
+		ChartType["barClustered"]="BarClustered";
+		ChartType["barStacked"]="BarStacked";
+		ChartType["barStacked100"]="BarStacked100";
+		ChartType["_3DBarClustered"]="3DBarClustered";
+		ChartType["_3DBarStacked"]="3DBarStacked";
+		ChartType["_3DBarStacked100"]="3DBarStacked100";
+		ChartType["lineStacked"]="LineStacked";
+		ChartType["lineStacked100"]="LineStacked100";
+		ChartType["lineMarkers"]="LineMarkers";
+		ChartType["lineMarkersStacked"]="LineMarkersStacked";
+		ChartType["lineMarkersStacked100"]="LineMarkersStacked100";
+		ChartType["pieOfPie"]="PieOfPie";
+		ChartType["pieExploded"]="PieExploded";
+		ChartType["_3DPieExploded"]="3DPieExploded";
+		ChartType["barOfPie"]="BarOfPie";
+		ChartType["xyscatterSmooth"]="XYScatterSmooth";
+		ChartType["xyscatterSmoothNoMarkers"]="XYScatterSmoothNoMarkers";
+		ChartType["xyscatterLines"]="XYScatterLines";
+		ChartType["xyscatterLinesNoMarkers"]="XYScatterLinesNoMarkers";
+		ChartType["areaStacked"]="AreaStacked";
+		ChartType["areaStacked100"]="AreaStacked100";
+		ChartType["_3DAreaStacked"]="3DAreaStacked";
+		ChartType["_3DAreaStacked100"]="3DAreaStacked100";
+		ChartType["doughnutExploded"]="DoughnutExploded";
+		ChartType["radarMarkers"]="RadarMarkers";
+		ChartType["radarFilled"]="RadarFilled";
+		ChartType["surface"]="Surface";
+		ChartType["surfaceWireframe"]="SurfaceWireframe";
+		ChartType["surfaceTopView"]="SurfaceTopView";
+		ChartType["surfaceTopViewWireframe"]="SurfaceTopViewWireframe";
+		ChartType["bubble"]="Bubble";
+		ChartType["bubble3DEffect"]="Bubble3DEffect";
+		ChartType["stockHLC"]="StockHLC";
+		ChartType["stockOHLC"]="StockOHLC";
+		ChartType["stockVHLC"]="StockVHLC";
+		ChartType["stockVOHLC"]="StockVOHLC";
+		ChartType["cylinderColClustered"]="CylinderColClustered";
+		ChartType["cylinderColStacked"]="CylinderColStacked";
+		ChartType["cylinderColStacked100"]="CylinderColStacked100";
+		ChartType["cylinderBarClustered"]="CylinderBarClustered";
+		ChartType["cylinderBarStacked"]="CylinderBarStacked";
+		ChartType["cylinderBarStacked100"]="CylinderBarStacked100";
+		ChartType["cylinderCol"]="CylinderCol";
+		ChartType["coneColClustered"]="ConeColClustered";
+		ChartType["coneColStacked"]="ConeColStacked";
+		ChartType["coneColStacked100"]="ConeColStacked100";
+		ChartType["coneBarClustered"]="ConeBarClustered";
+		ChartType["coneBarStacked"]="ConeBarStacked";
+		ChartType["coneBarStacked100"]="ConeBarStacked100";
+		ChartType["coneCol"]="ConeCol";
+		ChartType["pyramidColClustered"]="PyramidColClustered";
+		ChartType["pyramidColStacked"]="PyramidColStacked";
+		ChartType["pyramidColStacked100"]="PyramidColStacked100";
+		ChartType["pyramidBarClustered"]="PyramidBarClustered";
+		ChartType["pyramidBarStacked"]="PyramidBarStacked";
+		ChartType["pyramidBarStacked100"]="PyramidBarStacked100";
+		ChartType["pyramidCol"]="PyramidCol";
+		ChartType["_3DColumn"]="3DColumn";
+		ChartType["line"]="Line";
+		ChartType["_3DLine"]="3DLine";
+		ChartType["_3DPie"]="3DPie";
+		ChartType["pie"]="Pie";
+		ChartType["xyscatter"]="XYScatter";
+		ChartType["_3DArea"]="3DArea";
+		ChartType["area"]="Area";
+		ChartType["doughnut"]="Doughnut";
+		ChartType["radar"]="Radar";
+	})(ChartType=ExcelOp.ChartType || (ExcelOp.ChartType={}));
+	var ChartUnderlineStyle;
+	(function (ChartUnderlineStyle) {
+		ChartUnderlineStyle["none"]="None";
+		ChartUnderlineStyle["single"]="Single";
+	})(ChartUnderlineStyle=ExcelOp.ChartUnderlineStyle || (ExcelOp.ChartUnderlineStyle={}));
+	var ChartDisplayBlanksAs;
+	(function (ChartDisplayBlanksAs) {
+		ChartDisplayBlanksAs["notPlotted"]="NotPlotted";
+		ChartDisplayBlanksAs["zero"]="Zero";
+		ChartDisplayBlanksAs["interplotted"]="Interplotted";
+	})(ChartDisplayBlanksAs=ExcelOp.ChartDisplayBlanksAs || (ExcelOp.ChartDisplayBlanksAs={}));
+	var ChartPlotBy;
+	(function (ChartPlotBy) {
+		ChartPlotBy["rows"]="Rows";
+		ChartPlotBy["columns"]="Columns";
+	})(ChartPlotBy=ExcelOp.ChartPlotBy || (ExcelOp.ChartPlotBy={}));
+	var ChartSplitStype;
+	(function (ChartSplitStype) {
+		ChartSplitStype["splitByPosition"]="SplitByPosition";
+		ChartSplitStype["splitByValue"]="SplitByValue";
+		ChartSplitStype["splitByPercentValue"]="SplitByPercentValue";
+		ChartSplitStype["splitByCustomSplit"]="SplitByCustomSplit";
+	})(ChartSplitStype=ExcelOp.ChartSplitStype || (ExcelOp.ChartSplitStype={}));
+	var ChartSeriesType;
+	(function (ChartSeriesType) {
+		ChartSeriesType["column"]="Column";
+		ChartSeriesType["bar"]="Bar";
+		ChartSeriesType["bar3D"]="Bar3D";
+		ChartSeriesType["line"]="Line";
+		ChartSeriesType["pie"]="Pie";
+		ChartSeriesType["xyscatter"]="XYScatter";
+		ChartSeriesType["area"]="Area";
+		ChartSeriesType["area3D"]="Area3D";
+		ChartSeriesType["doughnut"]="Doughnut";
+		ChartSeriesType["radar"]="Radar";
+		ChartSeriesType["surface3D"]="Surface3D";
+		ChartSeriesType["column3D"]="Column3D";
+	})(ChartSeriesType=ExcelOp.ChartSeriesType || (ExcelOp.ChartSeriesType={}));
+	var VisualCategory;
+	(function (VisualCategory) {
+		VisualCategory["column"]="Column";
+		VisualCategory["bar"]="Bar";
+		VisualCategory["line"]="Line";
+		VisualCategory["area"]="Area";
+		VisualCategory["pie"]="Pie";
+		VisualCategory["donut"]="Donut";
+		VisualCategory["scatter"]="Scatter";
+		VisualCategory["bubble"]="Bubble";
+		VisualCategory["statistical"]="Statistical";
+		VisualCategory["stock"]="Stock";
+		VisualCategory["combo"]="Combo";
+		VisualCategory["hierarchy"]="Hierarchy";
+		VisualCategory["surface"]="Surface";
+		VisualCategory["map"]="Map";
+		VisualCategory["funnel"]="Funnel";
+		VisualCategory["radar"]="Radar";
+		VisualCategory["waterfall"]="Waterfall";
+		VisualCategory["threeD"]="ThreeD";
+		VisualCategory["other"]="Other";
+	})(VisualCategory=ExcelOp.VisualCategory || (ExcelOp.VisualCategory={}));
+	var VisualPropertyType;
+	(function (VisualPropertyType) {
+		VisualPropertyType["object"]="Object";
+		VisualPropertyType["collection"]="Collection";
+		VisualPropertyType["string"]="String";
+		VisualPropertyType["double"]="Double";
+		VisualPropertyType["int"]="Int";
+		VisualPropertyType["bool"]="Bool";
+		VisualPropertyType["enum"]="Enum";
+		VisualPropertyType["color"]="Color";
+	})(VisualPropertyType=ExcelOp.VisualPropertyType || (ExcelOp.VisualPropertyType={}));
+	var ConditionalDataBarAxisFormat;
+	(function (ConditionalDataBarAxisFormat) {
+		ConditionalDataBarAxisFormat["automatic"]="Automatic";
+		ConditionalDataBarAxisFormat["none"]="None";
+		ConditionalDataBarAxisFormat["cellMidPoint"]="CellMidPoint";
+	})(ConditionalDataBarAxisFormat=ExcelOp.ConditionalDataBarAxisFormat || (ExcelOp.ConditionalDataBarAxisFormat={}));
+	var ConditionalDataBarDirection;
+	(function (ConditionalDataBarDirection) {
+		ConditionalDataBarDirection["context"]="Context";
+		ConditionalDataBarDirection["leftToRight"]="LeftToRight";
+		ConditionalDataBarDirection["rightToLeft"]="RightToLeft";
+	})(ConditionalDataBarDirection=ExcelOp.ConditionalDataBarDirection || (ExcelOp.ConditionalDataBarDirection={}));
+	var ConditionalFormatDirection;
+	(function (ConditionalFormatDirection) {
+		ConditionalFormatDirection["top"]="Top";
+		ConditionalFormatDirection["bottom"]="Bottom";
+	})(ConditionalFormatDirection=ExcelOp.ConditionalFormatDirection || (ExcelOp.ConditionalFormatDirection={}));
+	var ConditionalFormatType;
+	(function (ConditionalFormatType) {
+		ConditionalFormatType["custom"]="Custom";
+		ConditionalFormatType["dataBar"]="DataBar";
+		ConditionalFormatType["colorScale"]="ColorScale";
+		ConditionalFormatType["iconSet"]="IconSet";
+		ConditionalFormatType["topBottom"]="TopBottom";
+		ConditionalFormatType["presetCriteria"]="PresetCriteria";
+		ConditionalFormatType["containsText"]="ContainsText";
+		ConditionalFormatType["cellValue"]="CellValue";
+	})(ConditionalFormatType=ExcelOp.ConditionalFormatType || (ExcelOp.ConditionalFormatType={}));
+	var ConditionalFormatRuleType;
+	(function (ConditionalFormatRuleType) {
+		ConditionalFormatRuleType["invalid"]="Invalid";
+		ConditionalFormatRuleType["automatic"]="Automatic";
+		ConditionalFormatRuleType["lowestValue"]="LowestValue";
+		ConditionalFormatRuleType["highestValue"]="HighestValue";
+		ConditionalFormatRuleType["number"]="Number";
+		ConditionalFormatRuleType["percent"]="Percent";
+		ConditionalFormatRuleType["formula"]="Formula";
+		ConditionalFormatRuleType["percentile"]="Percentile";
+	})(ConditionalFormatRuleType=ExcelOp.ConditionalFormatRuleType || (ExcelOp.ConditionalFormatRuleType={}));
+	var ConditionalFormatIconRuleType;
+	(function (ConditionalFormatIconRuleType) {
+		ConditionalFormatIconRuleType["invalid"]="Invalid";
+		ConditionalFormatIconRuleType["number"]="Number";
+		ConditionalFormatIconRuleType["percent"]="Percent";
+		ConditionalFormatIconRuleType["formula"]="Formula";
+		ConditionalFormatIconRuleType["percentile"]="Percentile";
+	})(ConditionalFormatIconRuleType=ExcelOp.ConditionalFormatIconRuleType || (ExcelOp.ConditionalFormatIconRuleType={}));
+	var ConditionalFormatColorCriterionType;
+	(function (ConditionalFormatColorCriterionType) {
+		ConditionalFormatColorCriterionType["invalid"]="Invalid";
+		ConditionalFormatColorCriterionType["lowestValue"]="LowestValue";
+		ConditionalFormatColorCriterionType["highestValue"]="HighestValue";
+		ConditionalFormatColorCriterionType["number"]="Number";
+		ConditionalFormatColorCriterionType["percent"]="Percent";
+		ConditionalFormatColorCriterionType["formula"]="Formula";
+		ConditionalFormatColorCriterionType["percentile"]="Percentile";
+	})(ConditionalFormatColorCriterionType=ExcelOp.ConditionalFormatColorCriterionType || (ExcelOp.ConditionalFormatColorCriterionType={}));
+	var ConditionalTopBottomCriterionType;
+	(function (ConditionalTopBottomCriterionType) {
+		ConditionalTopBottomCriterionType["invalid"]="Invalid";
+		ConditionalTopBottomCriterionType["topItems"]="TopItems";
+		ConditionalTopBottomCriterionType["topPercent"]="TopPercent";
+		ConditionalTopBottomCriterionType["bottomItems"]="BottomItems";
+		ConditionalTopBottomCriterionType["bottomPercent"]="BottomPercent";
+	})(ConditionalTopBottomCriterionType=ExcelOp.ConditionalTopBottomCriterionType || (ExcelOp.ConditionalTopBottomCriterionType={}));
+	var ConditionalFormatPresetCriterion;
+	(function (ConditionalFormatPresetCriterion) {
+		ConditionalFormatPresetCriterion["invalid"]="Invalid";
+		ConditionalFormatPresetCriterion["blanks"]="Blanks";
+		ConditionalFormatPresetCriterion["nonBlanks"]="NonBlanks";
+		ConditionalFormatPresetCriterion["errors"]="Errors";
+		ConditionalFormatPresetCriterion["nonErrors"]="NonErrors";
+		ConditionalFormatPresetCriterion["yesterday"]="Yesterday";
+		ConditionalFormatPresetCriterion["today"]="Today";
+		ConditionalFormatPresetCriterion["tomorrow"]="Tomorrow";
+		ConditionalFormatPresetCriterion["lastSevenDays"]="LastSevenDays";
+		ConditionalFormatPresetCriterion["lastWeek"]="LastWeek";
+		ConditionalFormatPresetCriterion["thisWeek"]="ThisWeek";
+		ConditionalFormatPresetCriterion["nextWeek"]="NextWeek";
+		ConditionalFormatPresetCriterion["lastMonth"]="LastMonth";
+		ConditionalFormatPresetCriterion["thisMonth"]="ThisMonth";
+		ConditionalFormatPresetCriterion["nextMonth"]="NextMonth";
+		ConditionalFormatPresetCriterion["aboveAverage"]="AboveAverage";
+		ConditionalFormatPresetCriterion["belowAverage"]="BelowAverage";
+		ConditionalFormatPresetCriterion["equalOrAboveAverage"]="EqualOrAboveAverage";
+		ConditionalFormatPresetCriterion["equalOrBelowAverage"]="EqualOrBelowAverage";
+		ConditionalFormatPresetCriterion["oneStdDevAboveAverage"]="OneStdDevAboveAverage";
+		ConditionalFormatPresetCriterion["oneStdDevBelowAverage"]="OneStdDevBelowAverage";
+		ConditionalFormatPresetCriterion["twoStdDevAboveAverage"]="TwoStdDevAboveAverage";
+		ConditionalFormatPresetCriterion["twoStdDevBelowAverage"]="TwoStdDevBelowAverage";
+		ConditionalFormatPresetCriterion["threeStdDevAboveAverage"]="ThreeStdDevAboveAverage";
+		ConditionalFormatPresetCriterion["threeStdDevBelowAverage"]="ThreeStdDevBelowAverage";
+		ConditionalFormatPresetCriterion["uniqueValues"]="UniqueValues";
+		ConditionalFormatPresetCriterion["duplicateValues"]="DuplicateValues";
+	})(ConditionalFormatPresetCriterion=ExcelOp.ConditionalFormatPresetCriterion || (ExcelOp.ConditionalFormatPresetCriterion={}));
+	var ConditionalTextOperator;
+	(function (ConditionalTextOperator) {
+		ConditionalTextOperator["invalid"]="Invalid";
+		ConditionalTextOperator["contains"]="Contains";
+		ConditionalTextOperator["notContains"]="NotContains";
+		ConditionalTextOperator["beginsWith"]="BeginsWith";
+		ConditionalTextOperator["endsWith"]="EndsWith";
+	})(ConditionalTextOperator=ExcelOp.ConditionalTextOperator || (ExcelOp.ConditionalTextOperator={}));
+	var ConditionalCellValueOperator;
+	(function (ConditionalCellValueOperator) {
+		ConditionalCellValueOperator["invalid"]="Invalid";
+		ConditionalCellValueOperator["between"]="Between";
+		ConditionalCellValueOperator["notBetween"]="NotBetween";
+		ConditionalCellValueOperator["equalTo"]="EqualTo";
+		ConditionalCellValueOperator["notEqualTo"]="NotEqualTo";
+		ConditionalCellValueOperator["greaterThan"]="GreaterThan";
+		ConditionalCellValueOperator["lessThan"]="LessThan";
+		ConditionalCellValueOperator["greaterThanOrEqual"]="GreaterThanOrEqual";
+		ConditionalCellValueOperator["lessThanOrEqual"]="LessThanOrEqual";
+	})(ConditionalCellValueOperator=ExcelOp.ConditionalCellValueOperator || (ExcelOp.ConditionalCellValueOperator={}));
+	var ConditionalIconCriterionOperator;
+	(function (ConditionalIconCriterionOperator) {
+		ConditionalIconCriterionOperator["invalid"]="Invalid";
+		ConditionalIconCriterionOperator["greaterThan"]="GreaterThan";
+		ConditionalIconCriterionOperator["greaterThanOrEqual"]="GreaterThanOrEqual";
+	})(ConditionalIconCriterionOperator=ExcelOp.ConditionalIconCriterionOperator || (ExcelOp.ConditionalIconCriterionOperator={}));
+	var ConditionalRangeBorderIndex;
+	(function (ConditionalRangeBorderIndex) {
+		ConditionalRangeBorderIndex["edgeTop"]="EdgeTop";
+		ConditionalRangeBorderIndex["edgeBottom"]="EdgeBottom";
+		ConditionalRangeBorderIndex["edgeLeft"]="EdgeLeft";
+		ConditionalRangeBorderIndex["edgeRight"]="EdgeRight";
+	})(ConditionalRangeBorderIndex=ExcelOp.ConditionalRangeBorderIndex || (ExcelOp.ConditionalRangeBorderIndex={}));
+	var ConditionalRangeBorderLineStyle;
+	(function (ConditionalRangeBorderLineStyle) {
+		ConditionalRangeBorderLineStyle["none"]="None";
+		ConditionalRangeBorderLineStyle["continuous"]="Continuous";
+		ConditionalRangeBorderLineStyle["dash"]="Dash";
+		ConditionalRangeBorderLineStyle["dashDot"]="DashDot";
+		ConditionalRangeBorderLineStyle["dashDotDot"]="DashDotDot";
+		ConditionalRangeBorderLineStyle["dot"]="Dot";
+	})(ConditionalRangeBorderLineStyle=ExcelOp.ConditionalRangeBorderLineStyle || (ExcelOp.ConditionalRangeBorderLineStyle={}));
+	var ConditionalRangeFontUnderlineStyle;
+	(function (ConditionalRangeFontUnderlineStyle) {
+		ConditionalRangeFontUnderlineStyle["none"]="None";
+		ConditionalRangeFontUnderlineStyle["single"]="Single";
+		ConditionalRangeFontUnderlineStyle["double"]="Double";
+	})(ConditionalRangeFontUnderlineStyle=ExcelOp.ConditionalRangeFontUnderlineStyle || (ExcelOp.ConditionalRangeFontUnderlineStyle={}));
+	var CustomFunctionType;
+	(function (CustomFunctionType) {
+		CustomFunctionType["invalid"]="Invalid";
+		CustomFunctionType["script"]="Script";
+		CustomFunctionType["webService"]="WebService";
+	})(CustomFunctionType=ExcelOp.CustomFunctionType || (ExcelOp.CustomFunctionType={}));
+	var CustomFunctionMetadataFormat;
+	(function (CustomFunctionMetadataFormat) {
+		CustomFunctionMetadataFormat["invalid"]="Invalid";
+		CustomFunctionMetadataFormat["openApi"]="OpenApi";
+	})(CustomFunctionMetadataFormat=ExcelOp.CustomFunctionMetadataFormat || (ExcelOp.CustomFunctionMetadataFormat={}));
+	var CustomFunctionValueType;
+	(function (CustomFunctionValueType) {
+		CustomFunctionValueType["invalid"]="Invalid";
+		CustomFunctionValueType["boolean"]="Boolean";
+		CustomFunctionValueType["number"]="Number";
+		CustomFunctionValueType["string"]="String";
+		CustomFunctionValueType["isodate"]="ISODate";
+	})(CustomFunctionValueType=ExcelOp.CustomFunctionValueType || (ExcelOp.CustomFunctionValueType={}));
+	var CustomFunctionDimensionality;
+	(function (CustomFunctionDimensionality) {
+		CustomFunctionDimensionality["invalid"]="Invalid";
+		CustomFunctionDimensionality["scalar"]="Scalar";
+		CustomFunctionDimensionality["matrix"]="Matrix";
+	})(CustomFunctionDimensionality=ExcelOp.CustomFunctionDimensionality || (ExcelOp.CustomFunctionDimensionality={}));
+	var DataValidationType;
+	(function (DataValidationType) {
+		DataValidationType["none"]="None";
+		DataValidationType["wholeNumber"]="WholeNumber";
+		DataValidationType["decimal"]="Decimal";
+		DataValidationType["list"]="List";
+		DataValidationType["date"]="Date";
+		DataValidationType["time"]="Time";
+		DataValidationType["textLength"]="TextLength";
+		DataValidationType["custom"]="Custom";
+		DataValidationType["inconsistent"]="Inconsistent";
+		DataValidationType["mixedCriteria"]="MixedCriteria";
+	})(DataValidationType=ExcelOp.DataValidationType || (ExcelOp.DataValidationType={}));
+	var DataValidationOperator;
+	(function (DataValidationOperator) {
+		DataValidationOperator["between"]="Between";
+		DataValidationOperator["notBetween"]="NotBetween";
+		DataValidationOperator["equalTo"]="EqualTo";
+		DataValidationOperator["notEqualTo"]="NotEqualTo";
+		DataValidationOperator["greaterThan"]="GreaterThan";
+		DataValidationOperator["lessThan"]="LessThan";
+		DataValidationOperator["greaterThanOrEqualTo"]="GreaterThanOrEqualTo";
+		DataValidationOperator["lessThanOrEqualTo"]="LessThanOrEqualTo";
+	})(DataValidationOperator=ExcelOp.DataValidationOperator || (ExcelOp.DataValidationOperator={}));
+	var DataValidationAlertStyle;
+	(function (DataValidationAlertStyle) {
+		DataValidationAlertStyle["stop"]="Stop";
+		DataValidationAlertStyle["warning"]="Warning";
+		DataValidationAlertStyle["information"]="Information";
+	})(DataValidationAlertStyle=ExcelOp.DataValidationAlertStyle || (ExcelOp.DataValidationAlertStyle={}));
+	var DeleteShiftDirection;
+	(function (DeleteShiftDirection) {
+		DeleteShiftDirection["up"]="Up";
+		DeleteShiftDirection["left"]="Left";
+	})(DeleteShiftDirection=ExcelOp.DeleteShiftDirection || (ExcelOp.DeleteShiftDirection={}));
+	var DynamicFilterCriteria;
+	(function (DynamicFilterCriteria) {
+		DynamicFilterCriteria["unknown"]="Unknown";
+		DynamicFilterCriteria["aboveAverage"]="AboveAverage";
+		DynamicFilterCriteria["allDatesInPeriodApril"]="AllDatesInPeriodApril";
+		DynamicFilterCriteria["allDatesInPeriodAugust"]="AllDatesInPeriodAugust";
+		DynamicFilterCriteria["allDatesInPeriodDecember"]="AllDatesInPeriodDecember";
+		DynamicFilterCriteria["allDatesInPeriodFebruray"]="AllDatesInPeriodFebruray";
+		DynamicFilterCriteria["allDatesInPeriodJanuary"]="AllDatesInPeriodJanuary";
+		DynamicFilterCriteria["allDatesInPeriodJuly"]="AllDatesInPeriodJuly";
+		DynamicFilterCriteria["allDatesInPeriodJune"]="AllDatesInPeriodJune";
+		DynamicFilterCriteria["allDatesInPeriodMarch"]="AllDatesInPeriodMarch";
+		DynamicFilterCriteria["allDatesInPeriodMay"]="AllDatesInPeriodMay";
+		DynamicFilterCriteria["allDatesInPeriodNovember"]="AllDatesInPeriodNovember";
+		DynamicFilterCriteria["allDatesInPeriodOctober"]="AllDatesInPeriodOctober";
+		DynamicFilterCriteria["allDatesInPeriodQuarter1"]="AllDatesInPeriodQuarter1";
+		DynamicFilterCriteria["allDatesInPeriodQuarter2"]="AllDatesInPeriodQuarter2";
+		DynamicFilterCriteria["allDatesInPeriodQuarter3"]="AllDatesInPeriodQuarter3";
+		DynamicFilterCriteria["allDatesInPeriodQuarter4"]="AllDatesInPeriodQuarter4";
+		DynamicFilterCriteria["allDatesInPeriodSeptember"]="AllDatesInPeriodSeptember";
+		DynamicFilterCriteria["belowAverage"]="BelowAverage";
+		DynamicFilterCriteria["lastMonth"]="LastMonth";
+		DynamicFilterCriteria["lastQuarter"]="LastQuarter";
+		DynamicFilterCriteria["lastWeek"]="LastWeek";
+		DynamicFilterCriteria["lastYear"]="LastYear";
+		DynamicFilterCriteria["nextMonth"]="NextMonth";
+		DynamicFilterCriteria["nextQuarter"]="NextQuarter";
+		DynamicFilterCriteria["nextWeek"]="NextWeek";
+		DynamicFilterCriteria["nextYear"]="NextYear";
+		DynamicFilterCriteria["thisMonth"]="ThisMonth";
+		DynamicFilterCriteria["thisQuarter"]="ThisQuarter";
+		DynamicFilterCriteria["thisWeek"]="ThisWeek";
+		DynamicFilterCriteria["thisYear"]="ThisYear";
+		DynamicFilterCriteria["today"]="Today";
+		DynamicFilterCriteria["tomorrow"]="Tomorrow";
+		DynamicFilterCriteria["yearToDate"]="YearToDate";
+		DynamicFilterCriteria["yesterday"]="Yesterday";
+	})(DynamicFilterCriteria=ExcelOp.DynamicFilterCriteria || (ExcelOp.DynamicFilterCriteria={}));
+	var FilterDatetimeSpecificity;
+	(function (FilterDatetimeSpecificity) {
+		FilterDatetimeSpecificity["year"]="Year";
+		FilterDatetimeSpecificity["month"]="Month";
+		FilterDatetimeSpecificity["day"]="Day";
+		FilterDatetimeSpecificity["hour"]="Hour";
+		FilterDatetimeSpecificity["minute"]="Minute";
+		FilterDatetimeSpecificity["second"]="Second";
+	})(FilterDatetimeSpecificity=ExcelOp.FilterDatetimeSpecificity || (ExcelOp.FilterDatetimeSpecificity={}));
+	var FilterOn;
+	(function (FilterOn) {
+		FilterOn["bottomItems"]="BottomItems";
+		FilterOn["bottomPercent"]="BottomPercent";
+		FilterOn["cellColor"]="CellColor";
+		FilterOn["dynamic"]="Dynamic";
+		FilterOn["fontColor"]="FontColor";
+		FilterOn["values"]="Values";
+		FilterOn["topItems"]="TopItems";
+		FilterOn["topPercent"]="TopPercent";
+		FilterOn["icon"]="Icon";
+		FilterOn["custom"]="Custom";
+	})(FilterOn=ExcelOp.FilterOn || (ExcelOp.FilterOn={}));
+	var FilterOperator;
+	(function (FilterOperator) {
+		FilterOperator["and"]="And";
+		FilterOperator["or"]="Or";
+	})(FilterOperator=ExcelOp.FilterOperator || (ExcelOp.FilterOperator={}));
+	var HorizontalAlignment;
+	(function (HorizontalAlignment) {
+		HorizontalAlignment["general"]="General";
+		HorizontalAlignment["left"]="Left";
+		HorizontalAlignment["center"]="Center";
+		HorizontalAlignment["right"]="Right";
+		HorizontalAlignment["fill"]="Fill";
+		HorizontalAlignment["justify"]="Justify";
+		HorizontalAlignment["centerAcrossSelection"]="CenterAcrossSelection";
+		HorizontalAlignment["distributed"]="Distributed";
+	})(HorizontalAlignment=ExcelOp.HorizontalAlignment || (ExcelOp.HorizontalAlignment={}));
+	var IconSet;
+	(function (IconSet) {
+		IconSet["invalid"]="Invalid";
+		IconSet["threeArrows"]="ThreeArrows";
+		IconSet["threeArrowsGray"]="ThreeArrowsGray";
+		IconSet["threeFlags"]="ThreeFlags";
+		IconSet["threeTrafficLights1"]="ThreeTrafficLights1";
+		IconSet["threeTrafficLights2"]="ThreeTrafficLights2";
+		IconSet["threeSigns"]="ThreeSigns";
+		IconSet["threeSymbols"]="ThreeSymbols";
+		IconSet["threeSymbols2"]="ThreeSymbols2";
+		IconSet["fourArrows"]="FourArrows";
+		IconSet["fourArrowsGray"]="FourArrowsGray";
+		IconSet["fourRedToBlack"]="FourRedToBlack";
+		IconSet["fourRating"]="FourRating";
+		IconSet["fourTrafficLights"]="FourTrafficLights";
+		IconSet["fiveArrows"]="FiveArrows";
+		IconSet["fiveArrowsGray"]="FiveArrowsGray";
+		IconSet["fiveRating"]="FiveRating";
+		IconSet["fiveQuarters"]="FiveQuarters";
+		IconSet["threeStars"]="ThreeStars";
+		IconSet["threeTriangles"]="ThreeTriangles";
+		IconSet["fiveBoxes"]="FiveBoxes";
+	})(IconSet=ExcelOp.IconSet || (ExcelOp.IconSet={}));
+	var ImageFittingMode;
+	(function (ImageFittingMode) {
+		ImageFittingMode["fit"]="Fit";
+		ImageFittingMode["fitAndCenter"]="FitAndCenter";
+		ImageFittingMode["fill"]="Fill";
+	})(ImageFittingMode=ExcelOp.ImageFittingMode || (ExcelOp.ImageFittingMode={}));
+	var InsertShiftDirection;
+	(function (InsertShiftDirection) {
+		InsertShiftDirection["down"]="Down";
+		InsertShiftDirection["right"]="Right";
+	})(InsertShiftDirection=ExcelOp.InsertShiftDirection || (ExcelOp.InsertShiftDirection={}));
+	var NamedItemScope;
+	(function (NamedItemScope) {
+		NamedItemScope["worksheet"]="Worksheet";
+		NamedItemScope["workbook"]="Workbook";
+	})(NamedItemScope=ExcelOp.NamedItemScope || (ExcelOp.NamedItemScope={}));
+	var NamedItemType;
+	(function (NamedItemType) {
+		NamedItemType["string"]="String";
+		NamedItemType["integer"]="Integer";
+		NamedItemType["double"]="Double";
+		NamedItemType["boolean"]="Boolean";
+		NamedItemType["range"]="Range";
+		NamedItemType["error"]="Error";
+		NamedItemType["array"]="Array";
+	})(NamedItemType=ExcelOp.NamedItemType || (ExcelOp.NamedItemType={}));
+	var RangeUnderlineStyle;
+	(function (RangeUnderlineStyle) {
+		RangeUnderlineStyle["none"]="None";
+		RangeUnderlineStyle["single"]="Single";
+		RangeUnderlineStyle["double"]="Double";
+		RangeUnderlineStyle["singleAccountant"]="SingleAccountant";
+		RangeUnderlineStyle["doubleAccountant"]="DoubleAccountant";
+	})(RangeUnderlineStyle=ExcelOp.RangeUnderlineStyle || (ExcelOp.RangeUnderlineStyle={}));
+	var SheetVisibility;
+	(function (SheetVisibility) {
+		SheetVisibility["visible"]="Visible";
+		SheetVisibility["hidden"]="Hidden";
+		SheetVisibility["veryHidden"]="VeryHidden";
+	})(SheetVisibility=ExcelOp.SheetVisibility || (ExcelOp.SheetVisibility={}));
+	var RangeValueType;
+	(function (RangeValueType) {
+		RangeValueType["unknown"]="Unknown";
+		RangeValueType["empty"]="Empty";
+		RangeValueType["string"]="String";
+		RangeValueType["integer"]="Integer";
+		RangeValueType["double"]="Double";
+		RangeValueType["boolean"]="Boolean";
+		RangeValueType["error"]="Error";
+		RangeValueType["richValue"]="RichValue";
+	})(RangeValueType=ExcelOp.RangeValueType || (ExcelOp.RangeValueType={}));
+	var SearchDirection;
+	(function (SearchDirection) {
+		SearchDirection["forward"]="Forward";
+		SearchDirection["backwards"]="Backwards";
+	})(SearchDirection=ExcelOp.SearchDirection || (ExcelOp.SearchDirection={}));
+	var SortOrientation;
+	(function (SortOrientation) {
+		SortOrientation["rows"]="Rows";
+		SortOrientation["columns"]="Columns";
+	})(SortOrientation=ExcelOp.SortOrientation || (ExcelOp.SortOrientation={}));
+	var SortOn;
+	(function (SortOn) {
+		SortOn["value"]="Value";
+		SortOn["cellColor"]="CellColor";
+		SortOn["fontColor"]="FontColor";
+		SortOn["icon"]="Icon";
+	})(SortOn=ExcelOp.SortOn || (ExcelOp.SortOn={}));
+	var SortDataOption;
+	(function (SortDataOption) {
+		SortDataOption["normal"]="Normal";
+		SortDataOption["textAsNumber"]="TextAsNumber";
+	})(SortDataOption=ExcelOp.SortDataOption || (ExcelOp.SortDataOption={}));
+	var SortMethod;
+	(function (SortMethod) {
+		SortMethod["pinYin"]="PinYin";
+		SortMethod["strokeCount"]="StrokeCount";
+	})(SortMethod=ExcelOp.SortMethod || (ExcelOp.SortMethod={}));
+	var VerticalAlignment;
+	(function (VerticalAlignment) {
+		VerticalAlignment["top"]="Top";
+		VerticalAlignment["center"]="Center";
+		VerticalAlignment["bottom"]="Bottom";
+		VerticalAlignment["justify"]="Justify";
+		VerticalAlignment["distributed"]="Distributed";
+	})(VerticalAlignment=ExcelOp.VerticalAlignment || (ExcelOp.VerticalAlignment={}));
+	var DocumentPropertyType;
+	(function (DocumentPropertyType) {
+		DocumentPropertyType["number"]="Number";
+		DocumentPropertyType["boolean"]="Boolean";
+		DocumentPropertyType["date"]="Date";
+		DocumentPropertyType["string"]="String";
+		DocumentPropertyType["float"]="Float";
+	})(DocumentPropertyType=ExcelOp.DocumentPropertyType || (ExcelOp.DocumentPropertyType={}));
+	var EventSource;
+	(function (EventSource) {
+		EventSource["local"]="Local";
+		EventSource["remote"]="Remote";
+	})(EventSource=ExcelOp.EventSource || (ExcelOp.EventSource={}));
+	var DataChangeType;
+	(function (DataChangeType) {
+		DataChangeType["others"]="Others";
+		DataChangeType["rangeEdited"]="RangeEdited";
+		DataChangeType["rowInserted"]="RowInserted";
+		DataChangeType["rowDeleted"]="RowDeleted";
+		DataChangeType["columnInserted"]="ColumnInserted";
+		DataChangeType["columnDeleted"]="ColumnDeleted";
+		DataChangeType["cellInserted"]="CellInserted";
+		DataChangeType["cellDeleted"]="CellDeleted";
+	})(DataChangeType=ExcelOp.DataChangeType || (ExcelOp.DataChangeType={}));
+	var EventType;
+	(function (EventType) {
+		EventType["worksheetChanged"]="WorksheetChanged";
+		EventType["worksheetSelectionChanged"]="WorksheetSelectionChanged";
+		EventType["worksheetAdded"]="WorksheetAdded";
+		EventType["worksheetActivated"]="WorksheetActivated";
+		EventType["worksheetDeactivated"]="WorksheetDeactivated";
+		EventType["tableChanged"]="TableChanged";
+		EventType["tableSelectionChanged"]="TableSelectionChanged";
+		EventType["worksheetDeleted"]="WorksheetDeleted";
+		EventType["chartAdded"]="ChartAdded";
+		EventType["chartActivated"]="ChartActivated";
+		EventType["chartDeactivated"]="ChartDeactivated";
+		EventType["chartDeleted"]="ChartDeleted";
+		EventType["worksheetCalculated"]="WorksheetCalculated";
+	})(EventType=ExcelOp.EventType || (ExcelOp.EventType={}));
+	var DocumentPropertyItem;
+	(function (DocumentPropertyItem) {
+		DocumentPropertyItem["title"]="Title";
+		DocumentPropertyItem["subject"]="Subject";
+		DocumentPropertyItem["author"]="Author";
+		DocumentPropertyItem["keywords"]="Keywords";
+		DocumentPropertyItem["comments"]="Comments";
+		DocumentPropertyItem["template"]="Template";
+		DocumentPropertyItem["lastAuth"]="LastAuth";
+		DocumentPropertyItem["revision"]="Revision";
+		DocumentPropertyItem["appName"]="AppName";
+		DocumentPropertyItem["lastPrint"]="LastPrint";
+		DocumentPropertyItem["creation"]="Creation";
+		DocumentPropertyItem["lastSave"]="LastSave";
+		DocumentPropertyItem["category"]="Category";
+		DocumentPropertyItem["format"]="Format";
+		DocumentPropertyItem["manager"]="Manager";
+		DocumentPropertyItem["company"]="Company";
+	})(DocumentPropertyItem=ExcelOp.DocumentPropertyItem || (ExcelOp.DocumentPropertyItem={}));
+	var TrendlineType;
+	(function (TrendlineType) {
+		TrendlineType["linear"]="Linear";
+		TrendlineType["exponential"]="Exponential";
+		TrendlineType["logarithmic"]="Logarithmic";
+		TrendlineType["movingAverage"]="MovingAverage";
+		TrendlineType["polynomial"]="Polynomial";
+		TrendlineType["power"]="Power";
+	})(TrendlineType=ExcelOp.TrendlineType || (ExcelOp.TrendlineType={}));
+	var SubtotalLocationType;
+	(function (SubtotalLocationType) {
+		SubtotalLocationType["atTop"]="AtTop";
+		SubtotalLocationType["atBottom"]="AtBottom";
+	})(SubtotalLocationType=ExcelOp.SubtotalLocationType || (ExcelOp.SubtotalLocationType={}));
+	var LayoutRowType;
+	(function (LayoutRowType) {
+		LayoutRowType["compactRow"]="CompactRow";
+		LayoutRowType["tabularRow"]="TabularRow";
+		LayoutRowType["outlineRow"]="OutlineRow";
+	})(LayoutRowType=ExcelOp.LayoutRowType || (ExcelOp.LayoutRowType={}));
+	var ProtectionSelectionMode;
+	(function (ProtectionSelectionMode) {
+		ProtectionSelectionMode["normal"]="Normal";
+		ProtectionSelectionMode["unlocked"]="Unlocked";
+		ProtectionSelectionMode["none"]="None";
+	})(ProtectionSelectionMode=ExcelOp.ProtectionSelectionMode || (ExcelOp.ProtectionSelectionMode={}));
+	var PageOrientation;
+	(function (PageOrientation) {
+		PageOrientation["portrait"]="Portrait";
+		PageOrientation["landscape"]="Landscape";
+	})(PageOrientation=ExcelOp.PageOrientation || (ExcelOp.PageOrientation={}));
+	var PaperType;
+	(function (PaperType) {
+		PaperType["letter"]="Letter";
+		PaperType["letterSmall"]="LetterSmall";
+		PaperType["tabloid"]="Tabloid";
+		PaperType["ledger"]="Ledger";
+		PaperType["legal"]="Legal";
+		PaperType["statement"]="Statement";
+		PaperType["executive"]="Executive";
+		PaperType["a3"]="A3";
+		PaperType["a4"]="A4";
+		PaperType["a4Small"]="A4Small";
+		PaperType["a5"]="A5";
+		PaperType["b4"]="B4";
+		PaperType["b5"]="B5";
+		PaperType["folio"]="Folio";
+		PaperType["quatro"]="Quatro";
+		PaperType["paper10x14"]="Paper10x14";
+		PaperType["paper11x17"]="Paper11x17";
+		PaperType["note"]="Note";
+		PaperType["envelope9"]="Envelope9";
+		PaperType["envelope10"]="Envelope10";
+		PaperType["envelope11"]="Envelope11";
+		PaperType["envelope12"]="Envelope12";
+		PaperType["envelope14"]="Envelope14";
+		PaperType["csheet"]="Csheet";
+		PaperType["dsheet"]="Dsheet";
+		PaperType["esheet"]="Esheet";
+		PaperType["envelopeDL"]="EnvelopeDL";
+		PaperType["envelopeC5"]="EnvelopeC5";
+		PaperType["envelopeC3"]="EnvelopeC3";
+		PaperType["envelopeC4"]="EnvelopeC4";
+		PaperType["envelopeC6"]="EnvelopeC6";
+		PaperType["envelopeC65"]="EnvelopeC65";
+		PaperType["envelopeB4"]="EnvelopeB4";
+		PaperType["envelopeB5"]="EnvelopeB5";
+		PaperType["envelopeB6"]="EnvelopeB6";
+		PaperType["envelopeItaly"]="EnvelopeItaly";
+		PaperType["envelopeMonarch"]="EnvelopeMonarch";
+		PaperType["envelopePersonal"]="EnvelopePersonal";
+		PaperType["fanfoldUS"]="FanfoldUS";
+		PaperType["fanfoldStdGerman"]="FanfoldStdGerman";
+		PaperType["fanfoldLegalGerman"]="FanfoldLegalGerman";
+	})(PaperType=ExcelOp.PaperType || (ExcelOp.PaperType={}));
+	var ReadingOrder;
+	(function (ReadingOrder) {
+		ReadingOrder["context"]="Context";
+		ReadingOrder["leftToRight"]="LeftToRight";
+		ReadingOrder["rightToLeft"]="RightToLeft";
+	})(ReadingOrder=ExcelOp.ReadingOrder || (ExcelOp.ReadingOrder={}));
+	var BuiltInStyle;
+	(function (BuiltInStyle) {
+		BuiltInStyle["normal"]="Normal";
+		BuiltInStyle["comma"]="Comma";
+		BuiltInStyle["currency"]="Currency";
+		BuiltInStyle["percent"]="Percent";
+		BuiltInStyle["wholeComma"]="WholeComma";
+		BuiltInStyle["wholeDollar"]="WholeDollar";
+		BuiltInStyle["hlink"]="Hlink";
+		BuiltInStyle["hlinkTrav"]="HlinkTrav";
+		BuiltInStyle["note"]="Note";
+		BuiltInStyle["warningText"]="WarningText";
+		BuiltInStyle["emphasis1"]="Emphasis1";
+		BuiltInStyle["emphasis2"]="Emphasis2";
+		BuiltInStyle["emphasis3"]="Emphasis3";
+		BuiltInStyle["sheetTitle"]="SheetTitle";
+		BuiltInStyle["heading1"]="Heading1";
+		BuiltInStyle["heading2"]="Heading2";
+		BuiltInStyle["heading3"]="Heading3";
+		BuiltInStyle["heading4"]="Heading4";
+		BuiltInStyle["input"]="Input";
+		BuiltInStyle["output"]="Output";
+		BuiltInStyle["calculation"]="Calculation";
+		BuiltInStyle["checkCell"]="CheckCell";
+		BuiltInStyle["linkedCell"]="LinkedCell";
+		BuiltInStyle["total"]="Total";
+		BuiltInStyle["good"]="Good";
+		BuiltInStyle["bad"]="Bad";
+		BuiltInStyle["neutral"]="Neutral";
+		BuiltInStyle["accent1"]="Accent1";
+		BuiltInStyle["accent1_20"]="Accent1_20";
+		BuiltInStyle["accent1_40"]="Accent1_40";
+		BuiltInStyle["accent1_60"]="Accent1_60";
+		BuiltInStyle["accent2"]="Accent2";
+		BuiltInStyle["accent2_20"]="Accent2_20";
+		BuiltInStyle["accent2_40"]="Accent2_40";
+		BuiltInStyle["accent2_60"]="Accent2_60";
+		BuiltInStyle["accent3"]="Accent3";
+		BuiltInStyle["accent3_20"]="Accent3_20";
+		BuiltInStyle["accent3_40"]="Accent3_40";
+		BuiltInStyle["accent3_60"]="Accent3_60";
+		BuiltInStyle["accent4"]="Accent4";
+		BuiltInStyle["accent4_20"]="Accent4_20";
+		BuiltInStyle["accent4_40"]="Accent4_40";
+		BuiltInStyle["accent4_60"]="Accent4_60";
+		BuiltInStyle["accent5"]="Accent5";
+		BuiltInStyle["accent5_20"]="Accent5_20";
+		BuiltInStyle["accent5_40"]="Accent5_40";
+		BuiltInStyle["accent5_60"]="Accent5_60";
+		BuiltInStyle["accent6"]="Accent6";
+		BuiltInStyle["accent6_20"]="Accent6_20";
+		BuiltInStyle["accent6_40"]="Accent6_40";
+		BuiltInStyle["accent6_60"]="Accent6_60";
+		BuiltInStyle["explanatoryText"]="ExplanatoryText";
+	})(BuiltInStyle=ExcelOp.BuiltInStyle || (ExcelOp.BuiltInStyle={}));
+	var PrintErrorType;
+	(function (PrintErrorType) {
+		PrintErrorType["errorsDisplayed"]="ErrorsDisplayed";
+		PrintErrorType["errorsBlank"]="ErrorsBlank";
+		PrintErrorType["errorsDash"]="ErrorsDash";
+		PrintErrorType["errorsNotAvailable"]="ErrorsNotAvailable";
+	})(PrintErrorType=ExcelOp.PrintErrorType || (ExcelOp.PrintErrorType={}));
+	var WorksheetPositionType;
+	(function (WorksheetPositionType) {
+		WorksheetPositionType["none"]="None";
+		WorksheetPositionType["before"]="Before";
+		WorksheetPositionType["after"]="After";
+		WorksheetPositionType["beginning"]="Beginning";
+		WorksheetPositionType["end"]="End";
+	})(WorksheetPositionType=ExcelOp.WorksheetPositionType || (ExcelOp.WorksheetPositionType={}));
+	var FunctionResult=(function (_super) {
+		__extends(FunctionResult, _super);
+		function FunctionResult() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		FunctionResult.prototype.doGet=function (option) {
+			return _invokeGet(this, option);
+		};
+		return FunctionResult;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.FunctionResult=FunctionResult;
+	var Functions=(function (_super) {
+		__extends(Functions, _super);
+		function Functions() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		return Functions;
+	}(OfficeExtension.ClientObjectBase));
+	ExcelOp.Functions=Functions;
+})(ExcelOp || (ExcelOp={}));
 
 
