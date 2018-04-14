@@ -1,4 +1,4 @@
-/* Version: 16.0.9008.1000 */
+/* Version: 16.0.9307.1000 */
 
 if (window.Type && window.Type.registerNamespace) {
 Type.registerNamespace('Strings');} else {
@@ -39,8 +39,8 @@ Strings.OfficeOM.L_CoercionTypeNotSupported='The specified coercion type is not 
 Strings.OfficeOM.L_ColIndexOutOfRange='The column index value is out of the allowed range. Use a value (0 or higher) that\'s less than the number of columns.';
 Strings.OfficeOM.L_ConnectionFailureWithDetails='The request failed with status code of {0}, error code {1} and the following error message: {2}';
 Strings.OfficeOM.L_ConnectionFailureWithStatus='The request failed with status code of {0}.';
-Strings.OfficeOM.L_CustomFunctionDefinitionMissing='A property with this name that represents the function\'s definition must exist on Excel.CustomFunctions.';
-Strings.OfficeOM.L_CustomFunctionImplementationMissing='The property with this name on Excel.CustomFunctions that represents the function\'s definition must contain a \'call\' property that implements the function.';
+Strings.OfficeOM.L_CustomFunctionDefinitionMissing='A property with this name that represents the function\'s definition must exist on Excel.Script.CustomFunctions.';
+Strings.OfficeOM.L_CustomFunctionImplementationMissing='The property with this name on Excel.Script.CustomFunctions that represents the function\'s definition must contain a \'call\' property that implements the function.';
 Strings.OfficeOM.L_CustomFunctionNameCannotSplit='The function name must contain a non-empty namespace and a non-empty short name.';
 Strings.OfficeOM.L_CustomFunctionNameContainsBadChars='The function name may only contain letters, digits, underscores, and periods.';
 Strings.OfficeOM.L_CustomXmlError='Custom XML Error.';
@@ -140,6 +140,8 @@ Strings.OfficeOM.L_NotImplemented='Function {0} is not implemented.';
 Strings.OfficeOM.L_NotSupported='Function {0} is not supported.';
 Strings.OfficeOM.L_NotSupportedBindingType='The specified binding type {0} is not supported.';
 Strings.OfficeOM.L_NotSupportedEventType='The specified event type {0} is not supported.';
+Strings.OfficeOM.L_OperationCancelledError='Operation Cancelled';
+Strings.OfficeOM.L_OperationCancelledErrorMessage='The operation was cancelled by the user.';
 Strings.OfficeOM.L_OperationNotSupported='The operation is not supported.';
 Strings.OfficeOM.L_OperationNotSupportedOnMatrixData='Selected content needs to be in table format. Format the data as a table and try again.';
 Strings.OfficeOM.L_OperationNotSupportedOnThisBindingType='Operation is not supported on this binding type.';
