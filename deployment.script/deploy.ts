@@ -343,7 +343,7 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
                 "tag_name": gitTagName,
                 "name": gitTagName,
                 "body": markdownReleasesNotes!,
-                "prerelease": process.env.TRAVIS_BRANCH !== "release",
+                "prerelease": npmPublishTag !== "release",
                 "draft": false
             })
         });
@@ -363,6 +363,8 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
 
     if (isOfficialBuild) {
         banner(`GitHub Releases page for v${version}`, `https://github.com/OfficeDev/office-js/releases/tag/v${version}`, chalk.green.bold);
+    } else {
+        banner(`GitHub tag page for v${version}`, `https://github.com/OfficeDev/office-js/releases/tag/v${version}`, chalk.green.bold);
     }
 }
 
