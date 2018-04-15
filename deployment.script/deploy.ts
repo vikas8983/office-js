@@ -315,14 +315,22 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
 
 
     const gitTagName = "v" + version;
-    console.log(`Also tag the branch, and make a GitHub release: https://github.com/OfficeDev/office-js/releases/tag/${gitTagName}`);
+    console.log(`Also tag the branch, ` +
+        (isOfficialBuild
+            ? `and make a GitHub release: https://github.com/OfficeDev/office-js/releases/tag/${gitTagName}`
+            : `but DON'T make an official GitHub release for ad-hoc builds`
+        )
+    );
     execCommand(`git tag -a ${gitTagName} -m "${commitMessage}"`);
     execCommand(`git push origin ${gitTagName}`);
 
     console.log(chalk.magenta(`FYI, if you need to delete the tag, run`));
     console.log(chalk.magenta(`    git push --delete origin ${gitTagName}`));
-    console.log(chalk.magenta(`You'll also need to discard the resulting draft in "https://github.com/OfficeDev/office-js/releases"`));
-    console.log(chalk.magenta(`    (be sure that you're logged in to see it)`));
+
+    if (isOfficialBuild) {
+        console.log(chalk.magenta(`You'll also need to discard the resulting draft in "https://github.com/OfficeDev/office-js/releases"`));
+        console.log(chalk.magenta(`    (be sure that you're logged in to see it)`));
+    }
 
     // Documentation: https://developer.github.com/v3/repos/releases/#create-a-release
     const response = await fetch("https://api.github.com/repos/OfficeDev/office-js/releases", {
@@ -334,7 +342,7 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
             "tag_name": gitTagName,
             "name": gitTagName,
             "body": markdownReleasesNotes!,
-            "prerelease": !isOfficialBuild,
+            "prerelease": process.env.TRAVIS_BRANCH !== "release",
             "draft": false
         })
     });
