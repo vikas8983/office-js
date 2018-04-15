@@ -332,23 +332,25 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
         console.log(chalk.magenta(`    (be sure that you're logged in to see it)`));
     }
 
-    // Documentation: https://developer.github.com/v3/repos/releases/#create-a-release
-    const response = await fetch("https://api.github.com/repos/OfficeDev/office-js/releases", {
-        method: "POST",
-        headers: new Headers({
-            "Authorization": `token ${process.env.GH_TOKEN}`
-        }),
-        body: JSON.stringify({
-            "tag_name": gitTagName,
-            "name": gitTagName,
-            "body": markdownReleasesNotes!,
-            "prerelease": process.env.TRAVIS_BRANCH !== "release",
-            "draft": false
-        })
-    });
+    if (isOfficialBuild) {
+        // Documentation: https://developer.github.com/v3/repos/releases/#create-a-release
+        const response = await fetch("https://api.github.com/repos/OfficeDev/office-js/releases", {
+            method: "POST",
+            headers: new Headers({
+                "Authorization": `token ${process.env.GH_TOKEN}`
+            }),
+            body: JSON.stringify({
+                "tag_name": gitTagName,
+                "name": gitTagName,
+                "body": markdownReleasesNotes!,
+                "prerelease": process.env.TRAVIS_BRANCH !== "release",
+                "draft": false
+            })
+        });
 
-    if (response.status !== 201) {
-        throw new Error(`Failed to create GitHub release; ${response.status}: ${response.statusText}`);
+        if (response.status !== 201) {
+            throw new Error(`Failed to create GitHub release; ${response.status}: ${response.statusText}`);
+        }
     }
 
     if (params.atVeryEnd) {
@@ -359,7 +361,9 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
 
     banner('SUCCESS, DEPLOYMENT COMPLETE!', markdownReleasesNotes!.replace(/&nbsp;/g, ' '), chalk.green.bold);
 
-    banner(`GitHub Releases page for v${version}`, `https://github.com/OfficeDev/office-js/releases/tag/v${version}`, chalk.green.bold);
+    if (isOfficialBuild) {
+        banner(`GitHub Releases page for v${version}`, `https://github.com/OfficeDev/office-js/releases/tag/v${version}`, chalk.green.bold);
+    }
 }
 
 function isPublishOverPreviouslyPublishVersionErrorString(errorText: string): boolean {
