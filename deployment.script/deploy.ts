@@ -194,6 +194,14 @@ function precheckOrExit(): void {
         process.exit(0);
     }
 
+    if (process.env.TRAVIS_BRANCH === DEPLOYMENT_QUEUE_BRANCH_PREFIX) {
+        banner('Deployment skipped',
+            `Skipping builds for the root deployment branch ` + '\n' +
+            `(which only contains the deployment code, but itself has nothing to deploy)`,
+            chalk.yellow.bold);
+        process.exit(0);
+    }
+
     // Careful! Need this check because otherwise, a pull request against master would immediately trigger a deployment.
     if (process.env.TRAVIS_PULL_REQUEST !== 'false') {
         banner('Deployment skipped', 'Skipping deploy for pull requests.', chalk.yellow.bold);
