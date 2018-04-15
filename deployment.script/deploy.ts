@@ -425,10 +425,18 @@ async function doOfficialDeployment(): Promise<void> {
             })();
         },
         atVeryEnd: async () => {
+            const repoThisDeployBranchCopy = `${WORKING_DIRECTORY}/office-js-repo-this-deploy-branch-copy-${new Date().getTime()}/`;
+            fs.removeSync(repoThisDeployBranchCopy);
+            execCommand(`git clone --single-branch -b ${process.env.TRAVIS_BRANCH} ${TOKENIZED_GITHUB_PUSH_URL} ${repoThisDeployBranchCopy}`, {
+                token: process.env.GH_TOKEN
+            });
+
+            shell.pushd(repoThisDeployBranchCopy);
             console.log(`Finally, reset this branch to the initial check-in commit `);
             console.log(`    (so that can be 100% guaranteed that can always merge anything to this branch)"`);
             execCommand(`git reset --hard 9c620f97add24848222911797e80485c808384e4`);
             execCommand(`git push -f`);
+            shell.popd();
         }
     });
 }
