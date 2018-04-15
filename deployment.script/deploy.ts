@@ -77,6 +77,12 @@ interface IDeploymentParams {
     /** A script to run after cloning. Note that the current working directory at that point
      * is still the original one from the start of the script */
     afterCloneBeforeCommit?: (repoLocalFolderPath: string) => Promise<any>;
+
+    /** A script to run at the very end (e.g., to hard reset a branch, etc.).
+     * Note that the current working directory at this point is going to be
+     * the repoLocalFolderPath one (where all the rest of the git commands were being issued from).
+     */
+    atVeryEnd?: () => Promise<any>
 }
 
 (async () => {
@@ -329,9 +335,11 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
         throw new Error(`Failed to create GitHub release; ${response.status}: ${response.statusText}`);
     }
 
+    if (params.atVeryEnd) {
+        await params.atVeryEnd();
+    }
 
     shell.popd();
-
 
     banner('SUCCESS, DEPLOYMENT COMPLETE!', markdownReleasesNotes!.replace(/&nbsp;/g, ' '), chalk.green.bold);
 
@@ -406,7 +414,7 @@ async function doOfficialDeployment(): Promise<void> {
                 console.log(`Now do the remainder of the copying -- but this time, from the "from" branch, and only including`);
                 console.log(`    the output directories (which is the only truly-worthwhile bit on the pull request branch)`);
                 fs.readdirSync(repoThisBranchCopyFolderPath)
-                    .filter(filename => OUTPUT_DIRECTORIES_TO_COPY.indexOf(filename) < 0)
+                    .filter(filename => OUTPUT_DIRECTORIES_TO_COPY.indexOf(filename) >= 0)
                     .forEach(filename => fs.copySync(
                         repoThisBranchCopyFolderPath + '/' + filename,
                         repoLocalFolderPath + '/' + filename,
@@ -415,6 +423,12 @@ async function doOfficialDeployment(): Promise<void> {
                         }
                     ));
             })();
+        },
+        atVeryEnd: async () => {
+            console.log(`Finally, reset this branch to the initial check-in commit `);
+            console.log(`    (so that can be 100% guaranteed that can always merge anything to this branch)"`);
+            execCommand(`git reset --hard 9c620f97add24848222911797e80485c808384e4`);
+            execCommand(`git push -f`);
         }
     });
 }
