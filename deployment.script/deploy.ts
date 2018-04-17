@@ -52,6 +52,7 @@ const OFFICIAL_BRANCHES = ["release", "release-next", "beta", "beta-next"];
 const OFFICIAL_TAGS = cloneDeep(OFFICIAL_BRANCHES).concat("latest");
 const DEPLOYMENT_QUEUE_BRANCH_PREFIX = "deployment-queue";
 const ADHOC_BRANCH_PREFIX = "__adhoc";
+const FOR_MERGING_BRANCH_PREFIX = "__for_merging";
 const DEFAULT_ADHOC_TAG = "adhoc";
 
 interface IDeploymentInfoFromSubmittedRepo {
@@ -102,7 +103,7 @@ async function attemptDeployScript() {
 
     precheckOrExit();
 
-    if (process.env.TRAVIS_BRANCH.startsWith(ADHOC_BRANCH_PREFIX)) {
+    if (process.env.TRAVIS_BRANCH.startsWith(ADHOC_BRANCH_PREFIX) || process.env.TRAVIS_BRANCH.startsWith(FOR_MERGING_BRANCH_PREFIX)) {
         const deploymentInfoFromSubmittedRepoState = await getDeploymentInfoFromGithubRepoState(process.env.TRAVIS_BRANCH);
         const npmPublishTag = deploymentInfoFromSubmittedRepoState.tag;
         await doDeployment({
@@ -131,7 +132,7 @@ async function attemptDeployScript() {
     } else {
         const message = stripSpaces(`
             UNKNOWN BRANCH: Branch "${process.env.TRAVIS_BRANCH}" does not match any of the following:
-                * A branch that starts with "${ADHOC_BRANCH_PREFIX}".
+                * A branch that starts with "${ADHOC_BRANCH_PREFIX}" or "${FOR_MERGING_BRANCH_PREFIX}".
                 * A branch that starts with "${DEPLOYMENT_QUEUE_BRANCH_PREFIX}" branch.
                 * Any of the following official branches: [${OFFICIAL_BRANCHES.map(item => `"${item}"`).join(", ")}].
         `);
