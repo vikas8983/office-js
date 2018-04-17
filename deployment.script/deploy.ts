@@ -61,7 +61,10 @@ interface IDeploymentInfoFromSubmittedRepo {
 interface IDeploymentInfoFromSubmittedRepoHistory {
     commitMessage: string,
     adhocBranchName: string,
-    fullCommitHistory: string,
+    fullCommitHistory: ({
+        sha: string /* including full url, e.g., 'https://github.com/OfficeDev/office-js/commits/6f0688dec800bd6e37cdc16ec00249efc44df705' */,
+        message: string
+    })[],
 }
 
 const WORKING_DIRECTORY = path.resolve(process.env.TRAVIS_BUILD_DIR, "..", "working-travis-output-dir");
@@ -77,12 +80,6 @@ interface IDeploymentParams {
     /** A script to run after cloning. Note that the current working directory at that point
      * is still the original one from the start of the script */
     afterCloneBeforeCommit?: (repoLocalFolderPath: string) => Promise<any>;
-
-    /** A script to run at the very end (e.g., to hard reset a branch, etc.).
-     * Note that the current working directory at this point is going to be
-     * the repoLocalFolderPath one (where all the rest of the git commands were being issued from).
-     */
-    atVeryEnd?: () => Promise<any>
 }
 
 (async () => {
@@ -353,10 +350,6 @@ async function doDeployment(params: IDeploymentParams): Promise<void> {
         }
     }
 
-    if (params.atVeryEnd) {
-        await params.atVeryEnd();
-    }
-
     shell.popd();
 
     banner('SUCCESS, DEPLOYMENT COMPLETE!', markdownReleasesNotes!.replace(/&nbsp;/g, ' '), chalk.green.bold);
@@ -391,18 +384,38 @@ async function doOfficialDeployment(): Promise<void> {
         from a pull request to this branch ("${process.env.TRAVIS_BRANCH}")
     `));
 
-    const repoThisBranchCopyFolderPath = `${WORKING_DIRECTORY}/office-js-repo-this-branch-copy-${new Date().getTime()}/`;
-    execCommand(`git clone --single-branch --depth 1 -b ${process.env.TRAVIS_BRANCH} ${TOKENIZED_GITHUB_PUSH_URL} ${repoThisBranchCopyFolderPath}`, {
-        token: process.env.GH_TOKEN
-    });
-
     // for purposes of the official tags, the NPM publish tag will be the same as the branch name (beta, release-next, etc)
     const npmPublishTag = targetBranch;
-    const historyInfo = (await getDeploymentInfoFromLocalRepoCopy(repoThisBranchCopyFolderPath)).history;
+
+    const historyInfo = await (async () => {
+        const repoThisDeployQueueBranchCopyFolderPath = `${WORKING_DIRECTORY}/office-js-repo-this-branch-copy-${new Date().getTime()}/`;
+        execCommand(`git clone --single-branch --depth 1 -b ${process.env.TRAVIS_BRANCH} ${TOKENIZED_GITHUB_PUSH_URL} ${repoThisDeployQueueBranchCopyFolderPath}`, {
+            token: process.env.GH_TOKEN
+        });
+
+        // for purposes of the official tags, the NPM publish tag will be the same as the branch name (beta, release-next, etc)
+        return (await getDeploymentInfoFromLocalRepoCopy(repoThisDeployQueueBranchCopyFolderPath)).history;
+    })();
+
+    const basedOnFullShaWithUrl = historyInfo.fullCommitHistory[0].sha;
+    if (!historyInfo.fullCommitHistory[0].message.startsWith("JS dist files")) {
+        // Safety check:
+        throw new Error("Unexpected commit message, expecting the last commit and corresponding message to be about JS dist files");
+    }
+    const basedOnJustSha = basedOnFullShaWithUrl.substr(basedOnFullShaWithUrl.lastIndexOf("/") + 1);
+    const basedOnRecreatedUrl = `https://github.com/OfficeDev/office-js/tree/${basedOnJustSha}`;
+    if (basedOnRecreatedUrl !== basedOnFullShaWithUrl) {
+        throw new Error("Url mismatch, this should not happen");
+    }
+
+    banner("DEPLOYING BASED ON COMMIT " + basedOnJustSha, stripSpaces(`
+        FYI, deploying based on the files as committed on
+        "$${basedOnRecreatedUrl}"
+    `));
 
     await doDeployment({
         isOfficialBuild: true,
-        commitMessagePartial: `Deploy to '${targetBranch}' from '${historyInfo.adhocBranchName}'`,
+        commitMessagePartial: `Deploy to '${targetBranch}' from '${historyInfo.adhocBranchName}'` + '\n' + `as represented by commit '${basedOnRecreatedUrl}'`,
         branchToCheckOut: targetBranch,
         npmPublishTag,
         historyInfo,
@@ -433,32 +446,26 @@ async function doOfficialDeployment(): Promise<void> {
             })();
 
             (() => {
-                console.log(`Now do the remainder of the copying -- but this time, from the "from" branch, and only including`);
-                console.log(`    the output directories (which is the only truly-worthwhile bit on the pull request branch)`);
-                fs.readdirSync(repoThisBranchCopyFolderPath)
+                const repoCopyOfBasedOnHashPath = `${WORKING_DIRECTORY}/office-js-repo-based-on-hash-copy-${new Date().getTime()}/`;
+                execCommand(`git clone ${TOKENIZED_GITHUB_PUSH_URL} ${repoCopyOfBasedOnHashPath}`, {
+                    token: process.env.GH_TOKEN
+                });
+                shell.pushd(repoCopyOfBasedOnHashPath);
+                execCommand(`git checkout ${basedOnJustSha}`);
+                shell.popd();
+
+                console.log(`Now do the remainder of the copying -- but this time, from the commit specified in the hash,`);
+                console.log(`    and only of the output directories`);
+                fs.readdirSync(repoCopyOfBasedOnHashPath)
                     .filter(filename => OUTPUT_DIRECTORIES_TO_COPY.indexOf(filename) >= 0)
                     .forEach(filename => fs.copySync(
-                        repoThisBranchCopyFolderPath + '/' + filename,
+                        repoCopyOfBasedOnHashPath + '/' + filename,
                         repoLocalFolderPath + '/' + filename,
                         {
                             preserveTimestamps: true
                         }
                     ));
             })();
-        },
-        atVeryEnd: async () => {
-            const repoThisDeployBranchCopy = `${WORKING_DIRECTORY}/office-js-repo-this-deploy-branch-copy-${new Date().getTime()}/`;
-            fs.removeSync(repoThisDeployBranchCopy);
-            execCommand(`git clone --single-branch -b ${process.env.TRAVIS_BRANCH} ${TOKENIZED_GITHUB_PUSH_URL} ${repoThisDeployBranchCopy}`, {
-                token: process.env.GH_TOKEN
-            });
-
-            shell.pushd(repoThisDeployBranchCopy);
-            console.log(`Finally, reset this branch to the initial check-in commit `);
-            console.log(`    (so that can be 100% guaranteed that can always merge anything to this branch)"`);
-            execCommand(`git reset --hard 9c620f97add24848222911797e80485c808384e4`);
-            execCommand(`git push -f`);
-            shell.popd();
         }
     });
 }
