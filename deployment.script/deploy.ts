@@ -405,7 +405,7 @@ async function doOfficialDeployment(): Promise<void> {
     }
     const basedOnJustSha = basedOnFullShaWithUrl.substr(basedOnFullShaWithUrl.lastIndexOf("/") + 1);
     const basedOnRecreatedUrl = `https://github.com/OfficeDev/office-js/tree/${basedOnJustSha}`;
-    if (basedOnRecreatedUrl !== basedOnFullShaWithUrl) {
+    if (basedOnRecreatedUrl.replace("/tree/", "/commits/") !== basedOnFullShaWithUrl) {
         throw new Error("Url mismatch, this should not happen");
     }
 
