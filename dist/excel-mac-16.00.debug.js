@@ -1,5 +1,5 @@
 /* Excel Mac-specific API library */
-/* Version: 16.0.9303.3000 */
+/* Version: 16.0.9313.3000 */
 
 /* Office.js Version: 16.0.9124.1000 */ 
 /*
@@ -9296,6 +9296,10 @@ var OfficeExtension;
 			if (!OfficeExtension._internalConfig.enableUndoableFlag) {
 				requestFlags=requestFlags & ~16;
 			}
+			if (!OfficeExtension.Utility.isSetSupported("RichApiRuntimeFlag", "1.1")) {
+				requestFlags=requestFlags & ~4;
+				requestFlags=requestFlags & ~16;
+			}
 			if (typeof (this.m_flagsForTesting)==="number") {
 				requestFlags=this.m_flagsForTesting;
 			}
@@ -9466,8 +9470,8 @@ var OfficeExtension;
 		enableEarlyDispose: true,
 		alwaysPolyfillClientObjectUpdateMethod: false,
 		alwaysPolyfillClientObjectRetrieveMethod: false,
-		enableConcurrentFlag: false,
-		enableUndoableFlag: false,
+		enableConcurrentFlag: true,
+		enableUndoableFlag: true,
 	};
 	OfficeExtension.config={
 		extendedErrorLogging: false
@@ -13836,6 +13840,9 @@ var OfficeCore;
 		};
 		BiShim.prototype.setVisualObjects=function (visualObjects) {
 			_createMethodAction(this.context, this, "setVisualObjects", 0, [visualObjects], false);
+		};
+		BiShim.prototype.setVisualObjectsToPersist=function (visualObjectsToPersist) {
+			_createMethodAction(this.context, this, "setVisualObjectsToPersist", 0, [visualObjectsToPersist], false);
 		};
 		BiShim.prototype._handleResult=function (value) {
 			_super.prototype._handleResult.call(this, value);
@@ -21282,7 +21289,7 @@ var Excel;
 		Object.defineProperty(Chart.prototype, "chartType", {
 			get: function () {
 				_throwIfNotLoaded("chartType", this._Ch, _typeChart, this._isNull);
-				_throwIfApiNotSupported("Chart.chartType", _defaultApiSetName, "1.8", _hostName);
+				_throwIfApiNotSupported("Chart.chartType", _defaultApiSetName, "1.7", _hostName);
 				return this._Ch;
 			},
 			set: function (value) {
@@ -21418,7 +21425,7 @@ var Excel;
 		Object.defineProperty(Chart.prototype, "showAllFieldButtons", {
 			get: function () {
 				_throwIfNotLoaded("showAllFieldButtons", this._Sh, _typeChart, this._isNull);
-				_throwIfApiNotSupported("Chart.showAllFieldButtons", _defaultApiSetName, "1.8", _hostName);
+				_throwIfApiNotSupported("Chart.showAllFieldButtons", _defaultApiSetName, "1.7", _hostName);
 				return this._Sh;
 			},
 			set: function (value) {
@@ -21885,7 +21892,7 @@ var Excel;
 			configurable: true
 		});
 		ChartSeriesCollection.prototype.add=function (name, index) {
-			_throwIfApiNotSupported("ChartSeriesCollection.add", _defaultApiSetName, "1.8", _hostName);
+			_throwIfApiNotSupported("ChartSeriesCollection.add", _defaultApiSetName, "1.7", _hostName);
 			return new Excel.ChartSeries(this.context, _createMethodObjectPath(this.context, this, "Add", 0, [name, index], false, true, null, 0));
 		};
 		ChartSeriesCollection.prototype.getCount=function () {
@@ -22063,7 +22070,7 @@ var Excel;
 		Object.defineProperty(ChartSeries.prototype, "chartType", {
 			get: function () {
 				_throwIfNotLoaded("chartType", this._C, _typeChartSeries, this._isNull);
-				_throwIfApiNotSupported("ChartSeries.chartType", _defaultApiSetName, "1.8", _hostName);
+				_throwIfApiNotSupported("ChartSeries.chartType", _defaultApiSetName, "1.7", _hostName);
 				return this._C;
 			},
 			set: function (value) {
@@ -23010,7 +23017,7 @@ var Excel;
 			this._recursivelyUpdate(properties);
 		};
 		ChartAxes.prototype.getItem=function (type, group) {
-			_throwIfApiNotSupported("ChartAxes.getItem", _defaultApiSetName, "1.8", _hostName);
+			_throwIfApiNotSupported("ChartAxes.getItem", _defaultApiSetName, "1.7", _hostName);
 			return new Excel.ChartAxis(this.context, _createMethodObjectPath(this.context, this, "GetItem", 1, [type, group], false, false, null, 4));
 		};
 		ChartAxes.prototype._handleResult=function (value) {
@@ -23060,14 +23067,14 @@ var Excel;
 		});
 		Object.defineProperty(ChartAxis.prototype, "_scalarPropertyNames", {
 			get: function () {
-				return ["majorUnit", "maximum", "minimum", "minorUnit", "displayUnit", "showDisplayUnitLabel", "customDisplayUnit", "type", "minorTimeUnitScale", "majorTimeUnitScale", "baseTimeUnit", "categoryType", "axisGroup", "scaleType", "logBase", "left", "top", "height", "width", "reversePlotOrder", "crosses", "crossesAt", "visible", "axisBetweenCategories", "majorTickMark", "minorTickMark", "tickMarkSpacing", "tickLabelPosition", "tickLabelSpacing", "alignment", "multiLevel", "numberFormat", "numberFormatLinked", "offset", "textOrientation"];
+				return ["majorUnit", "maximum", "minimum", "minorUnit", "displayUnit", "showDisplayUnitLabel", "customDisplayUnit", "type", "minorTimeUnitScale", "majorTimeUnitScale", "baseTimeUnit", "categoryType", "axisGroup", "scaleType", "logBase", "left", "top", "height", "width", "reversePlotOrder", "crosses", "crossesAt", "visible", "isBetweenCategories", "majorTickMark", "minorTickMark", "tickMarkSpacing", "tickLabelPosition", "tickLabelSpacing", "alignment", "multiLevel", "numberFormat", "numberFormatLinked", "offset", "textOrientation", "position", "positionAt"];
 			},
 			enumerable: true,
 			configurable: true
 		});
 		Object.defineProperty(ChartAxis.prototype, "_scalarPropertyUpdateable", {
 			get: function () {
-				return [true, true, true, true, true, true, false, false, true, true, true, true, false, true, true, false, false, false, false, true, true, false, true, true, true, true, true, true, true, true, true, true, true, true, true];
+				return [true, true, true, true, true, true, false, false, true, true, true, true, false, true, true, false, false, false, false, true, true, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false];
 			},
 			enumerable: true,
 			configurable: true
@@ -23132,24 +23139,11 @@ var Excel;
 			enumerable: true,
 			configurable: true
 		});
-		Object.defineProperty(ChartAxis.prototype, "axisBetweenCategories", {
-			get: function () {
-				_throwIfNotLoaded("axisBetweenCategories", this._Ax, _typeChartAxis, this._isNull);
-				_throwIfApiNotSupported("ChartAxis.axisBetweenCategories", _defaultApiSetName, "1.8", _hostName);
-				return this._Ax;
-			},
-			set: function (value) {
-				this._Ax=value;
-				_createSetPropertyAction(this.context, this, "AxisBetweenCategories", value, 0);
-			},
-			enumerable: true,
-			configurable: true
-		});
 		Object.defineProperty(ChartAxis.prototype, "axisGroup", {
 			get: function () {
-				_throwIfNotLoaded("axisGroup", this._Axi, _typeChartAxis, this._isNull);
-				_throwIfApiNotSupported("ChartAxis.axisGroup", _defaultApiSetName, "1.8", _hostName);
-				return this._Axi;
+				_throwIfNotLoaded("axisGroup", this._Ax, _typeChartAxis, this._isNull);
+				_throwIfApiNotSupported("ChartAxis.axisGroup", _defaultApiSetName, "1.7", _hostName);
+				return this._Ax;
 			},
 			enumerable: true,
 			configurable: true
@@ -23183,7 +23177,7 @@ var Excel;
 		Object.defineProperty(ChartAxis.prototype, "crosses", {
 			get: function () {
 				_throwIfNotLoaded("crosses", this._Cr, _typeChartAxis, this._isNull);
-				_throwIfApiNotSupported("ChartAxis.crosses", _defaultApiSetName, "1.8", _hostName);
+				_throwIfApiNotSupported("ChartAxis.crosses", _defaultApiSetName, "1.7", _hostName);
 				return this._Cr;
 			},
 			set: function (value) {
@@ -23233,6 +23227,19 @@ var Excel;
 			enumerable: true,
 			configurable: true
 		});
+		Object.defineProperty(ChartAxis.prototype, "isBetweenCategories", {
+			get: function () {
+				_throwIfNotLoaded("isBetweenCategories", this._I, _typeChartAxis, this._isNull);
+				_throwIfApiNotSupported("ChartAxis.isBetweenCategories", _defaultApiSetName, "1.8", _hostName);
+				return this._I;
+			},
+			set: function (value) {
+				this._I=value;
+				_createSetPropertyAction(this.context, this, "IsBetweenCategories", value, 0);
+			},
+			enumerable: true,
+			configurable: true
+		});
 		Object.defineProperty(ChartAxis.prototype, "left", {
 			get: function () {
 				_throwIfNotLoaded("left", this._L, _typeChartAxis, this._isNull);
@@ -23258,7 +23265,7 @@ var Excel;
 		Object.defineProperty(ChartAxis.prototype, "majorTickMark", {
 			get: function () {
 				_throwIfNotLoaded("majorTickMark", this._Ma, _typeChartAxis, this._isNull);
-				_throwIfApiNotSupported("ChartAxis.majorTickMark", _defaultApiSetName, "1.8", _hostName);
+				_throwIfApiNotSupported("ChartAxis.majorTickMark", _defaultApiSetName, "1.7", _hostName);
 				return this._Ma;
 			},
 			set: function (value) {
@@ -23320,7 +23327,7 @@ var Excel;
 		Object.defineProperty(ChartAxis.prototype, "minorTickMark", {
 			get: function () {
 				_throwIfNotLoaded("minorTickMark", this._Mino, _typeChartAxis, this._isNull);
-				_throwIfApiNotSupported("ChartAxis.minorTickMark", _defaultApiSetName, "1.8", _hostName);
+				_throwIfApiNotSupported("ChartAxis.minorTickMark", _defaultApiSetName, "1.7", _hostName);
 				return this._Mino;
 			},
 			set: function (value) {
@@ -23407,6 +23414,28 @@ var Excel;
 			enumerable: true,
 			configurable: true
 		});
+		Object.defineProperty(ChartAxis.prototype, "position", {
+			get: function () {
+				_throwIfNotLoaded("position", this._P, _typeChartAxis, this._isNull);
+				_throwIfApiNotSupported("ChartAxis.position", _defaultApiSetName, "1.8", _hostName);
+				return this._P;
+			},
+			set: function (value) {
+				this._P=value;
+				_createSetPropertyAction(this.context, this, "Position", value, 0);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartAxis.prototype, "positionAt", {
+			get: function () {
+				_throwIfNotLoaded("positionAt", this._Po, _typeChartAxis, this._isNull);
+				_throwIfApiNotSupported("ChartAxis.positionAt", _defaultApiSetName, "1.8", _hostName);
+				return this._Po;
+			},
+			enumerable: true,
+			configurable: true
+		});
 		Object.defineProperty(ChartAxis.prototype, "reversePlotOrder", {
 			get: function () {
 				_throwIfNotLoaded("reversePlotOrder", this._R, _typeChartAxis, this._isNull);
@@ -23423,7 +23452,7 @@ var Excel;
 		Object.defineProperty(ChartAxis.prototype, "scaleType", {
 			get: function () {
 				_throwIfNotLoaded("scaleType", this._S, _typeChartAxis, this._isNull);
-				_throwIfApiNotSupported("ChartAxis.scaleType", _defaultApiSetName, "1.8", _hostName);
+				_throwIfApiNotSupported("ChartAxis.scaleType", _defaultApiSetName, "1.7", _hostName);
 				return this._S;
 			},
 			set: function (value) {
@@ -23462,7 +23491,7 @@ var Excel;
 		Object.defineProperty(ChartAxis.prototype, "tickLabelPosition", {
 			get: function () {
 				_throwIfNotLoaded("tickLabelPosition", this._Ti, _typeChartAxis, this._isNull);
-				_throwIfApiNotSupported("ChartAxis.tickLabelPosition", _defaultApiSetName, "1.8", _hostName);
+				_throwIfApiNotSupported("ChartAxis.tickLabelPosition", _defaultApiSetName, "1.7", _hostName);
 				return this._Ti;
 			},
 			set: function (value) {
@@ -23510,7 +23539,7 @@ var Excel;
 		Object.defineProperty(ChartAxis.prototype, "type", {
 			get: function () {
 				_throwIfNotLoaded("type", this._Ty, _typeChartAxis, this._isNull);
-				_throwIfApiNotSupported("ChartAxis.type", _defaultApiSetName, "1.8", _hostName);
+				_throwIfApiNotSupported("ChartAxis.type", _defaultApiSetName, "1.7", _hostName);
 				return this._Ty;
 			},
 			enumerable: true,
@@ -23539,7 +23568,7 @@ var Excel;
 			configurable: true
 		});
 		ChartAxis.prototype.set=function (properties, options) {
-			this._recursivelySet(properties, options, ["majorUnit", "maximum", "minimum", "minorUnit", "displayUnit", "showDisplayUnitLabel", "minorTimeUnitScale", "majorTimeUnitScale", "baseTimeUnit", "categoryType", "scaleType", "logBase", "reversePlotOrder", "crosses", "visible", "axisBetweenCategories", "majorTickMark", "minorTickMark", "tickMarkSpacing", "tickLabelPosition", "tickLabelSpacing", "alignment", "multiLevel", "numberFormat", "numberFormatLinked", "offset", "textOrientation"], ["majorGridlines", "minorGridlines", "title", "format"], []);
+			this._recursivelySet(properties, options, ["majorUnit", "maximum", "minimum", "minorUnit", "displayUnit", "showDisplayUnitLabel", "minorTimeUnitScale", "majorTimeUnitScale", "baseTimeUnit", "categoryType", "scaleType", "logBase", "reversePlotOrder", "crosses", "visible", "isBetweenCategories", "majorTickMark", "minorTickMark", "tickMarkSpacing", "tickLabelPosition", "tickLabelSpacing", "alignment", "multiLevel", "numberFormat", "numberFormatLinked", "offset", "textOrientation", "position"], ["majorGridlines", "minorGridlines", "title", "format"], []);
 		};
 		ChartAxis.prototype.update=function (properties) {
 			this._recursivelyUpdate(properties);
@@ -23553,8 +23582,12 @@ var Excel;
 			_createMethodAction(this.context, this, "SetCrossesAt", 0, [value], 0);
 		};
 		ChartAxis.prototype.setCustomDisplayUnit=function (value) {
-			_throwIfApiNotSupported("ChartAxis.setCustomDisplayUnit", _defaultApiSetName, "1.8", _hostName);
+			_throwIfApiNotSupported("ChartAxis.setCustomDisplayUnit", _defaultApiSetName, "1.7", _hostName);
 			_createMethodAction(this.context, this, "SetCustomDisplayUnit", 0, [value], 0);
+		};
+		ChartAxis.prototype.setPositionAt=function (value) {
+			_throwIfApiNotSupported("ChartAxis.setPositionAt", _defaultApiSetName, "1.8", _hostName);
+			_createMethodAction(this.context, this, "SetPositionAt", 0, [value], 0);
 		};
 		ChartAxis.prototype._handleResult=function (value) {
 			_super.prototype._handleResult.call(this, value);
@@ -23565,11 +23598,8 @@ var Excel;
 			if (!_isUndefined(obj["Alignment"])) {
 				this._A=obj["Alignment"];
 			}
-			if (!_isUndefined(obj["AxisBetweenCategories"])) {
-				this._Ax=obj["AxisBetweenCategories"];
-			}
 			if (!_isUndefined(obj["AxisGroup"])) {
-				this._Axi=obj["AxisGroup"];
+				this._Ax=obj["AxisGroup"];
 			}
 			if (!_isUndefined(obj["BaseTimeUnit"])) {
 				this._B=obj["BaseTimeUnit"];
@@ -23591,6 +23621,9 @@ var Excel;
 			}
 			if (!_isUndefined(obj["Height"])) {
 				this._H=obj["Height"];
+			}
+			if (!_isUndefined(obj["IsBetweenCategories"])) {
+				this._I=obj["IsBetweenCategories"];
 			}
 			if (!_isUndefined(obj["Left"])) {
 				this._L=obj["Left"];
@@ -23633,6 +23666,12 @@ var Excel;
 			}
 			if (!_isUndefined(obj["Offset"])) {
 				this._O=obj["Offset"];
+			}
+			if (!_isUndefined(obj["Position"])) {
+				this._P=obj["Position"];
+			}
+			if (!_isUndefined(obj["PositionAt"])) {
+				this._Po=obj["PositionAt"];
 			}
 			if (!_isUndefined(obj["ReversePlotOrder"])) {
 				this._R=obj["ReversePlotOrder"];
@@ -23682,8 +23721,7 @@ var Excel;
 		ChartAxis.prototype.toJSON=function () {
 			return _toJson(this, {
 				"alignment": this._A,
-				"axisBetweenCategories": this._Ax,
-				"axisGroup": this._Axi,
+				"axisGroup": this._Ax,
 				"baseTimeUnit": this._B,
 				"categoryType": this._C,
 				"crosses": this._Cr,
@@ -23691,6 +23729,7 @@ var Excel;
 				"customDisplayUnit": this._Cu,
 				"displayUnit": this._D,
 				"height": this._H,
+				"isBetweenCategories": this._I,
 				"left": this._L,
 				"logBase": this._Lo,
 				"majorTickMark": this._Ma,
@@ -23705,6 +23744,8 @@ var Excel;
 				"numberFormat": this._N,
 				"numberFormatLinked": this._Nu,
 				"offset": this._O,
+				"position": this._P,
+				"positionAt": this._Po,
 				"reversePlotOrder": this._R,
 				"scaleType": this._S,
 				"showDisplayUnitLabel": this._Sh,
@@ -25267,7 +25308,7 @@ var Excel;
 		Object.defineProperty(ChartLegend.prototype, "height", {
 			get: function () {
 				_throwIfNotLoaded("height", this._H, _typeChartLegend, this._isNull);
-				_throwIfApiNotSupported("ChartLegend.height", _defaultApiSetName, "1.8", _hostName);
+				_throwIfApiNotSupported("ChartLegend.height", _defaultApiSetName, "1.7", _hostName);
 				return this._H;
 			},
 			set: function (value) {
@@ -25355,7 +25396,7 @@ var Excel;
 		Object.defineProperty(ChartLegend.prototype, "width", {
 			get: function () {
 				_throwIfNotLoaded("width", this._W, _typeChartLegend, this._isNull);
-				_throwIfApiNotSupported("ChartLegend.width", _defaultApiSetName, "1.8", _hostName);
+				_throwIfApiNotSupported("ChartLegend.width", _defaultApiSetName, "1.7", _hostName);
 				return this._W;
 			},
 			set: function (value) {
@@ -25935,11 +25976,11 @@ var Excel;
 			this._recursivelyUpdate(properties);
 		};
 		ChartTitle.prototype.getSubstring=function (start, length) {
-			_throwIfApiNotSupported("ChartTitle.getSubstring", _defaultApiSetName, "1.8", _hostName);
+			_throwIfApiNotSupported("ChartTitle.getSubstring", _defaultApiSetName, "1.7", _hostName);
 			return new Excel.ChartFormatString(this.context, _createMethodObjectPath(this.context, this, "GetSubstring", 1, [start, length], false, false, null, 4));
 		};
 		ChartTitle.prototype.setFormula=function (formula) {
-			_throwIfApiNotSupported("ChartTitle.setFormula", _defaultApiSetName, "1.8", _hostName);
+			_throwIfApiNotSupported("ChartTitle.setFormula", _defaultApiSetName, "1.7", _hostName);
 			_createMethodAction(this.context, this, "SetFormula", 0, [formula], 0);
 		};
 		ChartTitle.prototype._handleResult=function (value) {
@@ -26616,7 +26657,7 @@ var Excel;
 		});
 		Object.defineProperty(ChartTrendline.prototype, "_scalarPropertyNames", {
 			get: function () {
-				return ["type", "polynomialOrder", "movingAveragePeriod", "_Id", "displayEquation", "displayRSquared", "forward", "backward", "name", "intercept"];
+				return ["type", "polynomialOrder", "movingAveragePeriod", "_Id", "showEquation", "showRSquared", "forwardPeriod", "backwardPeriod", "name", "intercept"];
 			},
 			enumerable: true,
 			configurable: true
@@ -26656,53 +26697,28 @@ var Excel;
 			enumerable: true,
 			configurable: true
 		});
-		Object.defineProperty(ChartTrendline.prototype, "backward", {
+		Object.defineProperty(ChartTrendline.prototype, "backwardPeriod", {
 			get: function () {
-				_throwIfNotLoaded("backward", this._B, _typeChartTrendline, this._isNull);
-				_throwIfApiNotSupported("ChartTrendline.backward", _defaultApiSetName, "1.8", _hostName);
+				_throwIfNotLoaded("backwardPeriod", this._B, _typeChartTrendline, this._isNull);
+				_throwIfApiNotSupported("ChartTrendline.backwardPeriod", _defaultApiSetName, "1.8", _hostName);
 				return this._B;
 			},
 			set: function (value) {
 				this._B=value;
-				_createSetPropertyAction(this.context, this, "Backward", value, 0);
+				_createSetPropertyAction(this.context, this, "BackwardPeriod", value, 0);
 			},
 			enumerable: true,
 			configurable: true
 		});
-		Object.defineProperty(ChartTrendline.prototype, "displayEquation", {
+		Object.defineProperty(ChartTrendline.prototype, "forwardPeriod", {
 			get: function () {
-				_throwIfNotLoaded("displayEquation", this._D, _typeChartTrendline, this._isNull);
-				_throwIfApiNotSupported("ChartTrendline.displayEquation", _defaultApiSetName, "1.8", _hostName);
-				return this._D;
-			},
-			set: function (value) {
-				this._D=value;
-				_createSetPropertyAction(this.context, this, "DisplayEquation", value, 0);
-			},
-			enumerable: true,
-			configurable: true
-		});
-		Object.defineProperty(ChartTrendline.prototype, "displayRSquared", {
-			get: function () {
-				_throwIfNotLoaded("displayRSquared", this._Di, _typeChartTrendline, this._isNull);
-				return this._Di;
-			},
-			set: function (value) {
-				this._Di=value;
-				_createSetPropertyAction(this.context, this, "DisplayRSquared", value, 0);
-			},
-			enumerable: true,
-			configurable: true
-		});
-		Object.defineProperty(ChartTrendline.prototype, "forward", {
-			get: function () {
-				_throwIfNotLoaded("forward", this._Fo, _typeChartTrendline, this._isNull);
-				_throwIfApiNotSupported("ChartTrendline.forward", _defaultApiSetName, "1.8", _hostName);
+				_throwIfNotLoaded("forwardPeriod", this._Fo, _typeChartTrendline, this._isNull);
+				_throwIfApiNotSupported("ChartTrendline.forwardPeriod", _defaultApiSetName, "1.8", _hostName);
 				return this._Fo;
 			},
 			set: function (value) {
 				this._Fo=value;
-				_createSetPropertyAction(this.context, this, "Forward", value, 0);
+				_createSetPropertyAction(this.context, this, "ForwardPeriod", value, 0);
 			},
 			enumerable: true,
 			configurable: true
@@ -26755,10 +26771,35 @@ var Excel;
 			enumerable: true,
 			configurable: true
 		});
+		Object.defineProperty(ChartTrendline.prototype, "showEquation", {
+			get: function () {
+				_throwIfNotLoaded("showEquation", this._S, _typeChartTrendline, this._isNull);
+				_throwIfApiNotSupported("ChartTrendline.showEquation", _defaultApiSetName, "1.8", _hostName);
+				return this._S;
+			},
+			set: function (value) {
+				this._S=value;
+				_createSetPropertyAction(this.context, this, "ShowEquation", value, 0);
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(ChartTrendline.prototype, "showRSquared", {
+			get: function () {
+				_throwIfNotLoaded("showRSquared", this._Sh, _typeChartTrendline, this._isNull);
+				_throwIfApiNotSupported("ChartTrendline.showRSquared", _defaultApiSetName, "1.8", _hostName);
+				return this._Sh;
+			},
+			set: function (value) {
+				this._Sh=value;
+				_createSetPropertyAction(this.context, this, "ShowRSquared", value, 0);
+			},
+			enumerable: true,
+			configurable: true
+		});
 		Object.defineProperty(ChartTrendline.prototype, "type", {
 			get: function () {
 				_throwIfNotLoaded("type", this._T, _typeChartTrendline, this._isNull);
-				_throwIfApiNotSupported("ChartTrendline.type", _defaultApiSetName, "1.8", _hostName);
 				return this._T;
 			},
 			set: function (value) {
@@ -26777,7 +26818,7 @@ var Excel;
 			configurable: true
 		});
 		ChartTrendline.prototype.set=function (properties, options) {
-			this._recursivelySet(properties, options, ["type", "polynomialOrder", "movingAveragePeriod", "displayEquation", "displayRSquared", "forward", "backward", "name", "intercept"], ["format", "label"], []);
+			this._recursivelySet(properties, options, ["type", "polynomialOrder", "movingAveragePeriod", "showEquation", "showRSquared", "forwardPeriod", "backwardPeriod", "name", "intercept"], ["format", "label"], []);
 		};
 		ChartTrendline.prototype.update=function (properties) {
 			this._recursivelyUpdate(properties);
@@ -26791,17 +26832,11 @@ var Excel;
 				return;
 			var obj=value;
 			_fixObjectPathIfNecessary(this, obj);
-			if (!_isUndefined(obj["Backward"])) {
-				this._B=obj["Backward"];
+			if (!_isUndefined(obj["BackwardPeriod"])) {
+				this._B=obj["BackwardPeriod"];
 			}
-			if (!_isUndefined(obj["DisplayEquation"])) {
-				this._D=obj["DisplayEquation"];
-			}
-			if (!_isUndefined(obj["DisplayRSquared"])) {
-				this._Di=obj["DisplayRSquared"];
-			}
-			if (!_isUndefined(obj["Forward"])) {
-				this._Fo=obj["Forward"];
+			if (!_isUndefined(obj["ForwardPeriod"])) {
+				this._Fo=obj["ForwardPeriod"];
 			}
 			if (!_isUndefined(obj["Intercept"])) {
 				this._I=obj["Intercept"];
@@ -26814,6 +26849,12 @@ var Excel;
 			}
 			if (!_isUndefined(obj["PolynomialOrder"])) {
 				this._P=obj["PolynomialOrder"];
+			}
+			if (!_isUndefined(obj["ShowEquation"])) {
+				this._S=obj["ShowEquation"];
+			}
+			if (!_isUndefined(obj["ShowRSquared"])) {
+				this._Sh=obj["ShowRSquared"];
 			}
 			if (!_isUndefined(obj["Type"])) {
 				this._T=obj["Type"];
@@ -26844,14 +26885,14 @@ var Excel;
 		};
 		ChartTrendline.prototype.toJSON=function () {
 			return _toJson(this, {
-				"backward": this._B,
-				"displayEquation": this._D,
-				"displayRSquared": this._Di,
-				"forward": this._Fo,
+				"backwardPeriod": this._B,
+				"forwardPeriod": this._Fo,
 				"intercept": this._I,
 				"movingAveragePeriod": this._M,
 				"name": this._N,
 				"polynomialOrder": this._P,
+				"showEquation": this._S,
+				"showRSquared": this._Sh,
 				"type": this._T,
 			}, {
 				"format": this._F,
@@ -26894,7 +26935,6 @@ var Excel;
 			configurable: true
 		});
 		ChartTrendlineCollection.prototype.add=function (type) {
-			_throwIfApiNotSupported("ChartTrendlineCollection.add", _defaultApiSetName, "1.8", _hostName);
 			return new Excel.ChartTrendline(this.context, _createMethodObjectPath(this.context, this, "Add", 0, [type], false, true, null, 0));
 		};
 		ChartTrendlineCollection.prototype.getCount=function () {
@@ -30010,9 +30050,6 @@ var Excel;
 		PivotItem.prototype.update=function (properties) {
 			this._recursivelyUpdate(properties);
 		};
-		PivotItem.prototype.getRange=function () {
-			return new Excel.Range(this.context, _createMethodObjectPath(this.context, this, "GetRange", 1, [], false, true, null, 4));
-		};
 		PivotItem.prototype._handleResult=function (value) {
 			_super.prototype._handleResult.call(this, value);
 			if (_isNullOrUndefined(value))
@@ -32750,7 +32787,8 @@ var Excel;
 	Excel.ConditionalRangeBorderCollection=ConditionalRangeBorderCollection;
 	var _typeCustomFunction="CustomFunction";
 	Excel.Script={
-		CustomFunctions: {}
+		CustomFunctions: {},
+		_CustomFunctionMetadata: {}
 	};
 	var CustomFunction=(function (_super) {
 		__extends(CustomFunction, _super);
@@ -33051,6 +33089,7 @@ var Excel;
 			var entryArray=args.entries;
 			var invocationArray=[];
 			var cancellationArray=[];
+			var metadataArray=[];
 			for (var i=0; i < entryArray.length; i++) {
 				if (entryArray[i].messageCategory !==1) {
 					continue;
@@ -33066,9 +33105,15 @@ var Excel;
 				else if (entryArray[i].messageType===1001) {
 					cancellationArray.push(entryArray[i]);
 				}
+				else if (entryArray[i].messageType===1002) {
+					metadataArray.push(entryArray[i]);
+				}
 				else {
 					throw OfficeExtension.Utility.createRuntimeError(ErrorCodes.generalException, "unexpected message type", "CustomFunctionProxy._handleMessage");
 				}
+			}
+			if (metadataArray.length > 0) {
+				this._handleMetadataEntries(metadataArray);
 			}
 			if (invocationArray.length > 0) {
 				var batchArray=this._batchInvocationEntries(invocationArray);
@@ -33079,15 +33124,33 @@ var Excel;
 			}
 			return OfficeExtension.Utility._createPromiseFromResult(null);
 		};
+		CustomFunctionProxy.prototype._handleMetadataEntries=function (entryArray) {
+			for (var i=0; i < entryArray.length; i++) {
+				var messageJson=entryArray[i].message;
+				if (OfficeExtension.Utility.isNullOrEmptyString(messageJson)) {
+					throw OfficeExtension.Utility.createRuntimeError(ErrorCodes.generalException, "messageJson", "CustomFunctionProxy._handleMetadataEntries");
+				}
+				var message=JSON.parse(messageJson);
+				if (_isNullOrUndefined(message)) {
+					throw OfficeExtension.Utility.createRuntimeError(ErrorCodes.generalException, "message", "CustomFunctionProxy._handleMetadataEntries");
+				}
+				Excel.Script._CustomFunctionMetadata[message.functionName]={
+					options: {
+						stream: message.isStream,
+						cancelable: message.isCancelable
+					}
+				};
+			}
+		};
 		CustomFunctionProxy.prototype._handleCancellationEntries=function (entryArray) {
 			for (var i=0; i < entryArray.length; i++) {
 				var messageJson=entryArray[i].message;
 				if (OfficeExtension.Utility.isNullOrEmptyString(messageJson)) {
-					throw OfficeExtension.Utility.createRuntimeError(ErrorCodes.generalException, "messageJson", "CustomFunctionProxy._handleMessage");
+					throw OfficeExtension.Utility.createRuntimeError(ErrorCodes.generalException, "messageJson", "CustomFunctionProxy._handleCancellationEntries");
 				}
 				var message=JSON.parse(messageJson);
 				if (_isNullOrUndefined(message)) {
-					throw OfficeExtension.Utility.createRuntimeError(ErrorCodes.generalException, "message", "CustomFunctionProxy._handleMessage");
+					throw OfficeExtension.Utility.createRuntimeError(ErrorCodes.generalException, "message", "CustomFunctionProxy._handleCancellationEntries");
 				}
 				var invocationId=message.invocationId;
 				var invocationContext=this._invocationContextMap[invocationId];
@@ -33117,19 +33180,40 @@ var Excel;
 				if (_isNullOrUndefined(message.functionName)) {
 					throw OfficeExtension.Utility.createRuntimeError(ErrorCodes.generalException, "functionName", "CustomFunctionProxy._batchInvocationEntries");
 				}
-				var definition={};
 				var batchIndex=-1;
-				var isStreaming=false;
+				var call=void 0;
+				var isCancelable=void 0;
+				var isStreaming=void 0;
 				var isBatching=false;
-				var nameSplit=CustomFunctionProxy.splitName(message.functionName);
-				var definitionCollection=Excel.Script.CustomFunctions[nameSplit.namespace];
-				if (_isNullOrUndefined(definitionCollection)) {
-					if (_isNullOrUndefined(window[nameSplit.name]) || typeof (window[nameSplit.name]) !="function") {
+				var metadata=Excel.Script._CustomFunctionMetadata[message.functionName];
+				if (!_isNullOrUndefined(metadata)) {
+					var functionParent=window;
+					var beginOfSegmentIndex=0;
+					var endOfSegmentIndex=message.functionName.indexOf(".", beginOfSegmentIndex);
+					while (endOfSegmentIndex > beginOfSegmentIndex) {
+						var functionNameSegment=message.functionName.substring(beginOfSegmentIndex, endOfSegmentIndex);
+						if (_isNullOrUndefined(functionParent[functionNameSegment]) || typeof (functionParent[functionNameSegment]) !="object") {
+							throw OfficeExtension.Utility.createRuntimeError(ErrorCodes.invalidOperation, OfficeExtension.Utility._getResourceString(OfficeExtension.ResourceStrings.customFunctionDefintionMissing), "CustomFunctionProxy._batchInvocationEntries");
+						}
+						functionParent=functionParent[functionNameSegment];
+						beginOfSegmentIndex=endOfSegmentIndex+1;
+						endOfSegmentIndex=message.functionName.indexOf(".", beginOfSegmentIndex);
+					}
+					var functionName=message.functionName.substring(beginOfSegmentIndex);
+					if (_isNullOrUndefined(functionParent[functionName]) || typeof (functionParent[functionName]) !="function") {
 						throw OfficeExtension.Utility.createRuntimeError(ErrorCodes.invalidOperation, OfficeExtension.Utility._getResourceString(OfficeExtension.ResourceStrings.customFunctionDefintionMissing), "CustomFunctionProxy._batchInvocationEntries");
 					}
-					definition.call=window[nameSplit.name];
+					call=functionParent[functionName];
+					isCancelable=metadata.options.cancelable;
+					isStreaming=metadata.options.stream;
 				}
 				else {
+					var nameSplit=CustomFunctionProxy.splitName(message.functionName);
+					var definitionCollection=Excel.Script.CustomFunctions[nameSplit.namespace];
+					if (_isNullOrUndefined(definitionCollection)) {
+						throw OfficeExtension.Utility.createRuntimeError(ErrorCodes.invalidOperation, OfficeExtension.Utility._getResourceString(OfficeExtension.ResourceStrings.customFunctionDefintionMissing), "CustomFunctionProxy._batchInvocationEntries");
+					}
+					var definition={};
 					definition=definitionCollection[nameSplit.name];
 					if (_isNullOrUndefined(definition)) {
 						throw OfficeExtension.Utility.createRuntimeError(ErrorCodes.invalidOperation, OfficeExtension.Utility._getResourceString(OfficeExtension.ResourceStrings.customFunctionDefintionMissing), "CustomFunctionProxy._batchInvocationEntries");
@@ -33137,19 +33221,9 @@ var Excel;
 					if (_isNullOrUndefined(definition.call)) {
 						throw OfficeExtension.Utility.createRuntimeError(ErrorCodes.invalidOperation, OfficeExtension.Utility._getResourceString(OfficeExtension.ResourceStrings.customFunctionImplementationMissing), "CustomFunctionProxy._batchInvocationEntries");
 					}
-					if (!_isNullOrUndefined(definition.options) && (definition.options.stream || definition.options.cancelable)) {
-						var setResult=undefined;
-						if (definition.options.stream) {
-							isStreaming=true;
-							setResult=(function (result) {
-								_this._setResult(message.invocationId, result);
-							});
-						}
-						var invocationContext=void 0;
-						invocationContext=new InvocationContext(setResult);
-						this_1._invocationContextMap[message.invocationId]=invocationContext;
-						message.parameterValues.push(invocationContext);
-					}
+					call=definition.call;
+					isCancelable=!_isNullOrUndefined(definition.options) && !_isNullOrUndefined(definition.options.cancelable) && definition.options.cancelable;
+					isStreaming=!_isNullOrUndefined(definition.options) && !_isNullOrUndefined(definition.options.stream) && definition.options.stream;
 					if (!_isNullOrUndefined(definition.options) && definition.options.batch) {
 						isBatching=true;
 						for (var i_1=0; i_1 < batchArray.length; i_1++) {
@@ -33160,13 +33234,25 @@ var Excel;
 						}
 					}
 				}
+				if (isStreaming || isCancelable) {
+					var setResult=undefined;
+					if (isStreaming) {
+						setResult=(function (result) {
+							_this._setResult(message.invocationId, result);
+						});
+					}
+					var invocationContext=void 0;
+					invocationContext=new InvocationContext(setResult);
+					this_1._invocationContextMap[message.invocationId]=invocationContext;
+					message.parameterValues.push(invocationContext);
+				}
 				if (batchIndex >=0) {
 					batchArray[batchIndex].invocationIds.push(message.invocationId);
 					batchArray[batchIndex].parameterValueSets.push(message.parameterValues);
 				}
 				else {
 					batchArray.push({
-						call: definition.call,
+						call: call,
 						isBatching: isBatching,
 						isStreaming: isStreaming,
 						invocationIds: [message.invocationId],
@@ -34433,61 +34519,53 @@ var Excel;
 		AxisTickLabelPosition["low"]="Low";
 		AxisTickLabelPosition["none"]="None";
 	})(AxisTickLabelPosition=Excel.AxisTickLabelPosition || (Excel.AxisTickLabelPosition={}));
-	var BindingType;
-	(function (BindingType) {
-		BindingType["range"]="Range";
-		BindingType["table"]="Table";
-		BindingType["text"]="Text";
-	})(BindingType=Excel.BindingType || (Excel.BindingType={}));
-	var BorderIndex;
-	(function (BorderIndex) {
-		BorderIndex["edgeTop"]="EdgeTop";
-		BorderIndex["edgeBottom"]="EdgeBottom";
-		BorderIndex["edgeLeft"]="EdgeLeft";
-		BorderIndex["edgeRight"]="EdgeRight";
-		BorderIndex["insideVertical"]="InsideVertical";
-		BorderIndex["insideHorizontal"]="InsideHorizontal";
-		BorderIndex["diagonalDown"]="DiagonalDown";
-		BorderIndex["diagonalUp"]="DiagonalUp";
-	})(BorderIndex=Excel.BorderIndex || (Excel.BorderIndex={}));
-	var BorderLineStyle;
-	(function (BorderLineStyle) {
-		BorderLineStyle["none"]="None";
-		BorderLineStyle["continuous"]="Continuous";
-		BorderLineStyle["dash"]="Dash";
-		BorderLineStyle["dashDot"]="DashDot";
-		BorderLineStyle["dashDotDot"]="DashDotDot";
-		BorderLineStyle["dot"]="Dot";
-		BorderLineStyle["double"]="Double";
-		BorderLineStyle["slantDashDot"]="SlantDashDot";
-	})(BorderLineStyle=Excel.BorderLineStyle || (Excel.BorderLineStyle={}));
-	var BorderWeight;
-	(function (BorderWeight) {
-		BorderWeight["hairline"]="Hairline";
-		BorderWeight["thin"]="Thin";
-		BorderWeight["medium"]="Medium";
-		BorderWeight["thick"]="Thick";
-	})(BorderWeight=Excel.BorderWeight || (Excel.BorderWeight={}));
-	var CalculationMode;
-	(function (CalculationMode) {
-		CalculationMode["automatic"]="Automatic";
-		CalculationMode["automaticExceptTables"]="AutomaticExceptTables";
-		CalculationMode["manual"]="Manual";
-	})(CalculationMode=Excel.CalculationMode || (Excel.CalculationMode={}));
-	var CalculationType;
-	(function (CalculationType) {
-		CalculationType["recalculate"]="Recalculate";
-		CalculationType["full"]="Full";
-		CalculationType["fullRebuild"]="FullRebuild";
-	})(CalculationType=Excel.CalculationType || (Excel.CalculationType={}));
-	var ClearApplyTo;
-	(function (ClearApplyTo) {
-		ClearApplyTo["all"]="All";
-		ClearApplyTo["formats"]="Formats";
-		ClearApplyTo["contents"]="Contents";
-		ClearApplyTo["hyperlinks"]="Hyperlinks";
-		ClearApplyTo["removeHyperlinks"]="RemoveHyperlinks";
-	})(ClearApplyTo=Excel.ClearApplyTo || (Excel.ClearApplyTo={}));
+	var TrendlineType;
+	(function (TrendlineType) {
+		TrendlineType["linear"]="Linear";
+		TrendlineType["exponential"]="Exponential";
+		TrendlineType["logarithmic"]="Logarithmic";
+		TrendlineType["movingAverage"]="MovingAverage";
+		TrendlineType["polynomial"]="Polynomial";
+		TrendlineType["power"]="Power";
+	})(TrendlineType=Excel.TrendlineType || (Excel.TrendlineType={}));
+	var ChartAxisType;
+	(function (ChartAxisType) {
+		ChartAxisType["invalid"]="Invalid";
+		ChartAxisType["category"]="Category";
+		ChartAxisType["value"]="Value";
+		ChartAxisType["series"]="Series";
+	})(ChartAxisType=Excel.ChartAxisType || (Excel.ChartAxisType={}));
+	var ChartAxisGroup;
+	(function (ChartAxisGroup) {
+		ChartAxisGroup["primary"]="Primary";
+		ChartAxisGroup["secondary"]="Secondary";
+	})(ChartAxisGroup=Excel.ChartAxisGroup || (Excel.ChartAxisGroup={}));
+	var ChartAxisScaleType;
+	(function (ChartAxisScaleType) {
+		ChartAxisScaleType["linear"]="Linear";
+		ChartAxisScaleType["logarithmic"]="Logarithmic";
+	})(ChartAxisScaleType=Excel.ChartAxisScaleType || (Excel.ChartAxisScaleType={}));
+	var ChartAxisPosition;
+	(function (ChartAxisPosition) {
+		ChartAxisPosition["automatic"]="Automatic";
+		ChartAxisPosition["maximum"]="Maximum";
+		ChartAxisPosition["minimum"]="Minimum";
+		ChartAxisPosition["custom"]="Custom";
+	})(ChartAxisPosition=Excel.ChartAxisPosition || (Excel.ChartAxisPosition={}));
+	var ChartAxisTickMark;
+	(function (ChartAxisTickMark) {
+		ChartAxisTickMark["none"]="None";
+		ChartAxisTickMark["cross"]="Cross";
+		ChartAxisTickMark["inside"]="Inside";
+		ChartAxisTickMark["outside"]="Outside";
+	})(ChartAxisTickMark=Excel.ChartAxisTickMark || (Excel.ChartAxisTickMark={}));
+	var ChartAxisTickLabelPosition;
+	(function (ChartAxisTickLabelPosition) {
+		ChartAxisTickLabelPosition["nextToAxis"]="NextToAxis";
+		ChartAxisTickLabelPosition["high"]="High";
+		ChartAxisTickLabelPosition["low"]="Low";
+		ChartAxisTickLabelPosition["none"]="None";
+	})(ChartAxisTickLabelPosition=Excel.ChartAxisTickLabelPosition || (Excel.ChartAxisTickLabelPosition={}));
 	var ChartAxisDisplayUnit;
 	(function (ChartAxisDisplayUnit) {
 		ChartAxisDisplayUnit["none"]="None";
@@ -34739,6 +34817,70 @@ var Excel;
 		ChartSeriesType["surface3D"]="Surface3D";
 		ChartSeriesType["column3D"]="Column3D";
 	})(ChartSeriesType=Excel.ChartSeriesType || (Excel.ChartSeriesType={}));
+	var ChartTrendlineType;
+	(function (ChartTrendlineType) {
+		ChartTrendlineType["linear"]="Linear";
+		ChartTrendlineType["exponential"]="Exponential";
+		ChartTrendlineType["logarithmic"]="Logarithmic";
+		ChartTrendlineType["movingAverage"]="MovingAverage";
+		ChartTrendlineType["polynomial"]="Polynomial";
+		ChartTrendlineType["power"]="Power";
+	})(ChartTrendlineType=Excel.ChartTrendlineType || (Excel.ChartTrendlineType={}));
+	var BindingType;
+	(function (BindingType) {
+		BindingType["range"]="Range";
+		BindingType["table"]="Table";
+		BindingType["text"]="Text";
+	})(BindingType=Excel.BindingType || (Excel.BindingType={}));
+	var BorderIndex;
+	(function (BorderIndex) {
+		BorderIndex["edgeTop"]="EdgeTop";
+		BorderIndex["edgeBottom"]="EdgeBottom";
+		BorderIndex["edgeLeft"]="EdgeLeft";
+		BorderIndex["edgeRight"]="EdgeRight";
+		BorderIndex["insideVertical"]="InsideVertical";
+		BorderIndex["insideHorizontal"]="InsideHorizontal";
+		BorderIndex["diagonalDown"]="DiagonalDown";
+		BorderIndex["diagonalUp"]="DiagonalUp";
+	})(BorderIndex=Excel.BorderIndex || (Excel.BorderIndex={}));
+	var BorderLineStyle;
+	(function (BorderLineStyle) {
+		BorderLineStyle["none"]="None";
+		BorderLineStyle["continuous"]="Continuous";
+		BorderLineStyle["dash"]="Dash";
+		BorderLineStyle["dashDot"]="DashDot";
+		BorderLineStyle["dashDotDot"]="DashDotDot";
+		BorderLineStyle["dot"]="Dot";
+		BorderLineStyle["double"]="Double";
+		BorderLineStyle["slantDashDot"]="SlantDashDot";
+	})(BorderLineStyle=Excel.BorderLineStyle || (Excel.BorderLineStyle={}));
+	var BorderWeight;
+	(function (BorderWeight) {
+		BorderWeight["hairline"]="Hairline";
+		BorderWeight["thin"]="Thin";
+		BorderWeight["medium"]="Medium";
+		BorderWeight["thick"]="Thick";
+	})(BorderWeight=Excel.BorderWeight || (Excel.BorderWeight={}));
+	var CalculationMode;
+	(function (CalculationMode) {
+		CalculationMode["automatic"]="Automatic";
+		CalculationMode["automaticExceptTables"]="AutomaticExceptTables";
+		CalculationMode["manual"]="Manual";
+	})(CalculationMode=Excel.CalculationMode || (Excel.CalculationMode={}));
+	var CalculationType;
+	(function (CalculationType) {
+		CalculationType["recalculate"]="Recalculate";
+		CalculationType["full"]="Full";
+		CalculationType["fullRebuild"]="FullRebuild";
+	})(CalculationType=Excel.CalculationType || (Excel.CalculationType={}));
+	var ClearApplyTo;
+	(function (ClearApplyTo) {
+		ClearApplyTo["all"]="All";
+		ClearApplyTo["formats"]="Formats";
+		ClearApplyTo["contents"]="Contents";
+		ClearApplyTo["hyperlinks"]="Hyperlinks";
+		ClearApplyTo["removeHyperlinks"]="RemoveHyperlinks";
+	})(ClearApplyTo=Excel.ClearApplyTo || (Excel.ClearApplyTo={}));
 	var ConditionalDataBarAxisFormat;
 	(function (ConditionalDataBarAxisFormat) {
 		ConditionalDataBarAxisFormat["automatic"]="Automatic";
@@ -35167,6 +35309,7 @@ var Excel;
 		EventType["chartDeactivated"]="ChartDeactivated";
 		EventType["chartDeleted"]="ChartDeleted";
 		EventType["worksheetCalculated"]="WorksheetCalculated";
+		EventType["visualSelectionChanged"]="VisualSelectionChanged";
 	})(EventType=Excel.EventType || (Excel.EventType={}));
 	var DocumentPropertyItem;
 	(function (DocumentPropertyItem) {
@@ -35187,15 +35330,6 @@ var Excel;
 		DocumentPropertyItem["manager"]="Manager";
 		DocumentPropertyItem["company"]="Company";
 	})(DocumentPropertyItem=Excel.DocumentPropertyItem || (Excel.DocumentPropertyItem={}));
-	var TrendlineType;
-	(function (TrendlineType) {
-		TrendlineType["linear"]="Linear";
-		TrendlineType["exponential"]="Exponential";
-		TrendlineType["logarithmic"]="Logarithmic";
-		TrendlineType["movingAverage"]="MovingAverage";
-		TrendlineType["polynomial"]="Polynomial";
-		TrendlineType["power"]="Power";
-	})(TrendlineType=Excel.TrendlineType || (Excel.TrendlineType={}));
 	var SubtotalLocationType;
 	(function (SubtotalLocationType) {
 		SubtotalLocationType["atTop"]="AtTop";
