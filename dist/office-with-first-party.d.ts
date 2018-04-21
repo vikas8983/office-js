@@ -183,15 +183,15 @@ declare namespace Office {
         messageParent(messageObject: any): void;
         /**
          * Closes the UI container where the JavaScript is executing.
-         * 
+         *
          * Supported hosts: Outlook - Minimum requirement set: Mailbox 1.5
-         * 
+         *
          * The behavior of this method is specified by the following:
-         * 
+         *
          * Called from a UI-less command button: No effect. Any dialog opened by displayDialogAsync will remain open.
-         * 
+         *
          * Called from a taskpane: The taskpane will close. Any dialog opened by displayDialogAsync will also close. If the taskpane supports pinning and was pinned by the user, it will be un-pinned.
-         * 
+         *
          * Called from a module extension: No effect.
          */
         closeContainer(): void;
@@ -2102,6 +2102,19 @@ declare namespace Office {
          * Returns string values that match the named regular expression defined in the manifest XML file
          */
         getRegExMatchesByName(name: string): Array<string>;
+        /**
+        * Gets the entities found in the selected item that are currently selected
+        *
+        * [Api set: Mailbox 1.6]
+        */
+        getSelectedEntities(): Entities;
+        /**
+         * Returns string values in the currently selected message object that match the regular expressions defined in the manifest XML file and
+         * are selected in the current item
+         *
+         * [Api set: Mailbox 1.6]
+         */
+        getSelectedRegExMatches(): any;
     }
     export interface LocalClientTime {
         month: number;
@@ -26410,6 +26423,16 @@ declare namespace Word {
          * [Api set: WordApi]
          */
         isTapEnabled(): OfficeExtension.ClientResult<boolean>;
+        /**
+         *
+         * Launch file URL in office application. Win32 Only.
+         *
+         * [Api set: WordApi]
+         *
+         * @param documentUrl Required. Document URL.
+         * @param documentUrl Optional. Whether to launch in universal app if win32 app is not available. The default value is false.
+         */
+        launchFileUrlInOfficeApp(documentUrl: string, useUniversalAsBackUp?: boolean): OfficeExtension.ClientResult<boolean>;
         /**
          * Create a new instance of Word.Application object
          */
