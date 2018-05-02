@@ -1,0 +1,46 @@
+version: 1.1.7-adhoc.7
+tag: adhoc
+githubReleaseUrl: https://github.com/OfficeDev/office-js/releases/tag/v1.1.7-adhoc.7
+githubViewUrl: https://github.com/OfficeDev/office-js/tree/v1.1.7-adhoc.7
+deployedAt: 2018-05-02 8:47 pm UTC  (2018-05-02 1:47 pm Pacific Time)
+
+history:
+    adhocBranchName: __for_merging--beta-next--16.0.9330.5450--2018-05-02--1.44pm
+    commitMessage: __for_merging--beta-next--16.0.9330.5450--2018-05-02--1.44pm
+    fullCommitHistory:
+        - 
+            sha: >-
+                https://github.com/OfficeDev/office-js/commits/3e83502837a4c400c02f033b17104a8ca3272194
+            message: >-
+                JS dist files --
+                __for_merging--beta-next--16.0.9330.5450--2018-05-02--1.44pm
+        - 
+            sha: >-
+                https://github.com/OfficeDev/office-js/commits/c0472ffc9ebfe3ec047c66ff5b4264039f6c84ee
+            message: >-
+                Localized strings --
+                __for_merging--beta-next--16.0.9330.5450--2018-05-02--1.44pm
+        - 
+            sha: >-
+                https://github.com/OfficeDev/office-js/commits/366b37e207de222029a85ffa7f4369f5f9226417
+            message: Copying other assets from the release branch of the repo
+        - 
+            sha: >-
+                https://github.com/OfficeDev/office-js/commits/4665914252a3f879663d6db57dbfc16855acc82c
+            message: >-
+                [PUBLISH TOOL] Add deployment infrastructure for adhoc NPM
+                publish
+        - 
+            sha: >-
+                https://github.com/OfficeDev/office-js/commits/ceb6fb8d57f85f96896723cf12a9642f6c6a5b16
+            message: >-
+                [BEGIN PUBLISH UPDATES] --
+                __for_merging--beta-next--16.0.9330.5450--2018-05-02--1.44pm
+
+
+unpkgUrls: |-
+    this specific build number:
+        https://unpkg.com/@microsoft/office-js@1.1.7-adhoc.7/dist/office.js
+        https://unpkg.com/@microsoft/office-js@1.1.7-adhoc.7/dist/office.d.ts
+
+buildLog: https://travis-ci.org/OfficeDev/office-js/builds/374133052
