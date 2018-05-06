@@ -14272,4 +14272,6 @@ var OfficeCore;
 	})(ErrorCodes=OfficeCore.ErrorCodes || (OfficeCore.ErrorCodes={}));
 })(OfficeCore || (OfficeCore={}));
 
+OfficeExtension.Utility._doApiNotSupportedCheck=true;
+
 
