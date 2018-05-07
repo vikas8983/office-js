@@ -1,5 +1,5 @@
 /* Office JavaScript API library */
-/* Version: 16.0.9323.3000 */
+/* Version: 16.0.9320.1000 */
 /*
 	Copyright (c) Microsoft Corporation.  All rights reserved.
 */
@@ -1111,7 +1111,7 @@ var Office;
     Office.Promise = OfficePromise;
 })(Office || (Office = {}));
 OSF.ConstantNames = {
-    FileVersion: "16.0.9323.3000",
+    FileVersion: "16.0.9320.1000",
     OfficeJS: "office.js",
     OfficeDebugJS: "office.debug.js",
     DefaultLocale: "en-us",
@@ -1589,3 +1589,12 @@ OSF._OfficeAppFactory = (function OSF__OfficeAppFactory() {
         getWindowName: function OSF__OfficeAppFactory$getWindowName() { return _windowName; }
     };
 })();
+
+Office.Preview = {
+    startCustomFunctions: function() {
+        return Office.onReady()
+            .then(function() {
+                Excel.CustomFunctions.initialize();
+            });
+    }
+}

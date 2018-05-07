@@ -14,6 +14,10 @@ Copyright (c) Microsoft Corporation
 ////////////////////////////////////////////////////////////////
 
 declare namespace Office {
+    export var Preview: {
+        startCustomFunctions(): Promise<void>;
+    }
+
     export var context: Context;
     /**
      * This method is called after the Office API was loaded.
