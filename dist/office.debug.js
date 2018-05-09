@@ -1483,9 +1483,6 @@ OSF._OfficeAppFactory = (function OSF__OfficeAppFactory() {
                                 }
                                 _initializationHelper.prepareRightAfterWebExtensionInitialize && _initializationHelper.prepareRightAfterWebExtensionInitialize();
                             }
-                            else {
-                                throw "Office.js has not been fully loaded yet. Please try again later or make sure to add your initialization code on the Office.initialize function.";
-                            }
                         }, 400, 50);
                         setOfficeJsAsLoadedAndDispatchPendingOnReadyCallbacks(getHostAndPlatform(appContext.get_appName()));
                     };
