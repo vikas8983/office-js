@@ -1,8 +1,8 @@
-version: 1.1.9-custom-functions-preview.1
+version: 1.1.9-custom-functions-preview.2
 tag: custom-functions-preview
-githubReleaseUrl: https://github.com/OfficeDev/office-js/releases/tag/v1.1.9-custom-functions-preview.1
-githubViewUrl: https://github.com/OfficeDev/office-js/tree/v1.1.9-custom-functions-preview.1
-deployedAt: 2018-05-07 3:50 pm UTC  (2018-05-07 8:50 am Pacific Time)
+githubReleaseUrl: https://github.com/OfficeDev/office-js/releases/tag/v1.1.9-custom-functions-preview.2
+githubViewUrl: https://github.com/OfficeDev/office-js/tree/v1.1.9-custom-functions-preview.2
+deployedAt: 2018-05-09 9:40 pm UTC  (2018-05-09 2:40 pm Pacific Time)
 
 history:
     adhocBranchName: >-
@@ -42,10 +42,10 @@ history:
 
 unpkgUrls: |-
     this specific build number:
-        https://unpkg.com/@microsoft/office-js@1.1.9-custom-functions-preview.1/dist/office.js
-        https://unpkg.com/@microsoft/office-js@1.1.9-custom-functions-preview.1/dist/office.d.ts
+        https://unpkg.com/@microsoft/office-js@1.1.9-custom-functions-preview.2/dist/office.js
+        https://unpkg.com/@microsoft/office-js@1.1.9-custom-functions-preview.2/dist/office.d.ts
     builds using this same tag ("custom-functions-preview"):
         https://unpkg.com/@microsoft/office-js@custom-functions-preview/dist/office.js
         https://unpkg.com/@microsoft/office-js@custom-functions-preview/dist/office.d.ts
 
-buildLog: https://travis-ci.org/OfficeDev/office-js/builds/375957841
+buildLog: https://travis-ci.org/OfficeDev/office-js/builds/377029510
