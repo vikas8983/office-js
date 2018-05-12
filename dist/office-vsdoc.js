@@ -1,4 +1,4 @@
-/* Version: 16.0.9320.1000 */
+/* Version: 16.0.9330.3000 */
 /*
 	Copyright (c) Microsoft Corporation.  All rights reserved.
 */
@@ -3283,7 +3283,8 @@ var Excel;
 			/// <summary> Represents the Excel application that manages the workbook. [Api set: ExcelApi 1.1] </summary>
 			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
 			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
-			/// <field name="calculationMode" type="String">Returns the calculation mode used in the workbook. See Excel.CalculationMode for details. [Api set: ExcelApi 1.1 for get, 1.8 for set]</field>
+			/// <field name="calculationMode" type="String">Returns the calculation mode used in the workbook, as defined by the constants in Excel.CalculationMode. Possible values are: `Automatic`, where Excel controls recalculation; `AutomaticExceptTables`, where Excel controls recalculation but ignores changes in tables; `Manual`, where calculation is done when the user requests it. [Api set: ExcelApi 1.1 for get, 1.8 for set]</field>
+			/// <field name="iterativeCalculation" type="Excel.IterativeCalculation">Returns the Iterative Calculation settings.              On Excel for Windows and Excel for Mac, the settings will aplly to the Excel Application.              On Excel Online and Excel for other platforms, the settings will apply to the active workbook. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 		}
 
 		Application.prototype.load = function(option) {
@@ -7747,7 +7748,7 @@ var Excel;
 			/// <summary>
 			/// Gets a new scoped collection of custom XML parts whose namespaces match the given namespace. [Api set: ExcelApi 1.5]
 			/// </summary>
-			/// <param name="namespaceUri" type="String"></param>
+			/// <param name="namespaceUri" type="String">This must be a fully qualified schema URI; for example, &quot;http://schemas.contoso.com/review/1.0&quot;.</param>
 			/// <returns type="Excel.CustomXmlPartScopedCollection"></returns>
 		}
 		CustomXmlPartCollection.prototype.getCount = function() {
@@ -7930,6 +7931,87 @@ var Excel;
 		return DataConnectionCollection;
 	})(OfficeExtension.ClientObject);
 	Excel.DataConnectionCollection = DataConnectionCollection;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	var DataControllerClient = (function(_super) {
+		__extends(DataControllerClient, _super);
+		function DataControllerClient() {
+			/// <summary> Represents how the Visual is setup to use the data source. [Api set: ExcelApi 99.9] </summary>
+			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
+			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
+		}
+
+		DataControllerClient.prototype.load = function(option) {
+			/// <summary>
+			/// Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+			/// </summary>
+			/// <param name="option" type="string | string[] | OfficeExtension.LoadOption"/>
+			/// <returns type="Excel.DataControllerClient"/>
+		}
+		DataControllerClient.prototype.addField = function(wellId, fieldId, position) {
+			/// <summary>
+			/// Add a field to well. [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <param name="wellId" type="Number">The id of the well that the field will be added to.</param>
+			/// <param name="fieldId" type="Number">The id of the field to add to the well.</param>
+			/// <param name="position" type="Number">The position in the well where the field should be added.</param>
+			/// <returns ></returns>
+		}
+		DataControllerClient.prototype.getAssociatedFields = function(wellId) {
+			/// <summary>
+			/// Gets an array of JSON objects representing the fields associated with the specified wellId.              The the objects in the array have an id(number) and name(string). [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <param name="wellId" type="Number">The id of the well to get the associated fields for.</param>
+			/// <returns type="OfficeExtension.ClientResult&lt;string&gt;"></returns>
+			var result = new OfficeExtension.ClientResult();
+			result.__proto__ = null;
+			result.value = '';
+			return result;
+		}
+		DataControllerClient.prototype.getAvailableFields = function(wellId) {
+			/// <summary>
+			/// Gets an array of JSON objects representing the fields that may be associated with wellId.              The the objects in the array have an id(number) and name(string). [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <param name="wellId" type="Number">The id of the well to get the available fields for.</param>
+			/// <returns type="OfficeExtension.ClientResult&lt;string&gt;"></returns>
+			var result = new OfficeExtension.ClientResult();
+			result.__proto__ = null;
+			result.value = '';
+			return result;
+		}
+		DataControllerClient.prototype.getWells = function() {
+			/// <summary>
+			/// Gets an array of JSON objects representing this visual&apos;s wells.              The the objects in the array have an id(number) and name(string). [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <returns type="OfficeExtension.ClientResult&lt;string&gt;"></returns>
+			var result = new OfficeExtension.ClientResult();
+			result.__proto__ = null;
+			result.value = '';
+			return result;
+		}
+		DataControllerClient.prototype.moveField = function(wellId, fromPosition, toPosition) {
+			/// <summary>
+			/// Move a field from one position to another in a well. [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <param name="wellId" type="Number">The id of the well to be moved.</param>
+			/// <param name="fromPosition" type="Number">The position in the well of the field to be moved.</param>
+			/// <param name="toPosition" type="Number">The new position for the field</param>
+			/// <returns ></returns>
+		}
+		DataControllerClient.prototype.removeField = function(wellId, position) {
+			/// <summary>
+			/// Remove a field from a well. [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <param name="wellId" type="Number">The id of the well that will have a field removed.</param>
+			/// <param name="position" type="Number">The position in the well of the field that should be removed</param>
+			/// <returns ></returns>
+		}
+
+		return DataControllerClient;
+	})(OfficeExtension.ClientObject);
+	Excel.DataControllerClient = DataControllerClient;
 })(Excel || (Excel = {__proto__: null}));
 
 var Excel;
@@ -8502,7 +8584,7 @@ var Excel;
 			/// <summary>
 			/// Apply a &quot;Values&quot; filter to the column for the given values. [Api set: ExcelApi 1.2]
 			/// </summary>
-			/// <param name="values" type="Array" >The list of values to show.</param>
+			/// <param name="values" type="Array" >The list of values to show. This must be an array of strings or an array of Excel.FilterDateTime objects.</param>
 			/// <returns ></returns>
 		}
 		Filter.prototype.clear = function() {
@@ -8531,6 +8613,7 @@ var Excel;
 				/// <field name="filterOn" type="String">The property used by the filter to determine whether the values should stay visible. [Api set: ExcelApi 1.2]</field>
 				/// <field name="icon" type="Excel.Interfaces.Icon">The icon used to filter cells. Used with &quot;icon&quot; filtering. [Api set: ExcelApi 1.2]</field>
 				/// <field name="operator" type="String">The operator used to combine criterion 1 and 2 when using &quot;custom&quot; filtering. [Api set: ExcelApi 1.2]</field>
+				/// <field name="subField" type="String">The property used by the filter to do rich filter on richvalues. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 				/// <field name="values" type="Array" >The set of values to be used as part of &quot;values&quot; filtering. [Api set: ExcelApi 1.2]</field>
 			}
 			return FilterCriteria;
@@ -11840,6 +11923,108 @@ var Excel;
 
 var Excel;
 (function (Excel) {
+	var HeaderFooter = (function(_super) {
+		__extends(HeaderFooter, _super);
+		function HeaderFooter() {
+			/// <summary> [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
+			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
+			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
+			/// <field name="centerFooter" type="String">Gets or sets the center footer of the worksheet.              To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="centerHeader" type="String">Gets or sets the center header of the worksheet.              To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="leftFooter" type="String">Gets or sets the left footer of the worksheet.              To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="leftHeader" type="String">Gets or sets the left header of the worksheet.              To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="rightFooter" type="String">Gets or sets the right footer of the worksheet.              To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="rightHeader" type="String">Gets or sets the right header of the worksheet.              To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+		}
+
+		HeaderFooter.prototype.load = function(option) {
+			/// <summary>
+			/// Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+			/// </summary>
+			/// <param name="option" type="string | string[] | OfficeExtension.LoadOption"/>
+			/// <returns type="Excel.HeaderFooter"/>
+		}
+
+		HeaderFooter.prototype.set = function() {
+			/// <signature>
+			/// <summary>Sets multiple properties on the object at the same time, based on JSON input.</summary>
+			/// <param name="properties" type="Excel.Interfaces.HeaderFooterUpdateData">Properties described by the Excel.Interfaces.HeaderFooterUpdateData interface.</param>
+			/// <param name="options" type="string">Options of the form { throwOnReadOnly?: boolean }
+			/// <br />
+			/// * throwOnReadOnly: Throw an error if the passed-in property list includes read-only properties (default = true).
+			/// </param>
+			/// </signature>
+			/// <signature>
+			/// <summary>Sets multiple properties on the object at the same time, based on an existing loaded object.</summary>
+			/// <param name="properties" type="HeaderFooter">An existing HeaderFooter object, with properties that have already been loaded and synced.</param>
+			/// </signature>
+		}
+
+		return HeaderFooter;
+	})(OfficeExtension.ClientObject);
+	Excel.HeaderFooter = HeaderFooter;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	var HeaderFooterGroup = (function(_super) {
+		__extends(HeaderFooterGroup, _super);
+		function HeaderFooterGroup() {
+			/// <summary> [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
+			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
+			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
+			/// <field name="even" type="Excel.HeaderFooter">The header/footer to use for even pages, odd header/footer needs to be specified for odd pages. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="first" type="Excel.HeaderFooter">The first page header/footer, for all other pages general or even/odd is used. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="general" type="Excel.HeaderFooter">The general header/footer, used for all pages unless even/odd or first page is specified. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="odd" type="Excel.HeaderFooter">The header/footer to use for odd pages, even header/footer needs to be specified for even pages. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="state" type="String">Gets or sets the state of which headers/footers are set. See Excel.HeaderFooterState for details. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="useSheetMargins" type="Boolean">Gets or sets a flag indicating if headers/footers are aligned with the page margins set in the page layout options for the worksheet. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="useSheetScale" type="Boolean">Gets or sets a flag indicating if headers/footers should be scaled by the page percentage scale set in the page layout options for the worksheet. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+		}
+
+		HeaderFooterGroup.prototype.load = function(option) {
+			/// <summary>
+			/// Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+			/// </summary>
+			/// <param name="option" type="string | string[] | OfficeExtension.LoadOption"/>
+			/// <returns type="Excel.HeaderFooterGroup"/>
+		}
+
+		HeaderFooterGroup.prototype.set = function() {
+			/// <signature>
+			/// <summary>Sets multiple properties on the object at the same time, based on JSON input.</summary>
+			/// <param name="properties" type="Excel.Interfaces.HeaderFooterGroupUpdateData">Properties described by the Excel.Interfaces.HeaderFooterGroupUpdateData interface.</param>
+			/// <param name="options" type="string">Options of the form { throwOnReadOnly?: boolean }
+			/// <br />
+			/// * throwOnReadOnly: Throw an error if the passed-in property list includes read-only properties (default = true).
+			/// </param>
+			/// </signature>
+			/// <signature>
+			/// <summary>Sets multiple properties on the object at the same time, based on an existing loaded object.</summary>
+			/// <param name="properties" type="HeaderFooterGroup">An existing HeaderFooterGroup object, with properties that have already been loaded and synced.</param>
+			/// </signature>
+		}
+
+		return HeaderFooterGroup;
+	})(OfficeExtension.ClientObject);
+	Excel.HeaderFooterGroup = HeaderFooterGroup;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	/// <summary> [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
+	var HeaderFooterState = {
+		__proto__: null,
+		"general": "general",
+		"firstGeneral": "firstGeneral",
+		"oddEven": "oddEven",
+		"firstOddEven": "firstOddEven",
+	}
+	Excel.HeaderFooterState = HeaderFooterState;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
 	/// <summary> [Api set: ExcelApi 1.1] </summary>
 	var HorizontalAlignment = {
 		__proto__: null,
@@ -11993,6 +12178,47 @@ var Excel;
 
 var Excel;
 (function (Excel) {
+	var IterativeCalculation = (function(_super) {
+		__extends(IterativeCalculation, _super);
+		function IterativeCalculation() {
+			/// <summary> Represents the Iterative Calculation settings. [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
+			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
+			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
+			/// <field name="enabled" type="Boolean">True if Excel will use iteration to resolve circular references. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="maxChange" type="Number">Returns or sets the maximum amount of change between each iteration as Excel resolves circular references. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="maxIteration" type="Number">Returns or sets the maximum number of iterations that Excel can use to resolve a circular reference. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+		}
+
+		IterativeCalculation.prototype.load = function(option) {
+			/// <summary>
+			/// Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+			/// </summary>
+			/// <param name="option" type="string | string[] | OfficeExtension.LoadOption"/>
+			/// <returns type="Excel.IterativeCalculation"/>
+		}
+
+		IterativeCalculation.prototype.set = function() {
+			/// <signature>
+			/// <summary>Sets multiple properties on the object at the same time, based on JSON input.</summary>
+			/// <param name="properties" type="Excel.Interfaces.IterativeCalculationUpdateData">Properties described by the Excel.Interfaces.IterativeCalculationUpdateData interface.</param>
+			/// <param name="options" type="string">Options of the form { throwOnReadOnly?: boolean }
+			/// <br />
+			/// * throwOnReadOnly: Throw an error if the passed-in property list includes read-only properties (default = true).
+			/// </param>
+			/// </signature>
+			/// <signature>
+			/// <summary>Sets multiple properties on the object at the same time, based on an existing loaded object.</summary>
+			/// <param name="properties" type="IterativeCalculation">An existing IterativeCalculation object, with properties that have already been loaded and synced.</param>
+			/// </signature>
+		}
+
+		return IterativeCalculation;
+	})(OfficeExtension.ClientObject);
+	Excel.IterativeCalculation = IterativeCalculation;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
 	/// <summary> [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
 	var LayoutRowType = {
 		__proto__: null,
@@ -12001,6 +12227,20 @@ var Excel;
 		"outlineRow": "outlineRow",
 	}
 	Excel.LayoutRowType = LayoutRowType;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	/// <summary> [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
+	var LinkedDataTypeState = {
+		__proto__: null,
+		"none": "none",
+		"validLinkedData": "validLinkedData",
+		"disambiguationNeeded": "disambiguationNeeded",
+		"brokenLinkedData": "brokenLinkedData",
+		"fetchingData": "fetchingData",
+	}
+	Excel.LinkedDataTypeState = LinkedDataTypeState;
 })(Excel || (Excel = {__proto__: null}));
 
 var Excel;
@@ -12075,7 +12315,7 @@ var Excel;
 			/// <field name="comment" type="String">Represents the comment associated with this name. [Api set: ExcelApi 1.4]</field>
 			/// <field name="formula" >Gets or sets the formula of the named item.  Formula always starts with a &apos;=&apos; sign. [Api set: ExcelApi 1.7]</field>
 			/// <field name="name" type="String">The name of the object. Read-only. [Api set: ExcelApi 1.1]</field>
-			/// <field name="scope" type="String">Indicates whether the name is scoped to the workbook or to a specific worksheet. Read-only. [Api set: ExcelApi 1.4]</field>
+			/// <field name="scope" type="String">Indicates whether the name is scoped to the workbook or to a specific worksheet. Possible values are: Worksheet, Workbook. Read-only. [Api set: ExcelApi 1.4]</field>
 			/// <field name="type" type="String">Indicates the type of the value returned by the name&apos;s formula. See Excel.NamedItemType for details. Read-only. [Api set: ExcelApi 1.1 for String,Integer,Double,Boolean,Range,Error; 1.7 for Array]</field>
 			/// <field name="value" >Represents the value computed by the name&apos;s formula. For a named range, will return the range address. Read-only. [Api set: ExcelApi 1.1]</field>
 			/// <field name="visible" type="Boolean">Specifies whether the object is visible or not. [Api set: ExcelApi 1.1]</field>
@@ -12249,16 +12489,123 @@ var Excel;
 
 var Excel;
 (function (Excel) {
+	var PageBreak = (function(_super) {
+		__extends(PageBreak, _super);
+		function PageBreak() {
+			/// <summary> [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
+			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
+			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
+			/// <field name="columnIndex" type="Number">Represents the column index for the page break [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="rowIndex" type="Number">Represents the row index for the page break [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+		}
+
+		PageBreak.prototype.load = function(option) {
+			/// <summary>
+			/// Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+			/// </summary>
+			/// <param name="option" type="string | string[] | OfficeExtension.LoadOption"/>
+			/// <returns type="Excel.PageBreak"/>
+		}
+		PageBreak.prototype.delete = function() {
+			/// <summary>
+			/// Deletes a page break object. [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <returns ></returns>
+		}
+		PageBreak.prototype.getRange = function() {
+			/// <summary>
+			/// Gets the first cell after the page break. [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <returns type="Excel.Range"></returns>
+		}
+
+		return PageBreak;
+	})(OfficeExtension.ClientObject);
+	Excel.PageBreak = PageBreak;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	var PageBreakCollection = (function(_super) {
+		__extends(PageBreakCollection, _super);
+		function PageBreakCollection() {
+			/// <summary> [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
+			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
+			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
+			/// <field name="items" type="Array" elementType="Excel.PageBreak">Gets the loaded child items in this collection.</field>
+		}
+
+		PageBreakCollection.prototype.load = function(option) {
+			/// <summary>
+			/// Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+			/// </summary>
+			/// <param name="option" type="string | string[] | OfficeExtension.LoadOption"/>
+			/// <returns type="Excel.PageBreakCollection"/>
+		}
+		PageBreakCollection.prototype.add = function(pageBreakRange) {
+			/// <summary>
+			/// Adds a page break before the top-left cell of the range specified. [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <param name="pageBreakRange" >The range immediately after the page break to be added.</param>
+			/// <returns type="Excel.PageBreak"></returns>
+		}
+		PageBreakCollection.prototype.getCount = function() {
+			/// <summary>
+			/// Gets the number of page breaks in the collection. [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <returns type="OfficeExtension.ClientResult&lt;number&gt;"></returns>
+			var result = new OfficeExtension.ClientResult();
+			result.__proto__ = null;
+			result.value = 0;
+			return result;
+		}
+		PageBreakCollection.prototype.getItem = function(index) {
+			/// <summary>
+			/// Gets a page break object via the index. [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <param name="index" >Index of the page break.</param>
+			/// <returns type="Excel.PageBreak"></returns>
+		}
+		PageBreakCollection.prototype.resetPageBreaks = function() {
+			/// <summary>
+			/// Resets all manual page breaks in the collection. [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <returns ></returns>
+		}
+
+		return PageBreakCollection;
+	})(OfficeExtension.ClientObject);
+	Excel.PageBreakCollection = PageBreakCollection;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
 	var PageLayout = (function(_super) {
 		__extends(PageLayout, _super);
 		function PageLayout() {
 			/// <summary> [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
 			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
 			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
-			/// <field name="blackAndWhite" type="Boolean">Gets or sets the black and white print option. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
-			/// <field name="orientation" type="String">Gets or sets the orientation of the page. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
-			/// <field name="paperSize" type="String">Gets or sets the paper size of the page. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
-			/// <field name="printErrors" type="String">Gets or sets the print errors option. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="blackAndWhite" type="Boolean">Gets or sets the worksheet&apos;s black and white print option. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="bottomMargin" type="Number">Gets or sets the worksheet&apos;s bottom page margin to use for printing in points. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="centerHorizontally" type="Boolean">Gets or sets the worksheet&apos;s center horizontally flag. This flag determines whether the worksheet will be centered horizontally when it&apos;s printed. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="centerVertically" type="Boolean">Gets or sets the worksheet&apos;s center vertically flag. This flag determines whether the worksheet will be centered vertically when it&apos;s printed. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="draft" type="Boolean">Gets or sets the worksheet&apos;s draft mode option. If true the sheet will be printed without graphics. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="firstPageNumber" >Gets or sets the worksheet&apos;s first page number to print. Null value represents &quot;auto&quot; page numbering. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="footerMargin" type="Number">Gets or sets the worksheet&apos;s footer margin, in points, for use when printing. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="headerMargin" type="Number">Gets or sets the worksheet&apos;s header margin, in points, for use when printing. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="headersFooters" type="Excel.HeaderFooterGroup">Header and footer configuration for the worksheet. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="leftMargin" type="Number">Gets or sets the worksheet&apos;s left margin, in points, for use when printing. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="orientation" type="String">Gets or sets the worksheet&apos;s orientation of the page. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="paperSize" type="String">Gets or sets the worksheet&apos;s paper size of the page. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="printComments" type="String">Gets or sets whether the worksheet&apos;s comments should be displayed when printing. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="printErrors" type="String">Gets or sets the worksheet&apos;s print errors option. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="printGridlines" type="Boolean">Gets or sets the worksheet&apos;s print gridlines flag. This flag determines whether gridlines will be printed or not. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="printHeadings" type="Boolean">Gets or sets the worksheet&apos;s print headings flag. This flag determines whether headings will be printed or not. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="printOrder" type="String">Gets or sets the worksheet&apos;s page print order option. This specifies the order to use for processing the page number printed. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="rightMargin" type="Number">Gets or sets the worksheet&apos;s right margin, in points, for use when printing. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="topMargin" type="Number">Gets or sets the worksheet&apos;s top margin, in points, for use when printing. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="zoom" type="Excel.Interfaces.PageLayoutZoomOptions">Gets or sets the worksheet&apos;s print zoom options. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 		}
 
 		PageLayout.prototype.load = function(option) {
@@ -12283,10 +12630,114 @@ var Excel;
 			/// <param name="properties" type="PageLayout">An existing PageLayout object, with properties that have already been loaded and synced.</param>
 			/// </signature>
 		}
+		PageLayout.prototype.getPrintArea = function() {
+			/// <summary>
+			/// Gets the range object representing the print area for the worksheet. If not set, this will return a null object. [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <returns type="Excel.Range"></returns>
+		}
+		PageLayout.prototype.getPrintAreaOrNullObject = function() {
+			/// <summary>
+			/// Gets the range object representing the print area for the worksheet. [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <returns type="Excel.Range"></returns>
+		}
+		PageLayout.prototype.getPrintTitleColumns = function() {
+			/// <summary>
+			/// Gets the range object representing the title columns. [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <returns type="Excel.Range"></returns>
+		}
+		PageLayout.prototype.getPrintTitleColumnsOrNullObject = function() {
+			/// <summary>
+			/// Gets the range object representing the title columns. If not set, this will return a null object. [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <returns type="Excel.Range"></returns>
+		}
+		PageLayout.prototype.getPrintTitleRows = function() {
+			/// <summary>
+			/// Gets the range object representing the title rows. [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <returns type="Excel.Range"></returns>
+		}
+		PageLayout.prototype.getPrintTitleRowsOrNullObject = function() {
+			/// <summary>
+			/// Gets the range object representing the title rows. If not set, this will return a null object. [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <returns type="Excel.Range"></returns>
+		}
+		PageLayout.prototype.setPrintArea = function(printArea) {
+			/// <summary>
+			/// Sets the worksheet&apos;s print area. [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <param name="printArea" >The range of the content to print.</param>
+			/// <returns ></returns>
+		}
+		PageLayout.prototype.setPrintMargins = function(unit, marginOptions) {
+			/// <summary>
+			/// Sets the worksheet&apos;s page margins with units. [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <param name="unit" type="String">Measurement unit for the margins provided.</param>
+			/// <param name="marginOptions" type="Excel.Interfaces.PageLayoutMarginOptions">Margin values to set, margins not provided will remain unchanged.</param>
+			/// <returns ></returns>
+		}
+		PageLayout.prototype.setPrintTitleColumns = function(printTitleColumns) {
+			/// <summary>
+			/// Sets the columns that contain the cells to be repeated at the left of each page of the worksheet for printing. [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <param name="printTitleColumns" >The columns to be repeated to the left of each page, range must span the entire column to be valid.</param>
+			/// <returns ></returns>
+		}
+		PageLayout.prototype.setPrintTitleRows = function(printTitleRows) {
+			/// <summary>
+			/// Sets the rows that contain the cells to be repeated at the top of each page of the worksheet for printing. [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <param name="printTitleRows" >The rows to be repeated at the top of each page, range must span the entire row to be valid.</param>
+			/// <returns ></returns>
+		}
 
 		return PageLayout;
 	})(OfficeExtension.ClientObject);
 	Excel.PageLayout = PageLayout;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	var Interfaces;
+	(function (Interfaces) {
+		var PageLayoutMarginOptions = (function() {
+			function PageLayoutMarginOptions() {
+				/// <summary> Represents the options in page layout margins. [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
+				/// <field name="bottom" type="Number">Represents the page layout bottom margin in the unit specified to use for printing. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+				/// <field name="footer" type="Number">Represents the page layout footer margin in the unit specified to use for printing. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+				/// <field name="header" type="Number">Represents the page layout header margin in the unit specified to use for printing. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+				/// <field name="left" type="Number">Represents the page layout left margin in the unit specified to use for printing. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+				/// <field name="right" type="Number">Represents the page layout right margin in the unit specified to use for printing. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+				/// <field name="top" type="Number">Represents the page layout top margin in the unit specified to use for printing. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			}
+			return PageLayoutMarginOptions;
+		})();
+		Interfaces.PageLayoutMarginOptions.__proto__ = null;
+		Interfaces.PageLayoutMarginOptions = PageLayoutMarginOptions;
+	})(Interfaces = Excel.Interfaces || (Excel.Interfaces = { __proto__: null}));
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	var Interfaces;
+	(function (Interfaces) {
+		var PageLayoutZoomOptions = (function() {
+			function PageLayoutZoomOptions() {
+				/// <summary> Represents page zoom properties. [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
+				/// <field name="horizontalFitToPages" type="Number">Number of pages to fit horizontally. This value can be null if percentage scale is used. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+				/// <field name="percentage" type="Number">Print page scale value can be between 10 and 400. This value can be null if fit to page tall or wide is specified. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+				/// <field name="verticalFitToPages" type="Number">Number of pages to fit vertically. This value can be null if percentage scale is used. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			}
+			return PageLayoutZoomOptions;
+		})();
+		Interfaces.PageLayoutZoomOptions.__proto__ = null;
+		Interfaces.PageLayoutZoomOptions = PageLayoutZoomOptions;
+	})(Interfaces = Excel.Interfaces || (Excel.Interfaces = { __proto__: null}));
 })(Excel || (Excel = {__proto__: null}));
 
 var Excel;
@@ -12302,7 +12753,7 @@ var Excel;
 
 var Excel;
 (function (Excel) {
-	/// <summary> [Api set: ExcelApi 1.7] </summary>
+	/// <summary> [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
 	var PaperType = {
 		__proto__: null,
 		"letter": "letter",
@@ -12820,7 +13271,19 @@ var Excel;
 
 var Excel;
 (function (Excel) {
-	/// <summary> [Api set: ExcelApi 1.7] </summary>
+	/// <summary> [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
+	var PrintComments = {
+		__proto__: null,
+		"printNoComments": "printNoComments",
+		"printEndSheet": "printEndSheet",
+		"printInPlace": "printInPlace",
+	}
+	Excel.PrintComments = PrintComments;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	/// <summary> [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
 	var PrintErrorType = {
 		__proto__: null,
 		"errorsDisplayed": "errorsDisplayed",
@@ -12829,6 +13292,29 @@ var Excel;
 		"errorsNotAvailable": "errorsNotAvailable",
 	}
 	Excel.PrintErrorType = PrintErrorType;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	/// <summary> [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
+	var PrintMarginUnit = {
+		__proto__: null,
+		"points": "points",
+		"inches": "inches",
+		"centimeters": "centimeters",
+	}
+	Excel.PrintMarginUnit = PrintMarginUnit;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	/// <summary> [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
+	var PrintOrder = {
+		__proto__: null,
+		"downThenOver": "downThenOver",
+		"overThenDown": "overThenDown",
+	}
+	Excel.PrintOrder = PrintOrder;
 })(Excel || (Excel = {__proto__: null}));
 
 var Excel;
@@ -12868,6 +13354,7 @@ var Excel;
 			/// <field name="hyperlink" type="Excel.Interfaces.RangeHyperlink">Represents the hyperlink for the current range. [Api set: ExcelApi 1.7]</field>
 			/// <field name="isEntireColumn" type="Boolean">Represents if the current range is an entire column. [Api set: ExcelApi 1.7]</field>
 			/// <field name="isEntireRow" type="Boolean">Represents if the current range is an entire row. [Api set: ExcelApi 1.7]</field>
+			/// <field name="linkedDataTypeState" type="Array" elementType="Array">Represents the data type state of each cell. Read-only. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="numberFormat" type="Array" elementType="Array">Represents Excel&apos;s number format code for the given range. When setting number format to a range, the value argument can be either a single value (string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range. [Api set: ExcelApi 1.1]</field>
 			/// <field name="numberFormatLocal" type="Array" elementType="Array">Represents Excel&apos;s number format code for the given range as a string in the language of the user. When setting number format local to a range, the value argument can be either a single value (string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range. [Api set: ExcelApi 1.7]</field>
 			/// <field name="rowCount" type="Number">Returns the total number of rows in the range. Read-only. [Api set: ExcelApi 1.1]</field>
@@ -12914,6 +13401,30 @@ var Excel;
 			/// Clear range values, format, fill, border, etc. [Api set: ExcelApi 1.1]
 			/// </summary>
 			/// <param name="applyTo" type="String" optional="true">Determines the type of clear action. See Excel.ClearApplyTo for details.</param>
+			/// <returns ></returns>
+		}
+		Range.prototype.convertDataTypeToText = function() {
+			/// <summary>
+			/// Converts the range cells with datatypes into text. [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <returns ></returns>
+		}
+		Range.prototype.convertToLinkedDataType = function(serviceID, languageCulture) {
+			/// <summary>
+			/// Converts the range cells into linked datatype in the worksheet. [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <param name="serviceID" type="Number">The Service ID which will be used to query the data.</param>
+			/// <param name="languageCulture" type="String">Language Culture to query the service for.</param>
+			/// <returns ></returns>
+		}
+		Range.prototype.copyFrom = function(sourceRange, copyType, skipBlanks, transpose) {
+			/// <summary>
+			/// Copies cell data or formatting from the source range to the current range. [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <param name="sourceRange" >The source range to copy from.</param>
+			/// <param name="copyType" type="String" optional="true">The type of cell data or formatting to copy over. Default is &quot;All&quot;.</param>
+			/// <param name="skipBlanks" type="Boolean" optional="true">True if to skip blank cells in the source range. Default is false.</param>
+			/// <param name="transpose" type="Boolean" optional="true">True if to transpose the cells in the destination range. Default is false.</param>
 			/// <returns ></returns>
 		}
 		Range.prototype.delete = function(shift) {
@@ -13135,7 +13646,7 @@ var Excel;
 		}
 		Range.prototype.removeDuplicates = function(columns, includesHeader) {
 			/// <summary>
-			/// Removes duplicate values from the range specified by the columns.              If the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// Removes duplicate values from the range specified by the columns. [Api set: ExcelApi BETA (PREVIEW ONLY)]
 			/// </summary>
 			/// <param name="columns" type="Array" elementType="Number">The columns inside the range that may contain duplicates. At least one column needs to be specified. Zero-indexed.</param>
 			/// <param name="includesHeader" type="Boolean">True if the input data contains header. Default is false.</param>
@@ -13154,9 +13665,9 @@ var Excel;
 			result.value = 0;
 			return result;
 		}
-		Range.prototype.select = function() {
+		Range.prototype.select = function(allowMultiAreas) {
 			/// <summary>
-			/// Selects the specified range in the Excel UI.              If multiple selection is not supported on the platform and the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.1]
+			/// Selects the specified range in the Excel UI. If true, a multi-area range can be selected; otherwise, only the first area will be selected. Default is false. [Api set: ExcelApi 1.1]
 			/// </summary>
 			/// <returns ></returns>
 		}
@@ -13271,6 +13782,19 @@ var Excel;
 		return RangeBorderCollection;
 	})(OfficeExtension.ClientObject);
 	Excel.RangeBorderCollection = RangeBorderCollection;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	/// <summary> [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
+	var RangeCopyType = {
+		__proto__: null,
+		"all": "all",
+		"formulas": "formulas",
+		"values": "values",
+		"formats": "formats",
+	}
+	Excel.RangeCopyType = RangeCopyType;
 })(Excel || (Excel = {__proto__: null}));
 
 var Excel;
@@ -13914,7 +14438,7 @@ var Excel;
 	var Setting = (function(_super) {
 		__extends(Setting, _super);
 		function Setting() {
-			/// <summary> Setting represents a key-value pair of a setting persisted to the document. [Api set: ExcelApi 1.4] </summary>
+			/// <summary> Setting represents a key-value pair of a setting persisted to the document (per file per add-in). These custom key-value pair can be used to store state or lifecycle information needed by the content or task-pane add-in. Note that settings are persisted in the document and hence it is not a place to store any sensitive or protected information such as user information and password. [Api set: ExcelApi 1.4] </summary>
 			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
 			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
 			/// <field name="key" type="String">Returns the key that represents the id of the Setting. Read-only. [Api set: ExcelApi 1.4]</field>
@@ -13960,7 +14484,7 @@ var Excel;
 	var SettingCollection = (function(_super) {
 		__extends(SettingCollection, _super);
 		function SettingCollection() {
-			/// <summary> Represents a collection of worksheet objects that are part of the workbook. [Api set: ExcelApi 1.4] </summary>
+			/// <summary> Represents a collection of key-value pair setting objects that are part of the workbook. The scope is limited to per file and add-in (task-pane or content) combination. [Api set: ExcelApi 1.4] </summary>
 			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
 			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
 			/// <field name="onSettingsChanged" type="OfficeExtension.EventHandlers">Occurs when the Settings in the document are changed. [Api set: ExcelApi 1.4]</field>
@@ -14215,6 +14739,7 @@ var Excel;
 				/// <field name="icon" type="Excel.Interfaces.Icon">Represents the icon that is the target of the condition if the sorting is on the cell&apos;s icon. [Api set: ExcelApi 1.2]</field>
 				/// <field name="key" type="Number">Represents the column (or row, depending on the sort orientation) that the condition is on. Represented as an offset from the first column (or row). [Api set: ExcelApi 1.2]</field>
 				/// <field name="sortOn" type="String">Represents the type of sorting of this condition. [Api set: ExcelApi 1.2]</field>
+				/// <field name="subField" type="String">Represents the subfield that is the target property name of a rich value to sort on. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			}
 			return SortField;
 		})();
@@ -14583,7 +15108,7 @@ var Excel;
 			/// <summary>
 			/// Create a new table. The range object or source address determines the worksheet under which the table will be added. If the table cannot be added (e.g., because the address is invalid, or the table would overlap with another table), an error will be thrown. [Api set: ExcelApi 1.1]
 			/// </summary>
-			/// <param name="address" >A Range object, or a string address or name of the range representing the data source. If the address does not contain a sheet name, the currently-active sheet is used. [Api set: ExcelApi 1.1 for string parameter; 1.3 for accepting a Range object as well]</param>
+			/// <param name="address" >A Range object, or a string address or name of the range representing the data source. If the address does not contain a sheet name, the currently-active sheet is used. [Api set: ExcelApi 1.1 / 1.3.  Prior to ExcelApi 1.3, this parameter must be a string. Starting with Excel Api 1.3, this parameter may be a Range object or a string.]</param>
 			/// <param name="hasHeaders" type="Boolean">Boolean value that indicates whether the data being imported has column labels. If the source does not contain headers (i.e,. when this property set to false), Excel will automatically generate header shifting the data down by one row.</param>
 			/// <returns type="Excel.Table"></returns>
 		}
@@ -15113,6 +15638,314 @@ var Excel;
 
 var Excel;
 (function (Excel) {
+	var Visual = (function(_super) {
+		__extends(Visual, _super);
+		function Visual() {
+			/// <summary> Represents a visual object in a workbook. [Api set: ExcelApi 99.9] </summary>
+			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
+			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
+			/// <field name="id" type="String">The unique id of visual, not the guid of VisualDefinition. Read-only. [Api set: ExcelApi 99.9]</field>
+			/// <field name="properties" type="Excel.VisualPropertyCollection">Gets all properties of the visual. Read-only. [Api set: ExcelApi 99.9]</field>
+		}
+
+		Visual.prototype.load = function(option) {
+			/// <summary>
+			/// Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+			/// </summary>
+			/// <param name="option" type="string | string[] | OfficeExtension.LoadOption"/>
+			/// <returns type="Excel.Visual"/>
+		}
+		Visual.prototype.changeDataSource = function(dataSourceType, dataSourceContent) {
+			/// <summary>
+			/// Get the preview of a visual. [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <param name="dataSourceType" type="String">The data source type of visual. e.g. xlFormula</param>
+			/// <param name="dataSourceContent" type="String">The data source content. e.g. Sheet1!$C$5:$D$7</param>
+			/// <returns ></returns>
+		}
+		Visual.prototype.delete = function() {
+			/// <summary>
+			/// Delete the visual. [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <returns ></returns>
+		}
+		Visual.prototype.getChildProperties = function(parentPropId) {
+			/// <summary>
+			/// Get the child properties of the specific parent property Id. [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <param name="parentPropId" type="String" optional="true">Parent property Id. Omitting this parameter will return the root-level properties.</param>
+			/// <returns type="Excel.VisualPropertyCollection"></returns>
+		}
+		Visual.prototype.getDataControllerClient = function() {
+			/// <summary>
+			/// Get the DataControllerClient for the visual [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <returns type="Excel.DataControllerClient"></returns>
+		}
+		Visual.prototype.getDataSource = function() {
+			/// <summary>
+			/// Gets a string represening the visual&apos;s current data source. e.g. Sheet1!$C$5:$D$7 [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <returns type="OfficeExtension.ClientResult&lt;string&gt;"></returns>
+			var result = new OfficeExtension.ClientResult();
+			result.__proto__ = null;
+			result.value = '';
+			return result;
+		}
+		Visual.prototype.getProperty = function(propName) {
+			/// <summary>
+			/// GetProperty [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <returns type="OfficeExtension.ClientResult&lt;any&gt;"></returns>
+			var result = new OfficeExtension.ClientResult();
+			result.__proto__ = null;
+			result.value = null;
+			return result;
+		}
+		Visual.prototype.setProperty = function(propName, value) {
+			/// <summary>
+			/// SetProperty [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <returns ></returns>
+		}
+
+		return Visual;
+	})(OfficeExtension.ClientObject);
+	Excel.Visual = Visual;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	/// <summary> [Api set: ExcelApi 99.9] </summary>
+	var VisualCategory = {
+		__proto__: null,
+		"column": "column",
+		"bar": "bar",
+		"line": "line",
+		"area": "area",
+		"pie": "pie",
+		"donut": "donut",
+		"scatter": "scatter",
+		"bubble": "bubble",
+		"statistical": "statistical",
+		"stock": "stock",
+		"combo": "combo",
+		"hierarchy": "hierarchy",
+		"surface": "surface",
+		"map": "map",
+		"funnel": "funnel",
+		"radar": "radar",
+		"waterfall": "waterfall",
+		"threeD": "threeD",
+		"other": "other",
+	}
+	Excel.VisualCategory = VisualCategory;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	var VisualCollection = (function(_super) {
+		__extends(VisualCollection, _super);
+		function VisualCollection() {
+			/// <summary> A collection of all the visuals on a worksheet. [Api set: ExcelApi 99.9] </summary>
+			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
+			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
+			/// <field name="onSelectionChanged" type="OfficeExtension.EventHandlers">Occurs when a selection is changed. [Api set: ExcelApi 99.9]</field>
+			/// <field name="items" type="Array" elementType="Excel.Visual">Gets the loaded child items in this collection.</field>
+		}
+
+		VisualCollection.prototype.load = function(option) {
+			/// <summary>
+			/// Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+			/// </summary>
+			/// <param name="option" type="string | string[] | OfficeExtension.LoadOption"/>
+			/// <returns type="Excel.VisualCollection"/>
+		}
+		VisualCollection.prototype.add = function(visualDefinitionGuid, dataSourceType, dataSourceContent) {
+			/// <summary>
+			/// Creates a new visual. [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <param name="visualDefinitionGuid" type="String">The guid of a VisualDefinition, not the id for an instance of a Visual.</param>
+			/// <param name="dataSourceType" type="String" optional="true">The data source type of visual. e.g. xlFormula</param>
+			/// <param name="dataSourceContent" type="String" optional="true">The data source content</param>
+			/// <returns type="Excel.Visual"></returns>
+		}
+		VisualCollection.prototype.getCount = function() {
+			/// <summary>
+			/// Returns the number of visuals in the worksheet. [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <returns type="OfficeExtension.ClientResult&lt;number&gt;"></returns>
+			var result = new OfficeExtension.ClientResult();
+			result.__proto__ = null;
+			result.value = 0;
+			return result;
+		}
+		VisualCollection.prototype.getDefinitions = function() {
+			/// <summary>
+			/// Gets all visual definitions. [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <returns type="OfficeExtension.ClientResult&lt;Excel.VisualDefinition[]&gt;"></returns>
+			var result = new OfficeExtension.ClientResult();
+			result.__proto__ = null;
+			result.value = [];
+			return result;
+		}
+		VisualCollection.prototype.getPreview = function(visualDefinitionGuid, width, height, dpi) {
+			/// <summary>
+			/// Get the preview of a visual. [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <param name="visualDefinitionGuid" type="String">The guid of a VisualDefinition, not the id for an instance of a Visual.</param>
+			/// <param name="width" type="Number">The width of the preview.</param>
+			/// <param name="height" type="Number">The height of the preview.</param>
+			/// <param name="dpi" type="Number">The dpi setting.</param>
+			/// <returns type="OfficeExtension.ClientResult&lt;string&gt;"></returns>
+			var result = new OfficeExtension.ClientResult();
+			result.__proto__ = null;
+			result.value = '';
+			return result;
+		}
+		VisualCollection.prototype.getSelectedOrNullObject = function() {
+			/// <summary>
+			/// Gets the selected Visual if and only if one Visual is selected.              If no Visual is selected, the return object&apos;s isNull property will be true. [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <returns type="Excel.Visual"></returns>
+		}
+		VisualCollection.prototype.onSelectionChanged = {
+			__proto__: null,
+			add: function (handler) {
+				/// <param name="handler" type="function(eventArgs: Excel.Interfaces.VisualSelectionChangedEventArgs)">Handler for the event. EventArgs: Provides information about the visual that raised the SelectionChanged event. </param>
+				/// <returns type="OfficeExtension.EventHandlerResult"></returns>
+				var eventInfo = new Excel.Interfaces.VisualSelectionChangedEventArgs();
+				eventInfo.__proto__ = null;
+				handler(eventInfo);
+			},
+			remove: function (handler) {
+				/// <param name="handler" type="function(eventArgs: Excel.Interfaces.VisualSelectionChangedEventArgs)">Handler for the event.</param>
+				return;
+			}
+		};
+
+		return VisualCollection;
+	})(OfficeExtension.ClientObject);
+	Excel.VisualCollection = VisualCollection;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	var Interfaces;
+	(function (Interfaces) {
+		var VisualDefinition = (function() {
+			function VisualDefinition() {
+				/// <summary> Represents a visual definition [Api set: ExcelApi 99.9] </summary>
+				/// <field name="category" type="String">Represents the category of a visual definition. [Api set: ExcelApi 99.9]</field>
+				/// <field name="categoryRank" type="Number">Represents the category rank of a visual definition. [Api set: ExcelApi 99.9]</field>
+				/// <field name="description" type="String">Represents the decription of a visual definition. [Api set: ExcelApi 99.9]</field>
+				/// <field name="id" type="String">Represents the id of a visual definition. [Api set: ExcelApi 99.9]</field>
+				/// <field name="title" type="String">Represents the title of a visual definition. [Api set: ExcelApi 99.9]</field>
+			}
+			return VisualDefinition;
+		})();
+		Interfaces.VisualDefinition.__proto__ = null;
+		Interfaces.VisualDefinition = VisualDefinition;
+	})(Interfaces = Excel.Interfaces || (Excel.Interfaces = { __proto__: null}));
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	var VisualProperty = (function(_super) {
+		__extends(VisualProperty, _super);
+		function VisualProperty() {
+			/// <summary> This object represents the attributes for a property. [Api set: ExcelApi 99.9] </summary>
+			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
+			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
+			/// <field name="id" type="String">Returns the property Id. [Api set: ExcelApi 99.9]</field>
+			/// <field name="localizedName" type="String">Returns the property localized name. [Api set: ExcelApi 99.9]</field>
+			/// <field name="localizedOptions" type="Array" elementType="String">Returns the localized property options for IEnumProperty only. If property type isn&apos;t enum, it returns null. [Api set: ExcelApi 99.9]</field>
+			/// <field name="options" type="Array" elementType="String">Returns the property options for IEnumProperty only. If property type isn&apos;t enum, it returns null. [Api set: ExcelApi 99.9]</field>
+			/// <field name="type" type="String">Returns the property type. [Api set: ExcelApi 99.9]</field>
+			/// <field name="value" >Returns the property value. [Api set: ExcelApi 99.9]</field>
+		}
+
+		VisualProperty.prototype.load = function(option) {
+			/// <summary>
+			/// Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+			/// </summary>
+			/// <param name="option" type="string | string[] | OfficeExtension.LoadOption"/>
+			/// <returns type="Excel.VisualProperty"/>
+		}
+
+		return VisualProperty;
+	})(OfficeExtension.ClientObject);
+	Excel.VisualProperty = VisualProperty;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	var VisualPropertyCollection = (function(_super) {
+		__extends(VisualPropertyCollection, _super);
+		function VisualPropertyCollection() {
+			/// <summary> Represents a collection of visual object properties. [Api set: ExcelApi 99.9] </summary>
+			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
+			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
+			/// <field name="items" type="Array" elementType="Excel.VisualProperty">Gets the loaded child items in this collection.</field>
+		}
+
+		VisualPropertyCollection.prototype.load = function(option) {
+			/// <summary>
+			/// Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+			/// </summary>
+			/// <param name="option" type="string | string[] | OfficeExtension.LoadOption"/>
+			/// <returns type="Excel.VisualPropertyCollection"/>
+		}
+		VisualPropertyCollection.prototype.getCount = function() {
+			/// <summary>
+			/// Returns the number of properties in the collection. [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <returns type="OfficeExtension.ClientResult&lt;number&gt;"></returns>
+			var result = new OfficeExtension.ClientResult();
+			result.__proto__ = null;
+			result.value = 0;
+			return result;
+		}
+		VisualPropertyCollection.prototype.getItem = function(index) {
+			/// <summary>
+			/// Returns a property at given index [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <param name="index" type="Number">Represents the index in property array.</param>
+			/// <returns type="Excel.VisualProperty"></returns>
+		}
+		VisualPropertyCollection.prototype.getItemAt = function(index) {
+			/// <summary>
+			/// Returns a property at given index [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <param name="index" type="Number">Represents the index in property array.</param>
+			/// <returns type="Excel.VisualProperty"></returns>
+		}
+
+		return VisualPropertyCollection;
+	})(OfficeExtension.ClientObject);
+	Excel.VisualPropertyCollection = VisualPropertyCollection;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	/// <summary> [Api set: ExcelApi 99.9] </summary>
+	var VisualPropertyType = {
+		__proto__: null,
+		"object": "object",
+		"collection": "collection",
+		"string": "string",
+		"double": "double",
+		"int": "int",
+		"bool": "bool",
+		"enum": "enum",
+		"color": "color",
+	}
+	Excel.VisualPropertyType = VisualPropertyType;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
 	var Interfaces;
 	(function (Interfaces) {
 		var VisualSelectionChangedEventArgs = (function() {
@@ -15197,7 +16030,7 @@ var Excel;
 			result.value = false;
 			return result;
 		}
-		Workbook.prototype.getSelectedRange = function() {
+		Workbook.prototype.getSelectedRange = function(allowMultiAreas) {
 			/// <summary>
 			/// Gets the currently selected range from the workbook. [Api set: ExcelApi 1.1]
 			/// </summary>
@@ -15301,6 +16134,7 @@ var Excel;
 			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
 			/// <field name="charts" type="Excel.ChartCollection">Returns collection of charts that are part of the worksheet. [Api set: ExcelApi 1.1]</field>
 			/// <field name="freezePanes" type="Excel.WorksheetFreezePanes">Gets an object that can be used to manipulate frozen panes on the worksheet. [Api set: ExcelApi 1.7]</field>
+			/// <field name="horizontalPageBreaks" type="Excel.PageBreakCollection">Gets the horizontal page break collection for the worksheet. This collection only contains manual page breaks. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="id" type="String">Returns a value that uniquely identifies the worksheet in a given workbook. The value of the identifier remains the same even when the worksheet is renamed or moved. Read-only. [Api set: ExcelApi 1.1]</field>
 			/// <field name="name" type="String">The display name of the worksheet. [Api set: ExcelApi 1.1]</field>
 			/// <field name="names" type="Excel.NamedItemCollection">Collection of names scoped to the current worksheet. [Api set: ExcelApi 1.4]</field>
@@ -15315,7 +16149,9 @@ var Excel;
 			/// <field name="standardWidth" type="Number">Returns or sets the standard (default) width of all the columns in the worksheet.              One unit of column width is equal to the width of one character in the Normal style. For proportional fonts, the width of the character 0 (zero) is used. [Api set: ExcelApi 1.7]</field>
 			/// <field name="tabColor" type="String">Gets or sets the worksheet tab color.              When retrieving the tab color, if the worksheet is invisible, the value will be null. If the worksheet is visible but the tab color is set to auto, an empty string will be returned. Otherwise, the property will be set to a color, in the form &quot;#123456&quot;              When setting the color, use an empty-string to set an &quot;auto&quot; color, or a real color otherwise. [Api set: ExcelApi 1.7]</field>
 			/// <field name="tables" type="Excel.TableCollection">Collection of tables that are part of the worksheet. [Api set: ExcelApi 1.1]</field>
+			/// <field name="verticalPageBreaks" type="Excel.PageBreakCollection">Gets the vertical page break collection for the worksheet. This collection only contains manual page breaks. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="visibility" type="String">The Visibility of the worksheet. [Api set: ExcelApi 1.1 for reading visibility; 1.2 for setting it.]</field>
+			/// <field name="visuals" type="Excel.VisualCollection">Returns collection of visuals that are part of the worksheet. [Api set: ExcelApi 99.9]</field>
 			/// <field name="onActivated" type="OfficeExtension.EventHandlers">Occurs when the worksheet is activated. [Api set: ExcelApi 1.7]</field>
 			/// <field name="onCalculated" type="OfficeExtension.EventHandlers">Occurs when the worksheet is calculated. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="onChanged" type="OfficeExtension.EventHandlers">Occurs when data changed on a specific worksheet. [Api set: ExcelApi 1.7]</field>
@@ -15355,6 +16191,7 @@ var Excel;
 			/// <summary>
 			/// Calculates all cells on a worksheet. [Api set: ExcelApi 1.6]
 			/// </summary>
+			/// <param name="markAllDirty" type="Boolean">True, to mark all as dirty.</param>
 			/// <returns ></returns>
 		}
 		Worksheet.prototype.copy = function(positionType, relativeTo) {
@@ -15442,7 +16279,7 @@ var Excel;
 			/// <summary>
 			/// The used range is the smallest range that encompasses any cells that have a value or formatting assigned to them. If the entire worksheet is blank, this function will return the top left cell (i.e.,: it will *not* throw an error). [Api set: ExcelApi 1.1]
 			/// </summary>
-			/// <param name="valuesOnly" type="Boolean" optional="true">Considers only cells with values as used cells (ignoring formatting). [Api set: ExcelApi 1.2]</param>
+			/// <param name="valuesOnly" type="Boolean" optional="true">If true, considers only cells with values as used cells (ignoring formatting). [Api set: ExcelApi 1.2]</param>
 			/// <returns type="Excel.Range"></returns>
 		}
 		Worksheet.prototype.getUsedRangeOrNullObject = function(valuesOnly) {
@@ -15653,6 +16490,7 @@ var Excel;
 			/// <summary>
 			/// Gets the number of worksheets in the collection. [Api set: ExcelApi 1.4]
 			/// </summary>
+			/// <param name="visibleOnly" type="Boolean" optional="true">If true, considers only visible worksheets, skipping over any hidden ones.</param>
 			/// <returns type="OfficeExtension.ClientResult&lt;number&gt;"></returns>
 			var result = new OfficeExtension.ClientResult();
 			result.__proto__ = null;
@@ -15661,8 +16499,9 @@ var Excel;
 		}
 		WorksheetCollection.prototype.getFirst = function(visibleOnly) {
 			/// <summary>
-			/// Gets the first worksheet in the collection.              If true, considers only visible worksheets, skipping over any hidden ones. [Api set: ExcelApi 1.5]
+			/// Gets the first worksheet in the collection. [Api set: ExcelApi 1.5]
 			/// </summary>
+			/// <param name="visibleOnly" type="Boolean" optional="true">If true, considers only visible worksheets, skipping over any hidden ones.</param>
 			/// <returns type="Excel.Worksheet"></returns>
 		}
 		WorksheetCollection.prototype.getItem = function(key) {
@@ -15681,8 +16520,9 @@ var Excel;
 		}
 		WorksheetCollection.prototype.getLast = function(visibleOnly) {
 			/// <summary>
-			/// Gets the last worksheet in the collection.              If true, considers only visible worksheets, skipping over any hidden ones. [Api set: ExcelApi 1.5]
+			/// Gets the last worksheet in the collection. [Api set: ExcelApi 1.5]
 			/// </summary>
+			/// <param name="visibleOnly" type="Boolean" optional="true">If true, considers only visible worksheets, skipping over any hidden ones.</param>
 			/// <returns type="Excel.Worksheet"></returns>
 		}
 		WorksheetCollection.prototype.onActivated = {
@@ -15999,12 +16839,31 @@ var Excel;
 		var ApplicationUpdateData = (function() {
 			function ApplicationUpdateData() {
 				/// <summary>An interface for updating data on the Application object, for use in "application.set({ ... })".</summary>
-				/// <field name="calculationMode" type="String">Returns the calculation mode used in the workbook. See Excel.CalculationMode for details. [Api set: ExcelApi 1.1 for get, 1.8 for set]</field>;
+				/// <field name="iterativeCalculation" type="Excel.Interfaces.IterativeCalculationUpdateData">Returns the Iterative Calculation settings.              On Excel for Windows and Excel for Mac, the settings will aplly to the Excel Application.              On Excel Online and Excel for other platforms, the settings will apply to the active workbook. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+				/// <field name="calculationMode" type="String">Returns the calculation mode used in the workbook, as defined by the constants in Excel.CalculationMode. Possible values are: `Automatic`, where Excel controls recalculation; `AutomaticExceptTables`, where Excel controls recalculation but ignores changes in tables; `Manual`, where calculation is done when the user requests it. [Api set: ExcelApi 1.1 for get, 1.8 for set]</field>;
 			}
 			return ApplicationUpdateData;
 		})();
 		Interfaces.ApplicationUpdateData.__proto__ = null;
 		Interfaces.ApplicationUpdateData = ApplicationUpdateData;
+	})(Interfaces = Excel.Interfaces || (Excel.Interfaces = { __proto__: null}));
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	var Interfaces;
+	(function (Interfaces) {
+		var IterativeCalculationUpdateData = (function() {
+			function IterativeCalculationUpdateData() {
+				/// <summary>An interface for updating data on the IterativeCalculation object, for use in "iterativeCalculation.set({ ... })".</summary>
+				/// <field name="enabled" type="Boolean">True if Excel will use iteration to resolve circular references. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="maxChange" type="Number">Returns or sets the maximum amount of change between each iteration as Excel resolves circular references. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="maxIteration" type="Number">Returns or sets the maximum number of iterations that Excel can use to resolve a circular reference. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+			}
+			return IterativeCalculationUpdateData;
+		})();
+		Interfaces.IterativeCalculationUpdateData.__proto__ = null;
+		Interfaces.IterativeCalculationUpdateData = IterativeCalculationUpdateData;
 	})(Interfaces = Excel.Interfaces || (Excel.Interfaces = { __proto__: null}));
 })(Excel || (Excel = {__proto__: null}));
 
@@ -17585,15 +18444,74 @@ var Excel;
 		var PageLayoutUpdateData = (function() {
 			function PageLayoutUpdateData() {
 				/// <summary>An interface for updating data on the PageLayout object, for use in "pageLayout.set({ ... })".</summary>
-				/// <field name="blackAndWhite" type="Boolean">Gets or sets the black and white print option. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
-				/// <field name="orientation" type="String">Gets or sets the orientation of the page. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
-				/// <field name="paperSize" type="String">Gets or sets the paper size of the page. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
-				/// <field name="printErrors" type="String">Gets or sets the print errors option. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="headersFooters" type="Excel.Interfaces.HeaderFooterGroupUpdateData">Header and footer configuration for the worksheet. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+				/// <field name="blackAndWhite" type="Boolean">Gets or sets the worksheet&apos;s black and white print option. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="bottomMargin" type="Number">Gets or sets the worksheet&apos;s bottom page margin to use for printing in points. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="centerHorizontally" type="Boolean">Gets or sets the worksheet&apos;s center horizontally flag. This flag determines whether the worksheet will be centered horizontally when it&apos;s printed. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="centerVertically" type="Boolean">Gets or sets the worksheet&apos;s center vertically flag. This flag determines whether the worksheet will be centered vertically when it&apos;s printed. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="draft" type="Boolean">Gets or sets the worksheet&apos;s draft mode option. If true the sheet will be printed without graphics. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="firstPageNumber" >Gets or sets the worksheet&apos;s first page number to print. Null value represents &quot;auto&quot; page numbering. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="footerMargin" type="Number">Gets or sets the worksheet&apos;s footer margin, in points, for use when printing. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="headerMargin" type="Number">Gets or sets the worksheet&apos;s header margin, in points, for use when printing. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="leftMargin" type="Number">Gets or sets the worksheet&apos;s left margin, in points, for use when printing. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="orientation" type="String">Gets or sets the worksheet&apos;s orientation of the page. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="paperSize" type="String">Gets or sets the worksheet&apos;s paper size of the page. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="printComments" type="String">Gets or sets whether the worksheet&apos;s comments should be displayed when printing. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="printErrors" type="String">Gets or sets the worksheet&apos;s print errors option. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="printGridlines" type="Boolean">Gets or sets the worksheet&apos;s print gridlines flag. This flag determines whether gridlines will be printed or not. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="printHeadings" type="Boolean">Gets or sets the worksheet&apos;s print headings flag. This flag determines whether headings will be printed or not. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="printOrder" type="String">Gets or sets the worksheet&apos;s page print order option. This specifies the order to use for processing the page number printed. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="rightMargin" type="Number">Gets or sets the worksheet&apos;s right margin, in points, for use when printing. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="topMargin" type="Number">Gets or sets the worksheet&apos;s top margin, in points, for use when printing. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="zoom" type="Excel.Interfaces.PageLayoutZoomOptions">Gets or sets the worksheet&apos;s print zoom options. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
 			}
 			return PageLayoutUpdateData;
 		})();
 		Interfaces.PageLayoutUpdateData.__proto__ = null;
 		Interfaces.PageLayoutUpdateData = PageLayoutUpdateData;
+	})(Interfaces = Excel.Interfaces || (Excel.Interfaces = { __proto__: null}));
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	var Interfaces;
+	(function (Interfaces) {
+		var HeaderFooterUpdateData = (function() {
+			function HeaderFooterUpdateData() {
+				/// <summary>An interface for updating data on the HeaderFooter object, for use in "headerFooter.set({ ... })".</summary>
+				/// <field name="centerFooter" type="String">Gets or sets the center footer of the worksheet.              To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="centerHeader" type="String">Gets or sets the center header of the worksheet.              To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="leftFooter" type="String">Gets or sets the left footer of the worksheet.              To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="leftHeader" type="String">Gets or sets the left header of the worksheet.              To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="rightFooter" type="String">Gets or sets the right footer of the worksheet.              To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="rightHeader" type="String">Gets or sets the right header of the worksheet.              To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+			}
+			return HeaderFooterUpdateData;
+		})();
+		Interfaces.HeaderFooterUpdateData.__proto__ = null;
+		Interfaces.HeaderFooterUpdateData = HeaderFooterUpdateData;
+	})(Interfaces = Excel.Interfaces || (Excel.Interfaces = { __proto__: null}));
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	var Interfaces;
+	(function (Interfaces) {
+		var HeaderFooterGroupUpdateData = (function() {
+			function HeaderFooterGroupUpdateData() {
+				/// <summary>An interface for updating data on the HeaderFooterGroup object, for use in "headerFooterGroup.set({ ... })".</summary>
+				/// <field name="even" type="Excel.Interfaces.HeaderFooterUpdateData">The header/footer to use for even pages, odd header/footer needs to be specified for odd pages. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+				/// <field name="first" type="Excel.Interfaces.HeaderFooterUpdateData">The first page header/footer, for all other pages general or even/odd is used. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+				/// <field name="general" type="Excel.Interfaces.HeaderFooterUpdateData">The general header/footer, used for all pages unless even/odd or first page is specified. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+				/// <field name="odd" type="Excel.Interfaces.HeaderFooterUpdateData">The header/footer to use for odd pages, even header/footer needs to be specified for even pages. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+				/// <field name="state" type="String">Gets or sets the state of which headers/footers are set. See Excel.HeaderFooterState for details. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="useSheetMargins" type="Boolean">Gets or sets a flag indicating if headers/footers are aligned with the page margins set in the page layout options for the worksheet. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="useSheetScale" type="Boolean">Gets or sets a flag indicating if headers/footers should be scaled by the page percentage scale set in the page layout options for the worksheet. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+			}
+			return HeaderFooterGroupUpdateData;
+		})();
+		Interfaces.HeaderFooterGroupUpdateData.__proto__ = null;
+		Interfaces.HeaderFooterGroupUpdateData = HeaderFooterGroupUpdateData;
 	})(Interfaces = Excel.Interfaces || (Excel.Interfaces = { __proto__: null}));
 })(Excel || (Excel = {__proto__: null}));
 

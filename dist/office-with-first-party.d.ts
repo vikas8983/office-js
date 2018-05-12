@@ -2,6 +2,7 @@
 // Project: http://dev.office.com
 // Definitions by: OfficeDev <https://github.com/OfficeDev>, Lance Austin <https://github.com/LanceEA>, Michael Zlatkovsky <https://github.com/Zlatkovsky>, Kim Brandl <https://github.com/kbrandl>, Ricky Kirkham <https://github.com/Rick-Kirkham>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+// TypeScript Version: 2.4
 
 /*
 office-js
@@ -14,12 +15,24 @@ Copyright (c) Microsoft Corporation
 ////////////////////////////////////////////////////////////////
 
 declare namespace Office {
+    export var Preview: {
+        startCustomFunctions(): Promise<void>;
+    }
+
+    export var Promise: PromiseConstructor;
     export var context: Context;
     /**
      * This method is called after the Office API was loaded.
      * @param reason Indicates how the app was initialized
      */
     export function initialize(reason: InitializationReason): void;
+    /**
+    * Ensures that the Office JavaScript APIs are ready to be called by the add-in. If the framework hasn't initialized yet, the callback or promise will wait until the Office host is ready to accept API calls.
+    * Note that though this API is intended to be used inside an Office add-in, it can also be used outside the add-in.  In that case, once Office.js determines that it is running outside of an Office host application, it will call the callback and resolve the promise with "null" for both the host and platform.
+    * @param callback - An optional callback method, that will receive the host and platform info. Alternatively, rather than use a callback, an add-in may simply wait for the Promise returned by the function to resolve.
+    * @returns A Promise that contains the host and platform info, once initialization is completed.
+    */
+    export function onReady(callback?: (info: { host: HostType, platform: PlatformType }) => any): Promise<{ host: HostType, platform: PlatformType }>;
     /**
      * Indicates if the large namespace for objects will be used or not.
      * @param useShortNamespace  Indicates if 'true' that the short namespace will be used
@@ -1566,7 +1579,7 @@ declare namespace Office {
 ////////////////////////////////////////////////////////////////
 
 declare namespace Office {
-    export module MailboxEnums {
+    namespace MailboxEnums {
         export enum AttachmentType {
             /**
              * The attachment is a file
@@ -3595,73 +3608,8 @@ declare namespace OfficeCore {
 
 
 declare namespace OfficeCore {
-    /**
-     * [Api set: Experimentation 1.1 (PREVIEW) (PREVIEW)]
-     */
-    class FlightingService extends OfficeExtension.ClientObject {
-        getFeature(featureName: string, type: string, defaultValue: number | boolean | string, possibleValues?: Array<number> | Array<string> | Array<boolean> | Array<ScopedValue>): OfficeCore.ABType;
-        getFeatureGate(featureName: string, scope?: string): OfficeCore.ABType;
-        resetOverride(featureName: string): void;
-        setOverride(featureName: string, type: string, value: number | boolean | string): void;
-        /**
-         * Create a new instance of OfficeCore.FlightingService object
-         */
-        static newObject(context: OfficeExtension.ClientRequestContext): OfficeCore.FlightingService;
-        toJSON(): {};
-    }
-    /**
-     *
-     * Provides information about the scoped value.
-     *
-     * [Api set: Experimentation 1.1 (PREVIEW) (PREVIEW)]
-     */
-    interface ScopedValue {
-        /**
-         *
-         * Gets the scope.
-         *
-         * [Api set: Experimentation 1.1 (PREVIEW) (PREVIEW)]
-         */
-        scope: string;
-        /**
-         *
-         * Gets the value.
-         *
-         * [Api set: Experimentation 1.1 (PREVIEW) (PREVIEW)]
-         */
-        value: string | number | boolean;
-    }
-    /**
-     * [Api set: Experimentation 1.1 (PREVIEW) (PREVIEW)]
-     */
-    class ABType extends OfficeExtension.ClientObject {
-        readonly value: string | number | boolean;
-        /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         */
-        load(option?: string | string[] | OfficeExtension.LoadOption): OfficeCore.ABType;
-        toJSON(): {
-            "value": string | number | boolean;
-        };
-    }
-    /**
-     * [Api set: Experimentation 1.1 (PREVIEW) (PREVIEW)]
-     */
-    namespace FeatureType {
-        var boolean: string;
-        var integer: string;
-        var string: string;
-    }
-    namespace ExperimentErrorCodes {
-        var generalException: string;
-    }
-    module Interfaces {
-    }
-}
-declare namespace OfficeCore {
     class RequestContext extends OfficeExtension.ClientRequestContext {
         constructor(url?: string | OfficeExtension.RequestUrlAndHeaderInfo | any);
-        readonly flightingService: FlightingService;
     }
 }
 
@@ -4500,7 +4448,16 @@ declare namespace Excel {
     class Application extends OfficeExtension.ClientObject {
         /**
          *
-         * Returns the calculation mode used in the workbook. See Excel.CalculationMode for details.
+         * Returns the Iterative Calculation settings.
+            On Excel for Windows and Excel for Mac, the settings will aplly to the Excel Application.
+            On Excel Online and Excel for other platforms, the settings will apply to the active workbook.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly iterativeCalculation: Excel.IterativeCalculation;
+        /**
+         *
+         * Returns the calculation mode used in the workbook, as defined by the constants in Excel.CalculationMode. Possible values are: `Automatic`, where Excel controls recalculation; `AutomaticExceptTables`, where Excel controls recalculation but ignores changes in tables; `Manual`, where calculation is done when the user requests it.
          *
          * [Api set: ExcelApi 1.1 for get, 1.8 for set]
          */
@@ -4560,6 +4517,49 @@ declare namespace Excel {
             expand?: string;
         }): Excel.Application;
         toJSON(): Excel.Interfaces.ApplicationData;
+    }
+    /**
+     *
+     * Represents the Iterative Calculation settings.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class IterativeCalculation extends OfficeExtension.ClientObject {
+        /**
+         *
+         * True if Excel will use iteration to resolve circular references.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        enabled: boolean;
+        /**
+         *
+         * Returns or sets the maximum amount of change between each iteration as Excel resolves circular references.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        maxChange: number;
+        /**
+         *
+         * Returns or sets the maximum number of iterations that Excel can use to resolve a circular reference.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        maxIteration: number;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        set(properties: Interfaces.IterativeCalculationUpdateData, options?: OfficeExtension.UpdateOptions): void;
+        /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
+        set(properties: IterativeCalculation): void;
+        /**
+         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+         */
+        load(option?: Excel.Interfaces.IterativeCalculationLoadOptions): Excel.IterativeCalculation;
+        load(option?: string | string[]): Excel.IterativeCalculation;
+        load(option?: {
+            select?: string;
+            expand?: string;
+        }): Excel.IterativeCalculation;
+        toJSON(): Excel.Interfaces.IterativeCalculationData;
     }
     /**
      *
@@ -4736,7 +4736,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          */
-        getSelectedRange(): Excel.Range;
+        getSelectedRange(allowMultiAreas?: boolean): Excel.Range;
         /**
          * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
          */
@@ -4853,6 +4853,13 @@ declare namespace Excel {
         readonly freezePanes: Excel.WorksheetFreezePanes;
         /**
          *
+         * Gets the horizontal page break collection for the worksheet. This collection only contains manual page breaks.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly horizontalPageBreaks: Excel.PageBreakCollection;
+        /**
+         *
          * Collection of names scoped to the current worksheet.
          *
          * [Api set: ExcelApi 1.4]
@@ -4893,6 +4900,20 @@ declare namespace Excel {
          * [Api set: ExcelApi 1.1]
          */
         readonly tables: Excel.TableCollection;
+        /**
+         *
+         * Gets the vertical page break collection for the worksheet. This collection only contains manual page breaks.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly verticalPageBreaks: Excel.PageBreakCollection;
+        /**
+         *
+         * Returns collection of visuals that are part of the worksheet.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        readonly visuals: Excel.VisualCollection;
         /**
          *
          * Returns a value that uniquely identifies the worksheet in a given workbook. The value of the identifier remains the same even when the worksheet is renamed or moved. Read-only.
@@ -4977,6 +4998,8 @@ declare namespace Excel {
          * Calculates all cells on a worksheet.
          *
          * [Api set: ExcelApi 1.6]
+         *
+         * @param markAllDirty True, to mark all as dirty.
          */
         calculate(markAllDirty: boolean): void;
         /**
@@ -5096,7 +5119,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          *
-         * @param valuesOnly Considers only cells with values as used cells (ignoring formatting). [Api set: ExcelApi 1.2]
+         * @param valuesOnly If true, considers only cells with values as used cells (ignoring formatting). [Api set: ExcelApi 1.2]
          */
         getUsedRange(valuesOnly?: boolean): Excel.Range;
         /**
@@ -5196,14 +5219,17 @@ declare namespace Excel {
          * Gets the number of worksheets in the collection.
          *
          * [Api set: ExcelApi 1.4]
+         *
+         * @param visibleOnly If true, considers only visible worksheets, skipping over any hidden ones.
          */
         getCount(visibleOnly?: boolean): OfficeExtension.ClientResult<number>;
         /**
          *
          * Gets the first worksheet in the collection.
-            If true, considers only visible worksheets, skipping over any hidden ones.
          *
          * [Api set: ExcelApi 1.5]
+         *
+         * @param visibleOnly If true, considers only visible worksheets, skipping over any hidden ones.
          */
         getFirst(visibleOnly?: boolean): Excel.Worksheet;
         /**
@@ -5227,9 +5253,10 @@ declare namespace Excel {
         /**
          *
          * Gets the last worksheet in the collection.
-            If true, considers only visible worksheets, skipping over any hidden ones.
          *
          * [Api set: ExcelApi 1.5]
+         *
+         * @param visibleOnly If true, considers only visible worksheets, skipping over any hidden ones.
          */
         getLast(visibleOnly?: boolean): Excel.Worksheet;
         /**
@@ -5445,7 +5472,7 @@ declare namespace Excel {
          *
          * @param frozenRange A range that represents the cells to be frozen, or null to remove all frozen panes.
          */
-        freezeAt(frozenRange: Excel.Range | string): void;
+        freezeAt(frozenRange: Range | string): void;
         /**
          *
          * Freeze the first column(s) of the worksheet in place.
@@ -5637,6 +5664,13 @@ declare namespace Excel {
         readonly isEntireRow: boolean;
         /**
          *
+         * Represents the data type state of each cell. Read-only.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly linkedDataTypeState: Excel.LinkedDataTypeState[][];
+        /**
+         *
          * Represents Excel's number format code for the given range.
             When setting number format to a range, the value argument can be either a single value (string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
          *
@@ -5734,6 +5768,47 @@ declare namespace Excel {
         clear(applyTo?: "All" | "Formats" | "Contents" | "Hyperlinks" | "RemoveHyperlinks"): void;
         /**
          *
+         * Converts the range cells with datatypes into text.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        convertDataTypeToText(): void;
+        /**
+         *
+         * Converts the range cells into linked datatype in the worksheet.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param serviceID The Service ID which will be used to query the data.
+         * @param languageCulture Language Culture to query the service for.
+         */
+        convertToLinkedDataType(serviceID: number, languageCulture: string): void;
+        /**
+         *
+         * Copies cell data or formatting from the source range to the current range.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param sourceRange The source range to copy from.
+         * @param copyType The type of cell data or formatting to copy over. Default is "All".
+         * @param skipBlanks True if to skip blank cells in the source range. Default is false.
+         * @param transpose True if to transpose the cells in the destination range. Default is false.
+         */
+        copyFrom(sourceRange: Range | string, copyType?: Excel.RangeCopyType, skipBlanks?: boolean, transpose?: boolean): void;
+        /**
+         *
+         * Copies cell data or formatting from the source range to the current range.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param sourceRange The source range to copy from.
+         * @param copyType The type of cell data or formatting to copy over. Default is "All".
+         * @param skipBlanks True if to skip blank cells in the source range. Default is false.
+         * @param transpose True if to transpose the cells in the destination range. Default is false.
+         */
+        copyFrom(sourceRange: Range | string, copyType?: "All" | "Formulas" | "Values" | "Formats", skipBlanks?: boolean, transpose?: boolean): void;
+        /**
+         *
          * Deletes the cells associated with the range.
          *
          * [Api set: ExcelApi 1.1]
@@ -5793,7 +5868,7 @@ declare namespace Excel {
          *
          * @param anotherRange The range object or address or range name.
          */
-        getBoundingRect(anotherRange: Excel.Range | string): Excel.Range;
+        getBoundingRect(anotherRange: Range | string): Excel.Range;
         /**
          *
          * Gets the range object containing the single cell based on row and column numbers. The cell can be outside the bounds of its parent range, so long as it's stays within the worksheet grid. The returned cell is located relative to the top left cell of the range.
@@ -5874,7 +5949,7 @@ declare namespace Excel {
          *
          * @param anotherRange The range object or range address that will be used to determine the intersection of ranges.
          */
-        getIntersection(anotherRange: Excel.Range | string): Excel.Range;
+        getIntersection(anotherRange: Range | string): Excel.Range;
         /**
          *
          * Gets the range object that represents the rectangular intersection of the given ranges. If no intersection is found, will return a null object.
@@ -5883,7 +5958,7 @@ declare namespace Excel {
          *
          * @param anotherRange The range object or range address that will be used to determine the intersection of ranges.
          */
-        getIntersectionOrNullObject(anotherRange: Excel.Range | string): Excel.Range;
+        getIntersectionOrNullObject(anotherRange: Range | string): Excel.Range;
         /**
          *
          * Gets the last cell within the range. For example, the last cell of "B2:D5" is "D5".
@@ -6023,7 +6098,6 @@ declare namespace Excel {
         /**
          *
          * Removes duplicate values from the range specified by the columns.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          *
@@ -6047,11 +6121,11 @@ declare namespace Excel {
         /**
          *
          * Selects the specified range in the Excel UI.
-            If multiple selection is not supported on the platform and the range has multiple areas, the "InvalidReference" error will be returned.
+            If true, a multi-area range can be selected; otherwise, only the first area will be selected. Default is false.
          *
          * [Api set: ExcelApi 1.1]
          */
-        select(): void;
+        select(allowMultiAreas?: boolean): void;
         /**
          *
          * Displays the card for an active cell if it has rich value content.
@@ -6351,7 +6425,7 @@ declare namespace Excel {
     }
     /**
      *
-     * Represents a collection of worksheet objects that are part of the workbook.
+     * Represents a collection of key-value pair setting objects that are part of the workbook. The scope is limited to per file and add-in (task-pane or content) combination.
      *
      * [Api set: ExcelApi 1.4]
      */
@@ -6410,7 +6484,7 @@ declare namespace Excel {
     }
     /**
      *
-     * Setting represents a key-value pair of a setting persisted to the document.
+     * Setting represents a key-value pair of a setting persisted to the document (per file per add-in). These custom key-value pair can be used to store state or lifecycle information needed by the content or task-pane add-in. Note that settings are persisted in the document and hence it is not a place to store any sensitive or protected information such as user information and password.
      *
      * [Api set: ExcelApi 1.4]
      */
@@ -6474,7 +6548,7 @@ declare namespace Excel {
          * @param comment The comment associated with the named item
          * @returns
          */
-        add(name: string, reference: Excel.Range | string, comment?: string): Excel.NamedItem;
+        add(name: string, reference: Range | string, comment?: string): Excel.NamedItem;
         /**
          *
          * Adds a new name to the collection of the given scope using the user's locale for the formula.
@@ -6571,7 +6645,7 @@ declare namespace Excel {
         readonly name: string;
         /**
          *
-         * Indicates whether the name is scoped to the workbook or to a specific worksheet. Read-only.
+         * Indicates whether the name is scoped to the workbook or to a specific worksheet. Possible values are: Worksheet, Workbook. Read-only.
          *
          * [Api set: ExcelApi 1.4]
          */
@@ -6765,7 +6839,7 @@ declare namespace Excel {
          * @param bindingType Type of binding. See Excel.BindingType.
          * @param id Name of binding.
          */
-        add(range: Excel.Range | string, bindingType: Excel.BindingType, id: string): Excel.Binding;
+        add(range: Range | string, bindingType: Excel.BindingType, id: string): Excel.Binding;
         /**
          *
          * Add a new binding to a particular Range.
@@ -6776,7 +6850,7 @@ declare namespace Excel {
          * @param bindingType Type of binding. See Excel.BindingType.
          * @param id Name of binding.
          */
-        add(range: Excel.Range | string, bindingType: "Range" | "Table" | "Text", id: string): Excel.Binding;
+        add(range: Range | string, bindingType: "Range" | "Table" | "Text", id: string): Excel.Binding;
         /**
          *
          * Add a new binding based on a named item in the workbook.
@@ -6887,10 +6961,10 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          *
-         * @param address A Range object, or a string address or name of the range representing the data source. If the address does not contain a sheet name, the currently-active sheet is used. [Api set: ExcelApi 1.1 for string parameter; 1.3 for accepting a Range object as well]
+         * @param address A Range object, or a string address or name of the range representing the data source. If the address does not contain a sheet name, the currently-active sheet is used. [Api set: ExcelApi 1.1 / 1.3.  Prior to ExcelApi 1.3, this parameter must be a string. Starting with Excel Api 1.3, this parameter may be a Range object or a string.]
          * @param hasHeaders Boolean value that indicates whether the data being imported has column labels. If the source does not contain headers (i.e,. when this property set to false), Excel will automatically generate header shifting the data down by one row.
          */
-        add(address: Excel.Range | string, hasHeaders: boolean): Excel.Table;
+        add(address: Range | string, hasHeaders: boolean): Excel.Table;
         /**
          *
          * Gets the number of tables in the collection.
@@ -7656,7 +7730,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        formula1: string | number | Excel.Range;
+        formula1: string | number | Range;
         /**
          *
          * Gets or sets the Formula2, i.e. maximum value or value depending of the operator.
@@ -7665,7 +7739,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        formula2?: string | number | Excel.Range;
+        formula2?: string | number | Range;
         /**
          *
          * The operator to use for validating the data.
@@ -7689,7 +7763,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        formula1: string | Date | Excel.Range;
+        formula1: string | Date | Range;
         /**
          *
          * Gets or sets the Formula2, i.e. maximum value or value depending of the operator.
@@ -7698,7 +7772,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        formula2?: string | Date | Excel.Range;
+        formula2?: string | Date | Range;
         /**
          *
          * The operator to use for validating the data.
@@ -7728,7 +7802,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        source: string | Excel.Range;
+        source: string | Range;
     }
     /**
      *
@@ -8243,7 +8317,7 @@ declare namespace Excel {
          * @param sourceData The range corresponding to the source data.
          * @param seriesBy Specifies the way columns or rows are used as data series on the chart. See Excel.ChartSeriesBy for details.
          */
-        add(type: Excel.ChartType, sourceData: Excel.Range | string, seriesBy?: Excel.ChartSeriesBy): Excel.Chart;
+        add(type: Excel.ChartType, sourceData: Range | string, seriesBy?: Excel.ChartSeriesBy): Excel.Chart;
         /**
          *
          * Creates a new chart.
@@ -8254,7 +8328,7 @@ declare namespace Excel {
          * @param sourceData The range corresponding to the source data.
          * @param seriesBy Specifies the way columns or rows are used as data series on the chart. See Excel.ChartSeriesBy for details.
          */
-        add(type: "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar", sourceData: Excel.Range | string, seriesBy?: "Auto" | "Columns" | "Rows"): Excel.Chart;
+        add(type: "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar", sourceData: Range | string, seriesBy?: "Auto" | "Columns" | "Rows"): Excel.Chart;
         /**
          *
          * Returns the number of charts in the worksheet.
@@ -8585,7 +8659,7 @@ declare namespace Excel {
          * @param sourceData The range corresponding to the source data.
          * @param seriesBy Specifies the way columns or rows are used as data series on the chart. Can be one of the following: Auto (default), Rows, Columns. See Excel.ChartSeriesBy for details.
          */
-        setData(sourceData: Excel.Range | string, seriesBy?: Excel.ChartSeriesBy): void;
+        setData(sourceData: Range | string, seriesBy?: Excel.ChartSeriesBy): void;
         /**
          *
          * Resets the source data for the chart.
@@ -8595,7 +8669,7 @@ declare namespace Excel {
          * @param sourceData The range corresponding to the source data.
          * @param seriesBy Specifies the way columns or rows are used as data series on the chart. Can be one of the following: Auto (default), Rows, Columns. See Excel.ChartSeriesBy for details.
          */
-        setData(sourceData: Excel.Range | string, seriesBy?: "Auto" | "Columns" | "Rows"): void;
+        setData(sourceData: Range | string, seriesBy?: "Auto" | "Columns" | "Rows"): void;
         /**
          *
          * Positions the chart relative to cells on the worksheet.
@@ -8605,7 +8679,7 @@ declare namespace Excel {
          * @param startCell The start cell. This is where the chart will be moved to. The start cell is the top-left or top-right cell, depending on the user's right-to-left display settings.
          * @param endCell (Optional) The end cell. If specified, the chart's width and height will be set to fully cover up this cell/range.
          */
-        setPosition(startCell: Excel.Range | string, endCell?: Excel.Range | string): void;
+        setPosition(startCell: Range | string, endCell?: Range | string): void;
         /**
          * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
          */
@@ -8969,7 +9043,7 @@ declare namespace Excel {
          *
          * @param sourceData The Range object corresponding to the source data.
          */
-        setBubbleSizes(sourceData: Excel.Range): void;
+        setBubbleSizes(sourceData: Range): void;
         /**
          *
          * Set values for a chart series. For scatter chart, it means Y axis values.
@@ -8978,7 +9052,7 @@ declare namespace Excel {
          *
          * @param sourceData The Range object corresponding to the source data.
          */
-        setValues(sourceData: Excel.Range): void;
+        setValues(sourceData: Range): void;
         /**
          *
          * Set values of X axis for a chart series. Only works for scatter charts.
@@ -8987,7 +9061,7 @@ declare namespace Excel {
          *
          * @param sourceData The Range object corresponding to the source data.
          */
-        setXAxisValues(sourceData: Excel.Range): void;
+        setXAxisValues(sourceData: Range): void;
         /**
          * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
          */
@@ -9558,7 +9632,7 @@ declare namespace Excel {
          *
          * @param sourceData The Range object corresponding to the source data.
          */
-        setCategoryNames(sourceData: Excel.Range): void;
+        setCategoryNames(sourceData: Range): void;
         /**
          * [DEPRECATED; kept for back-compat with existing first-party solutions]. Please use `SetPositionAt` instead.
          * Set the specified axis where the other axis crosses at.
@@ -11334,6 +11408,377 @@ declare namespace Excel {
     }
     /**
      *
+     * A collection of all the visuals on a worksheet.
+     *
+     * [Api set: ExcelApi 99.9]
+     */
+    class VisualCollection extends OfficeExtension.ClientObject {
+        /** Gets the loaded child items in this collection. */
+        readonly items: Excel.Visual[];
+        /**
+         *
+         * Creates a new visual.
+         *
+         * [Api set: ExcelApi 99.9]
+         *
+         * @param visualDefinitionGuid  The guid of a VisualDefinition, not the id for an instance of a Visual.
+         * @param dataSourceType The data source type of visual. e.g. xlFormula
+         * @param dataSourceContent The data source content
+         */
+        add(visualDefinitionGuid: string, dataSourceType?: string, dataSourceContent?: string): Excel.Visual;
+        /**
+         *
+         * Returns the number of visuals in the worksheet.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        getCount(): OfficeExtension.ClientResult<number>;
+        /**
+         *
+         * Gets all visual definitions.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        getDefinitions(): OfficeExtension.ClientResult<Excel.VisualDefinition[]>;
+        /**
+         *
+         * Get the preview of a visual.
+         *
+         * [Api set: ExcelApi 99.9]
+         *
+         * @param visualDefinitionGuid  The guid of a VisualDefinition, not the id for an instance of a Visual.
+         * @param width  The width of the preview.
+         * @param height  The height of the preview.
+         * @param dpi  The dpi setting.
+         */
+        getPreview(visualDefinitionGuid: string, width: number, height: number, dpi: number): OfficeExtension.ClientResult<string>;
+        /**
+         *
+         * Gets the selected Visual if and only if one Visual is selected.
+            If no Visual is selected, the return object's isNull property will be true.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        getSelectedOrNullObject(): Excel.Visual;
+        /**
+         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+         */
+        load(option?: Excel.Interfaces.VisualCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.VisualCollection;
+        load(option?: string | string[]): Excel.VisualCollection;
+        load(option?: OfficeExtension.LoadOption): Excel.VisualCollection;
+        /**
+         *
+         * Occurs when a selection is changed.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        readonly onSelectionChanged: OfficeExtension.EventHandlers<Excel.VisualSelectionChangedEventArgs>;
+        toJSON(): Excel.Interfaces.VisualCollectionData;
+    }
+    /**
+     *
+     * Represents a visual object in a workbook.
+     *
+     * [Api set: ExcelApi 99.9]
+     */
+    class Visual extends OfficeExtension.ClientObject {
+        /**
+         *
+         * Gets all properties of the visual. Read-only.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        readonly properties: Excel.VisualPropertyCollection;
+        /**
+         *
+         * The unique id of visual, not the guid of VisualDefinition. Read-only.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        readonly id: string;
+        /**
+         *
+         * Get the preview of a visual.
+         *
+         * [Api set: ExcelApi 99.9]
+         *
+         * @param dataSourceType The data source type of visual. e.g. xlFormula
+         * @param dataSourceContent The data source content. e.g. Sheet1!$C$5:$D$7
+         */
+        changeDataSource(dataSourceType: string, dataSourceContent: string): void;
+        /**
+         *
+         * Delete the visual.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        delete(): void;
+        /**
+         *
+         * Get the child properties of the specific parent property Id.
+         *
+         * [Api set: ExcelApi 99.9]
+         *
+         * @param parentPropId Parent property Id. Omitting this parameter will return the root-level properties.
+         */
+        getChildProperties(parentPropId?: string): Excel.VisualPropertyCollection;
+        /**
+         *
+         * Get the DataControllerClient for the visual
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        getDataControllerClient(): Excel.DataControllerClient;
+        /**
+         *
+         * Gets a string represening the visual's current data source. e.g. Sheet1!$C$5:$D$7
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        getDataSource(): OfficeExtension.ClientResult<string>;
+        /**
+         *
+         * GetProperty
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        getProperty(propName: string): OfficeExtension.ClientResult<any>;
+        /**
+         *
+         * SetProperty
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        setProperty(propName: string, value: any): void;
+        /**
+         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+         */
+        load(option?: Excel.Interfaces.VisualLoadOptions): Excel.Visual;
+        load(option?: string | string[]): Excel.Visual;
+        load(option?: {
+            select?: string;
+            expand?: string;
+        }): Excel.Visual;
+        toJSON(): Excel.Interfaces.VisualData;
+    }
+    /**
+     *
+     * This object represents the attributes for a property.
+     *
+     * [Api set: ExcelApi 99.9]
+     */
+    class VisualProperty extends OfficeExtension.ClientObject {
+        /**
+         *
+         * Returns the property Id.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        readonly id: string;
+        /**
+         *
+         * Returns the property localized name.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        readonly localizedName: string;
+        /**
+         *
+         * Returns the localized property options for IEnumProperty only. If property type isn't enum, it returns null.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        readonly localizedOptions: string[];
+        /**
+         *
+         * Returns the property options for IEnumProperty only. If property type isn't enum, it returns null.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        readonly options: string[];
+        /**
+         *
+         * Returns the property type.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        readonly type: Excel.VisualPropertyType | "Object" | "Collection" | "String" | "Double" | "Int" | "Bool" | "Enum" | "Color";
+        /**
+         *
+         * Returns the property value.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        readonly value: any;
+        /**
+         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+         */
+        load(option?: Excel.Interfaces.VisualPropertyLoadOptions): Excel.VisualProperty;
+        load(option?: string | string[]): Excel.VisualProperty;
+        load(option?: {
+            select?: string;
+            expand?: string;
+        }): Excel.VisualProperty;
+        toJSON(): Excel.Interfaces.VisualPropertyData;
+    }
+    /**
+     *
+     * Represents a collection of visual object properties.
+     *
+     * [Api set: ExcelApi 99.9]
+     */
+    class VisualPropertyCollection extends OfficeExtension.ClientObject {
+        /** Gets the loaded child items in this collection. */
+        readonly items: Excel.VisualProperty[];
+        /**
+         *
+         * Returns the number of properties in the collection.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        getCount(): OfficeExtension.ClientResult<number>;
+        /**
+         *
+         * Returns a property at given index
+         *
+         * [Api set: ExcelApi 99.9]
+         *
+         * @param index Represents the index in property array.
+         */
+        getItem(index: number): Excel.VisualProperty;
+        /**
+         *
+         * Returns a property at given index
+         *
+         * [Api set: ExcelApi 99.9]
+         *
+         * @param index Represents the index in property array.
+         */
+        getItemAt(index: number): Excel.VisualProperty;
+        /**
+         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+         */
+        load(option?: Excel.Interfaces.VisualPropertyCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.VisualPropertyCollection;
+        load(option?: string | string[]): Excel.VisualPropertyCollection;
+        load(option?: OfficeExtension.LoadOption): Excel.VisualPropertyCollection;
+        toJSON(): Excel.Interfaces.VisualPropertyCollectionData;
+    }
+    /**
+     *
+     * Represents a visual definition
+     *
+     * [Api set: ExcelApi 99.9]
+     */
+    interface VisualDefinition {
+        /**
+         *
+         * Represents the category of a visual definition.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        category: Excel.VisualCategory | "Column" | "Bar" | "Line" | "Area" | "Pie" | "Donut" | "Scatter" | "Bubble" | "Statistical" | "Stock" | "Combo" | "Hierarchy" | "Surface" | "Map" | "Funnel" | "Radar" | "Waterfall" | "ThreeD" | "Other";
+        /**
+         *
+         * Represents the category rank of a visual definition.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        categoryRank: number;
+        /**
+         *
+         * Represents the decription of a visual definition.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        description: string;
+        /**
+         *
+         * Represents the id of a visual definition.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        id: string;
+        /**
+         *
+         * Represents the title of a visual definition.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        title: string;
+    }
+    /**
+     *
+     * Represents how the Visual is setup to use the data source.
+     *
+     * [Api set: ExcelApi 99.9]
+     */
+    class DataControllerClient extends OfficeExtension.ClientObject {
+        /**
+         *
+         * Add a field to well.
+         *
+         * [Api set: ExcelApi 99.9]
+         *
+         * @param wellId The id of the well that the field will be added to.
+         * @param fieldId The id of the field to add to the well.
+         * @param position The position in the well where the field should be added.
+         */
+        addField(wellId: number, fieldId: number, position: number): void;
+        /**
+         *
+         * Gets an array of JSON objects representing the fields associated with the specified wellId.
+            The the objects in the array have an id(number) and name(string).
+         *
+         * [Api set: ExcelApi 99.9]
+         *
+         * @param wellId The id of the well to get the associated fields for.
+         */
+        getAssociatedFields(wellId: number): OfficeExtension.ClientResult<string>;
+        /**
+         *
+         * Gets an array of JSON objects representing the fields that may be associated with wellId.
+            The the objects in the array have an id(number) and name(string).
+         *
+         * [Api set: ExcelApi 99.9]
+         *
+         * @param wellId The id of the well to get the available fields for.
+         */
+        getAvailableFields(wellId: number): OfficeExtension.ClientResult<string>;
+        /**
+         *
+         * Gets an array of JSON objects representing this visual's wells.
+            The the objects in the array have an id(number) and name(string).
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        getWells(): OfficeExtension.ClientResult<string>;
+        /**
+         *
+         * Move a field from one position to another in a well.
+         *
+         * [Api set: ExcelApi 99.9]
+         *
+         * @param wellId The id of the well to be moved.
+         * @param fromPosition The position in the well of the field to be moved.
+         * @param toPosition The new position for the field
+         */
+        moveField(wellId: number, fromPosition: number, toPosition: number): void;
+        /**
+         *
+         * Remove a field from a well.
+         *
+         * [Api set: ExcelApi 99.9]
+         *
+         * @param wellId The id of the well that will have a field removed.
+         * @param position The position in the well of the field that should be removed
+         */
+        removeField(wellId: number, position: number): void;
+        toJSON(): {
+            [key: string]: string;
+        };
+    }
+    /**
+     *
      * Manages sorting operations on Range objects.
      *
      * [Api set: ExcelApi 1.2]
@@ -11493,6 +11938,13 @@ declare namespace Excel {
          * [Api set: ExcelApi 1.2]
          */
         sortOn?: Excel.SortOn | "Value" | "CellColor" | "FontColor" | "Icon";
+        /**
+         *
+         * Represents the subfield that is the target property name of a rich value to sort on.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        subField?: string;
     }
     /**
      *
@@ -11626,9 +12078,9 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.2]
          *
-         * @param values The list of values to show.
+         * @param values The list of values to show. This must be an array of strings or an array of Excel.FilterDateTime objects.
          */
-        applyValuesFilter(values: Array<string | Excel.FilterDatetime>): void;
+        applyValuesFilter(values: Array<string | FilterDatetime>): void;
         /**
          *
          * Clear the filter on the given column.
@@ -11708,11 +12160,18 @@ declare namespace Excel {
         operator?: Excel.FilterOperator | "And" | "Or";
         /**
          *
+         * The property used by the filter to do rich filter on richvalues.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        subField?: string;
+        /**
+         *
          * The set of values to be used as part of "values" filtering.
          *
          * [Api set: ExcelApi 1.2]
          */
-        values?: Array<string | Excel.FilterDatetime>;
+        values?: Array<string | FilterDatetime>;
     }
     /**
      *
@@ -11843,7 +12302,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.5]
          *
-         * @param namespaceUri
+         * @param namespaceUri This must be a fully qualified schema URI; for example, "http://schemas.contoso.com/review/1.0".
          */
         getByNamespace(namespaceUri: string): Excel.CustomXmlPartScopedCollection;
         /**
@@ -11955,7 +12414,7 @@ declare namespace Excel {
          * @param destination The cell in the upper-left corner of the PivotTable report's destination range (the range on the worksheet where the resulting report will be placed).
          * @returns Returns the newly inserted PivotTable.
          */
-        add(name: string, source: Excel.Range | string | Excel.Table, destination: Excel.Range | string): Excel.PivotTable;
+        add(name: string, source: Range | string | Table, destination: Range | string): Excel.PivotTable;
         /**
          *
          * Gets the number of pivot tables in the collection.
@@ -15048,36 +15507,237 @@ declare namespace Excel {
     class PageLayout extends OfficeExtension.ClientObject {
         /**
          *
-         * Gets or sets the black and white print option.
+         * Header and footer configuration for the worksheet.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly headersFooters: Excel.HeaderFooterGroup;
+        /**
+         *
+         * Gets or sets the worksheet's black and white print option.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         blackAndWhite: boolean;
         /**
          *
-         * Gets or sets the orientation of the page.
+         * Gets or sets the worksheet's bottom page margin to use for printing in points.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        bottomMargin: number;
+        /**
+         *
+         * Gets or sets the worksheet's center horizontally flag. This flag determines whether the worksheet will be centered horizontally when it's printed.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        centerHorizontally: boolean;
+        /**
+         *
+         * Gets or sets the worksheet's center vertically flag. This flag determines whether the worksheet will be centered vertically when it's printed.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        centerVertically: boolean;
+        /**
+         *
+         * Gets or sets the worksheet's draft mode option. If true the sheet will be printed without graphics.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        draft: boolean;
+        /**
+         *
+         * Gets or sets the worksheet's first page number to print. Null value represents "auto" page numbering.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        firstPageNumber: number | "";
+        /**
+         *
+         * Gets or sets the worksheet's footer margin, in points, for use when printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        footerMargin: number;
+        /**
+         *
+         * Gets or sets the worksheet's header margin, in points, for use when printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        headerMargin: number;
+        /**
+         *
+         * Gets or sets the worksheet's left margin, in points, for use when printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        leftMargin: number;
+        /**
+         *
+         * Gets or sets the worksheet's orientation of the page.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         orientation: Excel.PageOrientation | "Portrait" | "Landscape";
         /**
          *
-         * Gets or sets the paper size of the page.
+         * Gets or sets the worksheet's paper size of the page.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         paperSize: Excel.PaperType | "Letter" | "LetterSmall" | "Tabloid" | "Ledger" | "Legal" | "Statement" | "Executive" | "A3" | "A4" | "A4Small" | "A5" | "B4" | "B5" | "Folio" | "Quatro" | "Paper10x14" | "Paper11x17" | "Note" | "Envelope9" | "Envelope10" | "Envelope11" | "Envelope12" | "Envelope14" | "Csheet" | "Dsheet" | "Esheet" | "EnvelopeDL" | "EnvelopeC5" | "EnvelopeC3" | "EnvelopeC4" | "EnvelopeC6" | "EnvelopeC65" | "EnvelopeB4" | "EnvelopeB5" | "EnvelopeB6" | "EnvelopeItaly" | "EnvelopeMonarch" | "EnvelopePersonal" | "FanfoldUS" | "FanfoldStdGerman" | "FanfoldLegalGerman";
         /**
          *
-         * Gets or sets the print errors option.
+         * Gets or sets whether the worksheet's comments should be displayed when printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        printComments: Excel.PrintComments | "PrintNoComments" | "PrintEndSheet" | "PrintInPlace";
+        /**
+         *
+         * Gets or sets the worksheet's print errors option.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         printErrors: Excel.PrintErrorType | "ErrorsDisplayed" | "ErrorsBlank" | "ErrorsDash" | "ErrorsNotAvailable";
+        /**
+         *
+         * Gets or sets the worksheet's print gridlines flag. This flag determines whether gridlines will be printed or not.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        printGridlines: boolean;
+        /**
+         *
+         * Gets or sets the worksheet's print headings flag. This flag determines whether headings will be printed or not.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        printHeadings: boolean;
+        /**
+         *
+         * Gets or sets the worksheet's page print order option. This specifies the order to use for processing the page number printed.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        printOrder: Excel.PrintOrder | "DownThenOver" | "OverThenDown";
+        /**
+         *
+         * Gets or sets the worksheet's right margin, in points, for use when printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        rightMargin: number;
+        /**
+         *
+         * Gets or sets the worksheet's top margin, in points, for use when printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        topMargin: number;
+        /**
+         *
+         * Gets or sets the worksheet's print zoom options.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        zoom: Excel.PageLayoutZoomOptions;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
         set(properties: Interfaces.PageLayoutUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: PageLayout): void;
+        /**
+         *
+         * Gets the range object representing the print area for the worksheet. If not set, this will return a null object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getPrintArea(): Excel.Range;
+        /**
+         *
+         * Gets the range object representing the print area for the worksheet.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getPrintAreaOrNullObject(): Excel.Range;
+        /**
+         *
+         * Gets the range object representing the title columns.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getPrintTitleColumns(): Excel.Range;
+        /**
+         *
+         * Gets the range object representing the title columns. If not set, this will return a null object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getPrintTitleColumnsOrNullObject(): Excel.Range;
+        /**
+         *
+         * Gets the range object representing the title rows.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getPrintTitleRows(): Excel.Range;
+        /**
+         *
+         * Gets the range object representing the title rows. If not set, this will return a null object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getPrintTitleRowsOrNullObject(): Excel.Range;
+        /**
+         *
+         * Sets the worksheet's print area.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param printArea The range of the content to print.
+         */
+        setPrintArea(printArea: Range | string): void;
+        /**
+         *
+         * Sets the worksheet's page margins with units.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param unit Measurement unit for the margins provided.
+         * @param marginOptions Margin values to set, margins not provided will remain unchanged.
+         */
+        setPrintMargins(unit: Excel.PrintMarginUnit, marginOptions: Excel.PageLayoutMarginOptions): void;
+        /**
+         *
+         * Sets the worksheet's page margins with units.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param unit Measurement unit for the margins provided.
+         * @param marginOptions Margin values to set, margins not provided will remain unchanged.
+         */
+        setPrintMargins(unit: "Points" | "Inches" | "Centimeters", marginOptions: Excel.PageLayoutMarginOptions): void;
+        /**
+         *
+         * Sets the columns that contain the cells to be repeated at the left of each page of the worksheet for printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param printTitleColumns The columns to be repeated to the left of each page, range must span the entire column to be valid.
+         */
+        setPrintTitleColumns(printTitleColumns: Range | string): void;
+        /**
+         *
+         * Sets the rows that contain the cells to be repeated at the top of each page of the worksheet for printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param printTitleRows The rows to be repeated at the top of each page, range must span the entire row to be valid.
+         */
+        setPrintTitleRows(printTitleRows: Range | string): void;
         /**
          * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
          */
@@ -15088,6 +15748,309 @@ declare namespace Excel {
             expand?: string;
         }): Excel.PageLayout;
         toJSON(): Excel.Interfaces.PageLayoutData;
+    }
+    /**
+     *
+     * Represents page zoom properties.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface PageLayoutZoomOptions {
+        /**
+         *
+         * Number of pages to fit horizontally. This value can be null if percentage scale is used.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        horizontalFitToPages?: number;
+        /**
+         *
+         * Print page scale value can be between 10 and 400. This value can be null if fit to page tall or wide is specified.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        percentage?: number;
+        /**
+         *
+         * Number of pages to fit vertically. This value can be null if percentage scale is used.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        verticalFitToPages?: number;
+    }
+    /**
+     *
+     * Represents the options in page layout margins.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface PageLayoutMarginOptions {
+        /**
+         *
+         * Represents the page layout bottom margin in the unit specified to use for printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        bottom?: number;
+        /**
+         *
+         * Represents the page layout footer margin in the unit specified to use for printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        footer?: number;
+        /**
+         *
+         * Represents the page layout header margin in the unit specified to use for printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        header?: number;
+        /**
+         *
+         * Represents the page layout left margin in the unit specified to use for printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        left?: number;
+        /**
+         *
+         * Represents the page layout right margin in the unit specified to use for printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        right?: number;
+        /**
+         *
+         * Represents the page layout top margin in the unit specified to use for printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        top?: number;
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class HeaderFooter extends OfficeExtension.ClientObject {
+        /**
+         *
+         * Gets or sets the center footer of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        centerFooter: string;
+        /**
+         *
+         * Gets or sets the center header of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        centerHeader: string;
+        /**
+         *
+         * Gets or sets the left footer of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        leftFooter: string;
+        /**
+         *
+         * Gets or sets the left header of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        leftHeader: string;
+        /**
+         *
+         * Gets or sets the right footer of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        rightFooter: string;
+        /**
+         *
+         * Gets or sets the right header of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        rightHeader: string;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        set(properties: Interfaces.HeaderFooterUpdateData, options?: OfficeExtension.UpdateOptions): void;
+        /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
+        set(properties: HeaderFooter): void;
+        /**
+         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+         */
+        load(option?: Excel.Interfaces.HeaderFooterLoadOptions): Excel.HeaderFooter;
+        load(option?: string | string[]): Excel.HeaderFooter;
+        load(option?: {
+            select?: string;
+            expand?: string;
+        }): Excel.HeaderFooter;
+        toJSON(): Excel.Interfaces.HeaderFooterData;
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class HeaderFooterGroup extends OfficeExtension.ClientObject {
+        /**
+         *
+         * The header/footer to use for even pages, odd header/footer needs to be specified for odd pages.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly even: Excel.HeaderFooter;
+        /**
+         *
+         * The first page header/footer, for all other pages general or even/odd is used.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly first: Excel.HeaderFooter;
+        /**
+         *
+         * The general header/footer, used for all pages unless even/odd or first page is specified.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly general: Excel.HeaderFooter;
+        /**
+         *
+         * The header/footer to use for odd pages, even header/footer needs to be specified for even pages.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly odd: Excel.HeaderFooter;
+        /**
+         *
+         * Gets or sets the state of which headers/footers are set. See Excel.HeaderFooterState for details.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        state: Excel.HeaderFooterState | "General" | "FirstGeneral" | "OddEven" | "FirstOddEven";
+        /**
+         *
+         * Gets or sets a flag indicating if headers/footers are aligned with the page margins set in the page layout options for the worksheet.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        useSheetMargins: boolean;
+        /**
+         *
+         * Gets or sets a flag indicating if headers/footers should be scaled by the page percentage scale set in the page layout options for the worksheet.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        useSheetScale: boolean;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        set(properties: Interfaces.HeaderFooterGroupUpdateData, options?: OfficeExtension.UpdateOptions): void;
+        /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
+        set(properties: HeaderFooterGroup): void;
+        /**
+         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+         */
+        load(option?: Excel.Interfaces.HeaderFooterGroupLoadOptions): Excel.HeaderFooterGroup;
+        load(option?: string | string[]): Excel.HeaderFooterGroup;
+        load(option?: {
+            select?: string;
+            expand?: string;
+        }): Excel.HeaderFooterGroup;
+        toJSON(): Excel.Interfaces.HeaderFooterGroupData;
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class PageBreak extends OfficeExtension.ClientObject {
+        /**
+         *
+         * Represents the column index for the page break
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly columnIndex: number;
+        /**
+         *
+         * Represents the row index for the page break
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly rowIndex: number;
+        /**
+         *
+         * Deletes a page break object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        delete(): void;
+        /**
+         *
+         * Gets the first cell after the page break.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getRange(): Excel.Range;
+        /**
+         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+         */
+        load(option?: Excel.Interfaces.PageBreakLoadOptions): Excel.PageBreak;
+        load(option?: string | string[]): Excel.PageBreak;
+        load(option?: {
+            select?: string;
+            expand?: string;
+        }): Excel.PageBreak;
+        toJSON(): Excel.Interfaces.PageBreakData;
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class PageBreakCollection extends OfficeExtension.ClientObject {
+        /** Gets the loaded child items in this collection. */
+        readonly items: Excel.PageBreak[];
+        /**
+         *
+         * Adds a page break before the top-left cell of the range specified.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param pageBreakRange The range immediately after the page break to be added.
+         */
+        add(pageBreakRange: Range | string): Excel.PageBreak;
+        /**
+         *
+         * Gets the number of page breaks in the collection.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getCount(): OfficeExtension.ClientResult<number>;
+        /**
+         *
+         * Gets a page break object via the index.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param index Index of the page break.
+         */
+        getItem(index: number): Excel.PageBreak;
+        /**
+         *
+         * Resets all manual page breaks in the collection.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        resetPageBreaks(): void;
+        /**
+         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+         */
+        load(option?: Excel.Interfaces.PageBreakCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.PageBreakCollection;
+        load(option?: string | string[]): Excel.PageBreakCollection;
+        load(option?: OfficeExtension.LoadOption): Excel.PageBreakCollection;
+        toJSON(): Excel.Interfaces.PageBreakCollectionData;
     }
     /**
      *
@@ -15954,6 +16917,43 @@ declare namespace Excel {
         removeHyperlinks = "RemoveHyperlinks",
     }
     /**
+     * [Api set: ExcelApi 99.9]
+     */
+    enum VisualCategory {
+        column = "Column",
+        bar = "Bar",
+        line = "Line",
+        area = "Area",
+        pie = "Pie",
+        donut = "Donut",
+        scatter = "Scatter",
+        bubble = "Bubble",
+        statistical = "Statistical",
+        stock = "Stock",
+        combo = "Combo",
+        hierarchy = "Hierarchy",
+        surface = "Surface",
+        map = "Map",
+        funnel = "Funnel",
+        radar = "Radar",
+        waterfall = "Waterfall",
+        threeD = "ThreeD",
+        other = "Other",
+    }
+    /**
+     * [Api set: ExcelApi 99.9]
+     */
+    enum VisualPropertyType {
+        object = "Object",
+        collection = "Collection",
+        string = "String",
+        double = "Double",
+        int = "Int",
+        bool = "Bool",
+        enum = "Enum",
+        color = "Color",
+    }
+    /**
      *
      * Represents the format options for a Data Bar Axis.
      *
@@ -16802,7 +17802,7 @@ declare namespace Excel {
         landscape = "Landscape",
     }
     /**
-     * [Api set: ExcelApi 1.7]
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
     enum PaperType {
         letter = "Letter",
@@ -16930,7 +17930,7 @@ declare namespace Excel {
         explanatoryText = "ExplanatoryText",
     }
     /**
-     * [Api set: ExcelApi 1.7]
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
     enum PrintErrorType {
         errorsDisplayed = "ErrorsDisplayed",
@@ -16947,6 +17947,117 @@ declare namespace Excel {
         after = "After",
         beginning = "Beginning",
         end = "End",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum PrintComments {
+        /**
+         *
+         * Comments will not be printed.
+         *
+         */
+        printNoComments = "PrintNoComments",
+        /**
+         *
+         * Comments will be printed as end notes at the end of the worksheet.
+         *
+         */
+        printEndSheet = "PrintEndSheet",
+        /**
+         *
+         * Comments will be printed where they were inserted in the worksheet.
+         *
+         */
+        printInPlace = "PrintInPlace",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum PrintOrder {
+        /**
+         *
+         * Process down the rows before processing across pages or page fields to the right.
+         *
+         */
+        downThenOver = "DownThenOver",
+        /**
+         *
+         * Process across pages or page fields to the right before moving down the rows.
+         *
+         */
+        overThenDown = "OverThenDown",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum PrintMarginUnit {
+        /**
+         *
+         * Assign the page margins in points. A point is 1/72 of an inch.
+         *
+         */
+        points = "Points",
+        /**
+         *
+         * Assign the page margins in inches.
+         *
+         */
+        inches = "Inches",
+        /**
+         *
+         * Assign the page margins in centimeters.
+         *
+         */
+        centimeters = "Centimeters",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum HeaderFooterState {
+        /**
+         *
+         * Only one general header/footer is used for all pages printed.
+         *
+         */
+        general = "General",
+        /**
+         *
+         * There is a seperate first page header/footer, and a general header/footer used for all other pages.
+         *
+         */
+        firstGeneral = "FirstGeneral",
+        /**
+         *
+         * There is a different header/footer for odd and even pages.
+         *
+         */
+        oddEven = "OddEven",
+        /**
+         *
+         * There is a seperate first page header/footer, then there is a seperate header/footer for odd and even pages.
+         *
+         */
+        firstOddEven = "FirstOddEven",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum RangeCopyType {
+        all = "All",
+        formulas = "Formulas",
+        values = "Values",
+        formats = "Formats",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum LinkedDataTypeState {
+        none = "None",
+        validLinkedData = "ValidLinkedData",
+        disambiguationNeeded = "DisambiguationNeeded",
+        brokenLinkedData = "BrokenLinkedData",
+        fetchingData = "FetchingData",
     }
     /**
      *
@@ -20762,12 +21873,45 @@ declare namespace Excel {
         /** An interface for updating data on the Application object, for use in "application.set({ ... })". */
         interface ApplicationUpdateData {
             /**
+            *
+            * Returns the Iterative Calculation settings.
+            On Excel for Windows and Excel for Mac, the settings will aplly to the Excel Application.
+            On Excel Online and Excel for other platforms, the settings will apply to the active workbook.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            iterativeCalculation?: Excel.Interfaces.IterativeCalculationUpdateData;
+            /**
              *
-             * Returns the calculation mode used in the workbook. See Excel.CalculationMode for details.
+             * Returns the calculation mode used in the workbook, as defined by the constants in Excel.CalculationMode. Possible values are: `Automatic`, where Excel controls recalculation; `AutomaticExceptTables`, where Excel controls recalculation but ignores changes in tables; `Manual`, where calculation is done when the user requests it.
              *
              * [Api set: ExcelApi 1.1 for get, 1.8 for set]
              */
             calculationMode?: Excel.CalculationMode | "Automatic" | "AutomaticExceptTables" | "Manual";
+        }
+        /** An interface for updating data on the IterativeCalculation object, for use in "iterativeCalculation.set({ ... })". */
+        interface IterativeCalculationUpdateData {
+            /**
+             *
+             * True if Excel will use iteration to resolve circular references.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            enabled?: boolean;
+            /**
+             *
+             * Returns or sets the maximum amount of change between each iteration as Excel resolves circular references.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            maxChange?: number;
+            /**
+             *
+             * Returns or sets the maximum number of iterations that Excel can use to resolve a circular reference.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            maxIteration?: number;
         }
         /** An interface for updating data on the Workbook object, for use in "workbook.set({ ... })". */
         interface WorkbookUpdateData {
@@ -23131,6 +24275,14 @@ declare namespace Excel {
             */
             border?: Excel.Interfaces.ChartBorderUpdateData;
         }
+        /** An interface for updating data on the VisualCollection object, for use in "visualCollection.set({ ... })". */
+        interface VisualCollectionUpdateData {
+            items?: Excel.Interfaces.VisualData[];
+        }
+        /** An interface for updating data on the VisualPropertyCollection object, for use in "visualPropertyCollection.set({ ... })". */
+        interface VisualPropertyCollectionUpdateData {
+            items?: Excel.Interfaces.VisualPropertyData[];
+        }
         /** An interface for updating data on the CustomXmlPartScopedCollection object, for use in "customXmlPartScopedCollection.set({ ... })". */
         interface CustomXmlPartScopedCollectionUpdateData {
             items?: Excel.Interfaces.CustomXmlPartData[];
@@ -24171,33 +25323,252 @@ declare namespace Excel {
         /** An interface for updating data on the PageLayout object, for use in "pageLayout.set({ ... })". */
         interface PageLayoutUpdateData {
             /**
+            *
+            * Header and footer configuration for the worksheet.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            headersFooters?: Excel.Interfaces.HeaderFooterGroupUpdateData;
+            /**
              *
-             * Gets or sets the black and white print option.
+             * Gets or sets the worksheet's black and white print option.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             blackAndWhite?: boolean;
             /**
              *
-             * Gets or sets the orientation of the page.
+             * Gets or sets the worksheet's bottom page margin to use for printing in points.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            bottomMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's center horizontally flag. This flag determines whether the worksheet will be centered horizontally when it's printed.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerHorizontally?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's center vertically flag. This flag determines whether the worksheet will be centered vertically when it's printed.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerVertically?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's draft mode option. If true the sheet will be printed without graphics.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            draft?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's first page number to print. Null value represents "auto" page numbering.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            firstPageNumber?: number | "";
+            /**
+             *
+             * Gets or sets the worksheet's footer margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            footerMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's header margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            headerMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's left margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            leftMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's orientation of the page.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             orientation?: Excel.PageOrientation | "Portrait" | "Landscape";
             /**
              *
-             * Gets or sets the paper size of the page.
+             * Gets or sets the worksheet's paper size of the page.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             paperSize?: Excel.PaperType | "Letter" | "LetterSmall" | "Tabloid" | "Ledger" | "Legal" | "Statement" | "Executive" | "A3" | "A4" | "A4Small" | "A5" | "B4" | "B5" | "Folio" | "Quatro" | "Paper10x14" | "Paper11x17" | "Note" | "Envelope9" | "Envelope10" | "Envelope11" | "Envelope12" | "Envelope14" | "Csheet" | "Dsheet" | "Esheet" | "EnvelopeDL" | "EnvelopeC5" | "EnvelopeC3" | "EnvelopeC4" | "EnvelopeC6" | "EnvelopeC65" | "EnvelopeB4" | "EnvelopeB5" | "EnvelopeB6" | "EnvelopeItaly" | "EnvelopeMonarch" | "EnvelopePersonal" | "FanfoldUS" | "FanfoldStdGerman" | "FanfoldLegalGerman";
             /**
              *
-             * Gets or sets the print errors option.
+             * Gets or sets whether the worksheet's comments should be displayed when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printComments?: Excel.PrintComments | "PrintNoComments" | "PrintEndSheet" | "PrintInPlace";
+            /**
+             *
+             * Gets or sets the worksheet's print errors option.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             printErrors?: Excel.PrintErrorType | "ErrorsDisplayed" | "ErrorsBlank" | "ErrorsDash" | "ErrorsNotAvailable";
+            /**
+             *
+             * Gets or sets the worksheet's print gridlines flag. This flag determines whether gridlines will be printed or not.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printGridlines?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's print headings flag. This flag determines whether headings will be printed or not.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printHeadings?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's page print order option. This specifies the order to use for processing the page number printed.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printOrder?: Excel.PrintOrder | "DownThenOver" | "OverThenDown";
+            /**
+             *
+             * Gets or sets the worksheet's right margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rightMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's top margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            topMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's print zoom options.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            zoom?: Excel.PageLayoutZoomOptions;
+        }
+        /** An interface for updating data on the HeaderFooter object, for use in "headerFooter.set({ ... })". */
+        interface HeaderFooterUpdateData {
+            /**
+             *
+             * Gets or sets the center footer of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerFooter?: string;
+            /**
+             *
+             * Gets or sets the center header of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerHeader?: string;
+            /**
+             *
+             * Gets or sets the left footer of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            leftFooter?: string;
+            /**
+             *
+             * Gets or sets the left header of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            leftHeader?: string;
+            /**
+             *
+             * Gets or sets the right footer of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rightFooter?: string;
+            /**
+             *
+             * Gets or sets the right header of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rightHeader?: string;
+        }
+        /** An interface for updating data on the HeaderFooterGroup object, for use in "headerFooterGroup.set({ ... })". */
+        interface HeaderFooterGroupUpdateData {
+            /**
+            *
+            * The header/footer to use for even pages, odd header/footer needs to be specified for odd pages.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            even?: Excel.Interfaces.HeaderFooterUpdateData;
+            /**
+            *
+            * The first page header/footer, for all other pages general or even/odd is used.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            first?: Excel.Interfaces.HeaderFooterUpdateData;
+            /**
+            *
+            * The general header/footer, used for all pages unless even/odd or first page is specified.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            general?: Excel.Interfaces.HeaderFooterUpdateData;
+            /**
+            *
+            * The header/footer to use for odd pages, even header/footer needs to be specified for even pages.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            odd?: Excel.Interfaces.HeaderFooterUpdateData;
+            /**
+             *
+             * Gets or sets the state of which headers/footers are set. See Excel.HeaderFooterState for details.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            state?: Excel.HeaderFooterState | "General" | "FirstGeneral" | "OddEven" | "FirstOddEven";
+            /**
+             *
+             * Gets or sets a flag indicating if headers/footers are aligned with the page margins set in the page layout options for the worksheet.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            useSheetMargins?: boolean;
+            /**
+             *
+             * Gets or sets a flag indicating if headers/footers should be scaled by the page percentage scale set in the page layout options for the worksheet.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            useSheetScale?: boolean;
+        }
+        /** An interface for updating data on the PageBreakCollection object, for use in "pageBreakCollection.set({ ... })". */
+        interface PageBreakCollectionUpdateData {
+            items?: Excel.Interfaces.PageBreakData[];
         }
         /** An interface for updating data on the AreaCollection object, for use in "areaCollection.set({ ... })". */
         interface AreaCollectionUpdateData {
@@ -24262,12 +25633,45 @@ declare namespace Excel {
         /** An interface describing the data returned by calling "application.toJSON()". */
         interface ApplicationData {
             /**
+            *
+            * Returns the Iterative Calculation settings.
+            On Excel for Windows and Excel for Mac, the settings will aplly to the Excel Application.
+            On Excel Online and Excel for other platforms, the settings will apply to the active workbook.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            iterativeCalculation?: Excel.Interfaces.IterativeCalculationData;
+            /**
              *
-             * Returns the calculation mode used in the workbook. See Excel.CalculationMode for details.
+             * Returns the calculation mode used in the workbook, as defined by the constants in Excel.CalculationMode. Possible values are: `Automatic`, where Excel controls recalculation; `AutomaticExceptTables`, where Excel controls recalculation but ignores changes in tables; `Manual`, where calculation is done when the user requests it.
              *
              * [Api set: ExcelApi 1.1 for get, 1.8 for set]
              */
             calculationMode?: Excel.CalculationMode | "Automatic" | "AutomaticExceptTables" | "Manual";
+        }
+        /** An interface describing the data returned by calling "iterativeCalculation.toJSON()". */
+        interface IterativeCalculationData {
+            /**
+             *
+             * True if Excel will use iteration to resolve circular references.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            enabled?: boolean;
+            /**
+             *
+             * Returns or sets the maximum amount of change between each iteration as Excel resolves circular references.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            maxChange?: number;
+            /**
+             *
+             * Returns or sets the maximum number of iterations that Excel can use to resolve a circular reference.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            maxIteration?: number;
         }
         /** An interface describing the data returned by calling "workbook.toJSON()". */
         interface WorkbookData {
@@ -24432,6 +25836,13 @@ declare namespace Excel {
             charts?: Excel.Interfaces.ChartData[];
             /**
             *
+            * Gets the horizontal page break collection for the worksheet. This collection only contains manual page breaks.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            horizontalPageBreaks?: Excel.Interfaces.PageBreakData[];
+            /**
+            *
             * Collection of names scoped to the current worksheet.
             *
             * [Api set: ExcelApi 1.4]
@@ -24472,6 +25883,20 @@ declare namespace Excel {
             * [Api set: ExcelApi 1.1]
             */
             tables?: Excel.Interfaces.TableData[];
+            /**
+            *
+            * Gets the vertical page break collection for the worksheet. This collection only contains manual page breaks.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            verticalPageBreaks?: Excel.Interfaces.PageBreakData[];
+            /**
+            *
+            * Returns collection of visuals that are part of the worksheet.
+            *
+            * [Api set: ExcelApi 99.9]
+            */
+            visuals?: Excel.Interfaces.VisualData[];
             /**
              *
              * Returns a value that uniquely identifies the worksheet in a given workbook. The value of the identifier remains the same even when the worksheet is renamed or moved. Read-only.
@@ -24693,6 +26118,13 @@ declare namespace Excel {
              * [Api set: ExcelApi 1.7]
              */
             isEntireRow?: boolean;
+            /**
+             *
+             * Represents the data type state of each cell. Read-only.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            linkedDataTypeState?: Excel.LinkedDataTypeState[][];
             /**
              *
              * Represents Excel's number format code for the given range.
@@ -24924,7 +26356,7 @@ declare namespace Excel {
             name?: string;
             /**
              *
-             * Indicates whether the name is scoped to the workbook or to a specific worksheet. Read-only.
+             * Indicates whether the name is scoped to the workbook or to a specific worksheet. Possible values are: Worksheet, Workbook. Read-only.
              *
              * [Api set: ExcelApi 1.4]
              */
@@ -27386,6 +28818,76 @@ declare namespace Excel {
             */
             border?: Excel.Interfaces.ChartBorderData;
         }
+        /** An interface describing the data returned by calling "visualCollection.toJSON()". */
+        interface VisualCollectionData {
+            items?: Excel.Interfaces.VisualData[];
+        }
+        /** An interface describing the data returned by calling "visual.toJSON()". */
+        interface VisualData {
+            /**
+            *
+            * Gets all properties of the visual. Read-only.
+            *
+            * [Api set: ExcelApi 99.9]
+            */
+            properties?: Excel.Interfaces.VisualPropertyData[];
+            /**
+             *
+             * The unique id of visual, not the guid of VisualDefinition. Read-only.
+             *
+             * [Api set: ExcelApi 99.9]
+             */
+            id?: string;
+        }
+        /** An interface describing the data returned by calling "visualProperty.toJSON()". */
+        interface VisualPropertyData {
+            /**
+             *
+             * Returns the property Id.
+             *
+             * [Api set: ExcelApi 99.9]
+             */
+            id?: string;
+            /**
+             *
+             * Returns the property localized name.
+             *
+             * [Api set: ExcelApi 99.9]
+             */
+            localizedName?: string;
+            /**
+             *
+             * Returns the localized property options for IEnumProperty only. If property type isn't enum, it returns null.
+             *
+             * [Api set: ExcelApi 99.9]
+             */
+            localizedOptions?: string[];
+            /**
+             *
+             * Returns the property options for IEnumProperty only. If property type isn't enum, it returns null.
+             *
+             * [Api set: ExcelApi 99.9]
+             */
+            options?: string[];
+            /**
+             *
+             * Returns the property type.
+             *
+             * [Api set: ExcelApi 99.9]
+             */
+            type?: Excel.VisualPropertyType | "Object" | "Collection" | "String" | "Double" | "Int" | "Bool" | "Enum" | "Color";
+            /**
+             *
+             * Returns the property value.
+             *
+             * [Api set: ExcelApi 99.9]
+             */
+            value?: any;
+        }
+        /** An interface describing the data returned by calling "visualPropertyCollection.toJSON()". */
+        interface VisualPropertyCollectionData {
+            items?: Excel.Interfaces.VisualPropertyData[];
+        }
         /** An interface describing the data returned by calling "tableSort.toJSON()". */
         interface TableSortData {
             /**
@@ -28704,33 +30206,269 @@ declare namespace Excel {
         /** An interface describing the data returned by calling "pageLayout.toJSON()". */
         interface PageLayoutData {
             /**
+            *
+            * Header and footer configuration for the worksheet.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            headersFooters?: Excel.Interfaces.HeaderFooterGroupData;
+            /**
              *
-             * Gets or sets the black and white print option.
+             * Gets or sets the worksheet's black and white print option.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             blackAndWhite?: boolean;
             /**
              *
-             * Gets or sets the orientation of the page.
+             * Gets or sets the worksheet's bottom page margin to use for printing in points.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            bottomMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's center horizontally flag. This flag determines whether the worksheet will be centered horizontally when it's printed.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerHorizontally?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's center vertically flag. This flag determines whether the worksheet will be centered vertically when it's printed.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerVertically?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's draft mode option. If true the sheet will be printed without graphics.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            draft?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's first page number to print. Null value represents "auto" page numbering.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            firstPageNumber?: number | "";
+            /**
+             *
+             * Gets or sets the worksheet's footer margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            footerMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's header margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            headerMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's left margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            leftMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's orientation of the page.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             orientation?: Excel.PageOrientation | "Portrait" | "Landscape";
             /**
              *
-             * Gets or sets the paper size of the page.
+             * Gets or sets the worksheet's paper size of the page.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             paperSize?: Excel.PaperType | "Letter" | "LetterSmall" | "Tabloid" | "Ledger" | "Legal" | "Statement" | "Executive" | "A3" | "A4" | "A4Small" | "A5" | "B4" | "B5" | "Folio" | "Quatro" | "Paper10x14" | "Paper11x17" | "Note" | "Envelope9" | "Envelope10" | "Envelope11" | "Envelope12" | "Envelope14" | "Csheet" | "Dsheet" | "Esheet" | "EnvelopeDL" | "EnvelopeC5" | "EnvelopeC3" | "EnvelopeC4" | "EnvelopeC6" | "EnvelopeC65" | "EnvelopeB4" | "EnvelopeB5" | "EnvelopeB6" | "EnvelopeItaly" | "EnvelopeMonarch" | "EnvelopePersonal" | "FanfoldUS" | "FanfoldStdGerman" | "FanfoldLegalGerman";
             /**
              *
-             * Gets or sets the print errors option.
+             * Gets or sets whether the worksheet's comments should be displayed when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printComments?: Excel.PrintComments | "PrintNoComments" | "PrintEndSheet" | "PrintInPlace";
+            /**
+             *
+             * Gets or sets the worksheet's print errors option.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             printErrors?: Excel.PrintErrorType | "ErrorsDisplayed" | "ErrorsBlank" | "ErrorsDash" | "ErrorsNotAvailable";
+            /**
+             *
+             * Gets or sets the worksheet's print gridlines flag. This flag determines whether gridlines will be printed or not.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printGridlines?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's print headings flag. This flag determines whether headings will be printed or not.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printHeadings?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's page print order option. This specifies the order to use for processing the page number printed.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printOrder?: Excel.PrintOrder | "DownThenOver" | "OverThenDown";
+            /**
+             *
+             * Gets or sets the worksheet's right margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rightMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's top margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            topMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's print zoom options.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            zoom?: Excel.PageLayoutZoomOptions;
+        }
+        /** An interface describing the data returned by calling "headerFooter.toJSON()". */
+        interface HeaderFooterData {
+            /**
+             *
+             * Gets or sets the center footer of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerFooter?: string;
+            /**
+             *
+             * Gets or sets the center header of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerHeader?: string;
+            /**
+             *
+             * Gets or sets the left footer of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            leftFooter?: string;
+            /**
+             *
+             * Gets or sets the left header of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            leftHeader?: string;
+            /**
+             *
+             * Gets or sets the right footer of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rightFooter?: string;
+            /**
+             *
+             * Gets or sets the right header of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rightHeader?: string;
+        }
+        /** An interface describing the data returned by calling "headerFooterGroup.toJSON()". */
+        interface HeaderFooterGroupData {
+            /**
+            *
+            * The header/footer to use for even pages, odd header/footer needs to be specified for odd pages.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            even?: Excel.Interfaces.HeaderFooterData;
+            /**
+            *
+            * The first page header/footer, for all other pages general or even/odd is used.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            first?: Excel.Interfaces.HeaderFooterData;
+            /**
+            *
+            * The general header/footer, used for all pages unless even/odd or first page is specified.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            general?: Excel.Interfaces.HeaderFooterData;
+            /**
+            *
+            * The header/footer to use for odd pages, even header/footer needs to be specified for even pages.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            odd?: Excel.Interfaces.HeaderFooterData;
+            /**
+             *
+             * Gets or sets the state of which headers/footers are set. See Excel.HeaderFooterState for details.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            state?: Excel.HeaderFooterState | "General" | "FirstGeneral" | "OddEven" | "FirstOddEven";
+            /**
+             *
+             * Gets or sets a flag indicating if headers/footers are aligned with the page margins set in the page layout options for the worksheet.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            useSheetMargins?: boolean;
+            /**
+             *
+             * Gets or sets a flag indicating if headers/footers should be scaled by the page percentage scale set in the page layout options for the worksheet.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            useSheetScale?: boolean;
+        }
+        /** An interface describing the data returned by calling "pageBreak.toJSON()". */
+        interface PageBreakData {
+            /**
+             *
+             * Represents the column index for the page break
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            columnIndex?: number;
+            /**
+             *
+             * Represents the row index for the page break
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rowIndex?: number;
+        }
+        /** An interface describing the data returned by calling "pageBreakCollection.toJSON()". */
+        interface PageBreakCollectionData {
+            items?: Excel.Interfaces.PageBreakData[];
         }
         /** An interface describing the data returned by calling "areaCollection.toJSON()". */
         interface AreaCollectionData {
@@ -28872,12 +30610,51 @@ declare namespace Excel {
         interface ApplicationLoadOptions {
             $all?: boolean;
             /**
+            *
+            * Returns the Iterative Calculation settings.
+            On Excel for Windows and Excel for Mac, the settings will aplly to the Excel Application.
+            On Excel Online and Excel for other platforms, the settings will apply to the active workbook.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            iterativeCalculation?: Excel.Interfaces.IterativeCalculationLoadOptions;
+            /**
              *
-             * Returns the calculation mode used in the workbook. See Excel.CalculationMode for details.
+             * Returns the calculation mode used in the workbook, as defined by the constants in Excel.CalculationMode. Possible values are: `Automatic`, where Excel controls recalculation; `AutomaticExceptTables`, where Excel controls recalculation but ignores changes in tables; `Manual`, where calculation is done when the user requests it.
              *
              * [Api set: ExcelApi 1.1 for get, 1.8 for set]
              */
             calculationMode?: boolean;
+        }
+        /**
+         *
+         * Represents the Iterative Calculation settings.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        interface IterativeCalculationLoadOptions {
+            $all?: boolean;
+            /**
+             *
+             * True if Excel will use iteration to resolve circular references.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            enabled?: boolean;
+            /**
+             *
+             * Returns or sets the maximum amount of change between each iteration as Excel resolves circular references.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            maxChange?: boolean;
+            /**
+             *
+             * Returns or sets the maximum number of iterations that Excel can use to resolve a circular reference.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            maxIteration?: boolean;
         }
         /**
          *
@@ -29358,6 +31135,13 @@ declare namespace Excel {
             isEntireRow?: boolean;
             /**
              *
+             * Represents the data type state of each cell. Read-only.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            linkedDataTypeState?: boolean;
+            /**
+             *
              * Represents Excel's number format code for the given range.
                 When setting number format to a range, the value argument can be either a single value (string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
              *
@@ -29599,7 +31383,7 @@ declare namespace Excel {
         }
         /**
          *
-         * Represents a collection of worksheet objects that are part of the workbook.
+         * Represents a collection of key-value pair setting objects that are part of the workbook. The scope is limited to per file and add-in (task-pane or content) combination.
          *
          * [Api set: ExcelApi 1.4]
          */
@@ -29622,7 +31406,7 @@ declare namespace Excel {
         }
         /**
          *
-         * Setting represents a key-value pair of a setting persisted to the document.
+         * Setting represents a key-value pair of a setting persisted to the document (per file per add-in). These custom key-value pair can be used to store state or lifecycle information needed by the content or task-pane add-in. Note that settings are persisted in the document and hence it is not a place to store any sensitive or protected information such as user information and password.
          *
          * [Api set: ExcelApi 1.4]
          */
@@ -29695,7 +31479,7 @@ declare namespace Excel {
             name?: boolean;
             /**
              *
-             * For EACH ITEM in the collection: Indicates whether the name is scoped to the workbook or to a specific worksheet. Read-only.
+             * For EACH ITEM in the collection: Indicates whether the name is scoped to the workbook or to a specific worksheet. Possible values are: Worksheet, Workbook. Read-only.
              *
              * [Api set: ExcelApi 1.4]
              */
@@ -29774,7 +31558,7 @@ declare namespace Excel {
             name?: boolean;
             /**
              *
-             * Indicates whether the name is scoped to the workbook or to a specific worksheet. Read-only.
+             * Indicates whether the name is scoped to the workbook or to a specific worksheet. Possible values are: Worksheet, Workbook. Read-only.
              *
              * [Api set: ExcelApi 1.4]
              */
@@ -33455,6 +35239,140 @@ declare namespace Excel {
         }
         /**
          *
+         * A collection of all the visuals on a worksheet.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        interface VisualCollectionLoadOptions {
+            $all?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: The unique id of visual, not the guid of VisualDefinition. Read-only.
+             *
+             * [Api set: ExcelApi 99.9]
+             */
+            id?: boolean;
+        }
+        /**
+         *
+         * Represents a visual object in a workbook.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        interface VisualLoadOptions {
+            $all?: boolean;
+            /**
+             *
+             * The unique id of visual, not the guid of VisualDefinition. Read-only.
+             *
+             * [Api set: ExcelApi 99.9]
+             */
+            id?: boolean;
+        }
+        /**
+         *
+         * This object represents the attributes for a property.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        interface VisualPropertyLoadOptions {
+            $all?: boolean;
+            /**
+             *
+             * Returns the property Id.
+             *
+             * [Api set: ExcelApi 99.9]
+             */
+            id?: boolean;
+            /**
+             *
+             * Returns the property localized name.
+             *
+             * [Api set: ExcelApi 99.9]
+             */
+            localizedName?: boolean;
+            /**
+             *
+             * Returns the localized property options for IEnumProperty only. If property type isn't enum, it returns null.
+             *
+             * [Api set: ExcelApi 99.9]
+             */
+            localizedOptions?: boolean;
+            /**
+             *
+             * Returns the property options for IEnumProperty only. If property type isn't enum, it returns null.
+             *
+             * [Api set: ExcelApi 99.9]
+             */
+            options?: boolean;
+            /**
+             *
+             * Returns the property type.
+             *
+             * [Api set: ExcelApi 99.9]
+             */
+            type?: boolean;
+            /**
+             *
+             * Returns the property value.
+             *
+             * [Api set: ExcelApi 99.9]
+             */
+            value?: boolean;
+        }
+        /**
+         *
+         * Represents a collection of visual object properties.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        interface VisualPropertyCollectionLoadOptions {
+            $all?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Returns the property Id.
+             *
+             * [Api set: ExcelApi 99.9]
+             */
+            id?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Returns the property localized name.
+             *
+             * [Api set: ExcelApi 99.9]
+             */
+            localizedName?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Returns the localized property options for IEnumProperty only. If property type isn't enum, it returns null.
+             *
+             * [Api set: ExcelApi 99.9]
+             */
+            localizedOptions?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Returns the property options for IEnumProperty only. If property type isn't enum, it returns null.
+             *
+             * [Api set: ExcelApi 99.9]
+             */
+            options?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Returns the property type.
+             *
+             * [Api set: ExcelApi 99.9]
+             */
+            type?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Returns the property value.
+             *
+             * [Api set: ExcelApi 99.9]
+             */
+            value?: boolean;
+        }
+        /**
+         *
          * Manages sorting operations on Table objects.
          *
          * [Api set: ExcelApi 1.2]
@@ -35681,33 +37599,294 @@ declare namespace Excel {
         interface PageLayoutLoadOptions {
             $all?: boolean;
             /**
+            *
+            * Header and footer configuration for the worksheet.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            headersFooters?: Excel.Interfaces.HeaderFooterGroupLoadOptions;
+            /**
              *
-             * Gets or sets the black and white print option.
+             * Gets or sets the worksheet's black and white print option.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             blackAndWhite?: boolean;
             /**
              *
-             * Gets or sets the orientation of the page.
+             * Gets or sets the worksheet's bottom page margin to use for printing in points.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            bottomMargin?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's center horizontally flag. This flag determines whether the worksheet will be centered horizontally when it's printed.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerHorizontally?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's center vertically flag. This flag determines whether the worksheet will be centered vertically when it's printed.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerVertically?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's draft mode option. If true the sheet will be printed without graphics.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            draft?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's first page number to print. Null value represents "auto" page numbering.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            firstPageNumber?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's footer margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            footerMargin?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's header margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            headerMargin?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's left margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            leftMargin?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's orientation of the page.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             orientation?: boolean;
             /**
              *
-             * Gets or sets the paper size of the page.
+             * Gets or sets the worksheet's paper size of the page.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             paperSize?: boolean;
             /**
              *
-             * Gets or sets the print errors option.
+             * Gets or sets whether the worksheet's comments should be displayed when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printComments?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's print errors option.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             printErrors?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's print gridlines flag. This flag determines whether gridlines will be printed or not.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printGridlines?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's print headings flag. This flag determines whether headings will be printed or not.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printHeadings?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's page print order option. This specifies the order to use for processing the page number printed.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printOrder?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's right margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rightMargin?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's top margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            topMargin?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's print zoom options.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            zoom?: boolean;
+        }
+        /**
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        interface HeaderFooterLoadOptions {
+            $all?: boolean;
+            /**
+             *
+             * Gets or sets the center footer of the worksheet.
+                To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerFooter?: boolean;
+            /**
+             *
+             * Gets or sets the center header of the worksheet.
+                To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerHeader?: boolean;
+            /**
+             *
+             * Gets or sets the left footer of the worksheet.
+                To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            leftFooter?: boolean;
+            /**
+             *
+             * Gets or sets the left header of the worksheet.
+                To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            leftHeader?: boolean;
+            /**
+             *
+             * Gets or sets the right footer of the worksheet.
+                To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rightFooter?: boolean;
+            /**
+             *
+             * Gets or sets the right header of the worksheet.
+                To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rightHeader?: boolean;
+        }
+        /**
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        interface HeaderFooterGroupLoadOptions {
+            $all?: boolean;
+            /**
+            *
+            * The header/footer to use for even pages, odd header/footer needs to be specified for odd pages.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            even?: Excel.Interfaces.HeaderFooterLoadOptions;
+            /**
+            *
+            * The first page header/footer, for all other pages general or even/odd is used.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            first?: Excel.Interfaces.HeaderFooterLoadOptions;
+            /**
+            *
+            * The general header/footer, used for all pages unless even/odd or first page is specified.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            general?: Excel.Interfaces.HeaderFooterLoadOptions;
+            /**
+            *
+            * The header/footer to use for odd pages, even header/footer needs to be specified for even pages.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            odd?: Excel.Interfaces.HeaderFooterLoadOptions;
+            /**
+             *
+             * Gets or sets the state of which headers/footers are set. See Excel.HeaderFooterState for details.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            state?: boolean;
+            /**
+             *
+             * Gets or sets a flag indicating if headers/footers are aligned with the page margins set in the page layout options for the worksheet.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            useSheetMargins?: boolean;
+            /**
+             *
+             * Gets or sets a flag indicating if headers/footers should be scaled by the page percentage scale set in the page layout options for the worksheet.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            useSheetScale?: boolean;
+        }
+        /**
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        interface PageBreakLoadOptions {
+            $all?: boolean;
+            /**
+             *
+             * Represents the column index for the page break
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            columnIndex?: boolean;
+            /**
+             *
+             * Represents the row index for the page break
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rowIndex?: boolean;
+        }
+        /**
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        interface PageBreakCollectionLoadOptions {
+            $all?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents the column index for the page break
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            columnIndex?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents the row index for the page break
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rowIndex?: boolean;
         }
         /**
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
@@ -35829,6 +38008,13 @@ declare namespace Excel {
              * [Api set: ExcelApi 1.7]
              */
             isEntireRow?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents the data type state of each cell. Read-only.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            linkedDataTypeState?: boolean;
             /**
              *
              * For EACH ITEM in the collection: Represents Excel's number format code for the given range.
@@ -36104,6 +38290,16386 @@ declare namespace Excel {
              * [Api set: ExcelApi 1.2]
              */
             value?: boolean;
+        }
+    }
+}
+declare namespace ExcelOp {
+    /**
+     *
+     * Provides information about the binding that raised the SelectionChanged event.
+     *
+     * [Api set: ExcelApi 1.2]
+     */
+    interface BindingSelectionChangedEventArgs {
+        /**
+         *
+         * Gets the Binding object that represents the binding that raised the SelectionChanged event.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        binding: ExcelOp.Binding;
+        /**
+         *
+         * Gets the number of columns selected.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        columnCount: number;
+        /**
+         *
+         * Gets the number of rows selected.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        rowCount: number;
+        /**
+         *
+         * Gets the index of the first column of the selection (zero-based).
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        startColumn: number;
+        /**
+         *
+         * Gets the index of the first row of the selection (zero-based).
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        startRow: number;
+    }
+    /**
+     *
+     * Provides information about the binding that raised the DataChanged event.
+     *
+     * [Api set: ExcelApi 1.2]
+     */
+    interface BindingDataChangedEventArgs {
+        /**
+         *
+         * Gets the Binding object that represents the binding that raised the DataChanged event.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        binding: ExcelOp.Binding;
+    }
+    /**
+     *
+     * Provides information about the document that raised the SelectionChanged event.
+     *
+     * [Api set: ExcelApi 1.2]
+     */
+    interface SelectionChangedEventArgs {
+        /**
+         *
+         * Gets the workbook object that raised the SelectionChanged event.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        workbook: ExcelOp.Workbook;
+    }
+    /**
+     *
+     * Provides information about the setting that raised the SettingsChanged event
+     *
+     * [Api set: ExcelApi 1.4]
+     */
+    interface SettingsChangedEventArgs {
+        /**
+         *
+         * Gets the Setting object that represents the binding that raised the SettingsChanged event
+         *
+         * [Api set: ExcelApi 1.4]
+         */
+        settings: ExcelOp.SettingCollection;
+    }
+    /**
+     *
+     * Provides information about the worksheet that raised the Changed event.
+     *
+     * [Api set: ExcelApi 1.7]
+     */
+    interface WorksheetChangedEventArgs {
+        /**
+         *
+         * Gets the range address that represents the changed area of a specific worksheet.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        address: string;
+        /**
+         *
+         * Gets the change type that represents how the Changed event is triggered. See Excel.DataChangeType for details.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        changeType: ExcelOp.DataChangeType | "Unknown" | "RangeEdited" | "RowInserted" | "RowDeleted" | "ColumnInserted" | "ColumnDeleted" | "CellInserted" | "CellDeleted";
+        /**
+         *
+         * Gets the source of the event. See Excel.EventSource for details.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        source: ExcelOp.EventSource | "Local" | "Remote";
+        /**
+         *
+         * Gets the type of the event. See Excel.EventType for details.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        type: "WorksheetChanged";
+        /**
+         *
+         * Gets the id of the worksheet in which the data changed.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        worksheetId: string;
+    }
+    /**
+     *
+     * Provides information about the table that raised the Changed event.
+     *
+     * [Api set: ExcelApi 1.7]
+     */
+    interface TableChangedEventArgs {
+        /**
+         *
+         * Gets the address that represents the changed area of a table on a specific worksheet.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        address: string;
+        /**
+         *
+         * Gets the change type that represents how the Changed event is triggered. See Excel.DataChangeType for details.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        changeType: ExcelOp.DataChangeType | "Unknown" | "RangeEdited" | "RowInserted" | "RowDeleted" | "ColumnInserted" | "ColumnDeleted" | "CellInserted" | "CellDeleted";
+        /**
+         *
+         * Gets the source of the event. See Excel.EventSource for details.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        source: ExcelOp.EventSource | "Local" | "Remote";
+        /**
+         *
+         * Gets the id of the table in which the data changed.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        tableId: string;
+        /**
+         *
+         * Gets the type of the event. See Excel.EventType for details.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        type: "TableChanged";
+        /**
+         *
+         * Gets the id of the worksheet in which the data changed.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        worksheetId: string;
+    }
+    /**
+     *
+     * Provides information about the worksheet that raised the Activated event.
+     *
+     * [Api set: ExcelApi 1.7]
+     */
+    interface WorksheetActivatedEventArgs {
+        /**
+         *
+         * Gets the type of the event. See Excel.EventType for details.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        type: "WorksheetActivated";
+        /**
+         *
+         * Gets the id of the worksheet that is activated.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        worksheetId: string;
+    }
+    /**
+     *
+     * Provides information about the worksheet that raised the Deactivated event.
+     *
+     * [Api set: ExcelApi 1.7]
+     */
+    interface WorksheetDeactivatedEventArgs {
+        /**
+         *
+         * Gets the type of the event. See Excel.EventType for details.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        type: "WorksheetDeactivated";
+        /**
+         *
+         * Gets the id of the worksheet that is deactivated.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        worksheetId: string;
+    }
+    /**
+     *
+     * Provides information about the worksheet that raised the SelectionChanged event.
+     *
+     * [Api set: ExcelApi 1.7]
+     */
+    interface WorksheetSelectionChangedEventArgs {
+        /**
+         *
+         * Gets the range address that represents the selected area of a specific worksheet.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        address: string;
+        /**
+         *
+         * Gets the type of the event. See Excel.EventType for details.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        type: "WorksheetSelectionChanged";
+        /**
+         *
+         * Gets the id of the worksheet in which the selection changed.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        worksheetId: string;
+    }
+    /**
+     *
+     * Provides information about the table that raised the SelectionChanged event.
+     *
+     * [Api set: ExcelApi 1.7]
+     */
+    interface TableSelectionChangedEventArgs {
+        /**
+         *
+         * Gets the range address that represents the selected area of the table on a specific worksheet.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        address: string;
+        /**
+         *
+         * Indicates if the selection is inside a table, address will be useless if IsInsideTable is false.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        isInsideTable: boolean;
+        /**
+         *
+         * Gets the id of the table in which the selection changed.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        tableId: string;
+        /**
+         *
+         * Gets the type of the event. See Excel.EventType for details.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        type: "TableSelectionChanged";
+        /**
+         *
+         * Gets the id of the worksheet in which the selection changed.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        worksheetId: string;
+    }
+    /**
+     *
+     * Provides information about the worksheet that raised the Added event.
+     *
+     * [Api set: ExcelApi 1.7]
+     */
+    interface WorksheetAddedEventArgs {
+        /**
+         *
+         * Gets the source of the event. See Excel.EventSource for details.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        source: ExcelOp.EventSource | "Local" | "Remote";
+        /**
+         *
+         * Gets the type of the event. See Excel.EventType for details.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        type: "WorksheetAdded";
+        /**
+         *
+         * Gets the id of the worksheet that is added to the workbook.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        worksheetId: string;
+    }
+    /**
+     *
+     * Provides information about the worksheet that raised the Deleted event.
+     *
+     * [Api set: ExcelApi 1.7]
+     */
+    interface WorksheetDeletedEventArgs {
+        /**
+         *
+         * Gets the source of the event. See Excel.EventSource for details.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        source: ExcelOp.EventSource | "Local" | "Remote";
+        /**
+         *
+         * Gets the type of the event. See Excel.EventType for details.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        type: "WorksheetDeleted";
+        /**
+         *
+         * Gets the id of the worksheet that is deleted from the workbook.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        worksheetId: string;
+    }
+    /**
+     *
+     * Provides information about the chart that raised the Added event.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface ChartAddedEventArgs {
+        /**
+         *
+         * Gets the id of the chart that is added to the worksheet.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        chartId: string;
+        /**
+         *
+         * Gets the source of the event. See Excel.EventSource for details.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        source: ExcelOp.EventSource | "Local" | "Remote";
+        /**
+         *
+         * Gets the type of the event. See Excel.EventType for details.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        type: "ChartAdded";
+        /**
+         *
+         * Gets the id of the worksheet in which the chart is added.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        worksheetId: string;
+    }
+    /**
+     *
+     * Provides information about the chart that raised the Activated event.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface ChartActivatedEventArgs {
+        /**
+         *
+         * Gets the id of the chart that is activated.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        chartId: string;
+        /**
+         *
+         * Gets the type of the event. See Excel.EventType for details.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        type: "ChartActivated";
+        /**
+         *
+         * Gets the id of the worksheet in which the chart is activated.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        worksheetId: string;
+    }
+    /**
+     *
+     * Provides information about the chart that raised the Deactivated event.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface ChartDeactivatedEventArgs {
+        /**
+         *
+         * Gets the id of the chart that is deactivated.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        chartId: string;
+        /**
+         *
+         * Gets the type of the event. See Excel.EventType for details.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        type: "ChartDeactivated";
+        /**
+         *
+         * Gets the id of the worksheet in which the chart is deactivated.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        worksheetId: string;
+    }
+    /**
+     *
+     * Provides information about the chart that raised the Deleted event.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface ChartDeletedEventArgs {
+        /**
+         *
+         * Gets the id of the chart that is deleted from the worksheet.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        chartId: string;
+        /**
+         *
+         * Gets the source of the event. See Excel.EventSource for details.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        source: ExcelOp.EventSource | "Local" | "Remote";
+        /**
+         *
+         * Gets the type of the event. See Excel.EventType for details.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        type: "ChartDeleted";
+        /**
+         *
+         * Gets the id of the worksheet in which the chart is deleted.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        worksheetId: string;
+    }
+    /**
+     *
+     * Provides information about the visual that raised the SelectionChanged event.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface VisualSelectionChangedEventArgs {
+        /**
+         *
+         * Gets the type of the event. See Excel.EventType for details.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        type: "VisualSelectionChanged";
+        /**
+         *
+         * Gets the id of the worksheet in which the visual is activated.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        worksheetId: string;
+    }
+    /**
+     *
+     * Provides information about the worksheet that raised the Calculated event.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface WorksheetCalculatedEventArgs {
+        /**
+         *
+         * Gets the type of the event. See Excel.EventType for details.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        type: "WorksheetCalculated";
+        /**
+         *
+         * Gets the id of the worksheet that is calculated.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        worksheetId: string;
+    }
+    /**
+     *
+     * Represents the Excel Runtime class.
+     *
+     * [Api set: ExcelApi 1.5]
+     */
+    class Runtime extends OfficeExtension.ClientObjectBase {
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.RuntimeUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.RuntimeData>;
+    }
+    /**
+     *
+     * Represents the Excel application that manages the workbook.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class Application extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Returns the Iterative Calculation settings.
+            On Excel for Windows and Excel for Mac, the settings will aplly to the Excel Application.
+            On Excel Online and Excel for other platforms, the settings will apply to the active workbook.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly iterativeCalculation: ExcelOp.IterativeCalculation;
+        /**
+         *
+         * Creates a new hidden workbook by using an optional base64 encoded .xlsx file.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param base64File Optional. The base64 encoded .xlsx file. The default value is null.
+         */
+        createWorkbook(base64File?: string): ExcelOp.WorkbookCreated;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.ApplicationUpdateData): Promise<void>;
+        /**
+         *
+         * Recalculate all currently opened workbooks in Excel.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param calculationType Specifies the calculation type to use. See Excel.CalculationType for details.
+         */
+        calculateAsync(calculationType: ExcelOp.CalculationType): Promise<void>;
+        /**
+         *
+         * Recalculate all currently opened workbooks in Excel.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param calculationType Specifies the calculation type to use. See Excel.CalculationType for details.
+         */
+        calculateAsync(calculationType: "Recalculate" | "Full" | "FullRebuild"): Promise<void>;
+        /**
+         *
+         * Suspends calculation until the next "context.sync()" is called. Once set, it is the developer's responsibility to re-calc the workbook, to ensure that any dependencies are propagated.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        suspendApiCalculationUntilNextSyncAsync(): Promise<void>;
+        /**
+         *
+         * Suspends sceen updating until the next "context.sync()" is called.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        suspendScreenUpdatingUntilNextSyncAsync(): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ApplicationData>;
+    }
+    /**
+     *
+     * Represents the Iterative Calculation settings.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class IterativeCalculation extends OfficeExtension.ClientObjectBase {
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.IterativeCalculationUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.IterativeCalculationData>;
+    }
+    /**
+     *
+     * Workbook is the top level object which contains related workbook objects such as worksheets, tables, ranges, etc.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class Workbook extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents the Excel application instance that contains this workbook.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly application: ExcelOp.Application;
+        /**
+         *
+         * Represents a collection of bindings that are part of the workbook.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly bindings: ExcelOp.BindingCollection;
+        /**
+         *
+         * Represents the collection of custom functions defined in add-ins.
+         *
+         * [Api set: CustomFunctions 1.1]
+         */
+        readonly customFunctions: ExcelOp.CustomFunctionCollection;
+        /**
+         *
+         * Represents the collection of custom XML parts contained by this workbook.
+         *
+         * [Api set: ExcelApi 1.5]
+         */
+        readonly customXmlParts: ExcelOp.CustomXmlPartCollection;
+        /**
+         *
+         * Represents all data connections in the workbook.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        readonly dataConnections: ExcelOp.DataConnectionCollection;
+        /**
+         *
+         * Represents a collection of worksheet functions that can be used for computation.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        readonly functions: ExcelOp.Functions;
+        /**
+         *
+         * Represents a collection of workbook scoped named items (named ranges and constants).
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly names: ExcelOp.NamedItemCollection;
+        /**
+         *
+         * Represents a collection of PivotTables associated with the workbook.
+         *
+         * [Api set: ExcelApi 1.3]
+         */
+        readonly pivotTables: ExcelOp.PivotTableCollection;
+        /**
+         *
+         * Gets the workbook properties.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        readonly properties: ExcelOp.DocumentProperties;
+        /**
+         *
+         * Returns workbook protection object for a workbook.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        readonly protection: ExcelOp.WorkbookProtection;
+        /**
+         *
+         * Represents a collection of Settings associated with the workbook.
+         *
+         * [Api set: ExcelApi 1.4]
+         */
+        readonly settings: ExcelOp.SettingCollection;
+        /**
+         *
+         * Represents a collection of styles associated with the workbook.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        readonly styles: ExcelOp.StyleCollection;
+        /**
+         *
+         * Represents a collection of tables associated with the workbook.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly tables: ExcelOp.TableCollection;
+        /**
+         *
+         * Represents a collection of worksheets associated with the workbook.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly worksheets: ExcelOp.WorksheetCollection;
+        /**
+         *
+         * Gets the currently active cell from the workbook.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        getActiveCell(): ExcelOp.Range;
+        /**
+         *
+         * Gets the currently selected range from the workbook.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        getSelectedRange(allowMultiAreas?: boolean): ExcelOp.Range;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.WorkbookUpdateData): Promise<void>;
+        /**
+         *
+         * True if the workbook is being edited by multiple users (co-authoring).
+            Please be aware there might be some delay between when the workbook status changes and when the changes are reflected on the result of the method.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getIsActiveCollabSessionAsync(): Promise<boolean>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.WorkbookData>;
+    }
+    const workbook: Workbook;
+    /**
+     *
+     * Represents the protection of a workbook object.
+     *
+     * [Api set: ExcelApi 1.7]
+     */
+    class WorkbookProtection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Protects a workbook. Fails if the workbook has been protected.
+         *
+         * [Api set: ExcelApi 1.7]
+         *
+         * @param password workbook protection password.
+         */
+        protectAsync(password?: string): Promise<void>;
+        /**
+         *
+         * Unprotects a workbook.
+         *
+         * [Api set: ExcelApi 1.7]
+         *
+         * @param password workbook protection password.
+         */
+        unprotectAsync(password?: string): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.WorkbookProtectionData>;
+    }
+    /**
+     *
+     * The WorkbookCreated object is the top level object created by Application.CreateWorkbook. A WorkbookCreated object is a special Workbook object.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class WorkbookCreated extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Open the workbook.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        openAsync(): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.WorkbookCreatedData>;
+    }
+    /**
+     *
+     * An Excel worksheet is a grid of cells. It can contain data, tables, charts, etc.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class Worksheet extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Returns collection of charts that are part of the worksheet.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly charts: ExcelOp.ChartCollection;
+        /**
+         *
+         * Gets an object that can be used to manipulate frozen panes on the worksheet.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        readonly freezePanes: ExcelOp.WorksheetFreezePanes;
+        /**
+         *
+         * Gets the horizontal page break collection for the worksheet. This collection only contains manual page breaks.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly horizontalPageBreaks: ExcelOp.PageBreakCollection;
+        /**
+         *
+         * Collection of names scoped to the current worksheet.
+         *
+         * [Api set: ExcelApi 1.4]
+         */
+        readonly names: ExcelOp.NamedItemCollection;
+        /**
+         *
+         * Gets the PageLayout object of the worksheet.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly pageLayout: ExcelOp.PageLayout;
+        /**
+         *
+         * Collection of PivotTables that are part of the worksheet.
+         *
+         * [Api set: ExcelApi 1.3]
+         */
+        readonly pivotTables: ExcelOp.PivotTableCollection;
+        /**
+         *
+         * Returns sheet protection object for a worksheet.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        readonly protection: ExcelOp.WorksheetProtection;
+        /**
+         *
+         * Returns the collection of all the Shape objects on the worksheet. Read-only.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly shapes: ExcelOp.ShapeCollection;
+        /**
+         *
+         * Collection of tables that are part of the worksheet.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly tables: ExcelOp.TableCollection;
+        /**
+         *
+         * Gets the vertical page break collection for the worksheet. This collection only contains manual page breaks.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly verticalPageBreaks: ExcelOp.PageBreakCollection;
+        /**
+         *
+         * Returns collection of visuals that are part of the worksheet.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        readonly visuals: ExcelOp.VisualCollection;
+        /**
+         *
+         * Copy a worksheet and place it at the specified position. Return the copied worksheet.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        copyAsync(positionType?: ExcelOp.WorksheetPositionType, relativeTo?: ExcelOp.Worksheet): Promise<ExcelOp.Interfaces.WorksheetData>;
+        /**
+         *
+         * Copy a worksheet and place it at the specified position. Return the copied worksheet.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        copyAsync(positionType?: "None" | "Before" | "After" | "Beginning" | "End", relativeTo?: ExcelOp.Worksheet): Promise<ExcelOp.Interfaces.WorksheetData>;
+        /**
+         *
+         * Finds all occurances of the given string based on the criteria specified and returns them as a discontiguous range.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param text String to find.
+         * @param criteria Additional Criteria.
+         * @returns The Range of cells that matched the search criteria or ItemNotFound error if no matches were found.
+         */
+        findAll(text: string, criteria: ExcelOp.WorksheetSearchCriteria): ExcelOp.Range;
+        /**
+         *
+         * Finds all occurances of the given string based on the criteria specified and returns them as a discontiguous range.
+            If there are no matches, this function will return a null object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param text String to find.
+         * @param criteria Additional Criteria.
+         * @returns The Range of cells that matched the search criteria.
+         */
+        findAllOrNullObject(text: string, criteria: ExcelOp.WorksheetSearchCriteria): ExcelOp.Range;
+        /**
+         *
+         * Gets the range object containing the single cell based on row and column numbers. The cell can be outside the bounds of its parent range, so long as it's stays within the worksheet grid.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param row The row number of the cell to be retrieved. Zero-indexed.
+         * @param column the column number of the cell to be retrieved. Zero-indexed.
+         */
+        getCell(row: number, column: number): ExcelOp.Range;
+        /**
+         *
+         * Gets the worksheet that follows this one. If there are no worksheets following this one, this method will throw an error.
+         *
+         * [Api set: ExcelApi 1.5]
+         *
+         * @param visibleOnly If true, considers only visible worksheets, skipping over any hidden ones.
+         */
+        getNext(visibleOnly?: boolean): ExcelOp.Worksheet;
+        /**
+         *
+         * Gets the worksheet that follows this one. If there are no worksheets following this one, this method will return a null object.
+         *
+         * [Api set: ExcelApi 1.5]
+         *
+         * @param visibleOnly If true, considers only visible worksheets, skipping over any hidden ones.
+         */
+        getNextOrNullObject(visibleOnly?: boolean): ExcelOp.Worksheet;
+        /**
+         *
+         * Gets the worksheet that precedes this one. If there are no previous worksheets, this method will throw an error.
+         *
+         * [Api set: ExcelApi 1.5]
+         *
+         * @param visibleOnly If true, considers only visible worksheets, skipping over any hidden ones.
+         */
+        getPrevious(visibleOnly?: boolean): ExcelOp.Worksheet;
+        /**
+         *
+         * Gets the worksheet that precedes this one. If there are no previous worksheets, this method will return a null objet.
+         *
+         * [Api set: ExcelApi 1.5]
+         *
+         * @param visibleOnly If true, considers only visible worksheets, skipping over any hidden ones.
+         */
+        getPreviousOrNullObject(visibleOnly?: boolean): ExcelOp.Worksheet;
+        /**
+         *
+         * Gets the range object specified by the address or name.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param address The address or the name of the range. If not specified, the entire worksheet range is returned.
+         */
+        getRange(address?: string): ExcelOp.Range;
+        /**
+         *
+         * Gets the range object beginning at a particular row index and column index, and spanning a certain number of rows and columns.
+         *
+         * [Api set: ExcelApi 1.7]
+         *
+         * @param startRow Start row (zero-indexed).
+         * @param startColumn Start column (zero-indexed).
+         * @param rowCount Number of rows to include in the range.
+         * @param columnCount Number of columns to include in the range.
+         */
+        getRangeByIndexes(startRow: number, startColumn: number, rowCount: number, columnCount: number): ExcelOp.Range;
+        /**
+         *
+         * The used range is the smallest range that encompasses any cells that have a value or formatting assigned to them. If the entire worksheet is blank, this function will return the top left cell (i.e.,: it will *not* throw an error).
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param valuesOnly If true, considers only cells with values as used cells (ignoring formatting). [Api set: ExcelApi 1.2]
+         */
+        getUsedRange(valuesOnly?: boolean): ExcelOp.Range;
+        /**
+         *
+         * The used range is the smallest range that encompasses any cells that have a value or formatting assigned to them. If the entire worksheet is blank, this function will return a null object.
+         *
+         * [Api set: ExcelApi 1.4]
+         *
+         * @param valuesOnly Considers only cells with values as used cells.
+         */
+        getUsedRangeOrNullObject(valuesOnly?: boolean): ExcelOp.Range;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.WorksheetUpdateData): Promise<void>;
+        /**
+         *
+         * Activate the worksheet in the Excel UI.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        activateAsync(): Promise<void>;
+        /**
+         *
+         * Calculates all cells on a worksheet.
+         *
+         * [Api set: ExcelApi 1.6]
+         *
+         * @param markAllDirty True, to mark all as dirty.
+         */
+        calculateAsync(markAllDirty: boolean): Promise<void>;
+        /**
+         *
+         * Deletes the worksheet from the workbook.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        deleteAsync(): Promise<void>;
+        /**
+         *
+         * Finds and replaces the given string based on the criteria specified within the current worksheet.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param text String to find.
+         * @param replacement String to replace the original with.
+         * @param criteria Additional Replace Criteria.
+         * @returns The number of replacements performed.
+         */
+        replaceAllAsync(text: string, replacement: string, criteria: ExcelOp.ReplaceCriteria): Promise<number>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.WorksheetData>;
+    }
+    /**
+     *
+     * Represents a collection of worksheet objects that are part of the workbook.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class WorksheetCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Adds a new worksheet to the workbook. The worksheet will be added at the end of existing worksheets. If you wish to activate the newly added worksheet, call ".activate() on it.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param name The name of the worksheet to be added. If specified, name should be unqiue. If not specified, Excel determines the name of the new worksheet.
+         */
+        addAsync(name?: string): Promise<ExcelOp.Interfaces.WorksheetData>;
+        /**
+         *
+         * Gets the currently active worksheet in the workbook.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        getActiveWorksheet(): ExcelOp.Worksheet;
+        /**
+         *
+         * Gets the first worksheet in the collection.
+         *
+         * [Api set: ExcelApi 1.5]
+         *
+         * @param visibleOnly If true, considers only visible worksheets, skipping over any hidden ones.
+         */
+        getFirst(visibleOnly?: boolean): ExcelOp.Worksheet;
+        /**
+         *
+         * Gets a worksheet object using its Name or ID.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param key The Name or ID of the worksheet.
+         */
+        getItem(key: string): ExcelOp.Worksheet;
+        /**
+         *
+         * Gets a worksheet object using its Name or ID. If the worksheet does not exist, will return a null object.
+         *
+         * [Api set: ExcelApi 1.4]
+         *
+         * @param key The Name or ID of the worksheet.
+         */
+        getItemOrNullObject(key: string): ExcelOp.Worksheet;
+        /**
+         *
+         * Gets the last worksheet in the collection.
+         *
+         * [Api set: ExcelApi 1.5]
+         *
+         * @param visibleOnly If true, considers only visible worksheets, skipping over any hidden ones.
+         */
+        getLast(visibleOnly?: boolean): ExcelOp.Worksheet;
+        /**
+         *
+         * Gets the number of worksheets in the collection.
+         *
+         * [Api set: ExcelApi 1.4]
+         *
+         * @param visibleOnly If true, considers only visible worksheets, skipping over any hidden ones.
+         */
+        getCountAsync(visibleOnly?: boolean): Promise<number>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.WorksheetCollectionData>;
+    }
+    /**
+     *
+     * Represents the protection of a sheet object.
+     *
+     * [Api set: ExcelApi 1.2]
+     */
+    class WorksheetProtection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Protects a worksheet. Fails if the worksheet has already been protected.
+         *
+         * [Api set: ExcelApi 1.2 for options; 1.7 for password]
+         *
+         * @param options sheet protection options.
+         * @param password sheet protection password.
+         */
+        protectAsync(options?: ExcelOp.WorksheetProtectionOptions, password?: string): Promise<void>;
+        /**
+         *
+         * Unprotects a worksheet.
+         *
+         * [Api set: ExcelApi 1.7 for password]
+         *
+         * @param password sheet protection password.
+         */
+        unprotectAsync(password?: string): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.WorksheetProtectionData>;
+    }
+    /**
+     *
+     * Represents the options in sheet protection.
+     *
+     * [Api set: ExcelApi 1.2]
+     */
+    interface WorksheetProtectionOptions {
+        /**
+         *
+         * Represents the worksheet protection option of allowing using auto filter feature.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        allowAutoFilter?: boolean;
+        /**
+         *
+         * Represents the worksheet protection option of allowing deleting columns.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        allowDeleteColumns?: boolean;
+        /**
+         *
+         * Represents the worksheet protection option of allowing deleting rows.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        allowDeleteRows?: boolean;
+        /**
+         *
+         * Represents the worksheet protection option of allowing editing objects.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        allowEditObjects?: boolean;
+        /**
+         *
+         * Represents the worksheet protection option of allowing editing scenarios.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        allowEditScenarios?: boolean;
+        /**
+         *
+         * Represents the worksheet protection option of allowing formatting cells.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        allowFormatCells?: boolean;
+        /**
+         *
+         * Represents the worksheet protection option of allowing formatting columns.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        allowFormatColumns?: boolean;
+        /**
+         *
+         * Represents the worksheet protection option of allowing formatting rows.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        allowFormatRows?: boolean;
+        /**
+         *
+         * Represents the worksheet protection option of allowing inserting columns.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        allowInsertColumns?: boolean;
+        /**
+         *
+         * Represents the worksheet protection option of allowing inserting hyperlinks.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        allowInsertHyperlinks?: boolean;
+        /**
+         *
+         * Represents the worksheet protection option of allowing inserting rows.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        allowInsertRows?: boolean;
+        /**
+         *
+         * Represents the worksheet protection option of allowing using PivotTable feature.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        allowPivotTables?: boolean;
+        /**
+         *
+         * Represents the worksheet protection option of allowing using sort feature.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        allowSort?: boolean;
+        /**
+         *
+         * Represents the worksheet protection option of selection mode.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        selectionMode?: ExcelOp.ProtectionSelectionMode | "Normal" | "Unlocked" | "None";
+    }
+    /**
+     * [Api set: ExcelApi 1.7]
+     */
+    class WorksheetFreezePanes extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Gets a range that describes the frozen cells in the active worksheet view.
+            The frozen range is corresponds to cells that are frozen in the top- and left-most pane.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        getLocation(): ExcelOp.Range;
+        /**
+         *
+         * Gets a range that describes the frozen cells in the active worksheet view.
+            The frozen range is corresponds to cells that are frozen in the top- and left-most pane.
+            If there is no frozen pane, returns a null object.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        getLocationOrNullObject(): ExcelOp.Range;
+        /**
+         *
+         * Sets the frozen cells in the active worksheet view.
+            The range provided corresponds to cells that will be frozen in the top- and left-most pane.
+         *
+         * [Api set: ExcelApi 1.7]
+         *
+         * @param frozenRange A range that represents the cells to be frozen, or null to remove all frozen panes.
+         */
+        freezeAtAsync(frozenRange: Range | string): Promise<void>;
+        /**
+         *
+         * Freeze the first column(s) of the worksheet in place.
+         *
+         * [Api set: ExcelApi 1.7]
+         *
+         * @param count Optional number of columns to freeze, or zero to unfreeze all columns
+         */
+        freezeColumnsAsync(count?: number): Promise<void>;
+        /**
+         *
+         * Freeze the top row(s) of the worksheet in place.
+         *
+         * [Api set: ExcelApi 1.7]
+         *
+         * @param count Optional number of rows to freeze, or zero to unfreeze all rows
+         */
+        freezeRowsAsync(count?: number): Promise<void>;
+        /**
+         *
+         * Removes all frozen panes in the worksheet.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        unfreezeAsync(): Promise<void>;
+    }
+    /**
+     *
+     * Range represents a set of one or more contiguous cells such as a cell, a row, a column, block of cells, etc.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class Range extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents a collection of contiguous areas for the range.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly areas: ExcelOp.AreaCollection;
+        /**
+         *
+         * Collection of ConditionalFormats that intersect the range.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly conditionalFormats: ExcelOp.ConditionalFormatCollection;
+        /**
+         *
+         * Returns a data validation object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly dataValidation: ExcelOp.DataValidation;
+        /**
+         *
+         * Returns a format object, encapsulating the range's font, fill, borders, alignment, and other properties. Read-only.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly format: ExcelOp.RangeFormat;
+        /**
+         *
+         * Represents the range sort of the current range.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        readonly sort: ExcelOp.RangeSort;
+        /**
+         *
+         * The worksheet containing the current range.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly worksheet: ExcelOp.Worksheet;
+        /**
+         *
+         * Finds the given string based on the criteria specified.
+            If the current range is larger than a single cell, then the search will be limited to that range, else the search will cover the entire sheet starting after that cell.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param text String to find.
+         * @param criteria Additional Criteria.
+         * @returns The Range which matched the search criteria.
+         */
+        find(text: string, criteria: ExcelOp.SearchCriteria): ExcelOp.Range;
+        /**
+         *
+         * Finds the given string based on the criteria specified.
+            If the current range is larger than a single cell, then the search will be limited to that range, else the search will cover the entire sheet starting after that cell.
+            If there are no matches, this function will return a null object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param text String to find.
+         * @param criteria Additional Criteria.
+         * @returns The Range which matched the search criteria.
+         */
+        findOrNullObject(text: string, criteria: ExcelOp.SearchCriteria): ExcelOp.Range;
+        /**
+         *
+         * Gets a Range object with the same top-left cell as the current Range object, but with the specified numbers of rows and columns.
+         *
+         * [Api set: ExcelApi 1.7]
+         *
+         * @param numRows The number of rows of the new range size.
+         * @param numColumns The number of columns of the new range size.
+         */
+        getAbsoluteResizedRange(numRows: number, numColumns: number): ExcelOp.Range;
+        /**
+         *
+         * Gets the smallest range object that encompasses the given ranges. For example, the GetBoundingRect of "B2:C5" and "D10:E15" is "B2:E16".
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param anotherRange The range object or address or range name.
+         */
+        getBoundingRect(anotherRange: Range | string): ExcelOp.Range;
+        /**
+         *
+         * Gets the range object containing the single cell based on row and column numbers. The cell can be outside the bounds of its parent range, so long as it's stays within the worksheet grid. The returned cell is located relative to the top left cell of the range.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param row Row number of the cell to be retrieved. Zero-indexed.
+         * @param column Column number of the cell to be retrieved. Zero-indexed.
+         */
+        getCell(row: number, column: number): ExcelOp.Range;
+        /**
+         *
+         * Gets a column contained in the range.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param column Column number of the range to be retrieved. Zero-indexed.
+         */
+        getColumn(column: number): ExcelOp.Range;
+        /**
+         *
+         * Gets a certain number of columns to the right of the current Range object.
+         *
+         * [Api set: ExcelApi 1.2]
+         *
+         * @param count The number of columns to include in the resulting range. In general, use a positive number to create a range outside the current range. You can also use a negative number to create a range within the current range. The default value is 1.
+         */
+        getColumnsAfter(count?: number): ExcelOp.Range;
+        /**
+         *
+         * Gets a certain number of columns to the left of the current Range object.
+         *
+         * [Api set: ExcelApi 1.2]
+         *
+         * @param count The number of columns to include in the resulting range. In general, use a positive number to create a range outside the current range. You can also use a negative number to create a range within the current range. The default value is 1.
+         */
+        getColumnsBefore(count?: number): ExcelOp.Range;
+        /**
+         *
+         * Returns a range with data validation rules. If there is no data validation rules within the range, this function will throw an ItemNotFound error.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getDataValidationRange(): ExcelOp.Range;
+        /**
+         *
+         * Returns a range with data validation rules. If there is no data validation rules within the range, this function will return a null object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getDataValidationRangeOrNullObject(): ExcelOp.Range;
+        /**
+         *
+         * Gets an object that represents the entire column of the range (for example, if the current range represents cells "B4:E11", it's `getEntireColumn` is a range that represents columns "B:E").
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        getEntireColumn(): ExcelOp.Range;
+        /**
+         *
+         * Gets an object that represents the entire row of the range (for example, if the current range represents cells "B4:E11", it's `GetEntireRow` is a range that represents rows "4:11").
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        getEntireRow(): ExcelOp.Range;
+        /**
+         *
+         * Gets the range object that represents the rectangular intersection of the given ranges.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param anotherRange The range object or range address that will be used to determine the intersection of ranges.
+         */
+        getIntersection(anotherRange: Range | string): ExcelOp.Range;
+        /**
+         *
+         * Gets the range object that represents the rectangular intersection of the given ranges. If no intersection is found, will return a null object.
+         *
+         * [Api set: ExcelApi 1.4]
+         *
+         * @param anotherRange The range object or range address that will be used to determine the intersection of ranges.
+         */
+        getIntersectionOrNullObject(anotherRange: Range | string): ExcelOp.Range;
+        /**
+         *
+         * Gets the last cell within the range. For example, the last cell of "B2:D5" is "D5".
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        getLastCell(): ExcelOp.Range;
+        /**
+         *
+         * Gets the last column within the range. For example, the last column of "B2:D5" is "D2:D5".
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        getLastColumn(): ExcelOp.Range;
+        /**
+         *
+         * Gets the last row within the range. For example, the last row of "B2:D5" is "B5:D5".
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        getLastRow(): ExcelOp.Range;
+        /**
+         *
+         * Gets an object which represents a range that's offset from the specified range. The dimension of the returned range will match this range. If the resulting range is forced outside the bounds of the worksheet grid, an error will be thrown.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param rowOffset The number of rows (positive, negative, or 0) by which the range is to be offset. Positive values are offset downward, and negative values are offset upward.
+         * @param columnOffset The number of columns (positive, negative, or 0) by which the range is to be offset. Positive values are offset to the right, and negative values are offset to the left.
+         */
+        getOffsetRange(rowOffset: number, columnOffset: number): ExcelOp.Range;
+        /**
+         *
+         * Gets a Range object similar to the current Range object, but with its bottom-right corner expanded (or contracted) by some number of rows and columns.
+         *
+         * [Api set: ExcelApi 1.2]
+         *
+         * @param deltaRows The number of rows by which to expand the bottom-right corner, relative to the current range. Use a positive number to expand the range, or a negative number to decrease it.
+         * @param deltaColumns The number of columnsby which to expand the bottom-right corner, relative to the current range. Use a positive number to expand the range, or a negative number to decrease it.
+         */
+        getResizedRange(deltaRows: number, deltaColumns: number): ExcelOp.Range;
+        /**
+         *
+         * Gets a row contained in the range.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param row Row number of the range to be retrieved. Zero-indexed.
+         */
+        getRow(row: number): ExcelOp.Range;
+        /**
+         *
+         * Gets a certain number of rows above the current Range object.
+         *
+         * [Api set: ExcelApi 1.2]
+         *
+         * @param count The number of rows to include in the resulting range. In general, use a positive number to create a range outside the current range. You can also use a negative number to create a range within the current range. The default value is 1.
+         */
+        getRowsAbove(count?: number): ExcelOp.Range;
+        /**
+         *
+         * Gets a certain number of rows below the current Range object.
+         *
+         * [Api set: ExcelApi 1.2]
+         *
+         * @param count The number of rows to include in the resulting range. In general, use a positive number to create a range outside the current range. You can also use a negative number to create a range within the current range. The default value is 1.
+         */
+        getRowsBelow(count?: number): ExcelOp.Range;
+        /**
+         *
+         * Returns a Range object that represents the surrounding region for the top-left cell in this range. A surrounding region is a range bounded by any combination of blank rows and blank columns relative to this range.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        getSurroundingRegion(): ExcelOp.Range;
+        /**
+         *
+         * Gets a scoped collection of tables that overlap with the range.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param fullyContained If true, returns only tables that are fully contained within the range bounds. The default value is false.
+         */
+        getTables(fullyContained?: boolean): ExcelOp.TableScopedCollection;
+        /**
+         *
+         * Returns the used range of the given range object. If there are no used cells within the range, this function will throw an ItemNotFound error.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param valuesOnly Considers only cells with values as used cells. [Api set: ExcelApi 1.2]
+         */
+        getUsedRange(valuesOnly?: boolean): ExcelOp.Range;
+        /**
+         *
+         * Returns the used range of the given range object. If there are no used cells within the range, this function will return a null object.
+         *
+         * [Api set: ExcelApi 1.4]
+         *
+         * @param valuesOnly Considers only cells with values as used cells.
+         */
+        getUsedRangeOrNullObject(valuesOnly?: boolean): ExcelOp.Range;
+        /**
+         *
+         * Represents the visible rows of the current range.
+         *
+         * [Api set: ExcelApi 1.3]
+         */
+        getVisibleView(): ExcelOp.RangeView;
+        /**
+         *
+         * Inserts a cell or a range of cells into the worksheet in place of this range, and shifts the other cells to make space. Returns a new Range object at the now blank space.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param shift Specifies which way to shift the cells. See Excel.InsertShiftDirection for details.
+         */
+        insertAsync(shift: ExcelOp.InsertShiftDirection): Promise<ExcelOp.Interfaces.RangeData>;
+        /**
+         *
+         * Inserts a cell or a range of cells into the worksheet in place of this range, and shifts the other cells to make space. Returns a new Range object at the now blank space.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param shift Specifies which way to shift the cells. See Excel.InsertShiftDirection for details.
+         */
+        insertAsync(shift: "Down" | "Right"): Promise<ExcelOp.Interfaces.RangeData>;
+        /**
+         *
+         * Removes duplicate values from the range specified by the columns.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param columns The columns inside the range that may contain duplicates. At least one column needs to be specified. Zero-indexed.
+         * @param includesHeader True if the input data contains header. Default is false.
+         * @returns The resulting object that contains the number of rows removed and the number of remaining unique rows.
+         */
+        removeDuplicatesAsync(columns: number[], includesHeader: boolean): Promise<ExcelOp.Interfaces.RemoveDuplicatesResultData>;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.RangeUpdateData): Promise<void>;
+        /**
+         *
+         * Calculates a range of cells on a worksheet.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        calculateAsync(): Promise<void>;
+        /**
+         *
+         * Clear range values, format, fill, border, etc.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param applyTo Determines the type of clear action. See Excel.ClearApplyTo for details.
+         */
+        clearAsync(applyTo?: ExcelOp.ClearApplyTo): Promise<void>;
+        /**
+         *
+         * Clear range values, format, fill, border, etc.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param applyTo Determines the type of clear action. See Excel.ClearApplyTo for details.
+         */
+        clearAsync(applyTo?: "All" | "Formats" | "Contents" | "Hyperlinks" | "RemoveHyperlinks"): Promise<void>;
+        /**
+         *
+         * Converts the range cells with datatypes into text.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        convertDataTypeToTextAsync(): Promise<void>;
+        /**
+         *
+         * Converts the range cells into linked datatype in the worksheet.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param serviceID The Service ID which will be used to query the data.
+         * @param languageCulture Language Culture to query the service for.
+         */
+        convertToLinkedDataTypeAsync(serviceID: number, languageCulture: string): Promise<void>;
+        /**
+         *
+         * Copies cell data or formatting from the source range to the current range.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param sourceRange The source range to copy from.
+         * @param copyType The type of cell data or formatting to copy over. Default is "All".
+         * @param skipBlanks True if to skip blank cells in the source range. Default is false.
+         * @param transpose True if to transpose the cells in the destination range. Default is false.
+         */
+        copyFromAsync(sourceRange: Range | string, copyType?: ExcelOp.RangeCopyType, skipBlanks?: boolean, transpose?: boolean): Promise<void>;
+        /**
+         *
+         * Copies cell data or formatting from the source range to the current range.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param sourceRange The source range to copy from.
+         * @param copyType The type of cell data or formatting to copy over. Default is "All".
+         * @param skipBlanks True if to skip blank cells in the source range. Default is false.
+         * @param transpose True if to transpose the cells in the destination range. Default is false.
+         */
+        copyFromAsync(sourceRange: Range | string, copyType?: "All" | "Formulas" | "Values" | "Formats", skipBlanks?: boolean, transpose?: boolean): Promise<void>;
+        /**
+         *
+         * Deletes the cells associated with the range.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param shift Specifies which way to shift the cells. See Excel.DeleteShiftDirection for details.
+         */
+        deleteAsync(shift: ExcelOp.DeleteShiftDirection): Promise<void>;
+        /**
+         *
+         * Deletes the cells associated with the range.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param shift Specifies which way to shift the cells. See Excel.DeleteShiftDirection for details.
+         */
+        deleteAsync(shift: "Up" | "Left"): Promise<void>;
+        /**
+         *
+         * Renders the range as a base64-encoded png image.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        getImageAsync(): Promise<string>;
+        /**
+         *
+         * Merge the range cells into one region in the worksheet.
+         *
+         * [Api set: ExcelApi 1.2]
+         *
+         * @param across Set true to merge cells in each row of the specified range as separate merged cells. The default value is false.
+         */
+        mergeAsync(across?: boolean): Promise<void>;
+        /**
+         *
+         * Finds and replaces the given string based on the criteria specified within the current range.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param text String to find.
+         * @param replacement String to replace the original with.
+         * @param criteria Additional Replace Criteria.
+         * @returns The number of replacements performed.
+         */
+        replaceAllAsync(text: string, replacement: string, criteria: ExcelOp.ReplaceCriteria): Promise<number>;
+        /**
+         *
+         * Selects the specified range in the Excel UI.
+            If true, a multi-area range can be selected; otherwise, only the first area will be selected. Default is false.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        selectAsync(allowMultiAreas?: boolean): Promise<void>;
+        /**
+         *
+         * Displays the card for an active cell if it has rich value content.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        showCardAsync(): Promise<void>;
+        /**
+         *
+         * Unmerge the range cells into separate cells.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        unmergeAsync(): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.RangeData>;
+    }
+    /**
+     *
+     * Represents a string reference of the form SheetName!A1:B5, or a global or local named range.
+     *
+     * [Api set: ExcelApi 1.2]
+     */
+    interface RangeReference {
+        address: string;
+    }
+    /**
+     *
+     * Represents the necessary strings to get/set a hyperlink (XHL) object.
+     *
+     * [Api set: ExcelApi 1.7]
+     */
+    interface RangeHyperlink {
+        /**
+         *
+         * Represents the url target for the hyperlink.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        address?: string;
+        /**
+         *
+         * Represents the document reference target for the hyperlink.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        documentReference?: string;
+        /**
+         *
+         * Represents the string displayed when hovering over the hyperlink.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        screenTip?: string;
+        /**
+         *
+         * Represents the string that is displayed in the top left most cell in the range.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        textToDisplay?: string;
+    }
+    /**
+     *
+     * Represents the search criteria to be used.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface SearchCriteria {
+        /**
+         *
+         * Specifies whether the match needs to be complete or partial. Default is false (partial).
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        completeMatch?: boolean;
+        /**
+         *
+         * Specifies whether the match is case sensitive. Default is false (insensitive).
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        matchCase?: boolean;
+        /**
+         *
+         * Specifies the search direction. Default is forward. See Excel.SearchDirection.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        searchDirection?: ExcelOp.SearchDirection | "Forward" | "Backwards";
+    }
+    /**
+     *
+     * Represents the worksheet search criteria to be used.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface WorksheetSearchCriteria {
+        /**
+         *
+         * Specifies whether the match needs to be complete or partial. Default is false (partial).
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        completeMatch?: boolean;
+        /**
+         *
+         * Specifies whether the match is case sensitive. Default is false (insensitive).
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        matchCase?: boolean;
+    }
+    /**
+     *
+     * Represents the replace criteria to be used.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface ReplaceCriteria {
+        /**
+         *
+         * Specifies whether the match needs to be complete or partial. Default is false (partial).
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        completeMatch?: boolean;
+        /**
+         *
+         * Specifies whether the match is case sensitive. Default is false (insensitive).
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        matchCase?: boolean;
+    }
+    /**
+     *
+     * RangeView represents a set of visible cells of the parent range.
+     *
+     * [Api set: ExcelApi 1.3]
+     */
+    class RangeView extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents a collection of range views associated with the range.
+         *
+         * [Api set: ExcelApi 1.3]
+         */
+        readonly rows: ExcelOp.RangeViewCollection;
+        /**
+         *
+         * Gets the parent range associated with the current RangeView.
+         *
+         * [Api set: ExcelApi 1.3]
+         */
+        getRange(): ExcelOp.Range;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.RangeViewUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.RangeViewData>;
+    }
+    /**
+     *
+     * Represents a collection of RangeView objects.
+     *
+     * [Api set: ExcelApi 1.3]
+     */
+    class RangeViewCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Gets a RangeView Row via it's index. Zero-Indexed.
+         *
+         * [Api set: ExcelApi 1.3]
+         *
+         * @param index Index of the visible row.
+         */
+        getItemAt(index: number): ExcelOp.RangeView;
+        /**
+         *
+         * Gets the number of RangeView objects in the collection.
+         *
+         * [Api set: ExcelApi 1.4]
+         */
+        getCountAsync(): Promise<number>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.RangeViewCollectionData>;
+    }
+    /**
+     *
+     * Represents a collection of key-value pair setting objects that are part of the workbook. The scope is limited to per file and add-in (task-pane or content) combination.
+     *
+     * [Api set: ExcelApi 1.4]
+     */
+    class SettingCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Sets or adds the specified setting to the workbook.
+         *
+         * [Api set: ExcelApi 1.4]
+         *
+         * @param key The Key of the new setting.
+         * @param value The Value for the new setting.
+         */
+        addAsync(key: string, value: string | number | boolean | Date | Array<any> | any): Promise<ExcelOp.Interfaces.SettingData>;
+        /**
+         *
+         * Gets a Setting entry via the key.
+         *
+         * [Api set: ExcelApi 1.4]
+         *
+         * @param key Key of the setting.
+         */
+        getItem(key: string): ExcelOp.Setting;
+        /**
+         *
+         * Gets a Setting entry via the key. If the Setting does not exist, will return a null object.
+         *
+         * [Api set: ExcelApi 1.4]
+         *
+         * @param key The key of the setting.
+         */
+        getItemOrNullObject(key: string): ExcelOp.Setting;
+        /**
+         *
+         * Gets the number of Settings in the collection.
+         *
+         * [Api set: ExcelApi 1.4]
+         */
+        getCountAsync(): Promise<number>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.SettingCollectionData>;
+    }
+    /**
+     *
+     * Setting represents a key-value pair of a setting persisted to the document (per file per add-in). These custom key-value pair can be used to store state or lifecycle information needed by the content or task-pane add-in. Note that settings are persisted in the document and hence it is not a place to store any sensitive or protected information such as user information and password.
+     *
+     * [Api set: ExcelApi 1.4]
+     */
+    class Setting extends OfficeExtension.ClientObjectBase {
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.SettingUpdateData): Promise<void>;
+        /**
+         *
+         * Deletes the setting.
+         *
+         * [Api set: ExcelApi 1.4]
+         */
+        deleteAsync(): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.SettingData>;
+    }
+    /**
+     *
+     * A collection of all the nameditem objects that are part of the workbook or worksheet, depending on how it was reached.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class NamedItemCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Adds a new name to the collection of the given scope.
+         *
+         * [Api set: ExcelApi 1.4]
+         *
+         * @param name The name of the named item.
+         * @param reference The formula or the range that the name will refer to.
+         * @param comment The comment associated with the named item
+         * @returns
+         */
+        addAsync(name: string, reference: Range | string, comment?: string): Promise<ExcelOp.Interfaces.NamedItemData>;
+        /**
+         *
+         * Adds a new name to the collection of the given scope using the user's locale for the formula.
+         *
+         * [Api set: ExcelApi 1.4]
+         *
+         * @param name The "name" of the named item.
+         * @param formula The formula in the user's locale that the name will refer to.
+         * @param comment The comment associated with the named item
+         * @returns
+         */
+        addFormulaLocalAsync(name: string, formula: string, comment?: string): Promise<ExcelOp.Interfaces.NamedItemData>;
+        /**
+         *
+         * Gets a nameditem object using its name
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param name nameditem name.
+         */
+        getItem(name: string): ExcelOp.NamedItem;
+        /**
+         *
+         * Gets a nameditem object using its name. If the nameditem object does not exist, will return a null object.
+         *
+         * [Api set: ExcelApi 1.4]
+         *
+         * @param name nameditem name.
+         */
+        getItemOrNullObject(name: string): ExcelOp.NamedItem;
+        /**
+         *
+         * Gets the number of named items in the collection.
+         *
+         * [Api set: ExcelApi 1.4]
+         */
+        getCountAsync(): Promise<number>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.NamedItemCollectionData>;
+    }
+    /**
+     *
+     * Represents a defined name for a range of cells or value. Names can be primitive named objects (as seen in the type below), range object, reference to a range. This object can be used to obtain range object associated with names.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class NamedItem extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Returns an object containing values and types of the named item.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        readonly arrayValues: ExcelOp.NamedItemArrayValues;
+        /**
+         *
+         * Returns the worksheet on which the named item is scoped to. Throws an error if the items is scoped to the workbook instead.
+         *
+         * [Api set: ExcelApi 1.4]
+         */
+        readonly worksheet: ExcelOp.Worksheet;
+        /**
+         *
+         * Returns the worksheet on which the named item is scoped to. Returns a null object if the item is scoped to the workbook instead.
+         *
+         * [Api set: ExcelApi 1.4]
+         */
+        readonly worksheetOrNullObject: ExcelOp.Worksheet;
+        /**
+         *
+         * Returns the range object that is associated with the name. Throws an error if the named item's type is not a range.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        getRange(): ExcelOp.Range;
+        /**
+         *
+         * Returns the range object that is associated with the name. Returns a null object if the named item's type is not a range.
+         *
+         * [Api set: ExcelApi 1.4]
+         */
+        getRangeOrNullObject(): ExcelOp.Range;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.NamedItemUpdateData): Promise<void>;
+        /**
+         *
+         * Deletes the given name.
+         *
+         * [Api set: ExcelApi 1.4]
+         */
+        deleteAsync(): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.NamedItemData>;
+    }
+    /**
+     *
+     * Represents an object containing values and types of a named item.
+     *
+     * [Api set: ExcelApi 1.7]
+     */
+    class NamedItemArrayValues extends OfficeExtension.ClientObjectBase {
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.NamedItemArrayValuesData>;
+    }
+    /**
+     *
+     * Represents an Office.js binding that is defined in the workbook.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class Binding extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Returns the range represented by the binding. Will throw an error if binding is not of the correct type.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        getRange(): ExcelOp.Range;
+        /**
+         *
+         * Returns the table represented by the binding. Will throw an error if binding is not of the correct type.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        getTable(): ExcelOp.Table;
+        /**
+         *
+         * Deletes the binding.
+         *
+         * [Api set: ExcelApi 1.3]
+         */
+        deleteAsync(): Promise<void>;
+        /**
+         *
+         * Returns the text represented by the binding. Will throw an error if binding is not of the correct type.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        getTextAsync(): Promise<string>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.BindingData>;
+    }
+    /**
+     *
+     * Represents the collection of all the binding objects that are part of the workbook.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class BindingCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Add a new binding to a particular Range.
+         *
+         * [Api set: ExcelApi 1.3]
+         *
+         * @param range Range to bind the binding to. May be an Excel Range object, or a string. If string, must contain the full address, including the sheet name
+         * @param bindingType Type of binding. See Excel.BindingType.
+         * @param id Name of binding.
+         */
+        addAsync(range: Range | string, bindingType: ExcelOp.BindingType, id: string): Promise<ExcelOp.Interfaces.BindingData>;
+        /**
+         *
+         * Add a new binding to a particular Range.
+         *
+         * [Api set: ExcelApi 1.3]
+         *
+         * @param range Range to bind the binding to. May be an Excel Range object, or a string. If string, must contain the full address, including the sheet name
+         * @param bindingType Type of binding. See Excel.BindingType.
+         * @param id Name of binding.
+         */
+        addAsync(range: Range | string, bindingType: "Range" | "Table" | "Text", id: string): Promise<ExcelOp.Interfaces.BindingData>;
+        /**
+         *
+         * Add a new binding based on a named item in the workbook.
+            If the named item references to multiple areas, the "InvalidReference" error will be returned.
+         *
+         * [Api set: ExcelApi 1.3]
+         *
+         * @param name Name from which to create binding.
+         * @param bindingType Type of binding. See Excel.BindingType.
+         * @param id Name of binding.
+         */
+        addFromNamedItemAsync(name: string, bindingType: ExcelOp.BindingType, id: string): Promise<ExcelOp.Interfaces.BindingData>;
+        /**
+         *
+         * Add a new binding based on a named item in the workbook.
+            If the named item references to multiple areas, the "InvalidReference" error will be returned.
+         *
+         * [Api set: ExcelApi 1.3]
+         *
+         * @param name Name from which to create binding.
+         * @param bindingType Type of binding. See Excel.BindingType.
+         * @param id Name of binding.
+         */
+        addFromNamedItemAsync(name: string, bindingType: "Range" | "Table" | "Text", id: string): Promise<ExcelOp.Interfaces.BindingData>;
+        /**
+         *
+         * Add a new binding based on the current selection.
+            If the selection has multiple areas, the "InvalidReference" error will be returned.
+         *
+         * [Api set: ExcelApi 1.3]
+         *
+         * @param bindingType Type of binding. See Excel.BindingType.
+         * @param id Name of binding.
+         */
+        addFromSelectionAsync(bindingType: ExcelOp.BindingType, id: string): Promise<ExcelOp.Interfaces.BindingData>;
+        /**
+         *
+         * Add a new binding based on the current selection.
+            If the selection has multiple areas, the "InvalidReference" error will be returned.
+         *
+         * [Api set: ExcelApi 1.3]
+         *
+         * @param bindingType Type of binding. See Excel.BindingType.
+         * @param id Name of binding.
+         */
+        addFromSelectionAsync(bindingType: "Range" | "Table" | "Text", id: string): Promise<ExcelOp.Interfaces.BindingData>;
+        /**
+         *
+         * Gets a binding object by ID.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param id Id of the binding object to be retrieved.
+         */
+        getItem(id: string): ExcelOp.Binding;
+        /**
+         *
+         * Gets a binding object based on its position in the items array.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param index Index value of the object to be retrieved. Zero-indexed.
+         */
+        getItemAt(index: number): ExcelOp.Binding;
+        /**
+         *
+         * Gets a binding object by ID. If the binding object does not exist, will return a null object.
+         *
+         * [Api set: ExcelApi 1.4]
+         *
+         * @param id Id of the binding object to be retrieved.
+         */
+        getItemOrNullObject(id: string): ExcelOp.Binding;
+        /**
+         *
+         * Gets the number of bindings in the collection.
+         *
+         * [Api set: ExcelApi 1.4]
+         */
+        getCountAsync(): Promise<number>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.BindingCollectionData>;
+    }
+    /**
+     *
+     * Represents a collection of all the tables that are part of the workbook or worksheet, depending on how it was reached.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class TableCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Create a new table. The range object or source address determines the worksheet under which the table will be added. If the table cannot be added (e.g., because the address is invalid, or the table would overlap with another table), an error will be thrown.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param address A Range object, or a string address or name of the range representing the data source. If the address does not contain a sheet name, the currently-active sheet is used. [Api set: ExcelApi 1.1 / 1.3.  Prior to ExcelApi 1.3, this parameter must be a string. Starting with Excel Api 1.3, this parameter may be a Range object or a string.]
+         * @param hasHeaders Boolean value that indicates whether the data being imported has column labels. If the source does not contain headers (i.e,. when this property set to false), Excel will automatically generate header shifting the data down by one row.
+         */
+        addAsync(address: Range | string, hasHeaders: boolean): Promise<ExcelOp.Interfaces.TableData>;
+        /**
+         *
+         * Gets a table by Name or ID.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param key Name or ID of the table to be retrieved.
+         */
+        getItem(key: string): ExcelOp.Table;
+        /**
+         *
+         * Gets a table based on its position in the collection.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param index Index value of the object to be retrieved. Zero-indexed.
+         */
+        getItemAt(index: number): ExcelOp.Table;
+        /**
+         *
+         * Gets a table by Name or ID. If the table does not exist, will return a null object.
+         *
+         * [Api set: ExcelApi 1.4]
+         *
+         * @param key Name or ID of the table to be retrieved.
+         */
+        getItemOrNullObject(key: string): ExcelOp.Table;
+        /**
+         *
+         * Gets the number of tables in the collection.
+         *
+         * [Api set: ExcelApi 1.4]
+         */
+        getCountAsync(): Promise<number>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.TableCollectionData>;
+    }
+    /**
+     *
+     * Represents a scoped collection of tables. For each table its top-left corner is considered its anchor location and the tables are sorted top to bottom and then left to right.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class TableScopedCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Gets the first table in the collection. The tables in the collection are sorted top to bottom and left to right, such that top left table is the first table in the collection.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getFirst(): ExcelOp.Table;
+        /**
+         *
+         * Gets a table by Name or ID.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param key Name or ID of the table to be retrieved.
+         */
+        getItem(key: string): ExcelOp.Table;
+        /**
+         *
+         * Gets the number of tables in the collection.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getCountAsync(): Promise<number>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.TableScopedCollectionData>;
+    }
+    /**
+     *
+     * Represents an Excel table.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class Table extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents a collection of all the columns in the table.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly columns: ExcelOp.TableColumnCollection;
+        /**
+         *
+         * Represents a collection of all the rows in the table.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly rows: ExcelOp.TableRowCollection;
+        /**
+         *
+         * Represents the sorting for the table.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        readonly sort: ExcelOp.TableSort;
+        /**
+         *
+         * The worksheet containing the current table.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        readonly worksheet: ExcelOp.Worksheet;
+        /**
+         *
+         * Converts the table into a normal range of cells. All data is preserved.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        convertToRangeAsync(): Promise<ExcelOp.Interfaces.RangeData>;
+        /**
+         *
+         * Gets the range object associated with the data body of the table.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        getDataBodyRange(): ExcelOp.Range;
+        /**
+         *
+         * Gets the range object associated with header row of the table.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        getHeaderRowRange(): ExcelOp.Range;
+        /**
+         *
+         * Gets the range object associated with the entire table.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        getRange(): ExcelOp.Range;
+        /**
+         *
+         * Gets the range object associated with totals row of the table.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        getTotalRowRange(): ExcelOp.Range;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.TableUpdateData): Promise<void>;
+        /**
+         *
+         * Clears all the filters currently applied on the table.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        clearFiltersAsync(): Promise<void>;
+        /**
+         *
+         * Changes the table to use the default table style.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        clearStyleAsync(): Promise<void>;
+        /**
+         *
+         * Deletes the table.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        deleteAsync(): Promise<void>;
+        /**
+         *
+         * Reapplies all the filters currently on the table.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        reapplyFiltersAsync(): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.TableData>;
+    }
+    /**
+     *
+     * Represents a collection of all the columns that are part of the table.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class TableColumnCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Adds a new column to the table.
+         *
+         * [Api set: ExcelApi 1.1 requires an index smaller than the total column count; 1.4 allows index to be optional (null or -1) and will append a column at the end; 1.4 allows name parameter at creation time.]
+         *
+         * @param index Specifies the relative position of the new column. If null or -1, the addition happens at the end. Columns with a higher index will be shifted to the side. Zero-indexed.
+         * @param values A 2-dimensional array of unformatted values of the table column.
+         * @param name Specifies the name of the new column. If null, the default name will be used.
+         */
+        addAsync(index?: number, values?: Array<Array<boolean | string | number>> | boolean | string | number, name?: string): Promise<ExcelOp.Interfaces.TableColumnData>;
+        /**
+         *
+         * Gets a column object by Name or ID.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param key Column Name or ID.
+         */
+        getItem(key: number | string): ExcelOp.TableColumn;
+        /**
+         *
+         * Gets a column based on its position in the collection.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param index Index value of the object to be retrieved. Zero-indexed.
+         */
+        getItemAt(index: number): ExcelOp.TableColumn;
+        /**
+         *
+         * Gets a column object by Name or ID. If the column does not exist, will return a null object.
+         *
+         * [Api set: ExcelApi 1.4]
+         *
+         * @param key Column Name or ID.
+         */
+        getItemOrNullObject(key: number | string): ExcelOp.TableColumn;
+        /**
+         *
+         * Gets the number of columns in the table.
+         *
+         * [Api set: ExcelApi 1.4]
+         */
+        getCountAsync(): Promise<number>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.TableColumnCollectionData>;
+    }
+    /**
+     *
+     * Represents a column in a table.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class TableColumn extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Retrieve the filter applied to the column.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        readonly filter: ExcelOp.Filter;
+        /**
+         *
+         * Gets the range object associated with the data body of the column.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        getDataBodyRange(): ExcelOp.Range;
+        /**
+         *
+         * Gets the range object associated with the header row of the column.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        getHeaderRowRange(): ExcelOp.Range;
+        /**
+         *
+         * Gets the range object associated with the entire column.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        getRange(): ExcelOp.Range;
+        /**
+         *
+         * Gets the range object associated with the totals row of the column.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        getTotalRowRange(): ExcelOp.Range;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.TableColumnUpdateData): Promise<void>;
+        /**
+         *
+         * Deletes the column from the table.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        deleteAsync(): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.TableColumnData>;
+    }
+    /**
+     *
+     * Represents a collection of all the rows that are part of the table.
+            
+            Note that unlike Ranges or Columns, which will adjust if new rows/columns are added before them,
+            a TableRow object represent the physical location of the table row, but not the data.
+            That is, if the data is sorted or if new rows are added, a table row will continue
+            to point at the index for which it was created.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class TableRowCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Adds one or more rows to the table. The return object will be the top of the newly added row(s).
+            
+            Note that unlike Ranges or Columns, which will adjust if new rows/columns are added before them,
+            a TableRow object represent the physical location of the table row, but not the data.
+            That is, if the data is sorted or if new rows are added, a table row will continue
+            to point at the index for which it was created.
+         *
+         * [Api set: ExcelApi 1.1 for adding a single row; 1.4 allows adding of multiple rows.]
+         *
+         * @param index Specifies the relative position of the new row. If null or -1, the addition happens at the end. Any rows below the inserted row are shifted downwards. Zero-indexed.
+         * @param values A 2-dimensional array of unformatted values of the table row.
+         */
+        addAsync(index?: number, values?: Array<Array<boolean | string | number>> | boolean | string | number): Promise<ExcelOp.Interfaces.TableRowData>;
+        /**
+         *
+         * Gets a row based on its position in the collection.
+            
+            Note that unlike Ranges or Columns, which will adjust if new rows/columns are added before them,
+            a TableRow object represent the physical location of the table row, but not the data.
+            That is, if the data is sorted or if new rows are added, a table row will continue
+            to point at the index for which it was created.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param index Index value of the object to be retrieved. Zero-indexed.
+         */
+        getItemAt(index: number): ExcelOp.TableRow;
+        /**
+         *
+         * Gets the number of rows in the table.
+         *
+         * [Api set: ExcelApi 1.4]
+         */
+        getCountAsync(): Promise<number>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.TableRowCollectionData>;
+    }
+    /**
+     *
+     * Represents a row in a table.
+            
+            Note that unlike Ranges or Columns, which will adjust if new rows/columns are added before them,
+            a TableRow object represent the physical location of the table row, but not the data.
+            That is, if the data is sorted or if new rows are added, a table row will continue
+            to point at the index for which it was created.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class TableRow extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Returns the range object associated with the entire row.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        getRange(): ExcelOp.Range;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.TableRowUpdateData): Promise<void>;
+        /**
+         *
+         * Deletes the row from the table.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        deleteAsync(): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.TableRowData>;
+    }
+    /**
+     *
+     * Represents the data validation applied to the current range.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class DataValidation extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Returns a range with invalid cell values. If all cell values are valid, this function will throw an ItemNotFound error.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getInvalidCells(): ExcelOp.Range;
+        /**
+         *
+         * Returns a range with invalid cell values. If all cell values are valid, this function will return null.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getInvalidCellsOrNullObject(): ExcelOp.Range;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.DataValidationUpdateData): Promise<void>;
+        /**
+         *
+         * Clears the data validation from the current range.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        clearAsync(): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.DataValidationData>;
+    }
+    /**
+     *
+     * Data validation rule contains different types of data validation. You can only use one of them at a time according the Excel.DataValidationType.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface DataValidationRule {
+        /**
+         *
+         * Custom data validation criteria.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        custom?: ExcelOp.CustomDataValidation;
+        /**
+         *
+         * Date data validation criteria.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        date?: ExcelOp.DateTimeDataValidation;
+        /**
+         *
+         * Decimal data validation criteria.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        decimal?: ExcelOp.BasicDataValidation;
+        /**
+         *
+         * List data validation criteria.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        list?: ExcelOp.ListDataValidation;
+        /**
+         *
+         * TextLength data validation criteria.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        textLength?: ExcelOp.BasicDataValidation;
+        /**
+         *
+         * Time data validation criteria.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        time?: ExcelOp.DateTimeDataValidation;
+        /**
+         *
+         * WholeNumber data validation criteria.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        wholeNumber?: ExcelOp.BasicDataValidation;
+    }
+    /**
+     *
+     * Represents the results from the removeDuplicates method on range
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class RemoveDuplicatesResult extends OfficeExtension.ClientObjectBase {
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.RemoveDuplicatesResultData>;
+    }
+    /**
+     *
+     * Represents the Basic Type data validation criteria.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface BasicDataValidation {
+        /**
+         *
+         * Gets or sets the Formula1, i.e. minimum value or value depending of the operator.
+            When setting the value, it can be passed in as a number, a range object, or a string formula (where the string is either a stringified number, a cell reference like "=A1", or a formula like "=MIN(A1, B1)").
+            When retrieving the value, it will always be returned as a string formula, for example: "=10", "=A1", "=SUM(A1:B5)", etc.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        formula1: string | number | Range;
+        /**
+         *
+         * Gets or sets the Formula2, i.e. maximum value or value depending of the operator.
+            When setting the value, it can be passed in as a number, a range object, or a string formula (where the string is either a stringified number, a cell reference like "=A1", or a formula like "=MIN(A1, B1)").
+            When retrieving the value, it will always be returned as a string formula, for example: "=10", "=A1", "=SUM(A1:B5)", etc.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        formula2?: string | number | Range;
+        /**
+         *
+         * The operator to use for validating the data.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        operator: ExcelOp.DataValidationOperator | "Between" | "NotBetween" | "EqualTo" | "NotEqualTo" | "GreaterThan" | "LessThan" | "GreaterThanOrEqualTo" | "LessThanOrEqualTo";
+    }
+    /**
+     *
+     * Represents the Date data validation criteria.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface DateTimeDataValidation {
+        /**
+         *
+         * Gets or sets the Formula1, i.e. minimum value or value depending of the operator.
+            When setting the value, it can be passed in as a Date, a Range object, or a string formula (where the string is either a stringified date/time in ISO8601 format, a cell reference like "=A1", or a formula like "=MIN(A1, B1)").
+            When retrieving the value, it will always be returned as a string formula, for example: "=10", "=A1", "=SUM(A1:B5)", etc.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        formula1: string | Date | Range;
+        /**
+         *
+         * Gets or sets the Formula2, i.e. maximum value or value depending of the operator.
+            When setting the value, it can be passed in as a Date, a Range object, or a string (where the string is either a stringified date/time in ISO8601 format, a cell reference like "=A1", or a formula like "=MIN(A1, B1)").
+            When retrieving the value, it will always be returned as a string formula, for example: "=10", "=A1", "=SUM(A1:B5)", etc.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        formula2?: string | Date | Range;
+        /**
+         *
+         * The operator to use for validating the data.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        operator: ExcelOp.DataValidationOperator | "Between" | "NotBetween" | "EqualTo" | "NotEqualTo" | "GreaterThan" | "LessThan" | "GreaterThanOrEqualTo" | "LessThanOrEqualTo";
+    }
+    /**
+     *
+     * Represents the List data validation criteria.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface ListDataValidation {
+        /**
+         *
+         * Displays the list in cell drop down or not, it defaults to true.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        inCellDropDown: boolean;
+        /**
+         *
+         * Source of the list for data validation
+            When setting the value, it can be passed in as a Excel Range object, or a string that contains comma separated number, boolean or date.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        source: string | Range;
+    }
+    /**
+     *
+     * Represents the Custom data validation criteria.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface CustomDataValidation {
+        /**
+         *
+         * Custom data validation formula, it is to create special rules, such as preventing duplicates, or limiting the total in a range of cells.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        formula: string;
+    }
+    /**
+     *
+     * Represents the error alert properties for the data validation.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface DataValidationErrorAlert {
+        /**
+         *
+         * Represents error alert message.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        message: string;
+        /**
+         *
+         * It determines show error alert dialog or not when users enter invalid data, it defaults to true.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        showAlert: boolean;
+        /**
+         *
+         * Represents Data validation alert type, please see Excel.DataValidationAlertStyle for details.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        style: ExcelOp.DataValidationAlertStyle | "Stop" | "Warning" | "Information";
+        /**
+         *
+         * Represents error alert dialog title.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        title: string;
+    }
+    /**
+     *
+     * Represents the user prompt properties for the data validation.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface DataValidationPrompt {
+        /**
+         *
+         * Represents the message of the prompt.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        message: string;
+        /**
+         *
+         * It determines showing the prompt or not when user selects a cell with the data validation.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        showPrompt: boolean;
+        /**
+         *
+         * Represents the title for the prompt.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        title: string;
+    }
+    /**
+     *
+     * A format object encapsulating the range's font, fill, borders, alignment, and other properties.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class RangeFormat extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Collection of border objects that apply to the overall range.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly borders: ExcelOp.RangeBorderCollection;
+        /**
+         *
+         * Returns the fill object defined on the overall range.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly fill: ExcelOp.RangeFill;
+        /**
+         *
+         * Returns the font object defined on the overall range.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly font: ExcelOp.RangeFont;
+        /**
+         *
+         * Returns the format protection object for a range.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        readonly protection: ExcelOp.FormatProtection;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.RangeFormatUpdateData): Promise<void>;
+        /**
+         *
+         * Changes the width of the columns of the current range to achieve the best fit, based on the current data in the columns.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        autofitColumnsAsync(): Promise<void>;
+        /**
+         *
+         * Changes the height of the rows of the current range to achieve the best fit, based on the current data in the columns.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        autofitRowsAsync(): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.RangeFormatData>;
+    }
+    /**
+     *
+     * Represents the format protection of a range object.
+     *
+     * [Api set: ExcelApi 1.2]
+     */
+    class FormatProtection extends OfficeExtension.ClientObjectBase {
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.FormatProtectionUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.FormatProtectionData>;
+    }
+    /**
+     *
+     * Represents the background of a range object.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class RangeFill extends OfficeExtension.ClientObjectBase {
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.RangeFillUpdateData): Promise<void>;
+        /**
+         *
+         * Resets the range background.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        clearAsync(): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.RangeFillData>;
+    }
+    /**
+     *
+     * Represents the border of an object.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class RangeBorder extends OfficeExtension.ClientObjectBase {
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.RangeBorderUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.RangeBorderData>;
+    }
+    /**
+     *
+     * Represents the border objects that make up the range border.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class RangeBorderCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Gets a border object using its name
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param index Index value of the border object to be retrieved. See Excel.BorderIndex for details.
+         */
+        getItem(index: ExcelOp.BorderIndex): ExcelOp.RangeBorder;
+        /**
+         *
+         * Gets a border object using its name
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param index Index value of the border object to be retrieved. See Excel.BorderIndex for details.
+         */
+        getItem(index: "EdgeTop" | "EdgeBottom" | "EdgeLeft" | "EdgeRight" | "InsideVertical" | "InsideHorizontal" | "DiagonalDown" | "DiagonalUp"): ExcelOp.RangeBorder;
+        /**
+         *
+         * Gets a border object using its index
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param index Index value of the object to be retrieved. Zero-indexed.
+         */
+        getItemAt(index: number): ExcelOp.RangeBorder;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.RangeBorderCollectionData>;
+    }
+    /**
+     *
+     * This object represents the font attributes (font name, font size, color, etc.) for an object.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class RangeFont extends OfficeExtension.ClientObjectBase {
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.RangeFontUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.RangeFontData>;
+    }
+    /**
+     *
+     * A collection of all the chart objects on a worksheet.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class ChartCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Creates a new chart.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param type Represents the type of a chart. See Excel.ChartType for details.
+         * @param sourceData The range corresponding to the source data.
+         * @param seriesBy Specifies the way columns or rows are used as data series on the chart. See Excel.ChartSeriesBy for details.
+         */
+        addAsync(type: ExcelOp.ChartType, sourceData: Range | string, seriesBy?: ExcelOp.ChartSeriesBy): Promise<ExcelOp.Interfaces.ChartData>;
+        /**
+         *
+         * Creates a new chart.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param type Represents the type of a chart. See Excel.ChartType for details.
+         * @param sourceData The range corresponding to the source data.
+         * @param seriesBy Specifies the way columns or rows are used as data series on the chart. See Excel.ChartSeriesBy for details.
+         */
+        addAsync(type: "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar", sourceData: Range | string, seriesBy?: "Auto" | "Columns" | "Rows"): Promise<ExcelOp.Interfaces.ChartData>;
+        /**
+         *
+         * Gets a chart using its name. If there are multiple charts with the same name, the first one will be returned.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param name Name of the chart to be retrieved.
+         */
+        getItem(name: string): ExcelOp.Chart;
+        /**
+         *
+         * Gets a chart based on its position in the collection.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param index Index value of the object to be retrieved. Zero-indexed.
+         */
+        getItemAt(index: number): ExcelOp.Chart;
+        /**
+         *
+         * Gets a chart using its name. If there are multiple charts with the same name, the first one will be returned.
+            If the chart does not exist, will return a null object.
+         *
+         * [Api set: ExcelApi 1.4]
+         *
+         * @param name Name of the chart to be retrieved.
+         */
+        getItemOrNullObject(name: string): ExcelOp.Chart;
+        /**
+         *
+         * Returns the number of charts in the worksheet.
+         *
+         * [Api set: ExcelApi 1.4]
+         */
+        getCountAsync(): Promise<number>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ChartCollectionData>;
+    }
+    /**
+     *
+     * Represents a chart object in a workbook.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class Chart extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents chart axes.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly axes: ExcelOp.ChartAxes;
+        /**
+         *
+         * Represents the datalabels on the chart.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly dataLabels: ExcelOp.ChartDataLabels;
+        /**
+         *
+         * Encapsulates the format properties for the chart area. Read-only.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly format: ExcelOp.ChartAreaFormat;
+        /**
+         *
+         * Represents the legend for the chart.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly legend: ExcelOp.ChartLegend;
+        /**
+         *
+         * Represents the plotArea for the chart.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly plotArea: ExcelOp.ChartPlotArea;
+        /**
+         *
+         * Represents either a single series or collection of series in the chart.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly series: ExcelOp.ChartSeriesCollection;
+        /**
+         *
+         * Represents the title of the specified chart, including the text, visibility, position and formating of the title.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly title: ExcelOp.ChartTitle;
+        /**
+         *
+         * The worksheet containing the current chart.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        readonly worksheet: ExcelOp.Worksheet;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.ChartUpdateData): Promise<void>;
+        /**
+         *
+         * Deletes the chart object.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        deleteAsync(): Promise<void>;
+        /**
+         *
+         * Renders the chart as a base64-encoded image by scaling the chart to fit the specified dimensions.
+            The aspect ratio is preserved as part of the resizing.
+         *
+         * [Api set: ExcelApi 1.2]
+         *
+         * @param height (Optional) The desired height of the resulting image.
+         * @param width (Optional) The desired width of the resulting image.
+         * @param fittingMode (Optional) The method used to scale the chart to the specified to the specified dimensions (if both height and width are set)."
+         */
+        getImageAsync(width?: number, height?: number, fittingMode?: ExcelOp.ImageFittingMode): Promise<string>;
+        /**
+         *
+         * Renders the chart as a base64-encoded image by scaling the chart to fit the specified dimensions.
+            The aspect ratio is preserved as part of the resizing.
+         *
+         * [Api set: ExcelApi 1.2]
+         *
+         * @param height (Optional) The desired height of the resulting image.
+         * @param width (Optional) The desired width of the resulting image.
+         * @param fittingMode (Optional) The method used to scale the chart to the specified to the specified dimensions (if both height and width are set)."
+         */
+        getImageAsync(width?: number, height?: number, fittingMode?: "Fit" | "FitAndCenter" | "Fill"): Promise<string>;
+        /**
+         *
+         * Resets the source data for the chart.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param sourceData The range corresponding to the source data.
+         * @param seriesBy Specifies the way columns or rows are used as data series on the chart. Can be one of the following: Auto (default), Rows, Columns. See Excel.ChartSeriesBy for details.
+         */
+        setDataAsync(sourceData: Range | string, seriesBy?: ExcelOp.ChartSeriesBy): Promise<void>;
+        /**
+         *
+         * Resets the source data for the chart.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param sourceData The range corresponding to the source data.
+         * @param seriesBy Specifies the way columns or rows are used as data series on the chart. Can be one of the following: Auto (default), Rows, Columns. See Excel.ChartSeriesBy for details.
+         */
+        setDataAsync(sourceData: Range | string, seriesBy?: "Auto" | "Columns" | "Rows"): Promise<void>;
+        /**
+         *
+         * Positions the chart relative to cells on the worksheet.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param startCell The start cell. This is where the chart will be moved to. The start cell is the top-left or top-right cell, depending on the user's right-to-left display settings.
+         * @param endCell (Optional) The end cell. If specified, the chart's width and height will be set to fully cover up this cell/range.
+         */
+        setPositionAsync(startCell: Range | string, endCell?: Range | string): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ChartData>;
+    }
+    /**
+     *
+     * Encapsulates the format properties for the overall chart area.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class ChartAreaFormat extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents the border format of chart area, which includes color, linestyle and weight.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        readonly border: ExcelOp.ChartBorder;
+        /**
+         *
+         * Represents the fill format of an object, which includes background formatting information.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly fill: ExcelOp.ChartFill;
+        /**
+         *
+         * Represents the font attributes (font name, font size, color, etc.) for the current object.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly font: ExcelOp.ChartFont;
+    }
+    /**
+     *
+     * Represents a collection of chart series.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class ChartSeriesCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Add a new series to the collection. The new added series is not visible until set values/x axis values/bubble sizes for it (depending on chart type).
+         *
+         * [Api set: ExcelApi 1.7]
+         *
+         * @param name Name of the series.
+         * @param index Index value of the series to be added. Zero-indexed.
+         */
+        addAsync(name?: string, index?: number): Promise<ExcelOp.Interfaces.ChartSeriesData>;
+        /**
+         *
+         * Retrieves a series based on its position in the collection.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param index Index value of the object to be retrieved. Zero-indexed.
+         */
+        getItemAt(index: number): ExcelOp.ChartSeries;
+        /**
+         *
+         * Returns the number of series in the collection.
+         *
+         * [Api set: ExcelApi 1.4]
+         */
+        getCountAsync(): Promise<number>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ChartSeriesCollectionData>;
+    }
+    /**
+     *
+     * Represents a series in a chart.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class ChartSeries extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents a collection of all dataLabels in the series.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly dataLabels: ExcelOp.ChartDataLabels;
+        /**
+         *
+         * Represents the formatting of a chart series, which includes fill and line formatting.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly format: ExcelOp.ChartSeriesFormat;
+        /**
+         *
+         * Represents a collection of all points in the series.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly points: ExcelOp.ChartPointsCollection;
+        /**
+         *
+         * Represents a collection of trendlines in the series.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        readonly trendlines: ExcelOp.ChartTrendlineCollection;
+        /**
+         *
+         * Represents the error bar object for a chart series.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly xerrorBars: ExcelOp.ChartErrorBars;
+        /**
+         *
+         * Represents the error bar object for a chart series.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly yerrorBars: ExcelOp.ChartErrorBars;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.ChartSeriesUpdateData): Promise<void>;
+        /**
+         *
+         * Deletes the chart series.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        deleteAsync(): Promise<void>;
+        /**
+         *
+         * Set bubble sizes for a chart series. Only works for bubble charts.
+         *
+         * [Api set: ExcelApi 1.7]
+         *
+         * @param sourceData The Range object corresponding to the source data.
+         */
+        setBubbleSizesAsync(sourceData: Range): Promise<void>;
+        /**
+         *
+         * Set values for a chart series. For scatter chart, it means Y axis values.
+         *
+         * [Api set: ExcelApi 1.7]
+         *
+         * @param sourceData The Range object corresponding to the source data.
+         */
+        setValuesAsync(sourceData: Range): Promise<void>;
+        /**
+         *
+         * Set values of X axis for a chart series. Only works for scatter charts.
+         *
+         * [Api set: ExcelApi 1.7]
+         *
+         * @param sourceData The Range object corresponding to the source data.
+         */
+        setXAxisValuesAsync(sourceData: Range): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ChartSeriesData>;
+    }
+    /**
+     *
+     * encapsulates the format properties for the chart series
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class ChartSeriesFormat extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents the fill format of a chart series, which includes background formating information.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly fill: ExcelOp.ChartFill;
+        /**
+         *
+         * Represents line formatting.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly line: ExcelOp.ChartLineFormat;
+    }
+    /**
+     *
+     * A collection of all the chart points within a series inside a chart.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class ChartPointsCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Retrieve a point based on its position within the series.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param index Index value of the object to be retrieved. Zero-indexed.
+         */
+        getItemAt(index: number): ExcelOp.ChartPoint;
+        /**
+         *
+         * Returns the number of chart points in the series.
+         *
+         * [Api set: ExcelApi 1.4]
+         */
+        getCountAsync(): Promise<number>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ChartPointsCollectionData>;
+    }
+    /**
+     *
+     * Represents a point of a series in a chart.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class ChartPoint extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Returns the data label of a chart point.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        readonly dataLabel: ExcelOp.ChartDataLabel;
+        /**
+         *
+         * Encapsulates the format properties chart point. Read-only.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly format: ExcelOp.ChartPointFormat;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.ChartPointUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ChartPointData>;
+    }
+    /**
+     *
+     * Represents formatting object for chart points.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class ChartPointFormat extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents the border format of a chart data point, which includes color, style and weight information.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        readonly border: ExcelOp.ChartBorder;
+        /**
+         *
+         * Represents the fill format of a chart, which includes background formating information.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly fill: ExcelOp.ChartFill;
+    }
+    /**
+     *
+     * Represents the chart axes.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class ChartAxes extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents the category axis in a chart.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly categoryAxis: ExcelOp.ChartAxis;
+        /**
+         *
+         * Represents the series axis of a 3-dimensional chart.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly seriesAxis: ExcelOp.ChartAxis;
+        /**
+         *
+         * Represents the value axis in an axis.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly valueAxis: ExcelOp.ChartAxis;
+        /**
+         *
+         * Returns the specific axis identified by type and group.
+         *
+         * [Api set: ExcelApi 1.7]
+         *
+         * @param type Specifies the axis type. See Excel.ChartAxis for details.
+         * @param group Specifies the axis group. See Excel.ChartAxis for details.
+         */
+        getItem(type: ExcelOp.ChartAxisType, group?: ExcelOp.ChartAxisGroup): ExcelOp.ChartAxis;
+        /**
+         *
+         * Returns the specific axis identified by type and group.
+         *
+         * [Api set: ExcelApi 1.7]
+         *
+         * @param type Specifies the axis type. See Excel.ChartAxis for details.
+         * @param group Specifies the axis group. See Excel.ChartAxis for details.
+         */
+        getItem(type: "Invalid" | "Category" | "Value" | "Series", group?: "Primary" | "Secondary"): ExcelOp.ChartAxis;
+    }
+    /**
+     *
+     * Represents a single axis in a chart.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class ChartAxis extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents the formatting of a chart object, which includes line and font formatting.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly format: ExcelOp.ChartAxisFormat;
+        /**
+         *
+         * Returns a gridlines object that represents the major gridlines for the specified axis.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly majorGridlines: ExcelOp.ChartGridlines;
+        /**
+         *
+         * Returns a Gridlines object that represents the minor gridlines for the specified axis.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly minorGridlines: ExcelOp.ChartGridlines;
+        /**
+         *
+         * Represents the axis title.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly title: ExcelOp.ChartAxisTitle;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.ChartAxisUpdateData): Promise<void>;
+        /**
+         *
+         * Sets all the category names for the specified axis.
+         *
+         * [Api set: ExcelApi 1.7]
+         *
+         * @param sourceData The Range object corresponding to the source data.
+         */
+        setCategoryNamesAsync(sourceData: Range): Promise<void>;
+        /**
+         * [DEPRECATED; kept for back-compat with existing first-party solutions]. Please use `SetPositionAt` instead.
+         * Set the specified axis where the other axis crosses at.
+         *
+         * [Api set: ExcelApi 1.7]
+         *
+         * @param value Custom value of the crosses at
+         */
+        setCrossesAtAsync(value: number): Promise<void>;
+        /**
+         *
+         * Sets the axis display unit to a custom value.
+         *
+         * [Api set: ExcelApi 1.7]
+         *
+         * @param value Custom value of the display unit
+         */
+        setCustomDisplayUnitAsync(value: number): Promise<void>;
+        /**
+         *
+         * Set the specified axis position where the other axis crosses at.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param value Custom value of the crosses at
+         */
+        setPositionAtAsync(value: number): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ChartAxisData>;
+    }
+    /**
+     *
+     * Encapsulates the format properties for the chart axis.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class ChartAxisFormat extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents chart fill formatting.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly fill: ExcelOp.ChartFill;
+        /**
+         *
+         * Represents the font attributes (font name, font size, color, etc.) for a chart axis element.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly font: ExcelOp.ChartFont;
+        /**
+         *
+         * Represents chart line formatting.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly line: ExcelOp.ChartLineFormat;
+    }
+    /**
+     *
+     * Represents the title of a chart axis.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class ChartAxisTitle extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents the formatting of chart axis title.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly format: ExcelOp.ChartAxisTitleFormat;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.ChartAxisTitleUpdateData): Promise<void>;
+        /**
+         *
+         * A string value that represents the formula of chart axis title using A1-style notation.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param formula a string that present the formula to set
+         */
+        setFormulaAsync(formula: string): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ChartAxisTitleData>;
+    }
+    /**
+     *
+     * Represents the chart axis title formatting.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class ChartAxisTitleFormat extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents the border format, which includes color, linestyle and weight.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly border: ExcelOp.ChartBorder;
+        /**
+         *
+         * Represents chart fill formatting.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly fill: ExcelOp.ChartFill;
+        /**
+         *
+         * Represents the font attributes, such as font name, font size, color, etc. of chart axis title object.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly font: ExcelOp.ChartFont;
+    }
+    /**
+     *
+     * Represents a collection of all the data labels on a chart point.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class ChartDataLabels extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents the format of chart data labels, which includes fill and font formatting.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly format: ExcelOp.ChartDataLabelFormat;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.ChartDataLabelsUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ChartDataLabelsData>;
+    }
+    /**
+     *
+     * Represents the data label of a chart point.
+     *
+     * [Api set: ExcelApi 1.7]
+     */
+    class ChartDataLabel extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents the format of chart data label.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly format: ExcelOp.ChartDataLabelFormat;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.ChartDataLabelUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ChartDataLabelData>;
+    }
+    /**
+     *
+     * Encapsulates the format properties for the chart data labels.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class ChartDataLabelFormat extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents the border format, which includes color, linestyle and weight.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly border: ExcelOp.ChartBorder;
+        /**
+         *
+         * Represents the fill format of the current chart data label.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly fill: ExcelOp.ChartFill;
+        /**
+         *
+         * Represents the font attributes (font name, font size, color, etc.) for a chart data label.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly font: ExcelOp.ChartFont;
+    }
+    /**
+     *
+     * This object represents the attributes for chart error bars object.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class ChartErrorBars extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents the formatting of chart ErrorBars.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly format: ExcelOp.ChartErrorBarsFormat;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.ChartErrorBarsUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ChartErrorBarsData>;
+    }
+    /**
+     *
+     * Encapsulates the format properties for chart error bars.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class ChartErrorBarsFormat extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents chart line formatting.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly line: ExcelOp.ChartLineFormat;
+    }
+    /**
+     *
+     * Represents major or minor gridlines on a chart axis.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class ChartGridlines extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents the formatting of chart gridlines.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly format: ExcelOp.ChartGridlinesFormat;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.ChartGridlinesUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ChartGridlinesData>;
+    }
+    /**
+     *
+     * Encapsulates the format properties for chart gridlines.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class ChartGridlinesFormat extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents chart line formatting.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly line: ExcelOp.ChartLineFormat;
+    }
+    /**
+     *
+     * Represents the legend in a chart.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class ChartLegend extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents the formatting of a chart legend, which includes fill and font formatting.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly format: ExcelOp.ChartLegendFormat;
+        /**
+         *
+         * Represents a collection of legendEntries in the legend.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        readonly legendEntries: ExcelOp.ChartLegendEntryCollection;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.ChartLegendUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ChartLegendData>;
+    }
+    /**
+     *
+     * Represents the legendEntry in legendEntryCollection.
+     *
+     * [Api set: ExcelApi 1.7]
+     */
+    class ChartLegendEntry extends OfficeExtension.ClientObjectBase {
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.ChartLegendEntryUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ChartLegendEntryData>;
+    }
+    /**
+     *
+     * Represents a collection of legendEntries.
+     *
+     * [Api set: ExcelApi 1.7]
+     */
+    class ChartLegendEntryCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Returns a legendEntry at the given index.
+         *
+         * [Api set: ExcelApi 1.7]
+         *
+         * @param index Index of the legendEntry to be retrieved.
+         */
+        getItemAt(index: number): ExcelOp.ChartLegendEntry;
+        /**
+         *
+         * Returns the number of legendEntry in the collection.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        getCountAsync(): Promise<number>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ChartLegendEntryCollectionData>;
+    }
+    /**
+     *
+     * Encapsulates the format properties of a chart legend.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class ChartLegendFormat extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents the border format, which includes color, linestyle and weight.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly border: ExcelOp.ChartBorder;
+        /**
+         *
+         * Represents the fill format of an object, which includes background formating information.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly fill: ExcelOp.ChartFill;
+        /**
+         *
+         * Represents the font attributes such as font name, font size, color, etc. of a chart legend.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly font: ExcelOp.ChartFont;
+    }
+    /**
+     *
+     * Represents a chart title object of a chart.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class ChartTitle extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents the formatting of a chart title, which includes fill and font formatting.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly format: ExcelOp.ChartTitleFormat;
+        /**
+         *
+         * Get the substring of a chart title. Line break '\n' also counts one charater.
+         *
+         * [Api set: ExcelApi 1.7]
+         *
+         * @param start Start position of substring to be retrieved. Position start with 0.
+         * @param length Length of substring to be retrieved.
+         */
+        getSubstring(start: number, length: number): ExcelOp.ChartFormatString;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.ChartTitleUpdateData): Promise<void>;
+        /**
+         *
+         * Sets a string value that represents the formula of chart title using A1-style notation.
+         *
+         * [Api set: ExcelApi 1.7]
+         *
+         * @param formula a string that present the formula to set
+         */
+        setFormulaAsync(formula: string): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ChartTitleData>;
+    }
+    /**
+     *
+     * Represents the substring in chart related objects that contains text, like ChartTitle object, ChartAxisTitle object, etc.
+     *
+     * [Api set: ExcelApi 1.7]
+     */
+    class ChartFormatString extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents the font attributes, such as font name, font size, color, etc. of chart characters object.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        readonly font: ExcelOp.ChartFont;
+    }
+    /**
+     *
+     * Provides access to the office art formatting for chart title.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class ChartTitleFormat extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents the border format of chart title, which includes color, linestyle and weight.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        readonly border: ExcelOp.ChartBorder;
+        /**
+         *
+         * Represents the fill format of an object, which includes background formating information.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly fill: ExcelOp.ChartFill;
+        /**
+         *
+         * Represents the font attributes (font name, font size, color, etc.) for an object.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        readonly font: ExcelOp.ChartFont;
+    }
+    /**
+     *
+     * Represents the fill formatting for a chart element.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class ChartFill extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Clear the fill color of a chart element.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        clearAsync(): Promise<void>;
+        /**
+         *
+         * Sets the fill formatting of a chart element to a uniform color.
+         *
+         * [Api set: ExcelApi 1.1]
+         *
+         * @param color HTML color code representing the color of the border line, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
+         */
+        setSolidColorAsync(color: string): Promise<void>;
+    }
+    /**
+     *
+     * Represents the border formatting of a chart element.
+     *
+     * [Api set: ExcelApi 1.7]
+     */
+    class ChartBorder extends OfficeExtension.ClientObjectBase {
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.ChartBorderUpdateData): Promise<void>;
+        /**
+         *
+         * Clear the border format of a chart element.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        clearAsync(): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ChartBorderData>;
+    }
+    /**
+     *
+     * Enapsulates the formatting options for line elements.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class ChartLineFormat extends OfficeExtension.ClientObjectBase {
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.ChartLineFormatUpdateData): Promise<void>;
+        /**
+         *
+         * Clear the line format of a chart element.
+         *
+         * [Api set: ExcelApi 1.1]
+         */
+        clearAsync(): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ChartLineFormatData>;
+    }
+    /**
+     *
+     * This object represents the font attributes (font name, font size, color, etc.) for a chart object.
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    class ChartFont extends OfficeExtension.ClientObjectBase {
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.ChartFontUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ChartFontData>;
+    }
+    /**
+     *
+     * This object represents the attributes for a chart trendline object.
+     *
+     * [Api set: ExcelApi 1.7]
+     */
+    class ChartTrendline extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents the formatting of a chart trendline.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        readonly format: ExcelOp.ChartTrendlineFormat;
+        /**
+         *
+         * Represents the label of a chart trendline.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly label: ExcelOp.ChartTrendlineLabel;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.ChartTrendlineUpdateData): Promise<void>;
+        /**
+         *
+         * Delete the trendline object.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        deleteAsync(): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ChartTrendlineData>;
+    }
+    /**
+     *
+     * Represents a collection of Chart Trendlines.
+     *
+     * [Api set: ExcelApi 1.7]
+     */
+    class ChartTrendlineCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Adds a new trendline to trendline collection.
+         *
+         * [Api set: ExcelApi 1.7]
+         *
+         * @param type Specifies the trendline type. The default value is "Linear". See Excel.ChartTrendline for details.
+         */
+        addAsync(type?: ExcelOp.ChartTrendlineType): Promise<ExcelOp.Interfaces.ChartTrendlineData>;
+        /**
+         *
+         * Adds a new trendline to trendline collection.
+         *
+         * [Api set: ExcelApi 1.7]
+         *
+         * @param type Specifies the trendline type. The default value is "Linear". See Excel.ChartTrendline for details.
+         */
+        addAsync(type?: "Linear" | "Exponential" | "Logarithmic" | "MovingAverage" | "Polynomial" | "Power"): Promise<ExcelOp.Interfaces.ChartTrendlineData>;
+        /**
+         *
+         * Get trendline object by index, which is the insertion order in items array.
+         *
+         * [Api set: ExcelApi 1.7]
+         *
+         * @param index Represents the insertion order in items array.
+         */
+        getItem(index: number): ExcelOp.ChartTrendline;
+        /**
+         *
+         * Returns the number of trendlines in the collection.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        getCountAsync(): Promise<number>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ChartTrendlineCollectionData>;
+    }
+    /**
+     *
+     * Represents the format properties for chart trendline.
+     *
+     * [Api set: ExcelApi 1.7]
+     */
+    class ChartTrendlineFormat extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents chart line formatting.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        readonly line: ExcelOp.ChartLineFormat;
+    }
+    /**
+     *
+     * This object represents the attributes for a chart trendline lable object.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class ChartTrendlineLabel extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents the format of chart trendline label.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly format: ExcelOp.ChartTrendlineLabelFormat;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.ChartTrendlineLabelUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ChartTrendlineLabelData>;
+    }
+    /**
+     *
+     * Encapsulates the format properties for the chart trendline label.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class ChartTrendlineLabelFormat extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents the border format, which includes color, linestyle and weight.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly border: ExcelOp.ChartBorder;
+        /**
+         *
+         * Represents the fill format of the current chart trendline label.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly fill: ExcelOp.ChartFill;
+        /**
+         *
+         * Represents the font attributes (font name, font size, color, etc.) for a chart trendline label.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly font: ExcelOp.ChartFont;
+    }
+    /**
+     *
+     * This object represents the attributes for a chart plotArea object.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class ChartPlotArea extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents the formatting of a chart plotArea.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly format: ExcelOp.ChartPlotAreaFormat;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.ChartPlotAreaUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ChartPlotAreaData>;
+    }
+    /**
+     *
+     * Represents the format properties for chart plotArea.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class ChartPlotAreaFormat extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Represents the border attributes of a chart plotArea.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly border: ExcelOp.ChartBorder;
+        /**
+         *
+         * Represents the fill format of an object, which includes background formating information.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly fill: ExcelOp.ChartFill;
+    }
+    /**
+     *
+     * A collection of all the visuals on a worksheet.
+     *
+     * [Api set: ExcelApi 99.9]
+     */
+    class VisualCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Creates a new visual.
+         *
+         * [Api set: ExcelApi 99.9]
+         *
+         * @param visualDefinitionGuid  The guid of a VisualDefinition, not the id for an instance of a Visual.
+         * @param dataSourceType The data source type of visual. e.g. xlFormula
+         * @param dataSourceContent The data source content
+         */
+        addAsync(visualDefinitionGuid: string, dataSourceType?: string, dataSourceContent?: string): Promise<ExcelOp.Interfaces.VisualData>;
+        /**
+         *
+         * Gets the selected Visual if and only if one Visual is selected.
+            If no Visual is selected, the return object's isNull property will be true.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        getSelectedOrNullObjectAsync(): Promise<ExcelOp.Interfaces.VisualData>;
+        /**
+         *
+         * Returns the number of visuals in the worksheet.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        getCountAsync(): Promise<number>;
+        /**
+         *
+         * Gets all visual definitions.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        getDefinitionsAsync(): Promise<ExcelOp.VisualDefinition[]>;
+        /**
+         *
+         * Get the preview of a visual.
+         *
+         * [Api set: ExcelApi 99.9]
+         *
+         * @param visualDefinitionGuid  The guid of a VisualDefinition, not the id for an instance of a Visual.
+         * @param width  The width of the preview.
+         * @param height  The height of the preview.
+         * @param dpi  The dpi setting.
+         */
+        getPreviewAsync(visualDefinitionGuid: string, width: number, height: number, dpi: number): Promise<string>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.VisualCollectionData>;
+    }
+    /**
+     *
+     * Represents a visual object in a workbook.
+     *
+     * [Api set: ExcelApi 99.9]
+     */
+    class Visual extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Gets all properties of the visual. Read-only.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        readonly properties: ExcelOp.VisualPropertyCollection;
+        /**
+         *
+         * Get the child properties of the specific parent property Id.
+         *
+         * [Api set: ExcelApi 99.9]
+         *
+         * @param parentPropId Parent property Id. Omitting this parameter will return the root-level properties.
+         */
+        getChildPropertiesAsync(parentPropId?: string): Promise<ExcelOp.Interfaces.VisualPropertyCollectionData>;
+        /**
+         *
+         * Get the DataControllerClient for the visual
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        /**
+         *
+         * Get the preview of a visual.
+         *
+         * [Api set: ExcelApi 99.9]
+         *
+         * @param dataSourceType The data source type of visual. e.g. xlFormula
+         * @param dataSourceContent The data source content. e.g. Sheet1!$C$5:$D$7
+         */
+        changeDataSourceAsync(dataSourceType: string, dataSourceContent: string): Promise<void>;
+        /**
+         *
+         * Delete the visual.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        deleteAsync(): Promise<void>;
+        /**
+         *
+         * Gets a string represening the visual's current data source. e.g. Sheet1!$C$5:$D$7
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        getDataSourceAsync(): Promise<string>;
+        /**
+         *
+         * GetProperty
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        getPropertyAsync(propName: string): Promise<any>;
+        /**
+         *
+         * SetProperty
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        setPropertyAsync(propName: string, value: any): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.VisualData>;
+    }
+    /**
+     *
+     * This object represents the attributes for a property.
+     *
+     * [Api set: ExcelApi 99.9]
+     */
+    class VisualProperty extends OfficeExtension.ClientObjectBase {
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.VisualPropertyData>;
+    }
+    /**
+     *
+     * Represents a collection of visual object properties.
+     *
+     * [Api set: ExcelApi 99.9]
+     */
+    class VisualPropertyCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Returns a property at given index
+         *
+         * [Api set: ExcelApi 99.9]
+         *
+         * @param index Represents the index in property array.
+         */
+        getItem(index: number): ExcelOp.VisualProperty;
+        /**
+         *
+         * Returns a property at given index
+         *
+         * [Api set: ExcelApi 99.9]
+         *
+         * @param index Represents the index in property array.
+         */
+        getItemAt(index: number): ExcelOp.VisualProperty;
+        /**
+         *
+         * Returns the number of properties in the collection.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        getCountAsync(): Promise<number>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.VisualPropertyCollectionData>;
+    }
+    /**
+     *
+     * Represents a visual definition
+     *
+     * [Api set: ExcelApi 99.9]
+     */
+    interface VisualDefinition {
+        /**
+         *
+         * Represents the category of a visual definition.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        category: ExcelOp.VisualCategory | "Column" | "Bar" | "Line" | "Area" | "Pie" | "Donut" | "Scatter" | "Bubble" | "Statistical" | "Stock" | "Combo" | "Hierarchy" | "Surface" | "Map" | "Funnel" | "Radar" | "Waterfall" | "ThreeD" | "Other";
+        /**
+         *
+         * Represents the category rank of a visual definition.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        categoryRank: number;
+        /**
+         *
+         * Represents the decription of a visual definition.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        description: string;
+        /**
+         *
+         * Represents the id of a visual definition.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        id: string;
+        /**
+         *
+         * Represents the title of a visual definition.
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        title: string;
+    }
+    /**
+     *
+     * Represents how the Visual is setup to use the data source.
+     *
+     * [Api set: ExcelApi 99.9]
+     */
+    class DataControllerClient extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Add a field to well.
+         *
+         * [Api set: ExcelApi 99.9]
+         *
+         * @param wellId The id of the well that the field will be added to.
+         * @param fieldId The id of the field to add to the well.
+         * @param position The position in the well where the field should be added.
+         */
+        addFieldAsync(wellId: number, fieldId: number, position: number): Promise<void>;
+        /**
+         *
+         * Gets an array of JSON objects representing the fields associated with the specified wellId.
+            The the objects in the array have an id(number) and name(string).
+         *
+         * [Api set: ExcelApi 99.9]
+         *
+         * @param wellId The id of the well to get the associated fields for.
+         */
+        getAssociatedFieldsAsync(wellId: number): Promise<string>;
+        /**
+         *
+         * Gets an array of JSON objects representing the fields that may be associated with wellId.
+            The the objects in the array have an id(number) and name(string).
+         *
+         * [Api set: ExcelApi 99.9]
+         *
+         * @param wellId The id of the well to get the available fields for.
+         */
+        getAvailableFieldsAsync(wellId: number): Promise<string>;
+        /**
+         *
+         * Gets an array of JSON objects representing this visual's wells.
+            The the objects in the array have an id(number) and name(string).
+         *
+         * [Api set: ExcelApi 99.9]
+         */
+        getWellsAsync(): Promise<string>;
+        /**
+         *
+         * Move a field from one position to another in a well.
+         *
+         * [Api set: ExcelApi 99.9]
+         *
+         * @param wellId The id of the well to be moved.
+         * @param fromPosition The position in the well of the field to be moved.
+         * @param toPosition The new position for the field
+         */
+        moveFieldAsync(wellId: number, fromPosition: number, toPosition: number): Promise<void>;
+        /**
+         *
+         * Remove a field from a well.
+         *
+         * [Api set: ExcelApi 99.9]
+         *
+         * @param wellId The id of the well that will have a field removed.
+         * @param position The position in the well of the field that should be removed
+         */
+        removeFieldAsync(wellId: number, position: number): Promise<void>;
+    }
+    /**
+     *
+     * Manages sorting operations on Range objects.
+     *
+     * [Api set: ExcelApi 1.2]
+     */
+    class RangeSort extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Perform a sort operation.
+         *
+         * [Api set: ExcelApi 1.2]
+         *
+         * @param fields The list of conditions to sort on.
+         * @param matchCase Whether to have the casing impact string ordering.
+         * @param hasHeaders Whether the range has a header.
+         * @param orientation Whether the operation is sorting rows or columns.
+         * @param method The ordering method used for Chinese characters.
+         */
+        applyAsync(fields: ExcelOp.SortField[], matchCase?: boolean, hasHeaders?: boolean, orientation?: ExcelOp.SortOrientation, method?: ExcelOp.SortMethod): Promise<void>;
+        /**
+         *
+         * Perform a sort operation.
+         *
+         * [Api set: ExcelApi 1.2]
+         *
+         * @param fields The list of conditions to sort on.
+         * @param matchCase Whether to have the casing impact string ordering.
+         * @param hasHeaders Whether the range has a header.
+         * @param orientation Whether the operation is sorting rows or columns.
+         * @param method The ordering method used for Chinese characters.
+         */
+        applyAsync(fields: ExcelOp.SortField[], matchCase?: boolean, hasHeaders?: boolean, orientation?: "Rows" | "Columns", method?: "PinYin" | "StrokeCount"): Promise<void>;
+    }
+    /**
+     *
+     * Manages sorting operations on Table objects.
+     *
+     * [Api set: ExcelApi 1.2]
+     */
+    class TableSort extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Perform a sort operation.
+         *
+         * [Api set: ExcelApi 1.2]
+         *
+         * @param fields The list of conditions to sort on.
+         * @param matchCase Whether to have the casing impact string ordering.
+         * @param method The ordering method used for Chinese characters.
+         */
+        applyAsync(fields: ExcelOp.SortField[], matchCase?: boolean, method?: ExcelOp.SortMethod): Promise<void>;
+        /**
+         *
+         * Perform a sort operation.
+         *
+         * [Api set: ExcelApi 1.2]
+         *
+         * @param fields The list of conditions to sort on.
+         * @param matchCase Whether to have the casing impact string ordering.
+         * @param method The ordering method used for Chinese characters.
+         */
+        applyAsync(fields: ExcelOp.SortField[], matchCase?: boolean, method?: "PinYin" | "StrokeCount"): Promise<void>;
+        /**
+         *
+         * Clears the sorting that is currently on the table. While this doesn't modify the table's ordering, it clears the state of the header buttons.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        clearAsync(): Promise<void>;
+        /**
+         *
+         * Reapplies the current sorting parameters to the table.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        reapplyAsync(): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.TableSortData>;
+    }
+    /**
+     *
+     * Represents a condition in a sorting operation.
+     *
+     * [Api set: ExcelApi 1.2]
+     */
+    interface SortField {
+        /**
+         *
+         * Represents whether the sorting is done in an ascending fashion.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        ascending?: boolean;
+        /**
+         *
+         * Represents the color that is the target of the condition if the sorting is on font or cell color.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        color?: string;
+        /**
+         *
+         * Represents additional sorting options for this field.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        dataOption?: ExcelOp.SortDataOption | "Normal" | "TextAsNumber";
+        /**
+         *
+         * Represents the icon that is the target of the condition if the sorting is on the cell's icon.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        icon?: ExcelOp.Icon;
+        /**
+         *
+         * Represents the column (or row, depending on the sort orientation) that the condition is on. Represented as an offset from the first column (or row).
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        key: number;
+        /**
+         *
+         * Represents the type of sorting of this condition.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        sortOn?: ExcelOp.SortOn | "Value" | "CellColor" | "FontColor" | "Icon";
+        /**
+         *
+         * Represents the subfield that is the target property name of a rich value to sort on.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        subField?: string;
+    }
+    /**
+     *
+     * Manages the filtering of a table's column.
+     *
+     * [Api set: ExcelApi 1.2]
+     */
+    class Filter extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Apply the given filter criteria on the given column.
+         *
+         * [Api set: ExcelApi 1.2]
+         *
+         * @param criteria The criteria to apply.
+         */
+        applyAsync(criteria: ExcelOp.FilterCriteria): Promise<void>;
+        /**
+         *
+         * Apply a "Bottom Item" filter to the column for the given number of elements.
+         *
+         * [Api set: ExcelApi 1.2]
+         *
+         * @param count The number of elements from the bottom to show.
+         */
+        applyBottomItemsFilterAsync(count: number): Promise<void>;
+        /**
+         *
+         * Apply a "Bottom Percent" filter to the column for the given percentage of elements.
+         *
+         * [Api set: ExcelApi 1.2]
+         *
+         * @param percent The percentage of elements from the bottom to show.
+         */
+        applyBottomPercentFilterAsync(percent: number): Promise<void>;
+        /**
+         *
+         * Apply a "Cell Color" filter to the column for the given color.
+         *
+         * [Api set: ExcelApi 1.2]
+         *
+         * @param color The background color of the cells to show.
+         */
+        applyCellColorFilterAsync(color: string): Promise<void>;
+        /**
+         *
+         * Apply a "Icon" filter to the column for the given criteria strings.
+         *
+         * [Api set: ExcelApi 1.2]
+         *
+         * @param criteria1 The first criteria string.
+         * @param criteria2 The second criteria string.
+         * @param oper The operator that describes how the two criteria are joined.
+         */
+        applyCustomFilterAsync(criteria1: string, criteria2?: string, oper?: ExcelOp.FilterOperator): Promise<void>;
+        /**
+         *
+         * Apply a "Icon" filter to the column for the given criteria strings.
+         *
+         * [Api set: ExcelApi 1.2]
+         *
+         * @param criteria1 The first criteria string.
+         * @param criteria2 The second criteria string.
+         * @param oper The operator that describes how the two criteria are joined.
+         */
+        applyCustomFilterAsync(criteria1: string, criteria2?: string, oper?: "And" | "Or"): Promise<void>;
+        /**
+         *
+         * Apply a "Dynamic" filter to the column.
+         *
+         * [Api set: ExcelApi 1.2]
+         *
+         * @param criteria The dynamic criteria to apply.
+         */
+        applyDynamicFilterAsync(criteria: ExcelOp.DynamicFilterCriteria): Promise<void>;
+        /**
+         *
+         * Apply a "Dynamic" filter to the column.
+         *
+         * [Api set: ExcelApi 1.2]
+         *
+         * @param criteria The dynamic criteria to apply.
+         */
+        applyDynamicFilterAsync(criteria: "Unknown" | "AboveAverage" | "AllDatesInPeriodApril" | "AllDatesInPeriodAugust" | "AllDatesInPeriodDecember" | "AllDatesInPeriodFebruray" | "AllDatesInPeriodJanuary" | "AllDatesInPeriodJuly" | "AllDatesInPeriodJune" | "AllDatesInPeriodMarch" | "AllDatesInPeriodMay" | "AllDatesInPeriodNovember" | "AllDatesInPeriodOctober" | "AllDatesInPeriodQuarter1" | "AllDatesInPeriodQuarter2" | "AllDatesInPeriodQuarter3" | "AllDatesInPeriodQuarter4" | "AllDatesInPeriodSeptember" | "BelowAverage" | "LastMonth" | "LastQuarter" | "LastWeek" | "LastYear" | "NextMonth" | "NextQuarter" | "NextWeek" | "NextYear" | "ThisMonth" | "ThisQuarter" | "ThisWeek" | "ThisYear" | "Today" | "Tomorrow" | "YearToDate" | "Yesterday"): Promise<void>;
+        /**
+         *
+         * Apply a "Font Color" filter to the column for the given color.
+         *
+         * [Api set: ExcelApi 1.2]
+         *
+         * @param color The font color of the cells to show.
+         */
+        applyFontColorFilterAsync(color: string): Promise<void>;
+        /**
+         *
+         * Apply a "Icon" filter to the column for the given icon.
+         *
+         * [Api set: ExcelApi 1.2]
+         *
+         * @param icon The icons of the cells to show.
+         */
+        applyIconFilterAsync(icon: ExcelOp.Icon): Promise<void>;
+        /**
+         *
+         * Apply a "Top Item" filter to the column for the given number of elements.
+         *
+         * [Api set: ExcelApi 1.2]
+         *
+         * @param count The number of elements from the top to show.
+         */
+        applyTopItemsFilterAsync(count: number): Promise<void>;
+        /**
+         *
+         * Apply a "Top Percent" filter to the column for the given percentage of elements.
+         *
+         * [Api set: ExcelApi 1.2]
+         *
+         * @param percent The percentage of elements from the top to show.
+         */
+        applyTopPercentFilterAsync(percent: number): Promise<void>;
+        /**
+         *
+         * Apply a "Values" filter to the column for the given values.
+         *
+         * [Api set: ExcelApi 1.2]
+         *
+         * @param values The list of values to show. This must be an array of strings or an array of Excel.FilterDateTime objects.
+         */
+        applyValuesFilterAsync(values: Array<string | FilterDatetime>): Promise<void>;
+        /**
+         *
+         * Clear the filter on the given column.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        clearAsync(): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.FilterData>;
+    }
+    /**
+     *
+     * Represents the filtering criteria applied to a column.
+     *
+     * [Api set: ExcelApi 1.2]
+     */
+    interface FilterCriteria {
+        /**
+         *
+         * The HTML color string used to filter cells. Used with "cellColor" and "fontColor" filtering.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        color?: string;
+        /**
+         *
+         * The first criterion used to filter data. Used as an operator in the case of "custom" filtering.
+             For example ">50" for number greater than 50 or "=*s" for values ending in "s".
+            
+             Used as a number in the case of top/bottom items/percents. E.g. "5" for the top 5 items if filterOn is set to "topItems"
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        criterion1?: string;
+        /**
+         *
+         * The second criterion used to filter data. Only used as an operator in the case of "custom" filtering.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        criterion2?: string;
+        /**
+         *
+         * The dynamic criteria from the Excel.DynamicFilterCriteria set to apply on this column. Used with "dynamic" filtering.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        dynamicCriteria?: ExcelOp.DynamicFilterCriteria | "Unknown" | "AboveAverage" | "AllDatesInPeriodApril" | "AllDatesInPeriodAugust" | "AllDatesInPeriodDecember" | "AllDatesInPeriodFebruray" | "AllDatesInPeriodJanuary" | "AllDatesInPeriodJuly" | "AllDatesInPeriodJune" | "AllDatesInPeriodMarch" | "AllDatesInPeriodMay" | "AllDatesInPeriodNovember" | "AllDatesInPeriodOctober" | "AllDatesInPeriodQuarter1" | "AllDatesInPeriodQuarter2" | "AllDatesInPeriodQuarter3" | "AllDatesInPeriodQuarter4" | "AllDatesInPeriodSeptember" | "BelowAverage" | "LastMonth" | "LastQuarter" | "LastWeek" | "LastYear" | "NextMonth" | "NextQuarter" | "NextWeek" | "NextYear" | "ThisMonth" | "ThisQuarter" | "ThisWeek" | "ThisYear" | "Today" | "Tomorrow" | "YearToDate" | "Yesterday";
+        /**
+         *
+         * The property used by the filter to determine whether the values should stay visible.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        filterOn: ExcelOp.FilterOn | "BottomItems" | "BottomPercent" | "CellColor" | "Dynamic" | "FontColor" | "Values" | "TopItems" | "TopPercent" | "Icon" | "Custom";
+        /**
+         *
+         * The icon used to filter cells. Used with "icon" filtering.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        icon?: ExcelOp.Icon;
+        /**
+         *
+         * The operator used to combine criterion 1 and 2 when using "custom" filtering.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        operator?: ExcelOp.FilterOperator | "And" | "Or";
+        /**
+         *
+         * The property used by the filter to do rich filter on richvalues.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        subField?: string;
+        /**
+         *
+         * The set of values to be used as part of "values" filtering.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        values?: Array<string | FilterDatetime>;
+    }
+    /**
+     *
+     * Represents how to filter a date when filtering on values.
+     *
+     * [Api set: ExcelApi 1.2]
+     */
+    interface FilterDatetime {
+        /**
+         *
+         * The date in ISO8601 format used to filter data.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        date: string;
+        /**
+         *
+         * How specific the date should be used to keep data. For example, if the date is 2005-04-02 and the specifity is set to "month", the filter operation will keep all rows with a date in the month of april 2009.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        specificity: ExcelOp.FilterDatetimeSpecificity | "Year" | "Month" | "Day" | "Hour" | "Minute" | "Second";
+    }
+    /**
+     *
+     * Represents a cell icon.
+     *
+     * [Api set: ExcelApi 1.2]
+     */
+    interface Icon {
+        /**
+         *
+         * Represents the index of the icon in the given set.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        index: number;
+        /**
+         *
+         * Represents the set that the icon is part of.
+         *
+         * [Api set: ExcelApi 1.2]
+         */
+        set: ExcelOp.IconSet | "Invalid" | "ThreeArrows" | "ThreeArrowsGray" | "ThreeFlags" | "ThreeTrafficLights1" | "ThreeTrafficLights2" | "ThreeSigns" | "ThreeSymbols" | "ThreeSymbols2" | "FourArrows" | "FourArrowsGray" | "FourRedToBlack" | "FourRating" | "FourTrafficLights" | "FiveArrows" | "FiveArrowsGray" | "FiveRating" | "FiveQuarters" | "ThreeStars" | "ThreeTriangles" | "FiveBoxes";
+    }
+    /**
+     *
+     * A scoped collection of custom XML parts.
+            A scoped collection is the result of some operation, e.g. filtering by namespace.
+            A scoped collection cannot be scoped any further.
+     *
+     * [Api set: ExcelApi 1.5]
+     */
+    class CustomXmlPartScopedCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Gets a custom XML part based on its ID.
+         *
+         * [Api set: ExcelApi 1.5]
+         *
+         * @param id ID of the object to be retrieved.
+         */
+        getItem(id: string): ExcelOp.CustomXmlPart;
+        /**
+         *
+         * Gets a custom XML part based on its ID.
+            If the CustomXmlPart does not exist, the return object's isNull property will be true.
+         *
+         * [Api set: ExcelApi 1.5]
+         *
+         * @param id ID of the object to be retrieved.
+         */
+        getItemOrNullObject(id: string): ExcelOp.CustomXmlPart;
+        /**
+         *
+         * If the collection contains exactly one item, this method returns it.
+            Otherwise, this method produces an error.
+         *
+         * [Api set: ExcelApi 1.5]
+         */
+        getOnlyItem(): ExcelOp.CustomXmlPart;
+        /**
+         *
+         * If the collection contains exactly one item, this method returns it.
+            Otherwise, this method returns Null.
+         *
+         * [Api set: ExcelApi 1.5]
+         */
+        getOnlyItemOrNullObject(): ExcelOp.CustomXmlPart;
+        /**
+         *
+         * Gets the number of CustomXML parts in this collection.
+         *
+         * [Api set: ExcelApi 1.5]
+         */
+        getCountAsync(): Promise<number>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.CustomXmlPartScopedCollectionData>;
+    }
+    /**
+     *
+     * A collection of custom XML parts.
+     *
+     * [Api set: ExcelApi 1.5]
+     */
+    class CustomXmlPartCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Adds a new custom XML part to the workbook.
+         *
+         * [Api set: ExcelApi 1.5]
+         *
+         * @param xml XML content. Must be a valid XML fragment.
+         */
+        addAsync(xml: string): Promise<ExcelOp.Interfaces.CustomXmlPartData>;
+        /**
+         *
+         * Gets a new scoped collection of custom XML parts whose namespaces match the given namespace.
+         *
+         * [Api set: ExcelApi 1.5]
+         *
+         * @param namespaceUri This must be a fully qualified schema URI; for example, "http://schemas.contoso.com/review/1.0".
+         */
+        getByNamespace(namespaceUri: string): ExcelOp.CustomXmlPartScopedCollection;
+        /**
+         *
+         * Gets a custom XML part based on its ID.
+         *
+         * [Api set: ExcelApi 1.5]
+         *
+         * @param id ID of the object to be retrieved.
+         */
+        getItem(id: string): ExcelOp.CustomXmlPart;
+        /**
+         *
+         * Gets a custom XML part based on its ID.
+            If the CustomXmlPart does not exist, the return object's isNull property will be true.
+         *
+         * [Api set: ExcelApi 1.5]
+         *
+         * @param id ID of the object to be retrieved.
+         */
+        getItemOrNullObject(id: string): ExcelOp.CustomXmlPart;
+        /**
+         *
+         * Gets the number of CustomXml parts in the collection.
+         *
+         * [Api set: ExcelApi 1.5]
+         */
+        getCountAsync(): Promise<number>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.CustomXmlPartCollectionData>;
+    }
+    /**
+     *
+     * Represents a custom XML part object in a workbook.
+     *
+     * [Api set: ExcelApi 1.5]
+     */
+    class CustomXmlPart extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Deletes the custom XML part.
+         *
+         * [Api set: ExcelApi 1.5]
+         */
+        deleteAsync(): Promise<void>;
+        /**
+         *
+         * Gets the custom XML part's full XML content.
+         *
+         * [Api set: ExcelApi 1.5]
+         */
+        getXmlAsync(): Promise<string>;
+        /**
+         *
+         * Sets the custom XML part's full XML content.
+         *
+         * [Api set: ExcelApi 1.5]
+         *
+         * @param xml XML content for the part.
+         */
+        setXmlAsync(xml: string): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.CustomXmlPartData>;
+    }
+    /**
+     *
+     * Represents a collection of all the PivotTables that are part of the workbook or worksheet.
+     *
+     * [Api set: ExcelApi 1.3]
+     */
+    class PivotTableCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Add a Pivottable based on the specified source data and insert it at the top left cell of the destination range.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param name The name of the new PivotTable.
+         * @param source The source data for the new PivotTable, this can either be a range (or string address including the worksheet name) or a table.
+         * @param destination The cell in the upper-left corner of the PivotTable report's destination range (the range on the worksheet where the resulting report will be placed).
+         * @returns Returns the newly inserted PivotTable.
+         */
+        addAsync(name: string, source: Range | string | Table, destination: Range | string): Promise<ExcelOp.Interfaces.PivotTableData>;
+        /**
+         *
+         * Gets a PivotTable by name.
+         *
+         * [Api set: ExcelApi 1.3]
+         *
+         * @param name Name of the PivotTable to be retrieved.
+         */
+        getItem(name: string): ExcelOp.PivotTable;
+        /**
+         *
+         * Gets a PivotTable by name. If the PivotTable does not exist, will return a null object.
+         *
+         * [Api set: ExcelApi 1.4]
+         *
+         * @param name Name of the PivotTable to be retrieved.
+         */
+        getItemOrNullObject(name: string): ExcelOp.PivotTable;
+        /**
+         *
+         * Gets the number of pivot tables in the collection.
+         *
+         * [Api set: ExcelApi 1.4]
+         */
+        getCountAsync(): Promise<number>;
+        /**
+         *
+         * Refreshes all the pivot tables in the collection.
+         *
+         * [Api set: ExcelApi 1.3]
+         */
+        refreshAllAsync(): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.PivotTableCollectionData>;
+    }
+    /**
+     *
+     * Represents an Excel PivotTable.
+     *
+     * [Api set: ExcelApi 1.3]
+     */
+    class PivotTable extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * The Column Pivot Hierarchies of the PivotTable.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly columnHierarchies: ExcelOp.RowColumnPivotHierarchyCollection;
+        /**
+         *
+         * The Data Pivot Hierarchies of the PivotTable.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly dataHierarchies: ExcelOp.DataPivotHierarchyCollection;
+        /**
+         *
+         * The Filter Pivot Hierarchies of the PivotTable.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly filterHierarchies: ExcelOp.FilterPivotHierarchyCollection;
+        /**
+         *
+         * The Pivot Hierarchies of the PivotTable.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly hierarchies: ExcelOp.PivotHierarchyCollection;
+        /**
+         *
+         * The Row Pivot Hierarchies of the PivotTable.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly rowHierarchies: ExcelOp.RowColumnPivotHierarchyCollection;
+        /**
+         *
+         * The worksheet containing the current PivotTable.
+         *
+         * [Api set: ExcelApi 1.3]
+         */
+        readonly worksheet: ExcelOp.Worksheet;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.PivotTableUpdateData): Promise<void>;
+        /**
+         *
+         * Deletes the PivotTable.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        deleteAsync(): Promise<void>;
+        /**
+         *
+         * Refreshes the PivotTable.
+         *
+         * [Api set: ExcelApi 1.3]
+         */
+        refreshAsync(): Promise<void>;
+        /**
+         *
+         * This method is used for simultaneously setting layout options for all existing PivotFields.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param RowLayout Required LayoutRowType. See Excel.LayoutRowType for details.
+         */
+        rowAxisLayoutAsync(RowLayout: ExcelOp.LayoutRowType): Promise<void>;
+        /**
+         *
+         * This method is used for simultaneously setting layout options for all existing PivotFields.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param RowLayout Required LayoutRowType. See Excel.LayoutRowType for details.
+         */
+        rowAxisLayoutAsync(RowLayout: "CompactRow" | "TabularRow" | "OutlineRow"): Promise<void>;
+        /**
+         *
+         * This method changes the subtotal location for all existing PivotFields. Changing the subtotal location has an immediate visual effect only for fields in outline form, but it will be set for fields in tabular form as well.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param Location Required SubtotalLocationType. See Excel.SubtotalLocationType for details.
+         */
+        subtotalLocationAsync(Location: ExcelOp.SubtotalLocationType): Promise<void>;
+        /**
+         *
+         * This method changes the subtotal location for all existing PivotFields. Changing the subtotal location has an immediate visual effect only for fields in outline form, but it will be set for fields in tabular form as well.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param Location Required SubtotalLocationType. See Excel.SubtotalLocationType for details.
+         */
+        subtotalLocationAsync(Location: "AtTop" | "AtBottom"): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.PivotTableData>;
+    }
+    /**
+     *
+     * Represents a collection of all the PivotTables that are part of the workbook or worksheet.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class PivotHierarchyCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Gets a PivotHierarchy by its name or id.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param name Name of the PivotTable to be retrieved.
+         */
+        getItem(name: string): ExcelOp.PivotHierarchy;
+        /**
+         *
+         * Gets a PivotHierarchy by name. If the PivotHierarchy does not exist, will return a null object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param name Name of the PivotHierarchy to be retrieved.
+         */
+        getItemOrNullObject(name: string): ExcelOp.PivotHierarchy;
+        /**
+         *
+         * Gets the number of pivot hierarchies in the collection.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getCountAsync(): Promise<number>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.PivotHierarchyCollectionData>;
+    }
+    /**
+     *
+     * Represents the Excel PivotHierarchy.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class PivotHierarchy extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Returns the PivotFields associated with the PivotHierarchy.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly fields: ExcelOp.PivotFieldCollection;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.PivotHierarchyUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.PivotHierarchyData>;
+    }
+    /**
+     *
+     * Represents a collection of RowColumnPivotHierarchy items associated with the PivotTable.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class RowColumnPivotHierarchyCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Adds the PivotHierarchy to the current axis.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        addAsync(pivotHierarchy: ExcelOp.PivotHierarchy): Promise<ExcelOp.Interfaces.RowColumnPivotHierarchyData>;
+        /**
+         *
+         * Gets a RowColumnPivotHierarchy by its name or id.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param name Name of the PivotTable to be retrieved.
+         */
+        getItem(name: string): ExcelOp.RowColumnPivotHierarchy;
+        /**
+         *
+         * Gets a RowColumnPivotHierarchy by name. If the RowColumnPivotHierarchy does not exist, will return a null object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param name Name of the RowColumnPivotHierarchy to be retrieved.
+         */
+        getItemOrNullObject(name: string): ExcelOp.RowColumnPivotHierarchy;
+        /**
+         *
+         * Gets the number of pivot hierarchies in the collection.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getCountAsync(): Promise<number>;
+        /**
+         *
+         * Removes the PivotHierarchy from the current axis.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        removeAsync(rowColumnPivotHierarchy: ExcelOp.RowColumnPivotHierarchy): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.RowColumnPivotHierarchyCollectionData>;
+    }
+    /**
+     *
+     * Represents the Excel RowColumnPivotHierarchy.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class RowColumnPivotHierarchy extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Returns the PivotFields associated with the RowColumnPivotHierarchy.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly fields: ExcelOp.PivotFieldCollection;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.RowColumnPivotHierarchyUpdateData): Promise<void>;
+        /**
+         *
+         * Reset the RowColumnPivotHierarchy back to it's default values.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        setToDefaultAsync(): Promise<void>;
+        /**
+         *
+         * Top/Bottom Filter the RowColumnPivotHierarchy.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param criteriontype The criterion to use for the filter.
+         * @param rank The rank of the filter. For percent this has to be between 1 and 100.
+         * @param dataPivotHierarchy The DataPivotHierarchy on which the filter is based on.
+         */
+        setTopBottomValueFilterAsync(criteriontype: ExcelOp.PivotFilterTopBottomCriterion, rank: number, dataPivotHierarchy: ExcelOp.DataPivotHierarchy): Promise<void>;
+        /**
+         *
+         * Top/Bottom Filter the RowColumnPivotHierarchy.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param criteriontype The criterion to use for the filter.
+         * @param rank The rank of the filter. For percent this has to be between 1 and 100.
+         * @param dataPivotHierarchy The DataPivotHierarchy on which the filter is based on.
+         */
+        setTopBottomValueFilterAsync(criteriontype: "Invalid" | "TopItems" | "TopPercent" | "TopSum" | "BottomItems" | "BottomPercent" | "BottomSum", rank: number, dataPivotHierarchy: ExcelOp.DataPivotHierarchy): Promise<void>;
+        /**
+         *
+         * Sort the RowColumnPivotHierarchy. If a DataPivotHierarchy is specified, then sort will be applied based on it, if not sort will be based on the RowColumnPivotHierarchy itself.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param ascending Represents whether the sorting is done in an ascending or descending order.
+         * @param dataPivotHierarchy If a DataPivotHierarchy is specified, then sort will be applied based on it, if not sort will be based on the RowColumnPivotHierarchy itself.
+         */
+        sortAsync(ascending: boolean, dataPivotHierarchy?: ExcelOp.DataPivotHierarchy): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.RowColumnPivotHierarchyData>;
+    }
+    /**
+     *
+     * Represents a collection of FilterPivotHierarchy items associated with the PivotTable.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class FilterPivotHierarchyCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Adds the PivotHierarchy to the current axis.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        addAsync(pivotHierarchy: ExcelOp.PivotHierarchy): Promise<ExcelOp.Interfaces.FilterPivotHierarchyData>;
+        /**
+         *
+         * Gets a FilterPivotHierarchy by its name or id.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param name Name of the PivotTable to be retrieved.
+         */
+        getItem(name: string): ExcelOp.FilterPivotHierarchy;
+        /**
+         *
+         * Gets a FilterPivotHierarchy by name. If the FilterPivotHierarchy does not exist, will return a null object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param name Name of the FilterPivotHierarchy to be retrieved.
+         */
+        getItemOrNullObject(name: string): ExcelOp.FilterPivotHierarchy;
+        /**
+         *
+         * Gets the number of pivot hierarchies in the collection.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getCountAsync(): Promise<number>;
+        /**
+         *
+         * Removes the PivotHierarchy from the current axis.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        removeAsync(FilterPivotHierarchy: ExcelOp.FilterPivotHierarchy): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.FilterPivotHierarchyCollectionData>;
+    }
+    /**
+     *
+     * Represents the Excel FilterPivotHierarchy.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class FilterPivotHierarchy extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Sets the Filter to the specified PivotItem or returns it, if one is specified.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly currentFilter: ExcelOp.PivotItem;
+        /**
+         *
+         * Returns the PivotFields associated with the FilterPivotHierarchy.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly fields: ExcelOp.PivotFieldCollection;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.FilterPivotHierarchyUpdateData): Promise<void>;
+        /**
+         *
+         * Reset the FilterPivotHierarchy back to it's default values.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        setToDefaultAsync(): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.FilterPivotHierarchyData>;
+    }
+    /**
+     *
+     * Represents a collection of DataPivotHierarchy items associated with the PivotTable.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class DataPivotHierarchyCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Adds the PivotHierarchy to the current axis.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        addAsync(pivotHierarchy: ExcelOp.PivotHierarchy): Promise<ExcelOp.Interfaces.DataPivotHierarchyData>;
+        /**
+         *
+         * Gets a DataPivotHierarchy by its name or id.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param name Name of the PivotTable to be retrieved.
+         */
+        getItem(name: string): ExcelOp.DataPivotHierarchy;
+        /**
+         *
+         * Gets a DataPivotHierarchy by name. If the DataPivotHierarchy does not exist, will return a null object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param name Name of the DataPivotHierarchy to be retrieved.
+         */
+        getItemOrNullObject(name: string): ExcelOp.DataPivotHierarchy;
+        /**
+         *
+         * Gets the number of pivot hierarchies in the collection.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getCountAsync(): Promise<number>;
+        /**
+         *
+         * Removes the PivotHierarchy from the current axis.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        removeAsync(DataPivotHierarchy: ExcelOp.DataPivotHierarchy): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.DataPivotHierarchyCollectionData>;
+    }
+    /**
+     *
+     * Represents the Excel DataPivotHierarchy.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class DataPivotHierarchy extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Returns the PivotFields associated with the DataPivotHierarchy.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly field: ExcelOp.PivotField;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.DataPivotHierarchyUpdateData): Promise<void>;
+        /**
+         *
+         * Reset the DataPivotHierarchy back to it's default values.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        setToDefaultAsync(): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.DataPivotHierarchyData>;
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface ShowAsRule {
+        /**
+         *
+         * The Base PivotField to base the ShowAs calculation, if applicable based on the ShowAsCalculation type, else null.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        baseField?: ExcelOp.PivotField;
+        /**
+         *
+         * The Base Item to base the ShowAs calculation on, if applicable based on the ShowAsCalculation type, else null.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        baseItem?: ExcelOp.PivotItem;
+        /**
+         *
+         * The ShowAs Calculation to use for the Data PivotField. See Excel.ShowAsCalculation for Details.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        showAs: ExcelOp.ShowAsCalculation | "None" | "PercentOfGrandTotal" | "PercentOfRowTotal" | "PercentOfColumnTotal" | "PercentOfParentRowTotal" | "PercentOfParentColumnTotal" | "PercentOfParentTotal" | "PercentOf" | "RunningTotal" | "PercentRunningTotal" | "DifferenceFrom" | "PercentDifferenceFrom" | "RankAscending" | "RankDecending" | "Index";
+    }
+    /**
+     *
+     * Represents a collection of all the PivotTables that are part of the workbook or worksheet.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class PivotFieldCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Gets a PivotHierarchy by its name or id.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param name Name of the PivotTable to be retrieved.
+         */
+        getItem(name: string): ExcelOp.PivotField;
+        /**
+         *
+         * Gets a PivotHierarchy by name. If the PivotHierarchy does not exist, will return a null object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param name Name of the PivotHierarchy to be retrieved.
+         */
+        getItemOrNullObject(name: string): ExcelOp.PivotField;
+        /**
+         *
+         * Gets the number of pivot hierarchies in the collection.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getCountAsync(): Promise<number>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.PivotFieldCollectionData>;
+    }
+    /**
+     *
+     * Represents the Excel PivotField.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class PivotField extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Returns the PivotFields associated with the PivotField.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly items: ExcelOp.PivotItemCollection;
+        /**
+         *
+         * Gets the parent range associated with the PivotField.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getRange(): ExcelOp.Range;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.PivotFieldUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.PivotFieldData>;
+    }
+    /**
+     *
+     * Represents a collection of all the Pivot Items related to their parent PivotField.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class PivotItemCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Gets a PivotHierarchy by its name or id.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param name Name of the PivotTable to be retrieved.
+         */
+        getItem(name: string): ExcelOp.PivotItem;
+        /**
+         *
+         * Gets a PivotHierarchy by name. If the PivotHierarchy does not exist, will return a null object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param name Name of the PivotHierarchy to be retrieved.
+         */
+        getItemOrNullObject(name: string): ExcelOp.PivotItem;
+        /**
+         *
+         * Gets the number of pivot hierarchies in the collection.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getCountAsync(): Promise<number>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.PivotItemCollectionData>;
+    }
+    /**
+     *
+     * Represents the Excel PivotItem.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class PivotItem extends OfficeExtension.ClientObjectBase {
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.PivotItemUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.PivotItemData>;
+    }
+    /**
+     *
+     * Subtotals for the Pivot Field.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface Subtotals {
+        /**
+         *
+         * If Automatic is set to true, then all other values will be ignored when setting the Subtotals.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        automatic?: boolean;
+        average?: boolean;
+        count?: boolean;
+        countNumbers?: boolean;
+        max?: boolean;
+        min?: boolean;
+        product?: boolean;
+        standardDeviation?: boolean;
+        standardDeviationP?: boolean;
+        sum?: boolean;
+        variation?: boolean;
+        variationP?: boolean;
+    }
+    /**
+     *
+     * Represents the criteria for the top/bottom values filter.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum PivotFilterTopBottomCriterion {
+        invalid = "Invalid",
+        topItems = "TopItems",
+        topPercent = "TopPercent",
+        topSum = "TopSum",
+        bottomItems = "BottomItems",
+        bottomPercent = "BottomPercent",
+        bottomSum = "BottomSum",
+    }
+    /**
+     *
+     * Aggregation Function for the Data Pivot Field.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum AggregationFunction {
+        automatic = "Automatic",
+        sum = "Sum",
+        count = "Count",
+        average = "Average",
+        max = "Max",
+        min = "Min",
+        product = "Product",
+        countNumbers = "CountNumbers",
+        standardDeviation = "StandardDeviation",
+        standardDeviationP = "StandardDeviationP",
+        variation = "Variation",
+        variationP = "VariationP",
+    }
+    /**
+     *
+     * The ShowAs Calculation function for the Data Pivot Field.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum ShowAsCalculation {
+        none = "None",
+        percentOfGrandTotal = "PercentOfGrandTotal",
+        percentOfRowTotal = "PercentOfRowTotal",
+        percentOfColumnTotal = "PercentOfColumnTotal",
+        percentOfParentRowTotal = "PercentOfParentRowTotal",
+        percentOfParentColumnTotal = "PercentOfParentColumnTotal",
+        percentOfParentTotal = "PercentOfParentTotal",
+        /**
+         *
+         * Percent of the specified Base Field and Base Item.
+         *
+         */
+        percentOf = "PercentOf",
+        /**
+         *
+         * Running Total of the specified Base Field.
+         *
+         */
+        runningTotal = "RunningTotal",
+        /**
+         *
+         * Percent Running Total of the specified Base Field.
+         *
+         */
+        percentRunningTotal = "PercentRunningTotal",
+        /**
+         *
+         * Difference from the specified Base Field and Base Item.
+         *
+         */
+        differenceFrom = "DifferenceFrom",
+        /**
+         *
+         * Difference from the specified Base Field and Base Item.
+         *
+         */
+        percentDifferenceFrom = "PercentDifferenceFrom",
+        /**
+         *
+         * Ascending Rank of the specified Base Field.
+         *
+         */
+        rankAscending = "RankAscending",
+        /**
+         *
+         * Descending Rank of the specified Base Field.
+         *
+         */
+        rankDecending = "RankDecending",
+        index = "Index",
+    }
+    /**
+     *
+     * Represents workbook properties.
+     *
+     * [Api set: ExcelApi 1.7]
+     */
+    class DocumentProperties extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Gets the collection of custom properties of the workbook. Read only.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        readonly custom: ExcelOp.CustomPropertyCollection;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.DocumentPropertiesUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.DocumentPropertiesData>;
+    }
+    /**
+     *
+     * Represents a custom property.
+     *
+     * [Api set: ExcelApi 1.7]
+     */
+    class CustomProperty extends OfficeExtension.ClientObjectBase {
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.CustomPropertyUpdateData): Promise<void>;
+        /**
+         *
+         * Deletes the custom property.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        deleteAsync(): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.CustomPropertyData>;
+    }
+    /**
+     *
+     * Contains the collection of customProperty objects.
+     *
+     * [Api set: ExcelApi 1.7]
+     */
+    class CustomPropertyCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Creates a new or sets an existing custom property.
+         *
+         * [Api set: ExcelApi 1.7]
+         *
+         * @param key Required. The custom property's key, which is case-insensitive.
+         * @param value Required. The custom property's value.
+         */
+        addAsync(key: string, value: any): Promise<ExcelOp.Interfaces.CustomPropertyData>;
+        /**
+         *
+         * Gets a custom property object by its key, which is case-insensitive. Throws if the custom property does not exist.
+         *
+         * [Api set: ExcelApi 1.7]
+         *
+         * @param key The key that identifies the custom property object.
+         */
+        getItem(key: string): ExcelOp.CustomProperty;
+        /**
+         *
+         * Gets a custom property object by its key, which is case-insensitive. Returns a null object if the custom property does not exist.
+         *
+         * [Api set: ExcelApi 1.7]
+         *
+         * @param key Required. The key that identifies the custom property object.
+         */
+        getItemOrNullObject(key: string): ExcelOp.CustomProperty;
+        /**
+         *
+         * Deletes all custom properties in this collection.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        deleteAllAsync(): Promise<void>;
+        /**
+         *
+         * Gets the count of custom properties.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        getCountAsync(): Promise<number>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.CustomPropertyCollectionData>;
+    }
+    /**
+     *
+     * Represents a collection of all the conditional formats that are overlap the range.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    class ConditionalFormatCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Adds a new conditional format to the collection at the first/top priority.
+         *
+         * [Api set: ExcelApi 1.6]
+         *
+         * @param type The type of conditional format being added. See Excel.ConditionalFormatType for details.
+         */
+        addAsync(type: ExcelOp.ConditionalFormatType): Promise<ExcelOp.Interfaces.ConditionalFormatData>;
+        /**
+         *
+         * Adds a new conditional format to the collection at the first/top priority.
+         *
+         * [Api set: ExcelApi 1.6]
+         *
+         * @param type The type of conditional format being added. See Excel.ConditionalFormatType for details.
+         */
+        addAsync(type: "Custom" | "DataBar" | "ColorScale" | "IconSet" | "TopBottom" | "PresetCriteria" | "ContainsText" | "CellValue"): Promise<ExcelOp.Interfaces.ConditionalFormatData>;
+        /**
+         *
+         * Returns a conditional format for the given ID.
+         *
+         * [Api set: ExcelApi 1.6]
+         *
+         * @param id The id of the conditional format.
+         * @returns Conditional Format object.
+         */
+        getItem(id: string): ExcelOp.ConditionalFormat;
+        /**
+         *
+         * Returns a conditional format at the given index.
+         *
+         * [Api set: ExcelApi 1.6]
+         *
+         * @param index Index of the conditional formats to be retrieved.
+         */
+        getItemAt(index: number): ExcelOp.ConditionalFormat;
+        /**
+         *
+         * Clears all conditional formats active on the current specified range.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        clearAllAsync(): Promise<void>;
+        /**
+         *
+         * Returns the number of conditional formats in the workbook. Read-only.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        getCountAsync(): Promise<number>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ConditionalFormatCollectionData>;
+    }
+    /**
+     *
+     * An object encapsulating a conditional format's range, format, rule, and other properties.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    class ConditionalFormat extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Returns the cell value conditional format properties if the current conditional format is a CellValue type.
+            For example to format all cells between 5 and 10.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly cellValue: ExcelOp.CellValueConditionalFormat;
+        /**
+         *
+         * Returns the cell value conditional format properties if the current conditional format is a CellValue type.
+            For example to format all cells between 5 and 10.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly cellValueOrNullObject: ExcelOp.CellValueConditionalFormat;
+        /**
+         *
+         * Returns the ColorScale conditional format properties if the current conditional format is an ColorScale type.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly colorScale: ExcelOp.ColorScaleConditionalFormat;
+        /**
+         *
+         * Returns the ColorScale conditional format properties if the current conditional format is an ColorScale type.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly colorScaleOrNullObject: ExcelOp.ColorScaleConditionalFormat;
+        /**
+         *
+         * Returns the custom conditional format properties if the current conditional format is a custom type.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly custom: ExcelOp.CustomConditionalFormat;
+        /**
+         *
+         * Returns the custom conditional format properties if the current conditional format is a custom type.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly customOrNullObject: ExcelOp.CustomConditionalFormat;
+        /**
+         *
+         * Returns the data bar properties if the current conditional format is a data bar.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly dataBar: ExcelOp.DataBarConditionalFormat;
+        /**
+         *
+         * Returns the data bar properties if the current conditional format is a data bar.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly dataBarOrNullObject: ExcelOp.DataBarConditionalFormat;
+        /**
+         *
+         * Returns the IconSet conditional format properties if the current conditional format is an IconSet type.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly iconSet: ExcelOp.IconSetConditionalFormat;
+        /**
+         *
+         * Returns the IconSet conditional format properties if the current conditional format is an IconSet type.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly iconSetOrNullObject: ExcelOp.IconSetConditionalFormat;
+        /**
+         *
+         * Returns the preset criteria conditional format such as above average/below average/unique values/contains blank/nonblank/error/noerror properties.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly preset: ExcelOp.PresetCriteriaConditionalFormat;
+        /**
+         *
+         * Returns the preset criteria conditional format such as above average/below average/unique values/contains blank/nonblank/error/noerror properties.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly presetOrNullObject: ExcelOp.PresetCriteriaConditionalFormat;
+        /**
+         *
+         * Returns the specific text conditional format properties if the current conditional format is a text type.
+            For example to format cells matching the word "Text".
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly textComparison: ExcelOp.TextConditionalFormat;
+        /**
+         *
+         * Returns the specific text conditional format properties if the current conditional format is a text type.
+            For example to format cells matching the word "Text".
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly textComparisonOrNullObject: ExcelOp.TextConditionalFormat;
+        /**
+         *
+         * Returns the Top/Bottom conditional format properties if the current conditional format is an TopBottom type.
+            For example to format the top 10% or bottom 10 items.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly topBottom: ExcelOp.TopBottomConditionalFormat;
+        /**
+         *
+         * Returns the Top/Bottom conditional format properties if the current conditional format is an TopBottom type.
+            For example to format the top 10% or bottom 10 items.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly topBottomOrNullObject: ExcelOp.TopBottomConditionalFormat;
+        /**
+         *
+         * Returns the range the conditonal format is applied to or a null object if the range is discontiguous. Read-only.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        getRange(): ExcelOp.Range;
+        /**
+         *
+         * Returns the range the conditonal format is applied to or a null object if the range is discontiguous. Read-only.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        getRangeOrNullObject(): ExcelOp.Range;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.ConditionalFormatUpdateData): Promise<void>;
+        /**
+         *
+         * Deletes this conditional format.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        deleteAsync(): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ConditionalFormatData>;
+    }
+    /**
+     *
+     * Represents an Excel Conditional Data Bar Type.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    class DataBarConditionalFormat extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Representation of all values to the left of the axis in an Excel data bar.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly negativeFormat: ExcelOp.ConditionalDataBarNegativeFormat;
+        /**
+         *
+         * Representation of all values to the right of the axis in an Excel data bar.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly positiveFormat: ExcelOp.ConditionalDataBarPositiveFormat;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.DataBarConditionalFormatUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.DataBarConditionalFormatData>;
+    }
+    /**
+     *
+     * Represents a conditional format DataBar Format for the positive side of the data bar.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    class ConditionalDataBarPositiveFormat extends OfficeExtension.ClientObjectBase {
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.ConditionalDataBarPositiveFormatUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ConditionalDataBarPositiveFormatData>;
+    }
+    /**
+     *
+     * Represents a conditional format DataBar Format for the negative side of the data bar.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    class ConditionalDataBarNegativeFormat extends OfficeExtension.ClientObjectBase {
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.ConditionalDataBarNegativeFormatUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ConditionalDataBarNegativeFormatData>;
+    }
+    /**
+     *
+     * Represents a rule-type for a Data Bar.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    interface ConditionalDataBarRule {
+        /**
+         *
+         * The formula, if required, to evaluate the databar rule on.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        formula?: string;
+        /**
+         *
+         * The type of rule for the databar.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        type: ExcelOp.ConditionalFormatRuleType | "Invalid" | "Automatic" | "LowestValue" | "HighestValue" | "Number" | "Percent" | "Formula" | "Percentile";
+    }
+    /**
+     *
+     * Represents a custom conditional format type.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    class CustomConditionalFormat extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Returns a format object, encapsulating the conditional formats font, fill, borders, and other properties.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly format: ExcelOp.ConditionalRangeFormat;
+        /**
+         *
+         * Represents the Rule object on this conditional format.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly rule: ExcelOp.ConditionalFormatRule;
+    }
+    /**
+     *
+     * Represents a rule, for all traditional rule/format pairings.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    class ConditionalFormatRule extends OfficeExtension.ClientObjectBase {
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.ConditionalFormatRuleUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ConditionalFormatRuleData>;
+    }
+    /**
+     *
+     * Represents an IconSet criteria for conditional formatting.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    class IconSetConditionalFormat extends OfficeExtension.ClientObjectBase {
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.IconSetConditionalFormatUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.IconSetConditionalFormatData>;
+    }
+    /**
+     *
+     * Represents an Icon Criterion which contains a type, value, an Operator, and an optional custom icon, if not using an iconset.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    interface ConditionalIconCriterion {
+        /**
+         *
+         * The custom icon for the current criterion if different from the default IconSet, else null will be returned.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        customIcon?: ExcelOp.Icon;
+        /**
+         *
+         * A number or a formula depending on the type.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        formula: string;
+        /**
+         *
+         * GreaterThan or GreaterThanOrEqual for each of the rule type for the Icon conditional format.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        operator: ExcelOp.ConditionalIconCriterionOperator | "Invalid" | "GreaterThan" | "GreaterThanOrEqual";
+        /**
+         *
+         * What the icon conditional formula should be based on.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        type: ExcelOp.ConditionalFormatIconRuleType | "Invalid" | "Number" | "Percent" | "Formula" | "Percentile";
+    }
+    /**
+     *
+     * Represents an IconSet criteria for conditional formatting.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    class ColorScaleConditionalFormat extends OfficeExtension.ClientObjectBase {
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.ColorScaleConditionalFormatUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ColorScaleConditionalFormatData>;
+    }
+    /**
+     *
+     * Represents the criteria of the color scale.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    interface ConditionalColorScaleCriteria {
+        /**
+         *
+         * The maximum point Color Scale Criterion.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        maximum: ExcelOp.ConditionalColorScaleCriterion;
+        /**
+         *
+         * The midpoint Color Scale Criterion if the color scale is a 3-color scale.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        midpoint?: ExcelOp.ConditionalColorScaleCriterion;
+        /**
+         *
+         * The minimum point Color Scale Criterion.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        minimum: ExcelOp.ConditionalColorScaleCriterion;
+    }
+    /**
+     *
+     * Represents a Color Scale Criterion which contains a type, value and a color.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    interface ConditionalColorScaleCriterion {
+        /**
+         *
+         * HTML color code representation of the color scale color. E.g. #FF0000 represents Red.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        color?: string;
+        /**
+         *
+         * A number, a formula, or null (if Type is LowestValue).
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        formula?: string;
+        /**
+         *
+         * What the icon conditional formula should be based on.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        type: ExcelOp.ConditionalFormatColorCriterionType | "Invalid" | "LowestValue" | "HighestValue" | "Number" | "Percent" | "Formula" | "Percentile";
+    }
+    /**
+     *
+     * Represents a Top/Bottom conditional format.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    class TopBottomConditionalFormat extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Returns a format object, encapsulating the conditional formats font, fill, borders, and other properties.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly format: ExcelOp.ConditionalRangeFormat;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.TopBottomConditionalFormatUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.TopBottomConditionalFormatData>;
+    }
+    /**
+     *
+     * Represents the rule of the top/bottom conditional format.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    interface ConditionalTopBottomRule {
+        /**
+         *
+         * The rank between 1 and 1000 for numeric ranks or 1 and 100 for percent ranks.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        rank: number;
+        /**
+         *
+         * Format values based on the top or bottom rank.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        type: ExcelOp.ConditionalTopBottomCriterionType | "Invalid" | "TopItems" | "TopPercent" | "BottomItems" | "BottomPercent";
+    }
+    /**
+     *
+     * Represents the the preset criteria conditional format such as above average/below average/unique values/contains blank/nonblank/error/noerror.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    class PresetCriteriaConditionalFormat extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Returns a format object, encapsulating the conditional formats font, fill, borders, and other properties.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly format: ExcelOp.ConditionalRangeFormat;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.PresetCriteriaConditionalFormatUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.PresetCriteriaConditionalFormatData>;
+    }
+    /**
+     *
+     * Represents the Preset Criteria Conditional Format Rule
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    interface ConditionalPresetCriteriaRule {
+        /**
+         *
+         * The criterion of the conditional format.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        criterion: ExcelOp.ConditionalFormatPresetCriterion | "Invalid" | "Blanks" | "NonBlanks" | "Errors" | "NonErrors" | "Yesterday" | "Today" | "Tomorrow" | "LastSevenDays" | "LastWeek" | "ThisWeek" | "NextWeek" | "LastMonth" | "ThisMonth" | "NextMonth" | "AboveAverage" | "BelowAverage" | "EqualOrAboveAverage" | "EqualOrBelowAverage" | "OneStdDevAboveAverage" | "OneStdDevBelowAverage" | "TwoStdDevAboveAverage" | "TwoStdDevBelowAverage" | "ThreeStdDevAboveAverage" | "ThreeStdDevBelowAverage" | "UniqueValues" | "DuplicateValues";
+    }
+    /**
+     *
+     * Represents a specific text conditional format.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    class TextConditionalFormat extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Returns a format object, encapsulating the conditional formats font, fill, borders, and other properties.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly format: ExcelOp.ConditionalRangeFormat;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.TextConditionalFormatUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.TextConditionalFormatData>;
+    }
+    /**
+     *
+     * Represents a Cell Value Conditional Format Rule
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    interface ConditionalTextComparisonRule {
+        /**
+         *
+         * The operator of the text conditional format.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        operator: ExcelOp.ConditionalTextOperator | "Invalid" | "Contains" | "NotContains" | "BeginsWith" | "EndsWith";
+        /**
+         *
+         * The Text value of conditional format.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        text: string;
+    }
+    /**
+     *
+     * Represents a cell value conditional format.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    class CellValueConditionalFormat extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Returns a format object, encapsulating the conditional formats font, fill, borders, and other properties.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly format: ExcelOp.ConditionalRangeFormat;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.CellValueConditionalFormatUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.CellValueConditionalFormatData>;
+    }
+    /**
+     *
+     * Represents a Cell Value Conditional Format Rule
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    interface ConditionalCellValueRule {
+        /**
+         *
+         * The formula, if required, to evaluate the conditional format rule on.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        formula1: string;
+        /**
+         *
+         * The formula, if required, to evaluate the conditional format rule on.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        formula2?: string;
+        /**
+         *
+         * The operator of the text conditional format.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        operator: ExcelOp.ConditionalCellValueOperator | "Invalid" | "Between" | "NotBetween" | "EqualTo" | "NotEqualTo" | "GreaterThan" | "LessThan" | "GreaterThanOrEqual" | "LessThanOrEqual";
+    }
+    /**
+     *
+     * A format object encapsulating the conditional formats range's font, fill, borders, and other properties.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    class ConditionalRangeFormat extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Collection of border objects that apply to the overall conditional format range.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly borders: ExcelOp.ConditionalRangeBorderCollection;
+        /**
+         *
+         * Returns the fill object defined on the overall conditional format range.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly fill: ExcelOp.ConditionalRangeFill;
+        /**
+         *
+         * Returns the font object defined on the overall conditional format range.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly font: ExcelOp.ConditionalRangeFont;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.ConditionalRangeFormatUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ConditionalRangeFormatData>;
+    }
+    /**
+     *
+     * This object represents the font attributes (font style,, color, etc.) for an object.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    class ConditionalRangeFont extends OfficeExtension.ClientObjectBase {
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.ConditionalRangeFontUpdateData): Promise<void>;
+        /**
+         *
+         * Resets the font formats.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        clearAsync(): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ConditionalRangeFontData>;
+    }
+    /**
+     *
+     * Represents the background of a conditional range object.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    class ConditionalRangeFill extends OfficeExtension.ClientObjectBase {
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.ConditionalRangeFillUpdateData): Promise<void>;
+        /**
+         *
+         * Resets the fill.
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        clearAsync(): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ConditionalRangeFillData>;
+    }
+    /**
+     *
+     * Represents the border of an object.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    class ConditionalRangeBorder extends OfficeExtension.ClientObjectBase {
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.ConditionalRangeBorderUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ConditionalRangeBorderData>;
+    }
+    /**
+     *
+     * Represents the border objects that make up range border.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    class ConditionalRangeBorderCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Gets the top border
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly bottom: ExcelOp.ConditionalRangeBorder;
+        /**
+         *
+         * Gets the top border
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly left: ExcelOp.ConditionalRangeBorder;
+        /**
+         *
+         * Gets the top border
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly right: ExcelOp.ConditionalRangeBorder;
+        /**
+         *
+         * Gets the top border
+         *
+         * [Api set: ExcelApi 1.6]
+         */
+        readonly top: ExcelOp.ConditionalRangeBorder;
+        /**
+         *
+         * Gets a border object using its name
+         *
+         * [Api set: ExcelApi 1.6]
+         *
+         * @param index Index value of the border object to be retrieved. See Excel.ConditionalRangeBorderIndex for details.
+         */
+        getItem(index: ExcelOp.ConditionalRangeBorderIndex): ExcelOp.ConditionalRangeBorder;
+        /**
+         *
+         * Gets a border object using its name
+         *
+         * [Api set: ExcelApi 1.6]
+         *
+         * @param index Index value of the border object to be retrieved. See Excel.ConditionalRangeBorderIndex for details.
+         */
+        getItem(index: "EdgeTop" | "EdgeBottom" | "EdgeLeft" | "EdgeRight"): ExcelOp.ConditionalRangeBorder;
+        /**
+         *
+         * Gets a border object using its index
+         *
+         * [Api set: ExcelApi 1.6]
+         *
+         * @param index Index value of the object to be retrieved. Zero-indexed.
+         */
+        getItemAt(index: number): ExcelOp.ConditionalRangeBorder;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ConditionalRangeBorderCollectionData>;
+    }
+    /**
+     *
+     * Custom function declaration.
+     *
+     * [Api set: CustomFunctions 1.1]
+     */
+    class CustomFunction extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Deletes this function from Excel.
+         *
+         * [Api set: CustomFunctions 1.1]
+         */
+        deleteAsync(): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.CustomFunctionData>;
+    }
+    /**
+     *
+     * Collection of custom functions.
+     *
+     * [Api set: CustomFunctions 1.1]
+     */
+    class CustomFunctionCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Gets a function based on its name.
+         *
+         * [Api set: CustomFunctions 1.1]
+         *
+         * @param name The name of the function to be retrieved.
+         */
+        getItem(name: string): ExcelOp.CustomFunction;
+        /**
+         *
+         * Gets a function based on its name.
+            If a function with the given name does not exist, the return object's isNull property will be true.
+         *
+         * [Api set: CustomFunctions 1.1]
+         *
+         * @param name The name of the function to be retrieved.
+         */
+        getItemOrNullObject(name: string): ExcelOp.CustomFunction;
+        /**
+         *
+         * Imports a new custom function to the workbook from web service metadata.
+         *
+         * [Api set: CustomFunctions 1.1]
+         *
+         * @param metadataFormat The format of the metadata.
+         * @param metadataUrl The URL from where the metadata could be downloaded.
+         * @param name A new name to override the one from the metadata.
+         */
+        importFromWebAsync(metadataFormat: ExcelOp.CustomFunctionMetadataFormat, metadataUrl: string, name: string): Promise<ExcelOp.Interfaces.CustomFunctionData>;
+        /**
+         *
+         * Imports a new custom function to the workbook from web service metadata.
+         *
+         * [Api set: CustomFunctions 1.1]
+         *
+         * @param metadataFormat The format of the metadata.
+         * @param metadataUrl The URL from where the metadata could be downloaded.
+         * @param name A new name to override the one from the metadata.
+         */
+        importFromWebAsync(metadataFormat: "Invalid" | "OpenApi", metadataUrl: string, name: string): Promise<ExcelOp.Interfaces.CustomFunctionData>;
+        /**
+         *
+         * Deletes all custom functions added by this add-in.
+         *
+         * [Api set: CustomFunctions 1.1]
+         */
+        deleteAllAsync(): Promise<void>;
+        /**
+         *
+         * Gets the number of functions in the collection.
+         *
+         * [Api set: CustomFunctions 1.1]
+         */
+        getCountAsync(): Promise<number>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.CustomFunctionCollectionData>;
+    }
+    /**
+     *
+     * Custom function parameter declaration.
+     *
+     * [Api set: CustomFunctions 1.1]
+     */
+    interface CustomFunctionParameter {
+        /**
+         *
+         * Useful description of the parameter.
+         *
+         * [Api set: CustomFunctions 1.1]
+         */
+        description: string;
+        /**
+         *
+         * The name of the parameter.
+         *
+         * [Api set: CustomFunctions 1.1]
+         */
+        name: string;
+        /**
+         *
+         * The dimensionality of parameter value.
+         *
+         * [Api set: CustomFunctions 1.1]
+         */
+        valueDimensionality: ExcelOp.CustomFunctionDimensionality | "Invalid" | "Scalar" | "Matrix";
+        /**
+         *
+         * The type of parameter value.
+         *
+         * [Api set: CustomFunctions 1.1]
+         */
+        valueType: ExcelOp.CustomFunctionValueType | "Invalid" | "Boolean" | "Number" | "String" | "ISODate";
+    }
+    /**
+     *
+     * Custom function invocation message declaration. Sent by the server to the client.
+     *
+     * [Api set: CustomFunctions 1.1]
+     */
+    interface CustomFunctionInvocationMessage {
+        /**
+         *
+         * Function name.
+         *
+         * [Api set: CustomFunctions 1.1]
+         */
+        functionName: string;
+        /**
+         *
+         * Invocation ID that the client should attach to the result value.
+         *
+         * [Api set: CustomFunctions 1.1]
+         */
+        invocationId: number;
+        /**
+         *
+         * Parameter values.
+         *
+         * [Api set: CustomFunctions 1.1]
+         */
+        parameterValues: any[];
+    }
+    /**
+     * [Api set: CustomFunctions 1.1]
+     */
+    interface CustomFunctionEventArgs {
+        higherTicks: number;
+        lowerTicks: number;
+    }
+    /**
+     *
+     * Custom function cancellation message declaration. Sent by the server to the client.
+     *
+     * [Api set: CustomFunctions 1.1]
+     */
+    interface CustomFunctionCancellationMessage {
+        /**
+         *
+         * Invocation ID by which the client locates a running function for cancellation.
+         *
+         * [Api set: CustomFunctions 1.1]
+         */
+        invocationId: number;
+    }
+    /**
+     *
+     * Custom function metadata message declaration. Sent by the server to the client.
+     *
+     * [Api set: CustomFunctions 1.1]
+     */
+    interface CustomFunctionMetadataMessage {
+        /**
+         *
+         * Function name.
+         *
+         * [Api set: CustomFunctions 1.1]
+         */
+        functionName: string;
+        /**
+         *
+         * Cancelable flag.
+         *
+         * [Api set: CustomFunctions 1.1]
+         */
+        isCancelable: boolean;
+        /**
+         *
+         * Stream flag.
+         *
+         * [Api set: CustomFunctions 1.1]
+         */
+        isStream: boolean;
+    }
+    /**
+     *
+     * An object encapsulating a style's format and other properties.
+     *
+     * [Api set: ExcelApi 1.7]
+     */
+    class Style extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * A Border collection of four Border objects that represent the style of the four borders.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        readonly borders: ExcelOp.RangeBorderCollection;
+        /**
+         *
+         * The Fill of the style.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        readonly fill: ExcelOp.RangeFill;
+        /**
+         *
+         * A Font object that represents the font of the style.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        readonly font: ExcelOp.RangeFont;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.StyleUpdateData): Promise<void>;
+        /**
+         *
+         * Deletes this style.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        deleteAsync(): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.StyleData>;
+    }
+    /**
+     *
+     * Represents a collection of all the styles.
+     *
+     * [Api set: ExcelApi 1.7]
+     */
+    class StyleCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Gets a style by name.
+         *
+         * [Api set: ExcelApi 1.7]
+         *
+         * @param name Name of the style to be retrieved.
+         */
+        getItem(name: string): ExcelOp.Style;
+        /**
+         *
+         * Adds a new style to the collection.
+         *
+         * [Api set: ExcelApi 1.7]
+         *
+         * @param name Name of the style to be added.
+         */
+        addAsync(name: string): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.StyleCollectionData>;
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class PageLayout extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Header and footer configuration for the worksheet.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly headersFooters: ExcelOp.HeaderFooterGroup;
+        /**
+         *
+         * Gets the range object representing the print area for the worksheet. If not set, this will return a null object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getPrintArea(): ExcelOp.Range;
+        /**
+         *
+         * Gets the range object representing the print area for the worksheet.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getPrintAreaOrNullObject(): ExcelOp.Range;
+        /**
+         *
+         * Gets the range object representing the title columns.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getPrintTitleColumns(): ExcelOp.Range;
+        /**
+         *
+         * Gets the range object representing the title columns. If not set, this will return a null object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getPrintTitleColumnsOrNullObject(): ExcelOp.Range;
+        /**
+         *
+         * Gets the range object representing the title rows.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getPrintTitleRows(): ExcelOp.Range;
+        /**
+         *
+         * Gets the range object representing the title rows. If not set, this will return a null object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getPrintTitleRowsOrNullObject(): ExcelOp.Range;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.PageLayoutUpdateData): Promise<void>;
+        /**
+         *
+         * Sets the worksheet's print area.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param printArea The range of the content to print.
+         */
+        setPrintAreaAsync(printArea: Range | string): Promise<void>;
+        /**
+         *
+         * Sets the worksheet's page margins with units.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param unit Measurement unit for the margins provided.
+         * @param marginOptions Margin values to set, margins not provided will remain unchanged.
+         */
+        setPrintMarginsAsync(unit: ExcelOp.PrintMarginUnit, marginOptions: ExcelOp.PageLayoutMarginOptions): Promise<void>;
+        /**
+         *
+         * Sets the worksheet's page margins with units.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param unit Measurement unit for the margins provided.
+         * @param marginOptions Margin values to set, margins not provided will remain unchanged.
+         */
+        setPrintMarginsAsync(unit: "Points" | "Inches" | "Centimeters", marginOptions: ExcelOp.PageLayoutMarginOptions): Promise<void>;
+        /**
+         *
+         * Sets the columns that contain the cells to be repeated at the left of each page of the worksheet for printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param printTitleColumns The columns to be repeated to the left of each page, range must span the entire column to be valid.
+         */
+        setPrintTitleColumnsAsync(printTitleColumns: Range | string): Promise<void>;
+        /**
+         *
+         * Sets the rows that contain the cells to be repeated at the top of each page of the worksheet for printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param printTitleRows The rows to be repeated at the top of each page, range must span the entire row to be valid.
+         */
+        setPrintTitleRowsAsync(printTitleRows: Range | string): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.PageLayoutData>;
+    }
+    /**
+     *
+     * Represents page zoom properties.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface PageLayoutZoomOptions {
+        /**
+         *
+         * Number of pages to fit horizontally. This value can be null if percentage scale is used.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        horizontalFitToPages?: number;
+        /**
+         *
+         * Print page scale value can be between 10 and 400. This value can be null if fit to page tall or wide is specified.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        percentage?: number;
+        /**
+         *
+         * Number of pages to fit vertically. This value can be null if percentage scale is used.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        verticalFitToPages?: number;
+    }
+    /**
+     *
+     * Represents the options in page layout margins.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface PageLayoutMarginOptions {
+        /**
+         *
+         * Represents the page layout bottom margin in the unit specified to use for printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        bottom?: number;
+        /**
+         *
+         * Represents the page layout footer margin in the unit specified to use for printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        footer?: number;
+        /**
+         *
+         * Represents the page layout header margin in the unit specified to use for printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        header?: number;
+        /**
+         *
+         * Represents the page layout left margin in the unit specified to use for printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        left?: number;
+        /**
+         *
+         * Represents the page layout right margin in the unit specified to use for printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        right?: number;
+        /**
+         *
+         * Represents the page layout top margin in the unit specified to use for printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        top?: number;
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class HeaderFooter extends OfficeExtension.ClientObjectBase {
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.HeaderFooterUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.HeaderFooterData>;
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class HeaderFooterGroup extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * The header/footer to use for even pages, odd header/footer needs to be specified for odd pages.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly even: ExcelOp.HeaderFooter;
+        /**
+         *
+         * The first page header/footer, for all other pages general or even/odd is used.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly first: ExcelOp.HeaderFooter;
+        /**
+         *
+         * The general header/footer, used for all pages unless even/odd or first page is specified.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly general: ExcelOp.HeaderFooter;
+        /**
+         *
+         * The header/footer to use for odd pages, even header/footer needs to be specified for even pages.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly odd: ExcelOp.HeaderFooter;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.HeaderFooterGroupUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.HeaderFooterGroupData>;
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class PageBreak extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Gets the first cell after the page break.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getRange(): ExcelOp.Range;
+        /**
+         *
+         * Deletes a page break object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        deleteAsync(): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.PageBreakData>;
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class PageBreakCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Adds a page break before the top-left cell of the range specified.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param pageBreakRange The range immediately after the page break to be added.
+         */
+        addAsync(pageBreakRange: Range | string): Promise<ExcelOp.Interfaces.PageBreakData>;
+        /**
+         *
+         * Gets a page break object via the index.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param index Index of the page break.
+         */
+        getItem(index: number): ExcelOp.PageBreak;
+        /**
+         *
+         * Gets the number of page breaks in the collection.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getCountAsync(): Promise<number>;
+        /**
+         *
+         * Resets all manual page breaks in the collection.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        resetPageBreaksAsync(): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.PageBreakCollectionData>;
+    }
+    /**
+     *
+     * Represents a collection of all the Data Connections that are part of the workbook or worksheet.
+     *
+     * [Api set: ExcelApi 1.7]
+     */
+    class DataConnectionCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Refreshes all the Data Connections in the collection.
+         *
+         * [Api set: ExcelApi 1.7]
+         */
+        refreshAllAsync(): Promise<void>;
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class AreaCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Gets a contiguous area object based on its position in the collection.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param index Index value of the object to be retrieved. Zero-indexed.
+         */
+        getItemAt(index: number): ExcelOp.Range;
+        /**
+         *
+         * Gets the number of contiguous areas in a range.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getCountAsync(): Promise<number>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.AreaCollectionData>;
+    }
+    /**
+     *
+     * Represents all the shapes in the worksheet.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class ShapeCollection extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Creates an image from a base64 string and adds it to worksheet. Returns the image object that represents the new Image.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param base64ImageString A base64 encoded image in JPEG or PNG formats.
+         */
+        addImageAsync(base64ImageString: string): Promise<ExcelOp.Interfaces.ImageData>;
+        /**
+         *
+         * Returns a shape identified by the shape id. Read-only.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param shapeId The identifier for the shape.
+         */
+        getItem(shapeId: number): ExcelOp.Shape;
+        /**
+         *
+         * Returns the number of shapes in the worksheet. Read-only.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getCountAsync(): Promise<number>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ShapeCollectionData>;
+    }
+    /**
+     *
+     * Represents a generic shape object in the worksheet.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class Shape extends OfficeExtension.ClientObjectBase {
+        /**
+         *
+         * Returns the geometric shape for the shape object. Error will be thrown, if the shape object is other shape type (Like, Image, SmartArt, etc.) rather than GeometricShape.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly geometricShape: ExcelOp.GeometricShape;
+        /**
+         *
+         * Returns the image for the shape object. Error will be thrown, if the shape object is other shape type (Like, GeometricShape, SmartArt, etc.) rather than Image.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly image: ExcelOp.Image;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        updateAsync(properties: Interfaces.ShapeUpdateData): Promise<void>;
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ShapeData>;
+    }
+    /**
+     *
+     * Represents a geometric shape object inside a worksheet. A geometric shape can be a line, rectangle, block arrow, equation, flowchart, start, banner, callout or basic shape in Excel.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class GeometricShape extends OfficeExtension.ClientObjectBase {
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.GeometricShapeData>;
+    }
+    /**
+     *
+     * Represents an image object in the worksheet.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class Image extends OfficeExtension.ClientObjectBase {
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<ExcelOp.Interfaces.ImageData>;
+    }
+    /**
+     * [Api set: ExcelApi 1.7]
+     */
+    enum AxisType {
+        invalid = "Invalid",
+        /**
+         *
+         * Axis displays categories.
+         *
+         */
+        category = "Category",
+        /**
+         *
+         * Axis displays values.
+         *
+         */
+        value = "Value",
+        /**
+         *
+         * Axis displays data series.
+         *
+         */
+        series = "Series",
+    }
+    /**
+     * [Api set: ExcelApi 1.7]
+     */
+    enum AxisGroup {
+        primary = "Primary",
+        secondary = "Secondary",
+    }
+    /**
+     * [Api set: ExcelApi 1.7]
+     */
+    enum AxisScaleType {
+        linear = "Linear",
+        logarithmic = "Logarithmic",
+    }
+    /**
+     * [Api set: ExcelApi 1.7]
+     */
+    enum AxisCrosses {
+        automatic = "Automatic",
+        maximum = "Maximum",
+        minimum = "Minimum",
+        custom = "Custom",
+    }
+    /**
+     * [Api set: ExcelApi 1.7]
+     */
+    enum AxisTickMark {
+        none = "None",
+        cross = "Cross",
+        inside = "Inside",
+        outside = "Outside",
+    }
+    /**
+     * [Api set: ExcelApi 1.7]
+     */
+    enum AxisTickLabelPosition {
+        nextToAxis = "NextToAxis",
+        high = "High",
+        low = "Low",
+        none = "None",
+    }
+    /**
+     * [Api set: ExcelApi 1.7]
+     */
+    enum TrendlineType {
+        linear = "Linear",
+        exponential = "Exponential",
+        logarithmic = "Logarithmic",
+        movingAverage = "MovingAverage",
+        polynomial = "Polynomial",
+        power = "Power",
+    }
+    /**
+     * [Api set: ExcelApi 1.7]
+     */
+    enum ChartAxisType {
+        invalid = "Invalid",
+        /**
+         *
+         * Axis displays categories.
+         *
+         */
+        category = "Category",
+        /**
+         *
+         * Axis displays values.
+         *
+         */
+        value = "Value",
+        /**
+         *
+         * Axis displays data series.
+         *
+         */
+        series = "Series",
+    }
+    /**
+     * [Api set: ExcelApi 1.7]
+     */
+    enum ChartAxisGroup {
+        primary = "Primary",
+        secondary = "Secondary",
+    }
+    /**
+     * [Api set: ExcelApi 1.7]
+     */
+    enum ChartAxisScaleType {
+        linear = "Linear",
+        logarithmic = "Logarithmic",
+    }
+    /**
+     * [Api set: ExcelApi 1.7]
+     */
+    enum ChartAxisPosition {
+        automatic = "Automatic",
+        maximum = "Maximum",
+        minimum = "Minimum",
+        custom = "Custom",
+    }
+    /**
+     * [Api set: ExcelApi 1.7]
+     */
+    enum ChartAxisTickMark {
+        none = "None",
+        cross = "Cross",
+        inside = "Inside",
+        outside = "Outside",
+    }
+    /**
+     * [Api set: ExcelApi 1.7]
+     */
+    enum ChartAxisTickLabelPosition {
+        nextToAxis = "NextToAxis",
+        high = "High",
+        low = "Low",
+        none = "None",
+    }
+    /**
+     * [Api set: ExcelApi 1.7]
+     */
+    enum ChartAxisDisplayUnit {
+        /**
+         *
+         * Default option. This will reset display unit to the axis, and set unit label invisible.
+         *
+         */
+        none = "None",
+        /**
+         *
+         * This will set the axis in units of hundreds.
+         *
+         */
+        hundreds = "Hundreds",
+        /**
+         *
+         * This will set the axis in units of thousands.
+         *
+         */
+        thousands = "Thousands",
+        /**
+         *
+         * This will set the axis in units of tens of thousands.
+         *
+         */
+        tenThousands = "TenThousands",
+        /**
+         *
+         * This will set the axis in units of hundreds of thousands.
+         *
+         */
+        hundredThousands = "HundredThousands",
+        /**
+         *
+         * This will set the axis in units of millions.
+         *
+         */
+        millions = "Millions",
+        /**
+         *
+         * This will set the axis in units of tens of millions.
+         *
+         */
+        tenMillions = "TenMillions",
+        /**
+         *
+         * This will set the axis in units of hundreds of millions.
+         *
+         */
+        hundredMillions = "HundredMillions",
+        /**
+         *
+         * This will set the axis in units of billions.
+         *
+         */
+        billions = "Billions",
+        /**
+         *
+         * This will set the axis in units of trillions.
+         *
+         */
+        trillions = "Trillions",
+        /**
+         *
+         * This will set the axis in units of custom value.
+         *
+         */
+        custom = "Custom",
+    }
+    /**
+     *
+     * Specifies the unit of time for chart axes and data series.
+     *
+     * [Api set: ExcelApi 1.7]
+     */
+    enum ChartAxisTimeUnit {
+        days = "Days",
+        months = "Months",
+        years = "Years",
+    }
+    /**
+     *
+     * Specifies the type of the category axis.
+     *
+     * [Api set: ExcelApi 1.7]
+     */
+    enum ChartAxisCategoryType {
+        /**
+         *
+         * Excel controls the axis type.
+         *
+         */
+        automatic = "Automatic",
+        /**
+         *
+         * Axis groups data by an arbitrary set of categories.
+         *
+         */
+        textAxis = "TextAxis",
+        /**
+         *
+         * Axis groups data on a time scale.
+         *
+         */
+        dateAxis = "DateAxis",
+    }
+    /**
+     * [Api set: ExcelApi 1.7]
+     */
+    enum ChartLineStyle {
+        none = "None",
+        continuous = "Continuous",
+        dash = "Dash",
+        dashDot = "DashDot",
+        dashDotDot = "DashDotDot",
+        dot = "Dot",
+        grey25 = "Grey25",
+        grey50 = "Grey50",
+        grey75 = "Grey75",
+        automatic = "Automatic",
+        roundDot = "RoundDot",
+    }
+    /**
+     * [Api set: ExcelApi 1.1]
+     */
+    enum ChartDataLabelPosition {
+        invalid = "Invalid",
+        none = "None",
+        center = "Center",
+        insideEnd = "InsideEnd",
+        insideBase = "InsideBase",
+        outsideEnd = "OutsideEnd",
+        left = "Left",
+        right = "Right",
+        top = "Top",
+        bottom = "Bottom",
+        bestFit = "BestFit",
+        callout = "Callout",
+    }
+    /**
+     *
+     * Represents which error-bar parts to include.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum ChartErrorBarsInclude {
+        both = "Both",
+        minusValues = "MinusValues",
+        plusValues = "PlusValues",
+    }
+    /**
+     *
+     * Represents the range type for error bars.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum ChartErrorBarsType {
+        fixedValue = "FixedValue",
+        percent = "Percent",
+        stDev = "StDev",
+        stError = "StError",
+        custom = "Custom",
+    }
+    /**
+     *
+     * Represents the position of chart title.
+     *
+     * [Api set: ExcelApi 1.7]
+     */
+    enum ChartTitlePosition {
+        automatic = "Automatic",
+        top = "Top",
+        bottom = "Bottom",
+        left = "Left",
+        right = "Right",
+    }
+    /**
+     * [Api set: ExcelApi 1.1]
+     */
+    enum ChartLegendPosition {
+        invalid = "Invalid",
+        top = "Top",
+        bottom = "Bottom",
+        left = "Left",
+        right = "Right",
+        corner = "Corner",
+        custom = "Custom",
+    }
+    /**
+     * [Api set: ExcelApi 1.7]
+     */
+    enum ChartMarkerStyle {
+        invalid = "Invalid",
+        automatic = "Automatic",
+        none = "None",
+        square = "Square",
+        diamond = "Diamond",
+        triangle = "Triangle",
+        x = "X",
+        star = "Star",
+        dot = "Dot",
+        dash = "Dash",
+        circle = "Circle",
+        plus = "Plus",
+        picture = "Picture",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum ChartPlotAreaPosition {
+        automatic = "Automatic",
+        custom = "Custom",
+    }
+    /**
+     *
+     * Specifies whether the series are by rows or by columns. On Desktop, the "auto" option will inspect the source data shape to automatically guess whether the data is by rows or columns; on Excel Online, "auto" will simply default to "columns".
+     *
+     * [Api set: ExcelApi 1.1]
+     */
+    enum ChartSeriesBy {
+        /**
+         *
+         * On Desktop, the "auto" option will inspect the source data shape to automatically guess whether the data is by rows or columns; on Excel Online, "auto" will simply default to "columns".
+         *
+         */
+        auto = "Auto",
+        columns = "Columns",
+        rows = "Rows",
+    }
+    /**
+     *
+     * Represents the horizontal alignment for the specified object.
+     *
+     * [Api set: ExcelApi 1.7]
+     */
+    enum ChartTextHorizontalAlignment {
+        center = "Center",
+        left = "Left",
+        right = "Right",
+        justify = "Justify",
+        distributed = "Distributed",
+    }
+    /**
+     *
+     * Represents the vertical alignment for the specified object.
+     *
+     * [Api set: ExcelApi 1.7]
+     */
+    enum ChartTextVerticalAlignment {
+        center = "Center",
+        bottom = "Bottom",
+        top = "Top",
+        justify = "Justify",
+        distributed = "Distributed",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum ChartTickLabelAlignment {
+        center = "Center",
+        left = "Left",
+        right = "Right",
+    }
+    /**
+     * [Api set: ExcelApi 1.1]
+     */
+    enum ChartType {
+        invalid = "Invalid",
+        columnClustered = "ColumnClustered",
+        columnStacked = "ColumnStacked",
+        columnStacked100 = "ColumnStacked100",
+        barClustered = "BarClustered",
+        barStacked = "BarStacked",
+        barStacked100 = "BarStacked100",
+        lineStacked = "LineStacked",
+        lineStacked100 = "LineStacked100",
+        lineMarkers = "LineMarkers",
+        lineMarkersStacked = "LineMarkersStacked",
+        lineMarkersStacked100 = "LineMarkersStacked100",
+        pieOfPie = "PieOfPie",
+        pieExploded = "PieExploded",
+        barOfPie = "BarOfPie",
+        xyscatterSmooth = "XYScatterSmooth",
+        xyscatterSmoothNoMarkers = "XYScatterSmoothNoMarkers",
+        xyscatterLines = "XYScatterLines",
+        xyscatterLinesNoMarkers = "XYScatterLinesNoMarkers",
+        areaStacked = "AreaStacked",
+        areaStacked100 = "AreaStacked100",
+        doughnutExploded = "DoughnutExploded",
+        radarMarkers = "RadarMarkers",
+        radarFilled = "RadarFilled",
+        surface = "Surface",
+        surfaceWireframe = "SurfaceWireframe",
+        surfaceTopView = "SurfaceTopView",
+        surfaceTopViewWireframe = "SurfaceTopViewWireframe",
+        bubble = "Bubble",
+        bubble3DEffect = "Bubble3DEffect",
+        stockHLC = "StockHLC",
+        stockOHLC = "StockOHLC",
+        stockVHLC = "StockVHLC",
+        stockVOHLC = "StockVOHLC",
+        cylinderColClustered = "CylinderColClustered",
+        cylinderColStacked = "CylinderColStacked",
+        cylinderColStacked100 = "CylinderColStacked100",
+        cylinderBarClustered = "CylinderBarClustered",
+        cylinderBarStacked = "CylinderBarStacked",
+        cylinderBarStacked100 = "CylinderBarStacked100",
+        cylinderCol = "CylinderCol",
+        coneColClustered = "ConeColClustered",
+        coneColStacked = "ConeColStacked",
+        coneColStacked100 = "ConeColStacked100",
+        coneBarClustered = "ConeBarClustered",
+        coneBarStacked = "ConeBarStacked",
+        coneBarStacked100 = "ConeBarStacked100",
+        coneCol = "ConeCol",
+        pyramidColClustered = "PyramidColClustered",
+        pyramidColStacked = "PyramidColStacked",
+        pyramidColStacked100 = "PyramidColStacked100",
+        pyramidBarClustered = "PyramidBarClustered",
+        pyramidBarStacked = "PyramidBarStacked",
+        pyramidBarStacked100 = "PyramidBarStacked100",
+        pyramidCol = "PyramidCol",
+        line = "Line",
+        pie = "Pie",
+        xyscatter = "XYScatter",
+        area = "Area",
+        doughnut = "Doughnut",
+        radar = "Radar",
+    }
+    /**
+     * [Api set: ExcelApi 1.1]
+     */
+    enum ChartUnderlineStyle {
+        none = "None",
+        single = "Single",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum ChartDisplayBlanksAs {
+        notPlotted = "NotPlotted",
+        zero = "Zero",
+        interplotted = "Interplotted",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum ChartPlotBy {
+        rows = "Rows",
+        columns = "Columns",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum ChartSplitStype {
+        splitByPosition = "SplitByPosition",
+        splitByValue = "SplitByValue",
+        splitByPercentValue = "SplitByPercentValue",
+        splitByCustomSplit = "SplitByCustomSplit",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum ChartSeriesType {
+        column = "Column",
+        bar = "Bar",
+        bar3D = "Bar3D",
+        line = "Line",
+        pie = "Pie",
+        xyscatter = "XYScatter",
+        area = "Area",
+        area3D = "Area3D",
+        doughnut = "Doughnut",
+        radar = "Radar",
+        surface3D = "Surface3D",
+        column3D = "Column3D",
+    }
+    /**
+     * [Api set: ExcelApi 1.7]
+     */
+    enum ChartTrendlineType {
+        linear = "Linear",
+        exponential = "Exponential",
+        logarithmic = "Logarithmic",
+        movingAverage = "MovingAverage",
+        polynomial = "Polynomial",
+        power = "Power",
+    }
+    /**
+     * [Api set: ExcelApi 1.1]
+     */
+    enum BindingType {
+        range = "Range",
+        table = "Table",
+        text = "Text",
+    }
+    /**
+     * [Api set: ExcelApi 1.1]
+     */
+    enum BorderIndex {
+        edgeTop = "EdgeTop",
+        edgeBottom = "EdgeBottom",
+        edgeLeft = "EdgeLeft",
+        edgeRight = "EdgeRight",
+        insideVertical = "InsideVertical",
+        insideHorizontal = "InsideHorizontal",
+        diagonalDown = "DiagonalDown",
+        diagonalUp = "DiagonalUp",
+    }
+    /**
+     * [Api set: ExcelApi 1.1]
+     */
+    enum BorderLineStyle {
+        none = "None",
+        continuous = "Continuous",
+        dash = "Dash",
+        dashDot = "DashDot",
+        dashDotDot = "DashDotDot",
+        dot = "Dot",
+        double = "Double",
+        slantDashDot = "SlantDashDot",
+    }
+    /**
+     * [Api set: ExcelApi 1.1]
+     */
+    enum BorderWeight {
+        hairline = "Hairline",
+        thin = "Thin",
+        medium = "Medium",
+        thick = "Thick",
+    }
+    /**
+     * [Api set: ExcelApi 1.1]
+     */
+    enum CalculationMode {
+        automatic = "Automatic",
+        automaticExceptTables = "AutomaticExceptTables",
+        manual = "Manual",
+    }
+    /**
+     * [Api set: ExcelApi 1.1]
+     */
+    enum CalculationType {
+        /**
+         *
+         * Recalculates all cells that Excel has marked as dirty, that is, dependents of volatile or changed data, and cells programmatically marked as dirty.
+         *
+         */
+        recalculate = "Recalculate",
+        /**
+         *
+         * This will mark all cells as dirty and then recalculate them.
+         *
+         */
+        full = "Full",
+        /**
+         *
+         * This will rebuild the full dependency chain, mark all cells as dirty and then recalculate them.
+         *
+         */
+        fullRebuild = "FullRebuild",
+    }
+    /**
+     * [Api set: ExcelApi 1.1 for All/Formats/Contents, 1.7 for Hyperlinks & HyperlinksAndFormats.]
+     */
+    enum ClearApplyTo {
+        all = "All",
+        /**
+         *
+         * Clears all formatting for the range.
+         *
+         */
+        formats = "Formats",
+        /**
+         *
+         * Clears the contents of the range.
+         *
+         */
+        contents = "Contents",
+        /**
+         *
+         * Clears all hyperlinks, but leaves all content and formatting intact.
+         *
+         */
+        hyperlinks = "Hyperlinks",
+        /**
+         *
+         * Removes hyperlinks and formatting for the cell but leaves content, conditional formats and data validation intact.
+         *
+         */
+        removeHyperlinks = "RemoveHyperlinks",
+    }
+    /**
+     * [Api set: ExcelApi 99.9]
+     */
+    enum VisualCategory {
+        column = "Column",
+        bar = "Bar",
+        line = "Line",
+        area = "Area",
+        pie = "Pie",
+        donut = "Donut",
+        scatter = "Scatter",
+        bubble = "Bubble",
+        statistical = "Statistical",
+        stock = "Stock",
+        combo = "Combo",
+        hierarchy = "Hierarchy",
+        surface = "Surface",
+        map = "Map",
+        funnel = "Funnel",
+        radar = "Radar",
+        waterfall = "Waterfall",
+        threeD = "ThreeD",
+        other = "Other",
+    }
+    /**
+     * [Api set: ExcelApi 99.9]
+     */
+    enum VisualPropertyType {
+        object = "Object",
+        collection = "Collection",
+        string = "String",
+        double = "Double",
+        int = "Int",
+        bool = "Bool",
+        enum = "Enum",
+        color = "Color",
+    }
+    /**
+     *
+     * Represents the format options for a Data Bar Axis.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    enum ConditionalDataBarAxisFormat {
+        automatic = "Automatic",
+        none = "None",
+        cellMidPoint = "CellMidPoint",
+    }
+    /**
+     *
+     * Represents the Data Bar direction within a cell.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    enum ConditionalDataBarDirection {
+        context = "Context",
+        leftToRight = "LeftToRight",
+        rightToLeft = "RightToLeft",
+    }
+    /**
+     *
+     * Represents the direction for a selection.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    enum ConditionalFormatDirection {
+        top = "Top",
+        bottom = "Bottom",
+    }
+    /**
+     * [Api set: ExcelApi 1.6]
+     */
+    enum ConditionalFormatType {
+        custom = "Custom",
+        dataBar = "DataBar",
+        colorScale = "ColorScale",
+        iconSet = "IconSet",
+        topBottom = "TopBottom",
+        presetCriteria = "PresetCriteria",
+        containsText = "ContainsText",
+        cellValue = "CellValue",
+    }
+    /**
+     *
+     * Represents the types of conditional format values.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    enum ConditionalFormatRuleType {
+        invalid = "Invalid",
+        automatic = "Automatic",
+        lowestValue = "LowestValue",
+        highestValue = "HighestValue",
+        number = "Number",
+        percent = "Percent",
+        formula = "Formula",
+        percentile = "Percentile",
+    }
+    /**
+     *
+     * Represents the types of conditional format values.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    enum ConditionalFormatIconRuleType {
+        invalid = "Invalid",
+        number = "Number",
+        percent = "Percent",
+        formula = "Formula",
+        percentile = "Percentile",
+    }
+    /**
+     *
+     * Represents the types of conditional format values.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    enum ConditionalFormatColorCriterionType {
+        invalid = "Invalid",
+        lowestValue = "LowestValue",
+        highestValue = "HighestValue",
+        number = "Number",
+        percent = "Percent",
+        formula = "Formula",
+        percentile = "Percentile",
+    }
+    /**
+     *
+     * Represents the criteria for the above/below average conditional format type.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    enum ConditionalTopBottomCriterionType {
+        invalid = "Invalid",
+        topItems = "TopItems",
+        topPercent = "TopPercent",
+        bottomItems = "BottomItems",
+        bottomPercent = "BottomPercent",
+    }
+    /**
+     *
+     * Represents the criteria for the Preset Criteria conditional format type.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    enum ConditionalFormatPresetCriterion {
+        invalid = "Invalid",
+        blanks = "Blanks",
+        nonBlanks = "NonBlanks",
+        errors = "Errors",
+        nonErrors = "NonErrors",
+        yesterday = "Yesterday",
+        today = "Today",
+        tomorrow = "Tomorrow",
+        lastSevenDays = "LastSevenDays",
+        lastWeek = "LastWeek",
+        thisWeek = "ThisWeek",
+        nextWeek = "NextWeek",
+        lastMonth = "LastMonth",
+        thisMonth = "ThisMonth",
+        nextMonth = "NextMonth",
+        aboveAverage = "AboveAverage",
+        belowAverage = "BelowAverage",
+        equalOrAboveAverage = "EqualOrAboveAverage",
+        equalOrBelowAverage = "EqualOrBelowAverage",
+        oneStdDevAboveAverage = "OneStdDevAboveAverage",
+        oneStdDevBelowAverage = "OneStdDevBelowAverage",
+        twoStdDevAboveAverage = "TwoStdDevAboveAverage",
+        twoStdDevBelowAverage = "TwoStdDevBelowAverage",
+        threeStdDevAboveAverage = "ThreeStdDevAboveAverage",
+        threeStdDevBelowAverage = "ThreeStdDevBelowAverage",
+        uniqueValues = "UniqueValues",
+        duplicateValues = "DuplicateValues",
+    }
+    /**
+     *
+     * Represents the operator of the text conditional format type.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    enum ConditionalTextOperator {
+        invalid = "Invalid",
+        contains = "Contains",
+        notContains = "NotContains",
+        beginsWith = "BeginsWith",
+        endsWith = "EndsWith",
+    }
+    /**
+     *
+     * Represents the operator of the text conditional format type.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    enum ConditionalCellValueOperator {
+        invalid = "Invalid",
+        between = "Between",
+        notBetween = "NotBetween",
+        equalTo = "EqualTo",
+        notEqualTo = "NotEqualTo",
+        greaterThan = "GreaterThan",
+        lessThan = "LessThan",
+        greaterThanOrEqual = "GreaterThanOrEqual",
+        lessThanOrEqual = "LessThanOrEqual",
+    }
+    /**
+     *
+     * Represents the operator for each icon criteria.
+     *
+     * [Api set: ExcelApi 1.6]
+     */
+    enum ConditionalIconCriterionOperator {
+        invalid = "Invalid",
+        greaterThan = "GreaterThan",
+        greaterThanOrEqual = "GreaterThanOrEqual",
+    }
+    /**
+     * [Api set: ExcelApi 1.6]
+     */
+    enum ConditionalRangeBorderIndex {
+        edgeTop = "EdgeTop",
+        edgeBottom = "EdgeBottom",
+        edgeLeft = "EdgeLeft",
+        edgeRight = "EdgeRight",
+    }
+    /**
+     * [Api set: ExcelApi 1.6]
+     */
+    enum ConditionalRangeBorderLineStyle {
+        none = "None",
+        continuous = "Continuous",
+        dash = "Dash",
+        dashDot = "DashDot",
+        dashDotDot = "DashDotDot",
+        dot = "Dot",
+    }
+    /**
+     * [Api set: ExcelApi 1.6]
+     */
+    enum ConditionalRangeFontUnderlineStyle {
+        none = "None",
+        single = "Single",
+        double = "Double",
+    }
+    /**
+     * [Api set: CustomFunctions 1.1]
+     */
+    enum CustomFunctionType {
+        invalid = "Invalid",
+        script = "Script",
+        webService = "WebService",
+    }
+    /**
+     * [Api set: CustomFunctions 1.1]
+     */
+    enum CustomFunctionMetadataFormat {
+        invalid = "Invalid",
+        openApi = "OpenApi",
+    }
+    /**
+     * [Api set: CustomFunctions 1.1]
+     */
+    enum CustomFunctionValueType {
+        invalid = "Invalid",
+        boolean = "Boolean",
+        number = "Number",
+        string = "String",
+        isodate = "ISODate",
+    }
+    /**
+     * [Api set: CustomFunctions 1.1]
+     */
+    enum CustomFunctionDimensionality {
+        invalid = "Invalid",
+        scalar = "Scalar",
+        matrix = "Matrix",
+    }
+    /**
+     *
+     * Represents Data validation type enum.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum DataValidationType {
+        /**
+         *
+         * None means allow any value and so there is no data validation in the range.
+         *
+         */
+        none = "None",
+        /**
+         *
+         * Whole number data validation type
+         *
+         */
+        wholeNumber = "WholeNumber",
+        /**
+         *
+         * Decimal data validation type
+         *
+         */
+        decimal = "Decimal",
+        /**
+         *
+         * List data validation type
+         *
+         */
+        list = "List",
+        /**
+         *
+         * Date data validation type
+         *
+         */
+        date = "Date",
+        /**
+         *
+         * Time data validation type
+         *
+         */
+        time = "Time",
+        /**
+         *
+         * Text length data validation type
+         *
+         */
+        textLength = "TextLength",
+        /**
+         *
+         * Custom data validation type
+         *
+         */
+        custom = "Custom",
+        /**
+         *
+         * Inconsistent means that the range has inconsistent data validation (there are different rules on different cells)
+         *
+         */
+        inconsistent = "Inconsistent",
+        /**
+         *
+         * MixedCriteria means that the range has data validation present on some but not all cells
+         *
+         */
+        mixedCriteria = "MixedCriteria",
+    }
+    /**
+     *
+     * Represents Data validation operator enum.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum DataValidationOperator {
+        between = "Between",
+        notBetween = "NotBetween",
+        equalTo = "EqualTo",
+        notEqualTo = "NotEqualTo",
+        greaterThan = "GreaterThan",
+        lessThan = "LessThan",
+        greaterThanOrEqualTo = "GreaterThanOrEqualTo",
+        lessThanOrEqualTo = "LessThanOrEqualTo",
+    }
+    /**
+     *
+     * Represents Data validation error alert style. The default is "Stop".
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum DataValidationAlertStyle {
+        stop = "Stop",
+        warning = "Warning",
+        information = "Information",
+    }
+    /**
+     * [Api set: ExcelApi 1.1]
+     */
+    enum DeleteShiftDirection {
+        up = "Up",
+        left = "Left",
+    }
+    /**
+     * [Api set: ExcelApi 1.2]
+     */
+    enum DynamicFilterCriteria {
+        unknown = "Unknown",
+        aboveAverage = "AboveAverage",
+        allDatesInPeriodApril = "AllDatesInPeriodApril",
+        allDatesInPeriodAugust = "AllDatesInPeriodAugust",
+        allDatesInPeriodDecember = "AllDatesInPeriodDecember",
+        allDatesInPeriodFebruray = "AllDatesInPeriodFebruray",
+        allDatesInPeriodJanuary = "AllDatesInPeriodJanuary",
+        allDatesInPeriodJuly = "AllDatesInPeriodJuly",
+        allDatesInPeriodJune = "AllDatesInPeriodJune",
+        allDatesInPeriodMarch = "AllDatesInPeriodMarch",
+        allDatesInPeriodMay = "AllDatesInPeriodMay",
+        allDatesInPeriodNovember = "AllDatesInPeriodNovember",
+        allDatesInPeriodOctober = "AllDatesInPeriodOctober",
+        allDatesInPeriodQuarter1 = "AllDatesInPeriodQuarter1",
+        allDatesInPeriodQuarter2 = "AllDatesInPeriodQuarter2",
+        allDatesInPeriodQuarter3 = "AllDatesInPeriodQuarter3",
+        allDatesInPeriodQuarter4 = "AllDatesInPeriodQuarter4",
+        allDatesInPeriodSeptember = "AllDatesInPeriodSeptember",
+        belowAverage = "BelowAverage",
+        lastMonth = "LastMonth",
+        lastQuarter = "LastQuarter",
+        lastWeek = "LastWeek",
+        lastYear = "LastYear",
+        nextMonth = "NextMonth",
+        nextQuarter = "NextQuarter",
+        nextWeek = "NextWeek",
+        nextYear = "NextYear",
+        thisMonth = "ThisMonth",
+        thisQuarter = "ThisQuarter",
+        thisWeek = "ThisWeek",
+        thisYear = "ThisYear",
+        today = "Today",
+        tomorrow = "Tomorrow",
+        yearToDate = "YearToDate",
+        yesterday = "Yesterday",
+    }
+    /**
+     * [Api set: ExcelApi 1.2]
+     */
+    enum FilterDatetimeSpecificity {
+        year = "Year",
+        month = "Month",
+        day = "Day",
+        hour = "Hour",
+        minute = "Minute",
+        second = "Second",
+    }
+    /**
+     * [Api set: ExcelApi 1.2]
+     */
+    enum FilterOn {
+        bottomItems = "BottomItems",
+        bottomPercent = "BottomPercent",
+        cellColor = "CellColor",
+        dynamic = "Dynamic",
+        fontColor = "FontColor",
+        values = "Values",
+        topItems = "TopItems",
+        topPercent = "TopPercent",
+        icon = "Icon",
+        custom = "Custom",
+    }
+    /**
+     * [Api set: ExcelApi 1.2]
+     */
+    enum FilterOperator {
+        and = "And",
+        or = "Or",
+    }
+    /**
+     * [Api set: ExcelApi 1.1]
+     */
+    enum HorizontalAlignment {
+        general = "General",
+        left = "Left",
+        center = "Center",
+        right = "Right",
+        fill = "Fill",
+        justify = "Justify",
+        centerAcrossSelection = "CenterAcrossSelection",
+        distributed = "Distributed",
+    }
+    /**
+     * [Api set: ExcelApi 1.2]
+     */
+    enum IconSet {
+        invalid = "Invalid",
+        threeArrows = "ThreeArrows",
+        threeArrowsGray = "ThreeArrowsGray",
+        threeFlags = "ThreeFlags",
+        threeTrafficLights1 = "ThreeTrafficLights1",
+        threeTrafficLights2 = "ThreeTrafficLights2",
+        threeSigns = "ThreeSigns",
+        threeSymbols = "ThreeSymbols",
+        threeSymbols2 = "ThreeSymbols2",
+        fourArrows = "FourArrows",
+        fourArrowsGray = "FourArrowsGray",
+        fourRedToBlack = "FourRedToBlack",
+        fourRating = "FourRating",
+        fourTrafficLights = "FourTrafficLights",
+        fiveArrows = "FiveArrows",
+        fiveArrowsGray = "FiveArrowsGray",
+        fiveRating = "FiveRating",
+        fiveQuarters = "FiveQuarters",
+        threeStars = "ThreeStars",
+        threeTriangles = "ThreeTriangles",
+        fiveBoxes = "FiveBoxes",
+    }
+    /**
+     * [Api set: ExcelApi 1.2]
+     */
+    enum ImageFittingMode {
+        fit = "Fit",
+        fitAndCenter = "FitAndCenter",
+        fill = "Fill",
+    }
+    /**
+     * [Api set: ExcelApi 1.1]
+     */
+    enum InsertShiftDirection {
+        down = "Down",
+        right = "Right",
+    }
+    /**
+     * [Api set: ExcelApi 1.4]
+     */
+    enum NamedItemScope {
+        worksheet = "Worksheet",
+        workbook = "Workbook",
+    }
+    /**
+     * [Api set: ExcelApi 1.1 for String,Integer,Double,Boolean,Range,Error; 1.7 for Array]
+     */
+    enum NamedItemType {
+        string = "String",
+        integer = "Integer",
+        double = "Double",
+        boolean = "Boolean",
+        range = "Range",
+        error = "Error",
+        array = "Array",
+    }
+    /**
+     * [Api set: ExcelApi 1.1]
+     */
+    enum RangeUnderlineStyle {
+        none = "None",
+        single = "Single",
+        double = "Double",
+        singleAccountant = "SingleAccountant",
+        doubleAccountant = "DoubleAccountant",
+    }
+    /**
+     * [Api set: ExcelApi 1.1]
+     */
+    enum SheetVisibility {
+        visible = "Visible",
+        hidden = "Hidden",
+        veryHidden = "VeryHidden",
+    }
+    /**
+     * [Api set: ExcelApi 1.1 for Unknown, Empty, String, Integer, Double, Boolean, Error. 1.7 for RichValue]
+     */
+    enum RangeValueType {
+        unknown = "Unknown",
+        empty = "Empty",
+        string = "String",
+        integer = "Integer",
+        double = "Double",
+        boolean = "Boolean",
+        error = "Error",
+        richValue = "RichValue",
+    }
+    /**
+     *
+     * Specifies the search direction.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum SearchDirection {
+        /**
+         *
+         * Search in forward order.
+         *
+         */
+        forward = "Forward",
+        /**
+         *
+         * Search in reverse order.
+         *
+         */
+        backwards = "Backwards",
+    }
+    /**
+     * [Api set: ExcelApi 1.2]
+     */
+    enum SortOrientation {
+        rows = "Rows",
+        columns = "Columns",
+    }
+    /**
+     * [Api set: ExcelApi 1.2]
+     */
+    enum SortOn {
+        value = "Value",
+        cellColor = "CellColor",
+        fontColor = "FontColor",
+        icon = "Icon",
+    }
+    /**
+     * [Api set: ExcelApi 1.2]
+     */
+    enum SortDataOption {
+        normal = "Normal",
+        textAsNumber = "TextAsNumber",
+    }
+    /**
+     * [Api set: ExcelApi 1.2]
+     */
+    enum SortMethod {
+        pinYin = "PinYin",
+        strokeCount = "StrokeCount",
+    }
+    /**
+     * [Api set: ExcelApi 1.1]
+     */
+    enum VerticalAlignment {
+        top = "Top",
+        center = "Center",
+        bottom = "Bottom",
+        justify = "Justify",
+        distributed = "Distributed",
+    }
+    /**
+     * [Api set: ExcelApi 1.7]
+     */
+    const enum MessageCategory {
+        none = 0,
+        customFunction = 1,
+        event = 65536,
+    }
+    /**
+     * [Api set: ExcelApi 1.7]
+     */
+    const enum MessageType {
+        none = 0,
+        testEvent = 1,
+        test1Event = 2,
+        worksheetDataChangedEvent = 10,
+        worksheetActivatedEvent = 11,
+        worksheetDeactivatedEvent = 12,
+        worksheetAddedEvent = 13,
+        worksheetSelectionChangedEvent = 14,
+        worksheetDeletedEvent = 15,
+        worksheetCalculatedEvent = 16,
+        chartAddedEvent = 50,
+        chartActivatedEvent = 51,
+        chartDeactivatedEvent = 52,
+        chartDeletedEvent = 53,
+        tableSelectionChangedEvent = 100,
+        tableDataChangedEvent = 101,
+        customFunctionExecutionBeginEvent = 200,
+        customFunctionExecutionEndEvent = 201,
+        invocationMessage = 1000,
+        cancellationMessage = 1001,
+        metadataMessage = 1002,
+        visualSelectionChangedEvent = 2000,
+    }
+    /**
+     * [Api set: ExcelApi 1.7]
+     */
+    enum DocumentPropertyType {
+        number = "Number",
+        boolean = "Boolean",
+        date = "Date",
+        string = "String",
+        float = "Float",
+    }
+    /**
+     * [Api set: ExcelApi 1.7]
+     */
+    enum EventSource {
+        /**
+         *
+         * Local means event comes from local user session.
+         *
+         */
+        local = "Local",
+        /**
+         *
+         * Remote means event comes from remote user session.
+         *
+         */
+        remote = "Remote",
+    }
+    /**
+     * [Api set: ExcelApi 1.7]
+     */
+    enum DataChangeType {
+        /**
+         *
+         * Unknown represents the type of data change is not the listed types.
+         *
+         */
+        unknown = "Unknown",
+        /**
+         *
+         * RangeEdited represents the data change event is triggered by range being edited.
+         *
+         */
+        rangeEdited = "RangeEdited",
+        /**
+         *
+         * RowInserted represents the data change event is triggered by inserting new rows.
+         *
+         */
+        rowInserted = "RowInserted",
+        /**
+         *
+         * RowDeleted represents the data change event is triggered by deleting rows.
+         *
+         */
+        rowDeleted = "RowDeleted",
+        /**
+         *
+         * ColumnInserted represents the data change event is triggered by inserting new columns.
+         *
+         */
+        columnInserted = "ColumnInserted",
+        /**
+         *
+         * ColumnDeleted represents the data change event is triggered by deleting columns.
+         *
+         */
+        columnDeleted = "ColumnDeleted",
+        /**
+         *
+         * CellInserted represents the data change event is triggered by inserting new cells.
+         *
+         */
+        cellInserted = "CellInserted",
+        /**
+         *
+         * CellDeleted represents the data change event is triggered by deleting cells.
+         *
+         */
+        cellDeleted = "CellDeleted",
+    }
+    /**
+     * [Api set: ExcelApi 1.7]
+     */
+    enum EventType {
+        /**
+         *
+         * WorksheetChanged represents the type of event that is registered on Worksheet or WorksheetCollection, and occurs when data changes.
+         *
+         */
+        worksheetChanged = "WorksheetChanged",
+        /**
+         *
+         * WorksheetSelectionChanged represents the type of event that is registered on Worksheet, and occurs when selection changes.
+         *
+         */
+        worksheetSelectionChanged = "WorksheetSelectionChanged",
+        /**
+         *
+         * WorksheetAdded represents the type of event that is registered on WorksheetCollection, and occurs when a new worksheet is added to the workbook.
+         *
+         */
+        worksheetAdded = "WorksheetAdded",
+        /**
+         *
+         * WorksheetActivated represents the type of event that is registered on Worksheet or WorksheetCollection, and occurs when worksheet activates.
+         *
+         */
+        worksheetActivated = "WorksheetActivated",
+        /**
+         *
+         * WorksheetDeactivated represents the type of event that is registered on Worksheet or WorksheetCollection, and occurs when worksheet deactivates.
+         *
+         */
+        worksheetDeactivated = "WorksheetDeactivated",
+        /**
+         *
+         * TableChanged represents the type of event that is registered on Table, and occurs when data changes.
+         *
+         */
+        tableChanged = "TableChanged",
+        /**
+         *
+         * TableSelectionChanged represents the type of event that is registered on Table, and occurs when selection changes.
+         *
+         */
+        tableSelectionChanged = "TableSelectionChanged",
+        /**
+         *
+         * WorksheetDeleted represents the type of event that is registered on WorksheetCollection, and occurs when a worksheet is deleted from the workbook.
+         *
+         */
+        worksheetDeleted = "WorksheetDeleted",
+        /**
+         *
+         * ChartAdded represents the type of event that is registered on ChartCollection, and occurs when a new chart is added to the worksheet.
+         *
+         */
+        chartAdded = "ChartAdded",
+        /**
+         *
+         * ChartActivated represents the type of event that is registered on Chart or ChartCollection, and occurs when chart activates.
+         *
+         */
+        chartActivated = "ChartActivated",
+        /**
+         *
+         * ChartDeactivated represents the type of event that is registered on Chart or ChartCollection, and occurs when chart deactivates.
+         *
+         */
+        chartDeactivated = "ChartDeactivated",
+        /**
+         *
+         * ChartDeleted represents the type of event that is registered on ChartCollection, and occurs when a chart is deleted from the worksheet.
+         *
+         */
+        chartDeleted = "ChartDeleted",
+        /**
+         *
+         * WorksheetCalculated represents the type of event that is registered on Worksheet or WorksheetCollection, and occurs when a worksheet is calculated.
+         *
+         */
+        worksheetCalculated = "WorksheetCalculated",
+        /**
+         *
+         * ChartActivated represents the type of event that is registered on Chart or ChartCollection, and occurs when chart activates.
+         *
+         */
+        visualSelectionChanged = "VisualSelectionChanged",
+    }
+    /**
+     * [Api set: ExcelApi 1.7]
+     */
+    enum DocumentPropertyItem {
+        title = "Title",
+        subject = "Subject",
+        author = "Author",
+        keywords = "Keywords",
+        comments = "Comments",
+        template = "Template",
+        lastAuth = "LastAuth",
+        revision = "Revision",
+        appName = "AppName",
+        lastPrint = "LastPrint",
+        creation = "Creation",
+        lastSave = "LastSave",
+        category = "Category",
+        format = "Format",
+        manager = "Manager",
+        company = "Company",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum SubtotalLocationType {
+        atTop = "AtTop",
+        atBottom = "AtBottom",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum LayoutRowType {
+        compactRow = "CompactRow",
+        tabularRow = "TabularRow",
+        outlineRow = "OutlineRow",
+    }
+    /**
+     * [Api set: ExcelApi 1.7]
+     */
+    enum ProtectionSelectionMode {
+        /**
+         *
+         * Selection is allowed for all cells.
+         *
+         */
+        normal = "Normal",
+        /**
+         *
+         * Selection is allowed only for cells that are not locked.
+         *
+         */
+        unlocked = "Unlocked",
+        /**
+         *
+         * Selection is not allowed for all cells.
+         *
+         */
+        none = "None",
+    }
+    /**
+     * [Api set: ExcelApi 1.7]
+     */
+    enum PageOrientation {
+        portrait = "Portrait",
+        landscape = "Landscape",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum PaperType {
+        letter = "Letter",
+        letterSmall = "LetterSmall",
+        tabloid = "Tabloid",
+        ledger = "Ledger",
+        legal = "Legal",
+        statement = "Statement",
+        executive = "Executive",
+        a3 = "A3",
+        a4 = "A4",
+        a4Small = "A4Small",
+        a5 = "A5",
+        b4 = "B4",
+        b5 = "B5",
+        folio = "Folio",
+        quatro = "Quatro",
+        paper10x14 = "Paper10x14",
+        paper11x17 = "Paper11x17",
+        note = "Note",
+        envelope9 = "Envelope9",
+        envelope10 = "Envelope10",
+        envelope11 = "Envelope11",
+        envelope12 = "Envelope12",
+        envelope14 = "Envelope14",
+        csheet = "Csheet",
+        dsheet = "Dsheet",
+        esheet = "Esheet",
+        envelopeDL = "EnvelopeDL",
+        envelopeC5 = "EnvelopeC5",
+        envelopeC3 = "EnvelopeC3",
+        envelopeC4 = "EnvelopeC4",
+        envelopeC6 = "EnvelopeC6",
+        envelopeC65 = "EnvelopeC65",
+        envelopeB4 = "EnvelopeB4",
+        envelopeB5 = "EnvelopeB5",
+        envelopeB6 = "EnvelopeB6",
+        envelopeItaly = "EnvelopeItaly",
+        envelopeMonarch = "EnvelopeMonarch",
+        envelopePersonal = "EnvelopePersonal",
+        fanfoldUS = "FanfoldUS",
+        fanfoldStdGerman = "FanfoldStdGerman",
+        fanfoldLegalGerman = "FanfoldLegalGerman",
+    }
+    /**
+     * [Api set: ExcelApi 1.7]
+     */
+    enum ReadingOrder {
+        /**
+         *
+         * Reading order is determined by the language of the first character entered.
+            If a right-to-left language character is entered first, reading order is right to left.
+            If a left-to-right language character is entered first, reading order is left to right.
+         *
+         */
+        context = "Context",
+        /**
+         *
+         * Left to right reading order
+         *
+         */
+        leftToRight = "LeftToRight",
+        /**
+         *
+         * Right to left reading order
+         *
+         */
+        rightToLeft = "RightToLeft",
+    }
+    /**
+     * [Api set: ExcelApi 1.7]
+     */
+    enum BuiltInStyle {
+        normal = "Normal",
+        comma = "Comma",
+        currency = "Currency",
+        percent = "Percent",
+        wholeComma = "WholeComma",
+        wholeDollar = "WholeDollar",
+        hlink = "Hlink",
+        hlinkTrav = "HlinkTrav",
+        note = "Note",
+        warningText = "WarningText",
+        emphasis1 = "Emphasis1",
+        emphasis2 = "Emphasis2",
+        emphasis3 = "Emphasis3",
+        sheetTitle = "SheetTitle",
+        heading1 = "Heading1",
+        heading2 = "Heading2",
+        heading3 = "Heading3",
+        heading4 = "Heading4",
+        input = "Input",
+        output = "Output",
+        calculation = "Calculation",
+        checkCell = "CheckCell",
+        linkedCell = "LinkedCell",
+        total = "Total",
+        good = "Good",
+        bad = "Bad",
+        neutral = "Neutral",
+        accent1 = "Accent1",
+        accent1_20 = "Accent1_20",
+        accent1_40 = "Accent1_40",
+        accent1_60 = "Accent1_60",
+        accent2 = "Accent2",
+        accent2_20 = "Accent2_20",
+        accent2_40 = "Accent2_40",
+        accent2_60 = "Accent2_60",
+        accent3 = "Accent3",
+        accent3_20 = "Accent3_20",
+        accent3_40 = "Accent3_40",
+        accent3_60 = "Accent3_60",
+        accent4 = "Accent4",
+        accent4_20 = "Accent4_20",
+        accent4_40 = "Accent4_40",
+        accent4_60 = "Accent4_60",
+        accent5 = "Accent5",
+        accent5_20 = "Accent5_20",
+        accent5_40 = "Accent5_40",
+        accent5_60 = "Accent5_60",
+        accent6 = "Accent6",
+        accent6_20 = "Accent6_20",
+        accent6_40 = "Accent6_40",
+        accent6_60 = "Accent6_60",
+        explanatoryText = "ExplanatoryText",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum PrintErrorType {
+        errorsDisplayed = "ErrorsDisplayed",
+        errorsBlank = "ErrorsBlank",
+        errorsDash = "ErrorsDash",
+        errorsNotAvailable = "ErrorsNotAvailable",
+    }
+    /**
+     * [Api set: ExcelApi 1.7]
+     */
+    enum WorksheetPositionType {
+        none = "None",
+        before = "Before",
+        after = "After",
+        beginning = "Beginning",
+        end = "End",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum PrintComments {
+        /**
+         *
+         * Comments will not be printed.
+         *
+         */
+        printNoComments = "PrintNoComments",
+        /**
+         *
+         * Comments will be printed as end notes at the end of the worksheet.
+         *
+         */
+        printEndSheet = "PrintEndSheet",
+        /**
+         *
+         * Comments will be printed where they were inserted in the worksheet.
+         *
+         */
+        printInPlace = "PrintInPlace",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum PrintOrder {
+        /**
+         *
+         * Process down the rows before processing across pages or page fields to the right.
+         *
+         */
+        downThenOver = "DownThenOver",
+        /**
+         *
+         * Process across pages or page fields to the right before moving down the rows.
+         *
+         */
+        overThenDown = "OverThenDown",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum PrintMarginUnit {
+        /**
+         *
+         * Assign the page margins in points. A point is 1/72 of an inch.
+         *
+         */
+        points = "Points",
+        /**
+         *
+         * Assign the page margins in inches.
+         *
+         */
+        inches = "Inches",
+        /**
+         *
+         * Assign the page margins in centimeters.
+         *
+         */
+        centimeters = "Centimeters",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum HeaderFooterState {
+        /**
+         *
+         * Only one general header/footer is used for all pages printed.
+         *
+         */
+        general = "General",
+        /**
+         *
+         * There is a seperate first page header/footer, and a general header/footer used for all other pages.
+         *
+         */
+        firstGeneral = "FirstGeneral",
+        /**
+         *
+         * There is a different header/footer for odd and even pages.
+         *
+         */
+        oddEven = "OddEven",
+        /**
+         *
+         * There is a seperate first page header/footer, then there is a seperate header/footer for odd and even pages.
+         *
+         */
+        firstOddEven = "FirstOddEven",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum RangeCopyType {
+        all = "All",
+        formulas = "Formulas",
+        values = "Values",
+        formats = "Formats",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum LinkedDataTypeState {
+        none = "None",
+        validLinkedData = "ValidLinkedData",
+        disambiguationNeeded = "DisambiguationNeeded",
+        brokenLinkedData = "BrokenLinkedData",
+        fetchingData = "FetchingData",
+    }
+    /**
+     *
+     * An object containing the result of a function-evaluation operation
+     *
+     * [Api set: ExcelApi 1.2]
+     */
+    class FunctionResult<T> extends OfficeExtension.ClientObjectBase {
+        /**
+         * Retrieve the specified properties of the object.
+         */
+        retrieveAsync(option?: string[]): Promise<Interfaces.FunctionResultData<T>>;
+    }
+    /**
+     *
+     * An object for evaluating Excel functions.
+     *
+     * [Api set: ExcelApi 1.2]
+     */
+    class Functions extends OfficeExtension.ClientObjectBase {
+    }
+    module Interfaces {
+        /** An interface for updating data on the Runtime object, for use in "runtime.set({ ... })". */
+        interface RuntimeUpdateData {
+            /**
+             *
+             * Turn on/off JavaScript events in current taskpane or content add-in.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            enableEvents?: boolean;
+        }
+        /** An interface for updating data on the Application object, for use in "application.set({ ... })". */
+        interface ApplicationUpdateData {
+            /**
+             *
+             * Returns the calculation mode used in the workbook, as defined by the constants in Excel.CalculationMode. Possible values are: `Automatic`, where Excel controls recalculation; `AutomaticExceptTables`, where Excel controls recalculation but ignores changes in tables; `Manual`, where calculation is done when the user requests it.
+             *
+             * [Api set: ExcelApi 1.1 for get, 1.8 for set]
+             */
+            calculationMode?: ExcelOp.CalculationMode | "Automatic" | "AutomaticExceptTables" | "Manual";
+        }
+        /** An interface for updating data on the IterativeCalculation object, for use in "iterativeCalculation.set({ ... })". */
+        interface IterativeCalculationUpdateData {
+            /**
+             *
+             * True if Excel will use iteration to resolve circular references.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            enabled?: boolean;
+            /**
+             *
+             * Returns or sets the maximum amount of change between each iteration as Excel resolves circular references.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            maxChange?: number;
+            /**
+             *
+             * Returns or sets the maximum number of iterations that Excel can use to resolve a circular reference.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            maxIteration?: number;
+        }
+        /** An interface for updating data on the Workbook object, for use in "workbook.set({ ... })". */
+        interface WorkbookUpdateData {
+            /**
+             *
+             * True if all charts in the workbook are tracking the actual data points to which they are attached.
+            False if the charts track the index of the data points.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            chartDataPointTrack?: boolean;
+            /**
+             *
+             * True if no changes have been made to the specified workbook since it was last saved.
+            You can set this property to True if you want to close a modified workbook without either saving it or being prompted to save it.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            saved?: boolean;
+            /**
+             *
+             * True if the workbook uses the 1904 date system.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            use1904DateSystem?: boolean;
+            /**
+             *
+             * True if calculations in this workbook will be done using only the precision of the numbers as they're displayed.
+            Data will permanently lose accuracy when switching this property from false to true.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            usePrecisionAsDisplayed?: boolean;
+        }
+        /** An interface for updating data on the Worksheet object, for use in "worksheet.set({ ... })". */
+        interface WorksheetUpdateData {
+            /**
+             *
+             * Gets or sets the worksheet's gridlines flag.
+            This flag determines whether gridlines are visible to the user.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            gridlines?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's headings flag.
+            This flag determines whether headings are visible to the user.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            headings?: boolean;
+            /**
+             *
+             * The display name of the worksheet.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            name?: string;
+            /**
+             *
+             * The zero-based position of the worksheet within the workbook.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            position?: number;
+            /**
+             *
+             * Gets or sets the worksheet's gridlines flag.
+            This flag determines whether gridlines are visible to the user.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showGridlines?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's headings flag.
+            This flag determines whether headings are visible to the user.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showHeadings?: boolean;
+            /**
+             *
+             * Returns or sets the standard (default) width of all the columns in the worksheet.
+            One unit of column width is equal to the width of one character in the Normal style. For proportional fonts, the width of the character 0 (zero) is used.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            standardWidth?: number;
+            /**
+             *
+             * Gets or sets the worksheet tab color.
+            When retrieving the tab color, if the worksheet is invisible, the value will be null. If the worksheet is visible but the tab color is set to auto, an empty string will be returned. Otherwise, the property will be set to a color, in the form "#123456"
+            When setting the color, use an empty-string to set an "auto" color, or a real color otherwise.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            tabColor?: string;
+            /**
+             *
+             * The Visibility of the worksheet.
+             *
+             * [Api set: ExcelApi 1.1 for reading visibility; 1.2 for setting it.]
+             */
+            visibility?: ExcelOp.SheetVisibility | "Visible" | "Hidden" | "VeryHidden";
+        }
+        /** An interface for updating data on the WorksheetCollection object, for use in "worksheetCollection.set({ ... })". */
+        interface WorksheetCollectionUpdateData {
+            items?: ExcelOp.Interfaces.WorksheetData[];
+        }
+        /** An interface for updating data on the Range object, for use in "range.set({ ... })". */
+        interface RangeUpdateData {
+            /**
+             *
+             * Represents if all columns of the current range are hidden.
+             *
+             * [Api set: ExcelApi 1.2]
+             */
+            columnHidden?: boolean;
+            /**
+             *
+             * Represents the formula in A1-style notation.
+            When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            formulas?: any[][];
+            /**
+             *
+             * Represents the formula in A1-style notation, in the user's language and number-formatting locale.  For example, the English "=SUM(A1, 1.5)" formula would become "=SUMME(A1; 1,5)" in German.
+            When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            formulasLocal?: any[][];
+            /**
+             *
+             * Represents the formula in R1C1-style notation.
+            When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
+             *
+             * [Api set: ExcelApi 1.2]
+             */
+            formulasR1C1?: any[][];
+            /**
+             *
+             * Represents the hyperlink for the current range.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            hyperlink?: ExcelOp.RangeHyperlink;
+            /**
+             *
+             * Represents Excel's number format code for the given range.
+            When setting number format to a range, the value argument can be either a single value (string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            numberFormat?: any[][];
+            /**
+             *
+             * Represents Excel's number format code for the given range as a string in the language of the user.
+            When setting number format local to a range, the value argument can be either a single value (string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            numberFormatLocal?: any[][];
+            /**
+             *
+             * Represents if all rows of the current range are hidden.
+             *
+             * [Api set: ExcelApi 1.2]
+             */
+            rowHidden?: boolean;
+            /**
+             *
+             * Represents the style of the current range.
+            If the styles of the cells are inconsistent, null will be returned.
+            For custom styles, the style name will be returned. For built-in styles, a string representing a value in the BuiltInStyle enum will be returned.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            style?: string;
+            /**
+             *
+             * Represents the raw values of the specified range. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
+            When setting values to a range, the value argument can be either a single value (string, number or boolean) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            values?: any[][];
+        }
+        /** An interface for updating data on the RangeView object, for use in "rangeView.set({ ... })". */
+        interface RangeViewUpdateData {
+            /**
+             *
+             * Represents the formula in A1-style notation.
+             *
+             * [Api set: ExcelApi 1.3]
+             */
+            formulas?: any[][];
+            /**
+             *
+             * Represents the formula in A1-style notation, in the user's language and number-formatting locale.  For example, the English "=SUM(A1, 1.5)" formula would become "=SUMME(A1; 1,5)" in German.
+             *
+             * [Api set: ExcelApi 1.3]
+             */
+            formulasLocal?: any[][];
+            /**
+             *
+             * Represents the formula in R1C1-style notation.
+             *
+             * [Api set: ExcelApi 1.3]
+             */
+            formulasR1C1?: any[][];
+            /**
+             *
+             * Represents Excel's number format code for the given cell.
+             *
+             * [Api set: ExcelApi 1.3]
+             */
+            numberFormat?: any[][];
+            /**
+             *
+             * Represents the raw values of the specified range view. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
+             *
+             * [Api set: ExcelApi 1.3]
+             */
+            values?: any[][];
+        }
+        /** An interface for updating data on the RangeViewCollection object, for use in "rangeViewCollection.set({ ... })". */
+        interface RangeViewCollectionUpdateData {
+            items?: ExcelOp.Interfaces.RangeViewData[];
+        }
+        /** An interface for updating data on the SettingCollection object, for use in "settingCollection.set({ ... })". */
+        interface SettingCollectionUpdateData {
+            items?: ExcelOp.Interfaces.SettingData[];
+        }
+        /** An interface for updating data on the Setting object, for use in "setting.set({ ... })". */
+        interface SettingUpdateData {
+            /**
+             *
+             * Represents the value stored for this setting.
+             *
+             * [Api set: ExcelApi 1.4]
+             */
+            value?: any;
+        }
+        /** An interface for updating data on the NamedItemCollection object, for use in "namedItemCollection.set({ ... })". */
+        interface NamedItemCollectionUpdateData {
+            items?: ExcelOp.Interfaces.NamedItemData[];
+        }
+        /** An interface for updating data on the NamedItem object, for use in "namedItem.set({ ... })". */
+        interface NamedItemUpdateData {
+            /**
+             *
+             * Represents the comment associated with this name.
+             *
+             * [Api set: ExcelApi 1.4]
+             */
+            comment?: string;
+            /**
+             *
+             * Gets or sets the formula of the named item.  Formula always starts with a '=' sign.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            formula?: any;
+            /**
+             *
+             * Specifies whether the object is visible or not.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            visible?: boolean;
+        }
+        /** An interface for updating data on the BindingCollection object, for use in "bindingCollection.set({ ... })". */
+        interface BindingCollectionUpdateData {
+            items?: ExcelOp.Interfaces.BindingData[];
+        }
+        /** An interface for updating data on the TableCollection object, for use in "tableCollection.set({ ... })". */
+        interface TableCollectionUpdateData {
+            items?: ExcelOp.Interfaces.TableData[];
+        }
+        /** An interface for updating data on the TableScopedCollection object, for use in "tableScopedCollection.set({ ... })". */
+        interface TableScopedCollectionUpdateData {
+            items?: ExcelOp.Interfaces.TableData[];
+        }
+        /** An interface for updating data on the Table object, for use in "table.set({ ... })". */
+        interface TableUpdateData {
+            /**
+             *
+             * Indicates whether the first column contains special formatting.
+             *
+             * [Api set: ExcelApi 1.3]
+             */
+            highlightFirstColumn?: boolean;
+            /**
+             *
+             * Indicates whether the last column contains special formatting.
+             *
+             * [Api set: ExcelApi 1.3]
+             */
+            highlightLastColumn?: boolean;
+            /**
+             *
+             * Name of the table.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            name?: string;
+            /**
+             *
+             * Indicates whether the columns show banded formatting in which odd columns are highlighted differently from even ones to make reading the table easier.
+             *
+             * [Api set: ExcelApi 1.3]
+             */
+            showBandedColumns?: boolean;
+            /**
+             *
+             * Indicates whether the rows show banded formatting in which odd rows are highlighted differently from even ones to make reading the table easier.
+             *
+             * [Api set: ExcelApi 1.3]
+             */
+            showBandedRows?: boolean;
+            /**
+             *
+             * Indicates whether the filter buttons are visible at the top of each column header. Setting this is only allowed if the table contains a header row.
+             *
+             * [Api set: ExcelApi 1.3]
+             */
+            showFilterButton?: boolean;
+            /**
+             *
+             * Indicates whether the header row is visible or not. This value can be set to show or remove the header row.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            showHeaders?: boolean;
+            /**
+             *
+             * Indicates whether the total row is visible or not. This value can be set to show or remove the total row.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            showTotals?: boolean;
+            /**
+             *
+             * Constant value that represents the Table style. Possible values are: TableStyleLight1 thru TableStyleLight21, TableStyleMedium1 thru TableStyleMedium28, TableStyleStyleDark1 thru TableStyleStyleDark11. A custom user-defined style present in the workbook can also be specified.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            style?: string;
+        }
+        /** An interface for updating data on the TableColumnCollection object, for use in "tableColumnCollection.set({ ... })". */
+        interface TableColumnCollectionUpdateData {
+            items?: ExcelOp.Interfaces.TableColumnData[];
+        }
+        /** An interface for updating data on the TableColumn object, for use in "tableColumn.set({ ... })". */
+        interface TableColumnUpdateData {
+            /**
+             *
+             * Represents the name of the table column.
+             *
+             * [Api set: ExcelApi 1.1 for getting the name; 1.4 for setting it.]
+             */
+            name?: string;
+            /**
+             *
+             * Represents the raw values of the specified range. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            values?: any[][];
+        }
+        /** An interface for updating data on the TableRowCollection object, for use in "tableRowCollection.set({ ... })". */
+        interface TableRowCollectionUpdateData {
+            items?: ExcelOp.Interfaces.TableRowData[];
+        }
+        /** An interface for updating data on the TableRow object, for use in "tableRow.set({ ... })". */
+        interface TableRowUpdateData {
+            /**
+             *
+             * Represents the raw values of the specified range. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            values?: any[][];
+        }
+        /** An interface for updating data on the DataValidation object, for use in "dataValidation.set({ ... })". */
+        interface DataValidationUpdateData {
+            /**
+             *
+             * Error alert when user enters invalid data.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            errorAlert?: ExcelOp.DataValidationErrorAlert;
+            /**
+             *
+             * Ignore blanks: no data validation will be performed on blank cells, it defaults to true.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            ignoreBlanks?: boolean;
+            /**
+             *
+             * Prompt when users select a cell.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            prompt?: ExcelOp.DataValidationPrompt;
+            /**
+             *
+             * Data Validation rule that contains different type of data validation criteria.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rule?: ExcelOp.DataValidationRule;
+        }
+        /** An interface for updating data on the RangeFormat object, for use in "rangeFormat.set({ ... })". */
+        interface RangeFormatUpdateData {
+            /**
+             *
+             * Indicates if text is automatically indented when text alignment is set to equal distribution.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            autoIndent?: boolean;
+            /**
+             *
+             * Gets or sets the width of all colums within the range. If the column widths are not uniform, null will be returned.
+             *
+             * [Api set: ExcelApi 1.2]
+             */
+            columnWidth?: number;
+            /**
+             *
+             * Represents the horizontal alignment for the specified object. See Excel.HorizontalAlignment for details.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            horizontalAlignment?: ExcelOp.HorizontalAlignment | "General" | "Left" | "Center" | "Right" | "Fill" | "Justify" | "CenterAcrossSelection" | "Distributed";
+            /**
+             *
+             * An integer from 0 to 250 that indicates the indent level.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            indentLevel?: number;
+            /**
+             *
+             * The reading order for the range.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            readingOrder?: ExcelOp.ReadingOrder | "Context" | "LeftToRight" | "RightToLeft";
+            /**
+             *
+             * Gets or sets the height of all rows in the range. If the row heights are not uniform, null will be returned.
+             *
+             * [Api set: ExcelApi 1.2]
+             */
+            rowHeight?: number;
+            /**
+             *
+             * Indicates if text automatically shrinks to fit in the available column width.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            shrinkToFit?: boolean;
+            /**
+             *
+             * Gets or sets the text orientation of all the cells within the range.
+            The text orientation should be an integer either from -90 to 90, or 180 for vertically-oriented text.
+            If the orientation within a range are not uniform, then null will be returned.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            textOrientation?: number;
+            /**
+             *
+             * Determines if the row height of the Range object equals the standard height of the sheet.
+            Returns True if the row height of the Range object equals the standard height of the sheet.
+            Returns Null if the range contains more than one row and the rows aren't all the same height.
+            Returns False otherwise.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            useStandardHeight?: boolean;
+            /**
+             *
+             * Indicates whether the columnwidth of the Range object equals the standard width of the sheet.
+            Returns True if the column width of the Range object equals the standard width of the sheet.
+            Returns Null if the range contains more than one column and the columns aren't all the same height.
+            Returns False otherwise.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            useStandardWidth?: boolean;
+            /**
+             *
+             * Represents the vertical alignment for the specified object. See Excel.VerticalAlignment for details.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            verticalAlignment?: ExcelOp.VerticalAlignment | "Top" | "Center" | "Bottom" | "Justify" | "Distributed";
+            /**
+             *
+             * Indicates if Excel wraps the text in the object. A null value indicates that the entire range doesn't have uniform wrap setting
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            wrapText?: boolean;
+        }
+        /** An interface for updating data on the FormatProtection object, for use in "formatProtection.set({ ... })". */
+        interface FormatProtectionUpdateData {
+            /**
+             *
+             * Indicates if Excel hides the formula for the cells in the range. A null value indicates that the entire range doesn't have uniform formula hidden setting.
+             *
+             * [Api set: ExcelApi 1.2]
+             */
+            formulaHidden?: boolean;
+            /**
+             *
+             * Indicates if Excel locks the cells in the object. A null value indicates that the entire range doesn't have uniform lock setting.
+             *
+             * [Api set: ExcelApi 1.2]
+             */
+            locked?: boolean;
+        }
+        /** An interface for updating data on the RangeFill object, for use in "rangeFill.set({ ... })". */
+        interface RangeFillUpdateData {
+            /**
+             *
+             * HTML color code representing the color of the border line, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange")
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            color?: string;
+        }
+        /** An interface for updating data on the RangeBorder object, for use in "rangeBorder.set({ ... })". */
+        interface RangeBorderUpdateData {
+            /**
+             *
+             * HTML color code representing the color of the border line, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            color?: string;
+            /**
+             *
+             * One of the constants of line style specifying the line style for the border. See Excel.BorderLineStyle for details.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            style?: ExcelOp.BorderLineStyle | "None" | "Continuous" | "Dash" | "DashDot" | "DashDotDot" | "Dot" | "Double" | "SlantDashDot";
+            /**
+             *
+             * Specifies the weight of the border around a range. See Excel.BorderWeight for details.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            weight?: ExcelOp.BorderWeight | "Hairline" | "Thin" | "Medium" | "Thick";
+        }
+        /** An interface for updating data on the RangeBorderCollection object, for use in "rangeBorderCollection.set({ ... })". */
+        interface RangeBorderCollectionUpdateData {
+            items?: ExcelOp.Interfaces.RangeBorderData[];
+        }
+        /** An interface for updating data on the RangeFont object, for use in "rangeFont.set({ ... })". */
+        interface RangeFontUpdateData {
+            /**
+             *
+             * Represents the bold status of font.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            bold?: boolean;
+            /**
+             *
+             * HTML color code representation of the text color. E.g. #FF0000 represents Red.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            color?: string;
+            /**
+             *
+             * Represents the italic status of the font.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            italic?: boolean;
+            /**
+             *
+             * Font name (e.g. "Calibri")
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            name?: string;
+            /**
+             *
+             * Font size.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            size?: number;
+            /**
+             *
+             * Type of underline applied to the font. See Excel.RangeUnderlineStyle for details.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            underline?: ExcelOp.RangeUnderlineStyle | "None" | "Single" | "Double" | "SingleAccountant" | "DoubleAccountant";
+        }
+        /** An interface for updating data on the ChartCollection object, for use in "chartCollection.set({ ... })". */
+        interface ChartCollectionUpdateData {
+            items?: ExcelOp.Interfaces.ChartData[];
+        }
+        /** An interface for updating data on the Chart object, for use in "chart.set({ ... })". */
+        interface ChartUpdateData {
+            /**
+             *
+             * Returns or sets a ChartCategoryLabelLevel enumeration constant referring to
+            the level of where the category labels are being sourced from. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            categoryLabelLevel?: number;
+            /**
+             *
+             * Represents the type of the chart. See Excel.ChartType for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            chartType?: ExcelOp.ChartType | "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar";
+            /**
+             *
+             * Returns or sets an integer that represents the color scheme for the chart. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            colorScheme?: number;
+            /**
+             *
+             * Returns or sets the way that blank cells are plotted on a chart. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            displayBlanksAs?: ExcelOp.ChartDisplayBlanksAs | "NotPlotted" | "Zero" | "Interplotted";
+            /**
+             *
+             * Represents the height, in points, of the chart object.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            height?: number;
+            /**
+             *
+             * The distance, in points, from the left side of the chart to the worksheet origin.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            left?: number;
+            /**
+             *
+             * Represents the name of a chart object.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            name?: string;
+            /**
+             *
+             * Returns or sets the way columns or rows are used as data series on the chart. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            plotBy?: ExcelOp.ChartPlotBy | "Rows" | "Columns";
+            /**
+             *
+             * True if only visible cells are plotted. False if both visible and hidden cells are plotted. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            plotVisibleOnly?: boolean;
+            /**
+             *
+             * True if the chart area of the chart has rounded corners. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            roundedCorners?: boolean;
+            /**
+             *
+             * Returns or sets a ChartSeriesNameLevel enumeration constant referring to
+            the level of where the series names are being sourced from. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            seriesNameLevel?: number;
+            /**
+             *
+             * Represents whether to display all field buttons on a PivotChart.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            showAllFieldButtons?: boolean;
+            /**
+             *
+             * Represents whether to display axis field buttons on a PivotChart.
+            The ShowAxisFieldButtons property corresponds to the Show Axis Field Buttons command on the Field Buttons drop-down list of the Analyze tab, which is available when a PivotChart is selected.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showAxisFieldButtons?: boolean;
+            /**
+             *
+             * Represents whether to to show the data labels when the value is greater than the maximum value on the value axis.
+            If value axis became smaller than the size of data points, you can use this property to set whether to show the data labels.
+            This property applies to 2-D charts only.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showDataLabelsOverMaximum?: boolean;
+            /**
+             *
+             * Represents whether to display legend field buttons on a PivotChart.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showLegendFieldButtons?: boolean;
+            /**
+             *
+             * Represents whether to display report filter field buttons on a PivotChart.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showReportFilterFieldButtons?: boolean;
+            /**
+             *
+             * Represents whether to display show value field buttons on a PivotChart.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showValueFieldButtons?: boolean;
+            /**
+             *
+             * Returns or sets the chart style for the chart. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            style?: number;
+            /**
+             *
+             * Represents the distance, in points, from the top edge of the object to the top of row 1 (on a worksheet) or the top of the chart area (on a chart).
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            top?: number;
+            /**
+             *
+             * Represents the width, in points, of the chart object.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            width?: number;
+        }
+        /** An interface for updating data on the ChartSeriesCollection object, for use in "chartSeriesCollection.set({ ... })". */
+        interface ChartSeriesCollectionUpdateData {
+            items?: ExcelOp.Interfaces.ChartSeriesData[];
+        }
+        /** An interface for updating data on the ChartSeries object, for use in "chartSeries.set({ ... })". */
+        interface ChartSeriesUpdateData {
+            /**
+             *
+             * Returns or sets the group for the specified series. Read/Write
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            axisGroup?: ExcelOp.ChartAxisGroup | "Primary" | "Secondary";
+            /**
+             *
+             * Returns or sets the scale factor for bubbles in the specified chart group. Can be an integer value from 0 (zero) to 300, corresponding to a percentage of the default size. Applies only to bubble charts. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            bubbleScale?: number;
+            /**
+             *
+             * Represents the chart type of a series. See Excel.ChartType for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            chartType?: ExcelOp.ChartType | "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar";
+            /**
+             *
+             * Represents the doughnut hole size of a chart series.  Only valid on doughnut and doughnutExploded charts.
+            Throws an invalid argument exception on invalid charts.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            doughnutHoleSize?: number;
+            /**
+             *
+             * Returns or sets the explosion value for a pie-chart or doughnut-chart slice. Returns 0 (zero) if there's no explosion (the tip of the slice is in the center of the pie). Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            explosion?: number;
+            /**
+             *
+             * Boolean value representing if the series is filtered or not. Not applicable for surface charts.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            filtered?: boolean;
+            /**
+             *
+             * Returns or sets the angle of the first pie-chart or doughnut-chart slice, in degrees (clockwise from vertical). Applies only to pie, 3-D pie, and doughnut charts. Can be a value from 0 through 360. Read/Write
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            firstSliceAngle?: number;
+            /**
+             *
+             * Represents the gap width of a chart series.  Only valid on bar and column charts, as well as
+            specific classes of line and pie charts.  Throws an invalid argument exception on invalid charts.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            gapWidth?: number;
+            /**
+             *
+             * Boolean value representing if the series has data labels or not.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            hasDataLabels?: boolean;
+            /**
+             *
+             * True if Microsoft Excel show leaderlines for each datalabel in series. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            hasLeaderLines?: boolean;
+            /**
+             *
+             * True if Microsoft Excel inverts the pattern in the item when it corresponds to a negative number. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            invertIfNegative?: boolean;
+            /**
+             *
+             * Represents markers background color of a chart series.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            markerBackgroundColor?: string;
+            /**
+             *
+             * Represents markers foreground color of a chart series.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            markerForegroundColor?: string;
+            /**
+             *
+             * Represents marker size of a chart series.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            markerSize?: number;
+            /**
+             *
+             * Represents marker style of a chart series. See Excel.ChartMarkerStyle for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            markerStyle?: ExcelOp.ChartMarkerStyle | "Invalid" | "Automatic" | "None" | "Square" | "Diamond" | "Triangle" | "X" | "Star" | "Dot" | "Dash" | "Circle" | "Plus" | "Picture";
+            /**
+             *
+             * Represents the name of a series in a chart.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            name?: string;
+            /**
+             *
+             * Specifies how bars and columns are positioned. Can be a value between – 100 and 100. Applies only to 2-D bar and 2-D column charts. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            overlap?: number;
+            /**
+             *
+             * Represents the plot order of a chart series within the chart group.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            plotOrder?: number;
+            /**
+             *
+             * Returns or sets the size of the secondary section of either a pie of pie chart or a bar of pie chart, as a percentage of the size of the primary pie. Can be a value from 5 to 200. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            secondPlotSize?: number;
+            /**
+             *
+             * Boolean value representing if the series has a shadow or not.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            showShadow?: boolean;
+            /**
+             *
+             * Boolean value representing if the series is smooth or not. Only applicable for line and scatter charts.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            smooth?: boolean;
+            /**
+             *
+             * Returns or sets the way the two sections of either a pie of pie chart or a bar of pie chart are split. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            splitType?: ExcelOp.ChartSplitStype | "SplitByPosition" | "SplitByValue" | "SplitByPercentValue" | "SplitByCustomSplit";
+            /**
+             *
+             * Returns or sets the threshold value separating the two sections of either a pie of pie chart or a bar of pie chart. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            splitValue?: number;
+            /**
+             *
+             * True if Microsoft Excel assigns a different color or pattern to each data marker. The chart must contain only one series. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            varyByCategories?: boolean;
+        }
+        /** An interface for updating data on the ChartPointsCollection object, for use in "chartPointsCollection.set({ ... })". */
+        interface ChartPointsCollectionUpdateData {
+            items?: ExcelOp.Interfaces.ChartPointData[];
+        }
+        /** An interface for updating data on the ChartPoint object, for use in "chartPoint.set({ ... })". */
+        interface ChartPointUpdateData {
+            /**
+             *
+             * Represents whether a data point has datalabel. Not applicable for surface charts.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            hasDataLabel?: boolean;
+            /**
+             *
+             * HTML color code representation of the marker background color of data point. E.g. #FF0000 represents Red.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            markerBackgroundColor?: string;
+            /**
+             *
+             * HTML color code representation of the marker foreground color of data point. E.g. #FF0000 represents Red.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            markerForegroundColor?: string;
+            /**
+             *
+             * Represents marker size of data point.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            markerSize?: number;
+            /**
+             *
+             * Represents marker style of a chart data point. See Excel.ChartMarkerStyle for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            markerStyle?: ExcelOp.ChartMarkerStyle | "Invalid" | "Automatic" | "None" | "Square" | "Diamond" | "Triangle" | "X" | "Star" | "Dot" | "Dash" | "Circle" | "Plus" | "Picture";
+        }
+        /** An interface for updating data on the ChartAxis object, for use in "chartAxis.set({ ... })". */
+        interface ChartAxisUpdateData {
+            /**
+             *
+             * Represents the alignment for the specified axis tick label. See Excel.ChartTextHorizontalAlignment for detail.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            alignment?: ExcelOp.ChartTickLabelAlignment | "Center" | "Left" | "Right";
+            /**
+             *
+             * Returns or sets the base unit for the specified category axis.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            baseTimeUnit?: ExcelOp.ChartAxisTimeUnit | "Days" | "Months" | "Years";
+            /**
+             *
+             * Returns or sets the category axis type.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            categoryType?: ExcelOp.ChartAxisCategoryType | "Automatic" | "TextAxis" | "DateAxis";
+            /**
+             * [DEPRECATED; kept for back-compat with existing first-party solutions]. Please use `Position` instead.
+             * Represents the specified axis where the other axis crosses. See Excel.ChartAxisPosition for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            crosses?: ExcelOp.ChartAxisPosition | "Automatic" | "Maximum" | "Minimum" | "Custom";
+            /**
+             *
+             * Represents the axis display unit. See Excel.ChartAxisDisplayUnit for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            displayUnit?: ExcelOp.ChartAxisDisplayUnit | "None" | "Hundreds" | "Thousands" | "TenThousands" | "HundredThousands" | "Millions" | "TenMillions" | "HundredMillions" | "Billions" | "Trillions" | "Custom";
+            /**
+             *
+             * Represents whether value axis crosses the category axis between categories.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            isBetweenCategories?: boolean;
+            /**
+             *
+             * Represents the base of the logarithm when using logarithmic scales.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            logBase?: number;
+            /**
+             *
+             * Represents the type of major tick mark for the specified axis. See Excel.ChartAxisTickMark for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            majorTickMark?: ExcelOp.ChartAxisTickMark | "None" | "Cross" | "Inside" | "Outside";
+            /**
+             *
+             * Returns or sets the major unit scale value for the category axis when the CategoryType property is set to TimeScale.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            majorTimeUnitScale?: ExcelOp.ChartAxisTimeUnit | "Days" | "Months" | "Years";
+            /**
+             *
+             * Represents the interval between two major tick marks. Can be set to a numeric value or an empty string.  The returned value is always a number.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            majorUnit?: any;
+            /**
+             *
+             * Represents the maximum value on the value axis.  Can be set to a numeric value or an empty string (for automatic axis values).  The returned value is always a number.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            maximum?: any;
+            /**
+             *
+             * Represents the minimum value on the value axis. Can be set to a numeric value or an empty string (for automatic axis values).  The returned value is always a number.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            minimum?: any;
+            /**
+             *
+             * Represents the type of minor tick mark for the specified axis. See Excel.ChartAxisTickMark for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            minorTickMark?: ExcelOp.ChartAxisTickMark | "None" | "Cross" | "Inside" | "Outside";
+            /**
+             *
+             * Returns or sets the minor unit scale value for the category axis when the CategoryType property is set to TimeScale.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            minorTimeUnitScale?: ExcelOp.ChartAxisTimeUnit | "Days" | "Months" | "Years";
+            /**
+             *
+             * Represents the interval between two minor tick marks. "Can be set to a numeric value or an empty string (for automatic axis values). The returned value is always a number.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            minorUnit?: any;
+            /**
+             *
+             * Represents whether an axis is multilevel or not.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            multiLevel?: boolean;
+            /**
+             *
+             * Represents the format code for the axis tick label.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormat?: string;
+            /**
+             *
+             * Represents whether the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells).
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormatLinked?: boolean;
+            /**
+             *
+             * Represents the distance between the levels of labels, and the distance between the first level and the axis line. The value should be an integer from 0 to 1000.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            offset?: number;
+            /**
+             *
+             * Represents the specified axis position where the other axis crosses. See Excel.ChartAxisPosition for details.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            position?: ExcelOp.ChartAxisPosition | "Automatic" | "Maximum" | "Minimum" | "Custom";
+            /**
+             *
+             * Represents whether Microsoft Excel plots data points from last to first.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            reversePlotOrder?: boolean;
+            /**
+             *
+             * Represents the value axis scale type. See Excel.ChartAxisScaleType for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            scaleType?: ExcelOp.ChartAxisScaleType | "Linear" | "Logarithmic";
+            /**
+             *
+             * Represents whether the axis display unit label is visible.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            showDisplayUnitLabel?: boolean;
+            /**
+             *
+             * Represents the text orientation of the axis tick label. The value should be an integer either from -90 to 90, or 180 for vertically-oriented text.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            textOrientation?: any;
+            /**
+             *
+             * Represents the position of tick-mark labels on the specified axis. See Excel.ChartAxisTickLabelPosition for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            tickLabelPosition?: ExcelOp.ChartAxisTickLabelPosition | "NextToAxis" | "High" | "Low" | "None";
+            /**
+             *
+             * Represents the number of categories or series between tick-mark labels. Can be a value from 1 through 31999 or an empty string for automatic setting. The returned value is always a number.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            tickLabelSpacing?: any;
+            /**
+             *
+             * Represents the number of categories or series between tick marks.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            tickMarkSpacing?: number;
+            /**
+             *
+             * A boolean value represents the visibility of the axis.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            visible?: boolean;
+        }
+        /** An interface for updating data on the ChartAxisTitle object, for use in "chartAxisTitle.set({ ... })". */
+        interface ChartAxisTitleUpdateData {
+            /**
+             *
+             * Represents the axis title.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            text?: string;
+            /**
+             *
+             * A boolean that specifies the visibility of an axis title.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            visible?: boolean;
+        }
+        /** An interface for updating data on the ChartDataLabels object, for use in "chartDataLabels.set({ ... })". */
+        interface ChartDataLabelsUpdateData {
+            /**
+             *
+             * Represents whether data labels automatically generates appropriate text based on context.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            autoText?: boolean;
+            /**
+             *
+             * Represents the horizontal alignment for chart data label. See Excel.ChartTextHorizontalAlignment for details.
+            This property is valid only when TextOrientation of data label is 0.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            horizontalAlignment?: ExcelOp.ChartTextHorizontalAlignment | "Center" | "Left" | "Right" | "Justify" | "Distributed";
+            /**
+             *
+             * Represents the format code for data labels.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormat?: string;
+            /**
+             *
+             * Represents whether the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells).
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormatLinked?: boolean;
+            /**
+             *
+             * DataLabelPosition value that represents the position of the data label. See Excel.ChartDataLabelPosition for details.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            position?: ExcelOp.ChartDataLabelPosition | "Invalid" | "None" | "Center" | "InsideEnd" | "InsideBase" | "OutsideEnd" | "Left" | "Right" | "Top" | "Bottom" | "BestFit" | "Callout";
+            /**
+             *
+             * String representing the separator used for the data labels on a chart.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            separator?: string;
+            /**
+             *
+             * Boolean value representing if the data label bubble size is visible or not.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            showBubbleSize?: boolean;
+            /**
+             *
+             * Boolean value representing if the data label category name is visible or not.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            showCategoryName?: boolean;
+            /**
+             *
+             * Boolean value representing if the data label legend key is visible or not.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            showLegendKey?: boolean;
+            /**
+             *
+             * Boolean value representing if the data label percentage is visible or not.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            showPercentage?: boolean;
+            /**
+             *
+             * Boolean value representing if the data label series name is visible or not.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            showSeriesName?: boolean;
+            /**
+             *
+             * Boolean value representing if the data label value is visible or not.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            showValue?: boolean;
+            /**
+             *
+             * Represents the text orientation of data labels. The value should be an integer either from -90 to 90, or 180 for vertically-oriented text.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            textOrientation?: number;
+            /**
+             *
+             * Represents the vertical alignment of chart data label. See Excel.ChartTextVerticalAlignment for details.
+            This property is valid only when TextOrientation of data label is 90, -90 or 180.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            verticalAlignment?: ExcelOp.ChartTextVerticalAlignment | "Center" | "Bottom" | "Top" | "Justify" | "Distributed";
+        }
+        /** An interface for updating data on the ChartDataLabel object, for use in "chartDataLabel.set({ ... })". */
+        interface ChartDataLabelUpdateData {
+            /**
+             *
+             * Boolean value representing if data label automatically generates appropriate text based on context.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            autoText?: boolean;
+            /**
+             *
+             * String value that represents the formula of chart data label using A1-style notation.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            formula?: string;
+            /**
+             *
+             * Represents the horizontal alignment for chart data label. See Excel.ChartTextHorizontalAlignment for details.
+            This property is valid only when TextOrientation of data label is 90, -90 or 180.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            horizontalAlignment?: ExcelOp.ChartTextHorizontalAlignment | "Center" | "Left" | "Right" | "Justify" | "Distributed";
+            /**
+             *
+             * Represents the distance, in points, from the left edge of chart data label to the left edge of chart area. Null if chart data label is not visible.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            left?: number;
+            /**
+             *
+             * String value that represents the format code for data label.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormat?: string;
+            /**
+             *
+             * Boolean value representing if the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells).
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormatLinked?: boolean;
+            /**
+             *
+             * DataLabelPosition value that represents the position of the data label. See Excel.ChartDataLabelPosition for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            position?: ExcelOp.ChartDataLabelPosition | "Invalid" | "None" | "Center" | "InsideEnd" | "InsideBase" | "OutsideEnd" | "Left" | "Right" | "Top" | "Bottom" | "BestFit" | "Callout";
+            /**
+             *
+             * String representing the separator used for the data label on a chart.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            separator?: string;
+            /**
+             *
+             * Boolean value representing if the data label bubble size is visible or not.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            showBubbleSize?: boolean;
+            /**
+             *
+             * Boolean value representing if the data label category name is visible or not.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            showCategoryName?: boolean;
+            /**
+             *
+             * Boolean value representing if the data label legend key is visible or not.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            showLegendKey?: boolean;
+            /**
+             *
+             * Boolean value representing if the data label percentage is visible or not.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            showPercentage?: boolean;
+            /**
+             *
+             * Boolean value representing if the data label series name is visible or not.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            showSeriesName?: boolean;
+            /**
+             *
+             * Boolean value representing if the data label value is visible or not.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            showValue?: boolean;
+            /**
+             *
+             * String representing the text of the data label on a chart.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            text?: string;
+            /**
+             *
+             * Represents the text orientation of chart data label. The value should be an integer either from -90 to 90, or 180 for vertically-oriented text.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            textOrientation?: number;
+            /**
+             *
+             * Represents the distance, in points, from the top edge of chart data label to the top of chart area. Null if chart data label is not visible.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            top?: number;
+            /**
+             *
+             * Represents the vertical alignment of chart data label. See Excel.ChartTextVerticalAlignment for details.
+            This property is valid only when TextOrientation of data label is 0.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            verticalAlignment?: ExcelOp.ChartTextVerticalAlignment | "Center" | "Bottom" | "Top" | "Justify" | "Distributed";
+        }
+        /** An interface for updating data on the ChartErrorBars object, for use in "chartErrorBars.set({ ... })". */
+        interface ChartErrorBarsUpdateData {
+            /**
+             *
+             * Represents whether have the end style cap for the error bars.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            endStyleCap?: boolean;
+            /**
+             *
+             * Represents which error-bar parts to include. See Excel.ChartErrorBarsInclude for details.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            include?: ExcelOp.ChartErrorBarsInclude | "Both" | "MinusValues" | "PlusValues";
+            /**
+             *
+             * Represents the range marked by error bars. See Excel.ChartErrorBarsType for details.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            type?: ExcelOp.ChartErrorBarsType | "FixedValue" | "Percent" | "StDev" | "StError" | "Custom";
+            /**
+             *
+             * Represents whether shown error bars.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            visible?: boolean;
+        }
+        /** An interface for updating data on the ChartGridlines object, for use in "chartGridlines.set({ ... })". */
+        interface ChartGridlinesUpdateData {
+            /**
+             *
+             * Boolean value representing if the axis gridlines are visible or not.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            visible?: boolean;
+        }
+        /** An interface for updating data on the ChartLegend object, for use in "chartLegend.set({ ... })". */
+        interface ChartLegendUpdateData {
+            /**
+             *
+             * Represents the height, in points, of the legend on the chart. Null if legend is not visible.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            height?: number;
+            /**
+             *
+             * Represents the left, in points, of a chart legend. Null if legend is not visible.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            left?: number;
+            /**
+             *
+             * Boolean value for whether the chart legend should overlap with the main body of the chart.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            overlay?: boolean;
+            /**
+             *
+             * Represents the position of the legend on the chart. See Excel.ChartLegendPosition for details.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            position?: ExcelOp.ChartLegendPosition | "Invalid" | "Top" | "Bottom" | "Left" | "Right" | "Corner" | "Custom";
+            /**
+             *
+             * Represents if the legend has a shadow on the chart.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            showShadow?: boolean;
+            /**
+             *
+             * Represents the top of a chart legend.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            top?: number;
+            /**
+             *
+             * A boolean value the represents the visibility of a ChartLegend object.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            visible?: boolean;
+            /**
+             *
+             * Represents the width, in points, of the legend on the chart. Null if legend is not visible.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            width?: number;
+        }
+        /** An interface for updating data on the ChartLegendEntry object, for use in "chartLegendEntry.set({ ... })". */
+        interface ChartLegendEntryUpdateData {
+            /**
+             *
+             * Represents the visible of a chart legend entry.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            visible?: boolean;
+        }
+        /** An interface for updating data on the ChartLegendEntryCollection object, for use in "chartLegendEntryCollection.set({ ... })". */
+        interface ChartLegendEntryCollectionUpdateData {
+            items?: ExcelOp.Interfaces.ChartLegendEntryData[];
+        }
+        /** An interface for updating data on the ChartTitle object, for use in "chartTitle.set({ ... })". */
+        interface ChartTitleUpdateData {
+            /**
+             *
+             * Represents the horizontal alignment for chart title.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            horizontalAlignment?: ExcelOp.ChartTextHorizontalAlignment | "Center" | "Left" | "Right" | "Justify" | "Distributed";
+            /**
+             *
+             * Represents the distance, in points, from the left edge of chart title to the left edge of chart area. Null if chart title's not visible.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            left?: number;
+            /**
+             *
+             * Boolean value representing if the chart title will overlay the chart or not.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            overlay?: boolean;
+            /**
+             *
+             * Represents the position of chart title. See Excel.ChartTitlePosition for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            position?: ExcelOp.ChartTitlePosition | "Automatic" | "Top" | "Bottom" | "Left" | "Right";
+            /**
+             *
+             * Represents a boolean value that determines if the chart title has a shadow.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            showShadow?: boolean;
+            /**
+             *
+             * Represents the title text of a chart.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            text?: string;
+            /**
+             *
+             * Represents the text orientation of chart title. The value should be an integer either from -90 to 90, or 180 for vertically-oriented text.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            textOrientation?: number;
+            /**
+             *
+             * Represents the distance, in points, from the top edge of chart title to the top of chart area. Null if chart title's not visible.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            top?: number;
+            /**
+             *
+             * Represents the vertical alignment of chart title. See Excel.ChartTextVerticalAlignment for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            verticalAlignment?: ExcelOp.ChartTextVerticalAlignment | "Center" | "Bottom" | "Top" | "Justify" | "Distributed";
+            /**
+             *
+             * A boolean value the represents the visibility of a chart title object.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            visible?: boolean;
+        }
+        /** An interface for updating data on the ChartBorder object, for use in "chartBorder.set({ ... })". */
+        interface ChartBorderUpdateData {
+            /**
+             *
+             * HTML color code representing the color of borders in the chart.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            color?: string;
+            /**
+             *
+             * Represents the line style of the border. See Excel.ChartLineStyle for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            lineStyle?: ExcelOp.ChartLineStyle | "None" | "Continuous" | "Dash" | "DashDot" | "DashDotDot" | "Dot" | "Grey25" | "Grey50" | "Grey75" | "Automatic" | "RoundDot";
+            /**
+             *
+             * Represents weight of the border, in points.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            weight?: number;
+        }
+        /** An interface for updating data on the ChartLineFormat object, for use in "chartLineFormat.set({ ... })". */
+        interface ChartLineFormatUpdateData {
+            /**
+             *
+             * HTML color code representing the color of lines in the chart.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            color?: string;
+            /**
+             *
+             * Represents the line style. See Excel.ChartLineStyle for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            lineStyle?: ExcelOp.ChartLineStyle | "None" | "Continuous" | "Dash" | "DashDot" | "DashDotDot" | "Dot" | "Grey25" | "Grey50" | "Grey75" | "Automatic" | "RoundDot";
+            /**
+             *
+             * Represents weight of the line, in points.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            weight?: number;
+        }
+        /** An interface for updating data on the ChartFont object, for use in "chartFont.set({ ... })". */
+        interface ChartFontUpdateData {
+            /**
+             *
+             * Represents the bold status of font.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            bold?: boolean;
+            /**
+             *
+             * HTML color code representation of the text color. E.g. #FF0000 represents Red.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            color?: string;
+            /**
+             *
+             * Represents the italic status of the font.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            italic?: boolean;
+            /**
+             *
+             * Font name (e.g. "Calibri")
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            name?: string;
+            /**
+             *
+             * Size of the font (e.g. 11)
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            size?: number;
+            /**
+             *
+             * Type of underline applied to the font. See Excel.ChartUnderlineStyle for details.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            underline?: ExcelOp.ChartUnderlineStyle | "None" | "Single";
+        }
+        /** An interface for updating data on the ChartTrendline object, for use in "chartTrendline.set({ ... })". */
+        interface ChartTrendlineUpdateData {
+            /**
+             *
+             * Represents the number of periods that the trendline extends backward.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            backwardPeriod?: number;
+            /**
+             *
+             * Represents the number of periods that the trendline extends forward.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            forwardPeriod?: number;
+            /**
+             *
+             * Represents the intercept value of the trendline. Can be set to a numeric value or an empty string (for automatic values). The returned value is always a number.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            intercept?: any;
+            /**
+             *
+             * Represents the period of a chart trendline. Only applicable for trendline with MovingAverage type.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            movingAveragePeriod?: number;
+            /**
+             *
+             * Represents the name of the trendline. Can be set to a string value, or can be set to null value represents automatic values. The returned value is always a string
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            name?: string;
+            /**
+             *
+             * Represents the order of a chart trendline. Only applicable for trendline with Polynomial type.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            polynomialOrder?: number;
+            /**
+             *
+             * True if the equation for the trendline is displayed on the chart.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showEquation?: boolean;
+            /**
+             *
+             * True if the R-squared for the trendline is displayed on the chart.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showRSquared?: boolean;
+            /**
+             *
+             * Represents the type of a chart trendline.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            type?: ExcelOp.ChartTrendlineType | "Linear" | "Exponential" | "Logarithmic" | "MovingAverage" | "Polynomial" | "Power";
+        }
+        /** An interface for updating data on the ChartTrendlineCollection object, for use in "chartTrendlineCollection.set({ ... })". */
+        interface ChartTrendlineCollectionUpdateData {
+            items?: ExcelOp.Interfaces.ChartTrendlineData[];
+        }
+        /** An interface for updating data on the ChartTrendlineLabel object, for use in "chartTrendlineLabel.set({ ... })". */
+        interface ChartTrendlineLabelUpdateData {
+            /**
+             *
+             * Boolean value representing if trendline label automatically generates appropriate text based on context.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            autoText?: boolean;
+            /**
+             *
+             * String value that represents the formula of chart trendline label using A1-style notation.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            formula?: string;
+            /**
+             *
+             * Represents the horizontal alignment for chart trendline label. See Excel.ChartTextHorizontalAlignment for details.
+            This property is valid only when TextOrientation of trendline label is 90, -90 or 180.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            horizontalAlignment?: ExcelOp.ChartTextHorizontalAlignment | "Center" | "Left" | "Right" | "Justify" | "Distributed";
+            /**
+             *
+             * Represents the distance, in points, from the left edge of chart trendline label to the left edge of chart area. Null if chart trendline label is not visible.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            left?: number;
+            /**
+             *
+             * String value that represents the format code for trendline label.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormat?: string;
+            /**
+             *
+             * Boolean value representing if the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells).
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormatLinked?: boolean;
+            /**
+             *
+             * String representing the text of the trendline label on a chart.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            text?: string;
+            /**
+             *
+             * Represents the text orientation of chart trendline label. The value should be an integer either from -90 to 90, or 180 for vertically-oriented text.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            textOrientation?: number;
+            /**
+             *
+             * Represents the distance, in points, from the top edge of chart trendline label to the top of chart area. Null if chart trendline label is not visible.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            top?: number;
+            /**
+             *
+             * Represents the vertical alignment of chart trendline label. See Excel.ChartTextVerticalAlignment for details.
+            This property is valid only when TextOrientation of trendline label is 0.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            verticalAlignment?: ExcelOp.ChartTextVerticalAlignment | "Center" | "Bottom" | "Top" | "Justify" | "Distributed";
+        }
+        /** An interface for updating data on the ChartPlotArea object, for use in "chartPlotArea.set({ ... })". */
+        interface ChartPlotAreaUpdateData {
+            /**
+             *
+             * Represents the height value of plotArea.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            height?: number;
+            /**
+             *
+             * Represents the insideHeight value of plotArea.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            insideHeight?: number;
+            /**
+             *
+             * Represents the insideLeft value of plotArea.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            insideLeft?: number;
+            /**
+             *
+             * Represents the insideTop value of plotArea.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            insideTop?: number;
+            /**
+             *
+             * Represents the insideWidth value of plotArea.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            insideWidth?: number;
+            /**
+             *
+             * Represents the left value of plotArea.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            left?: number;
+            /**
+             *
+             * Represents the position of plotArea.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            position?: ExcelOp.ChartPlotAreaPosition | "Automatic" | "Custom";
+            /**
+             *
+             * Represents the top value of plotArea.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            top?: number;
+            /**
+             *
+             * Represents the width value of plotArea.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            width?: number;
+        }
+        /** An interface for updating data on the VisualCollection object, for use in "visualCollection.set({ ... })". */
+        interface VisualCollectionUpdateData {
+            items?: ExcelOp.Interfaces.VisualData[];
+        }
+        /** An interface for updating data on the VisualPropertyCollection object, for use in "visualPropertyCollection.set({ ... })". */
+        interface VisualPropertyCollectionUpdateData {
+            items?: ExcelOp.Interfaces.VisualPropertyData[];
+        }
+        /** An interface for updating data on the CustomXmlPartScopedCollection object, for use in "customXmlPartScopedCollection.set({ ... })". */
+        interface CustomXmlPartScopedCollectionUpdateData {
+            items?: ExcelOp.Interfaces.CustomXmlPartData[];
+        }
+        /** An interface for updating data on the CustomXmlPartCollection object, for use in "customXmlPartCollection.set({ ... })". */
+        interface CustomXmlPartCollectionUpdateData {
+            items?: ExcelOp.Interfaces.CustomXmlPartData[];
+        }
+        /** An interface for updating data on the PivotTableCollection object, for use in "pivotTableCollection.set({ ... })". */
+        interface PivotTableCollectionUpdateData {
+            items?: ExcelOp.Interfaces.PivotTableData[];
+        }
+        /** An interface for updating data on the PivotTable object, for use in "pivotTable.set({ ... })". */
+        interface PivotTableUpdateData {
+            /**
+             *
+             * True if the PivotTable report shows grand totals for columns.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            columnGrandTotals?: boolean;
+            /**
+             *
+             * True if the field list should be shown or hidden from the UI.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            enableFieldList?: boolean;
+            /**
+             *
+             * Name of the PivotTable.
+             *
+             * [Api set: ExcelApi 1.3]
+             */
+            name?: string;
+            /**
+             *
+             * True if the PivotTable report shows grand totals for rows.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rowGrandTotals?: boolean;
+        }
+        /** An interface for updating data on the PivotHierarchyCollection object, for use in "pivotHierarchyCollection.set({ ... })". */
+        interface PivotHierarchyCollectionUpdateData {
+            items?: ExcelOp.Interfaces.PivotHierarchyData[];
+        }
+        /** An interface for updating data on the PivotHierarchy object, for use in "pivotHierarchy.set({ ... })". */
+        interface PivotHierarchyUpdateData {
+            /**
+             *
+             * Name of the PivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            name?: string;
+        }
+        /** An interface for updating data on the RowColumnPivotHierarchyCollection object, for use in "rowColumnPivotHierarchyCollection.set({ ... })". */
+        interface RowColumnPivotHierarchyCollectionUpdateData {
+            /**
+             *
+             * Gets or sets the position of the built-in values field if it is applicable on the current axis.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            builtInValuesPosition?: number;
+            items?: ExcelOp.Interfaces.RowColumnPivotHierarchyData[];
+        }
+        /** An interface for updating data on the RowColumnPivotHierarchy object, for use in "rowColumnPivotHierarchy.set({ ... })". */
+        interface RowColumnPivotHierarchyUpdateData {
+            /**
+             *
+             * Name of the RowColumnPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            name?: string;
+            /**
+             *
+             * Number format of the RowColumnPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormat?: string;
+            /**
+             *
+             * Position of the RowColumnPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            position?: number;
+            /**
+             *
+             * Determines whether to show all items of the RowColumnPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showAllItems?: boolean;
+            /**
+             *
+             * Subtotals of the RowColumnPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            subtotals?: ExcelOp.Subtotals;
+        }
+        /** An interface for updating data on the FilterPivotHierarchyCollection object, for use in "filterPivotHierarchyCollection.set({ ... })". */
+        interface FilterPivotHierarchyCollectionUpdateData {
+            items?: ExcelOp.Interfaces.FilterPivotHierarchyData[];
+        }
+        /** An interface for updating data on the FilterPivotHierarchy object, for use in "filterPivotHierarchy.set({ ... })". */
+        interface FilterPivotHierarchyUpdateData {
+            /**
+             *
+             * Determines whether to allow multiple filter items.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            enableMultipleFilterItems?: boolean;
+            /**
+             *
+             * Name of the FilterPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            name?: string;
+            /**
+             *
+             * Number format of the FilterPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormat?: string;
+            /**
+             *
+             * Position of the FilterPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            position?: number;
+            /**
+             *
+             * Determines whether to show all items of the FilterPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showAllItems?: boolean;
+            /**
+             *
+             * Subtotals of the FilterPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            subtotals?: ExcelOp.Subtotals;
+        }
+        /** An interface for updating data on the DataPivotHierarchyCollection object, for use in "dataPivotHierarchyCollection.set({ ... })". */
+        interface DataPivotHierarchyCollectionUpdateData {
+            items?: ExcelOp.Interfaces.DataPivotHierarchyData[];
+        }
+        /** An interface for updating data on the DataPivotHierarchy object, for use in "dataPivotHierarchy.set({ ... })". */
+        interface DataPivotHierarchyUpdateData {
+            /**
+             *
+             * Name of the DataPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            name?: string;
+            /**
+             *
+             * Number format of the DataPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormat?: string;
+            /**
+             *
+             * Position of the DataPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            position?: number;
+            /**
+             *
+             * Determines whether the data should be sown as a specific summary calculation or not.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showAs?: ExcelOp.ShowAsRule;
+            /**
+             *
+             * Determines whether to show all items of the DataPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            summarizeBy?: ExcelOp.AggregationFunction | "Automatic" | "Sum" | "Count" | "Average" | "Max" | "Min" | "Product" | "CountNumbers" | "StandardDeviation" | "StandardDeviationP" | "Variation" | "VariationP";
+        }
+        /** An interface for updating data on the PivotFieldCollection object, for use in "pivotFieldCollection.set({ ... })". */
+        interface PivotFieldCollectionUpdateData {
+            items?: ExcelOp.Interfaces.PivotFieldData[];
+        }
+        /** An interface for updating data on the PivotField object, for use in "pivotField.set({ ... })". */
+        interface PivotFieldUpdateData {
+            /**
+             *
+             * Name of the PivotField.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            name?: string;
+        }
+        /** An interface for updating data on the PivotItemCollection object, for use in "pivotItemCollection.set({ ... })". */
+        interface PivotItemCollectionUpdateData {
+            items?: ExcelOp.Interfaces.PivotItemData[];
+        }
+        /** An interface for updating data on the PivotItem object, for use in "pivotItem.set({ ... })". */
+        interface PivotItemUpdateData {
+            /**
+             *
+             * Name of the PivotItem.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            name?: string;
+            /**
+             *
+             * Determines whether details are shown or not.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showDetail?: boolean;
+            /**
+             *
+             * Determines whether the PivotItem is visible or not.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            visible?: boolean;
+        }
+        /** An interface for updating data on the DocumentProperties object, for use in "documentProperties.set({ ... })". */
+        interface DocumentPropertiesUpdateData {
+            /**
+             *
+             * Gets or sets the author of the workbook.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            author?: string;
+            /**
+             *
+             * Gets or sets the category of the workbook.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            category?: string;
+            /**
+             *
+             * Gets or sets the comments of the workbook.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            comments?: string;
+            /**
+             *
+             * Gets or sets the company of the workbook.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            company?: string;
+            /**
+             *
+             * Gets or sets the keywords of the workbook.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            keywords?: string;
+            /**
+             *
+             * Gets or sets the manager of the workbook.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            manager?: string;
+            /**
+             *
+             * Gets the revision number of the workbook. Read only.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            revisionNumber?: number;
+            /**
+             *
+             * Gets or sets the subject of the workbook.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            subject?: string;
+            /**
+             *
+             * Gets or sets the title of the workbook.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            title?: string;
+        }
+        /** An interface for updating data on the CustomProperty object, for use in "customProperty.set({ ... })". */
+        interface CustomPropertyUpdateData {
+            /**
+             *
+             * Gets or sets the value of the custom property.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            value?: any;
+        }
+        /** An interface for updating data on the CustomPropertyCollection object, for use in "customPropertyCollection.set({ ... })". */
+        interface CustomPropertyCollectionUpdateData {
+            items?: ExcelOp.Interfaces.CustomPropertyData[];
+        }
+        /** An interface for updating data on the ConditionalFormatCollection object, for use in "conditionalFormatCollection.set({ ... })". */
+        interface ConditionalFormatCollectionUpdateData {
+            items?: ExcelOp.Interfaces.ConditionalFormatData[];
+        }
+        /** An interface for updating data on the ConditionalFormat object, for use in "conditionalFormat.set({ ... })". */
+        interface ConditionalFormatUpdateData {
+            /**
+             *
+             * The priority (or index) within the conditional format collection that this conditional format currently exists in. Changing this also
+            changes other conditional formats' priorities, to allow for a contiguous priority order.
+            Use a negative priority to begin from the back.
+            Priorities greater than than bounds will get and set to the maximum (or minimum if negative) priority.
+            Also note that if you change the priority, you have to re-fetch a new copy of the object at that new priority location if you want to make further changes to it.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            priority?: number;
+            /**
+             *
+             * If the conditions of this conditional format are met, no lower-priority formats shall take effect on that cell.
+            Null on databars, icon sets, and colorscales as there's no concept of StopIfTrue for these
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            stopIfTrue?: boolean;
+        }
+        /** An interface for updating data on the DataBarConditionalFormat object, for use in "dataBarConditionalFormat.set({ ... })". */
+        interface DataBarConditionalFormatUpdateData {
+            /**
+             *
+             * HTML color code representing the color of the Axis line, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
+            "" (empty string) if no axis is present or set.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            axisColor?: string;
+            /**
+             *
+             * Representation of how the axis is determined for an Excel data bar.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            axisFormat?: ExcelOp.ConditionalDataBarAxisFormat | "Automatic" | "None" | "CellMidPoint";
+            /**
+             *
+             * Represents the direction that the data bar graphic should be based on.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            barDirection?: ExcelOp.ConditionalDataBarDirection | "Context" | "LeftToRight" | "RightToLeft";
+            /**
+             *
+             * The rule for what consistutes the lower bound (and how to calculate it, if applicable) for a data bar.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            lowerBoundRule?: ExcelOp.ConditionalDataBarRule;
+            /**
+             *
+             * If true, hides the values from the cells where the data bar is applied.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            showDataBarOnly?: boolean;
+            /**
+             *
+             * The rule for what constitutes the upper bound (and how to calculate it, if applicable) for a data bar.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            upperBoundRule?: ExcelOp.ConditionalDataBarRule;
+        }
+        /** An interface for updating data on the ConditionalDataBarPositiveFormat object, for use in "conditionalDataBarPositiveFormat.set({ ... })". */
+        interface ConditionalDataBarPositiveFormatUpdateData {
+            /**
+             *
+             * HTML color code representing the color of the border line, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
+            "" (empty string) if no border is present or set.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            borderColor?: string;
+            /**
+             *
+             * HTML color code representing the fill color, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            fillColor?: string;
+            /**
+             *
+             * Boolean representation of whether or not the DataBar has a gradient.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            gradientFill?: boolean;
+        }
+        /** An interface for updating data on the ConditionalDataBarNegativeFormat object, for use in "conditionalDataBarNegativeFormat.set({ ... })". */
+        interface ConditionalDataBarNegativeFormatUpdateData {
+            /**
+             *
+             * HTML color code representing the color of the border line, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
+            "Empty String" if no border is present or set.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            borderColor?: string;
+            /**
+             *
+             * HTML color code representing the fill color, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            fillColor?: string;
+            /**
+             *
+             * Boolean representation of whether or not the negative DataBar has the same border color as the positive DataBar.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            matchPositiveBorderColor?: boolean;
+            /**
+             *
+             * Boolean representation of whether or not the negative DataBar has the same fill color as the positive DataBar.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            matchPositiveFillColor?: boolean;
+        }
+        /** An interface for updating data on the ConditionalFormatRule object, for use in "conditionalFormatRule.set({ ... })". */
+        interface ConditionalFormatRuleUpdateData {
+            /**
+             *
+             * The formula, if required, to evaluate the conditional format rule on.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            formula?: string;
+            /**
+             *
+             * The formula, if required, to evaluate the conditional format rule on in the user's language.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            formulaLocal?: string;
+            /**
+             *
+             * The formula, if required, to evaluate the conditional format rule on in R1C1-style notation.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            formulaR1C1?: string;
+        }
+        /** An interface for updating data on the IconSetConditionalFormat object, for use in "iconSetConditionalFormat.set({ ... })". */
+        interface IconSetConditionalFormatUpdateData {
+            /**
+             *
+             * An array of Criteria and IconSets for the rules and potential custom icons for conditional icons. Note that for the first criterion only the custom icon can be modified, while type, formula and operator will be ignored when set.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            criteria?: ExcelOp.ConditionalIconCriterion[];
+            /**
+             *
+             * If true, reverses the icon orders for the IconSet. Note that this cannot be set if custom icons are used.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            reverseIconOrder?: boolean;
+            /**
+             *
+             * If true, hides the values and only shows icons.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            showIconOnly?: boolean;
+            /**
+             *
+             * If set, displays the IconSet option for the conditional format.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            style?: ExcelOp.IconSet | "Invalid" | "ThreeArrows" | "ThreeArrowsGray" | "ThreeFlags" | "ThreeTrafficLights1" | "ThreeTrafficLights2" | "ThreeSigns" | "ThreeSymbols" | "ThreeSymbols2" | "FourArrows" | "FourArrowsGray" | "FourRedToBlack" | "FourRating" | "FourTrafficLights" | "FiveArrows" | "FiveArrowsGray" | "FiveRating" | "FiveQuarters" | "ThreeStars" | "ThreeTriangles" | "FiveBoxes";
+        }
+        /** An interface for updating data on the ColorScaleConditionalFormat object, for use in "colorScaleConditionalFormat.set({ ... })". */
+        interface ColorScaleConditionalFormatUpdateData {
+            /**
+             *
+             * The criteria of the color scale. Midpoint is optional when using a two point color scale.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            criteria?: ExcelOp.ConditionalColorScaleCriteria;
+        }
+        /** An interface for updating data on the TopBottomConditionalFormat object, for use in "topBottomConditionalFormat.set({ ... })". */
+        interface TopBottomConditionalFormatUpdateData {
+            /**
+             *
+             * The criteria of the Top/Bottom conditional format.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            rule?: ExcelOp.ConditionalTopBottomRule;
+        }
+        /** An interface for updating data on the PresetCriteriaConditionalFormat object, for use in "presetCriteriaConditionalFormat.set({ ... })". */
+        interface PresetCriteriaConditionalFormatUpdateData {
+            /**
+             *
+             * The rule of the conditional format.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            rule?: ExcelOp.ConditionalPresetCriteriaRule;
+        }
+        /** An interface for updating data on the TextConditionalFormat object, for use in "textConditionalFormat.set({ ... })". */
+        interface TextConditionalFormatUpdateData {
+            /**
+             *
+             * The rule of the conditional format.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            rule?: ExcelOp.ConditionalTextComparisonRule;
+        }
+        /** An interface for updating data on the CellValueConditionalFormat object, for use in "cellValueConditionalFormat.set({ ... })". */
+        interface CellValueConditionalFormatUpdateData {
+            /**
+             *
+             * Represents the Rule object on this conditional format.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            rule?: ExcelOp.ConditionalCellValueRule;
+        }
+        /** An interface for updating data on the ConditionalRangeFormat object, for use in "conditionalRangeFormat.set({ ... })". */
+        interface ConditionalRangeFormatUpdateData {
+            /**
+             *
+             * Represents Excel's number format code for the given range. Cleared if null is passed in.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            numberFormat?: any;
+        }
+        /** An interface for updating data on the ConditionalRangeFont object, for use in "conditionalRangeFont.set({ ... })". */
+        interface ConditionalRangeFontUpdateData {
+            /**
+             *
+             * Represents the bold status of font.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            bold?: boolean;
+            /**
+             *
+             * HTML color code representation of the text color. E.g. #FF0000 represents Red.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            color?: string;
+            /**
+             *
+             * Represents the italic status of the font.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            italic?: boolean;
+            /**
+             *
+             * Represents the strikethrough status of the font.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            strikethrough?: boolean;
+            /**
+             *
+             * Type of underline applied to the font. See Excel.ConditionalRangeFontUnderlineStyle for details.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            underline?: ExcelOp.ConditionalRangeFontUnderlineStyle | "None" | "Single" | "Double";
+        }
+        /** An interface for updating data on the ConditionalRangeFill object, for use in "conditionalRangeFill.set({ ... })". */
+        interface ConditionalRangeFillUpdateData {
+            /**
+             *
+             * HTML color code representing the color of the fill, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            color?: string;
+        }
+        /** An interface for updating data on the ConditionalRangeBorder object, for use in "conditionalRangeBorder.set({ ... })". */
+        interface ConditionalRangeBorderUpdateData {
+            /**
+             *
+             * HTML color code representing the color of the border line, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            color?: string;
+            /**
+             *
+             * One of the constants of line style specifying the line style for the border. See Excel.BorderLineStyle for details.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            style?: ExcelOp.ConditionalRangeBorderLineStyle | "None" | "Continuous" | "Dash" | "DashDot" | "DashDotDot" | "Dot";
+        }
+        /** An interface for updating data on the ConditionalRangeBorderCollection object, for use in "conditionalRangeBorderCollection.set({ ... })". */
+        interface ConditionalRangeBorderCollectionUpdateData {
+            items?: ExcelOp.Interfaces.ConditionalRangeBorderData[];
+        }
+        /** An interface for updating data on the CustomFunctionCollection object, for use in "customFunctionCollection.set({ ... })". */
+        interface CustomFunctionCollectionUpdateData {
+            items?: ExcelOp.Interfaces.CustomFunctionData[];
+        }
+        /** An interface for updating data on the Style object, for use in "style.set({ ... })". */
+        interface StyleUpdateData {
+            /**
+             *
+             * Indicates if text is automatically indented when the text alignment in a cell is set to equal distribution.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            addIndent?: boolean;
+            /**
+             *
+             * Indicates if text is automatically indented when the text alignment in a cell is set to equal distribution.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            autoIndent?: boolean;
+            /**
+             *
+             * Indicates if the formula will be hidden when the worksheet is protected.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            formulaHidden?: boolean;
+            /**
+             *
+             * Represents the horizontal alignment for the style. See Excel.HorizontalAlignment for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            horizontalAlignment?: ExcelOp.HorizontalAlignment | "General" | "Left" | "Center" | "Right" | "Fill" | "Justify" | "CenterAcrossSelection" | "Distributed";
+            /**
+             *
+             * Indicates if the style includes the AutoIndent, HorizontalAlignment, VerticalAlignment, WrapText, IndentLevel, and TextOrientation properties.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            includeAlignment?: boolean;
+            /**
+             *
+             * Indicates if the style includes the Color, ColorIndex, LineStyle, and Weight border properties.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            includeBorder?: boolean;
+            /**
+             *
+             * Indicates if the style includes the Background, Bold, Color, ColorIndex, FontStyle, Italic, Name, Size, Strikethrough, Subscript, Superscript, and Underline font properties.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            includeFont?: boolean;
+            /**
+             *
+             * Indicates if the style includes the NumberFormat property.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            includeNumber?: boolean;
+            /**
+             *
+             * Indicates if the style includes the Color, ColorIndex, InvertIfNegative, Pattern, PatternColor, and PatternColorIndex interior properties.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            includePatterns?: boolean;
+            /**
+             *
+             * Indicates if the style includes the FormulaHidden and Locked protection properties.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            includeProtection?: boolean;
+            /**
+             *
+             * An integer from 0 to 250 that indicates the indent level for the style.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            indentLevel?: number;
+            /**
+             *
+             * Indicates if the object is locked when the worksheet is protected.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            locked?: boolean;
+            /**
+             *
+             * The format code of the number format for the style.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            numberFormat?: string;
+            /**
+             *
+             * The localized format code of the number format for the style.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            numberFormatLocal?: string;
+            /**
+             *
+             * The text orientation for the style.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            orientation?: number;
+            /**
+             *
+             * The reading order for the style.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            readingOrder?: ExcelOp.ReadingOrder | "Context" | "LeftToRight" | "RightToLeft";
+            /**
+             *
+             * Indicates if text automatically shrinks to fit in the available column width.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            shrinkToFit?: boolean;
+            /**
+             *
+             * The text orientation for the style.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            textOrientation?: number;
+            /**
+             *
+             * Represents the vertical alignment for the style. See Excel.VerticalAlignment for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            verticalAlignment?: ExcelOp.VerticalAlignment | "Top" | "Center" | "Bottom" | "Justify" | "Distributed";
+            /**
+             *
+             * Indicates if Microsoft Excel wraps the text in the object.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            wrapText?: boolean;
+        }
+        /** An interface for updating data on the StyleCollection object, for use in "styleCollection.set({ ... })". */
+        interface StyleCollectionUpdateData {
+            items?: ExcelOp.Interfaces.StyleData[];
+        }
+        /** An interface for updating data on the PageLayout object, for use in "pageLayout.set({ ... })". */
+        interface PageLayoutUpdateData {
+            /**
+             *
+             * Gets or sets the worksheet's black and white print option.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            blackAndWhite?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's bottom page margin to use for printing in points.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            bottomMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's center horizontally flag. This flag determines whether the worksheet will be centered horizontally when it's printed.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerHorizontally?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's center vertically flag. This flag determines whether the worksheet will be centered vertically when it's printed.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerVertically?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's draft mode option. If true the sheet will be printed without graphics.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            draft?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's first page number to print. Null value represents "auto" page numbering.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            firstPageNumber?: number | "";
+            /**
+             *
+             * Gets or sets the worksheet's footer margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            footerMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's header margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            headerMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's left margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            leftMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's orientation of the page.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            orientation?: ExcelOp.PageOrientation | "Portrait" | "Landscape";
+            /**
+             *
+             * Gets or sets the worksheet's paper size of the page.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            paperSize?: ExcelOp.PaperType | "Letter" | "LetterSmall" | "Tabloid" | "Ledger" | "Legal" | "Statement" | "Executive" | "A3" | "A4" | "A4Small" | "A5" | "B4" | "B5" | "Folio" | "Quatro" | "Paper10x14" | "Paper11x17" | "Note" | "Envelope9" | "Envelope10" | "Envelope11" | "Envelope12" | "Envelope14" | "Csheet" | "Dsheet" | "Esheet" | "EnvelopeDL" | "EnvelopeC5" | "EnvelopeC3" | "EnvelopeC4" | "EnvelopeC6" | "EnvelopeC65" | "EnvelopeB4" | "EnvelopeB5" | "EnvelopeB6" | "EnvelopeItaly" | "EnvelopeMonarch" | "EnvelopePersonal" | "FanfoldUS" | "FanfoldStdGerman" | "FanfoldLegalGerman";
+            /**
+             *
+             * Gets or sets whether the worksheet's comments should be displayed when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printComments?: ExcelOp.PrintComments | "PrintNoComments" | "PrintEndSheet" | "PrintInPlace";
+            /**
+             *
+             * Gets or sets the worksheet's print errors option.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printErrors?: ExcelOp.PrintErrorType | "ErrorsDisplayed" | "ErrorsBlank" | "ErrorsDash" | "ErrorsNotAvailable";
+            /**
+             *
+             * Gets or sets the worksheet's print gridlines flag. This flag determines whether gridlines will be printed or not.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printGridlines?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's print headings flag. This flag determines whether headings will be printed or not.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printHeadings?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's page print order option. This specifies the order to use for processing the page number printed.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printOrder?: ExcelOp.PrintOrder | "DownThenOver" | "OverThenDown";
+            /**
+             *
+             * Gets or sets the worksheet's right margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rightMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's top margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            topMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's print zoom options.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            zoom?: ExcelOp.PageLayoutZoomOptions;
+        }
+        /** An interface for updating data on the HeaderFooter object, for use in "headerFooter.set({ ... })". */
+        interface HeaderFooterUpdateData {
+            /**
+             *
+             * Gets or sets the center footer of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerFooter?: string;
+            /**
+             *
+             * Gets or sets the center header of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerHeader?: string;
+            /**
+             *
+             * Gets or sets the left footer of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            leftFooter?: string;
+            /**
+             *
+             * Gets or sets the left header of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            leftHeader?: string;
+            /**
+             *
+             * Gets or sets the right footer of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rightFooter?: string;
+            /**
+             *
+             * Gets or sets the right header of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rightHeader?: string;
+        }
+        /** An interface for updating data on the HeaderFooterGroup object, for use in "headerFooterGroup.set({ ... })". */
+        interface HeaderFooterGroupUpdateData {
+            /**
+             *
+             * Gets or sets the state of which headers/footers are set. See Excel.HeaderFooterState for details.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            state?: ExcelOp.HeaderFooterState | "General" | "FirstGeneral" | "OddEven" | "FirstOddEven";
+            /**
+             *
+             * Gets or sets a flag indicating if headers/footers are aligned with the page margins set in the page layout options for the worksheet.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            useSheetMargins?: boolean;
+            /**
+             *
+             * Gets or sets a flag indicating if headers/footers should be scaled by the page percentage scale set in the page layout options for the worksheet.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            useSheetScale?: boolean;
+        }
+        /** An interface for updating data on the PageBreakCollection object, for use in "pageBreakCollection.set({ ... })". */
+        interface PageBreakCollectionUpdateData {
+            items?: ExcelOp.Interfaces.PageBreakData[];
+        }
+        /** An interface for updating data on the AreaCollection object, for use in "areaCollection.set({ ... })". */
+        interface AreaCollectionUpdateData {
+            items?: ExcelOp.Interfaces.RangeData[];
+        }
+        /** An interface for updating data on the ShapeCollection object, for use in "shapeCollection.set({ ... })". */
+        interface ShapeCollectionUpdateData {
+            items?: ExcelOp.Interfaces.ShapeData[];
+        }
+        /** An interface for updating data on the Shape object, for use in "shape.set({ ... })". */
+        interface ShapeUpdateData {
+            /**
+             *
+             * Represents the height, in points, of the shape.
+            Throws an invalid argument exception when set with negative value or zero as input.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            height?: number;
+            /**
+             *
+             * The distance, in points, from the left side of the shape to the left of the worksheet.
+            Throws an invalid argument exception when set with negative value as input.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            left?: number;
+            /**
+             *
+             * Represents the rotation, in degrees, of the shape.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rotation?: number;
+            /**
+             *
+             * The distance, in points, from the top edge of the shape to the top of the worksheet.
+            Throws an invalid argument exception when set with negative value as input.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            top?: number;
+            /**
+             *
+             * Represents the width, in points, of the shape.
+            Throws an invalid argument exception when set with negative value or zero as input.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            width?: number;
+        }
+        /** An interface describing the data returned by calling "runtime.retrieve()". */
+        interface RuntimeData {
+            /**
+             *
+             * Turn on/off JavaScript events in current taskpane or content add-in.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            enableEvents?: boolean;
+        }
+        /** An interface describing the data returned by calling "application.retrieve()". */
+        interface ApplicationData {
+            /**
+             *
+             * Returns the calculation mode used in the workbook, as defined by the constants in Excel.CalculationMode. Possible values are: `Automatic`, where Excel controls recalculation; `AutomaticExceptTables`, where Excel controls recalculation but ignores changes in tables; `Manual`, where calculation is done when the user requests it.
+             *
+             * [Api set: ExcelApi 1.1 for get, 1.8 for set]
+             */
+            calculationMode?: ExcelOp.CalculationMode | "Automatic" | "AutomaticExceptTables" | "Manual";
+        }
+        /** An interface describing the data returned by calling "iterativeCalculation.retrieve()". */
+        interface IterativeCalculationData {
+            /**
+             *
+             * True if Excel will use iteration to resolve circular references.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            enabled?: boolean;
+            /**
+             *
+             * Returns or sets the maximum amount of change between each iteration as Excel resolves circular references.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            maxChange?: number;
+            /**
+             *
+             * Returns or sets the maximum number of iterations that Excel can use to resolve a circular reference.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            maxIteration?: number;
+        }
+        /** An interface describing the data returned by calling "workbook.retrieve()". */
+        interface WorkbookData {
+            /**
+             *
+             * True if all charts in the workbook are tracking the actual data points to which they are attached.
+            False if the charts track the index of the data points.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            chartDataPointTrack?: boolean;
+            /**
+             *
+             * Gets the workbook name.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            name?: string;
+            /**
+             *
+             * True if the workbook is open in Read-only mode. Read-only.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            readOnly?: boolean;
+            /**
+             *
+             * True if no changes have been made to the specified workbook since it was last saved.
+            You can set this property to True if you want to close a modified workbook without either saving it or being prompted to save it.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            saved?: boolean;
+            /**
+             *
+             * True if the workbook uses the 1904 date system.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            use1904DateSystem?: boolean;
+            /**
+             *
+             * True if calculations in this workbook will be done using only the precision of the numbers as they're displayed.
+            Data will permanently lose accuracy when switching this property from false to true.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            usePrecisionAsDisplayed?: boolean;
+        }
+        /** An interface describing the data returned by calling "workbookProtection.retrieve()". */
+        interface WorkbookProtectionData {
+            /**
+             *
+             * Indicates if the workbook is protected. Read-Only.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            protected?: boolean;
+        }
+        /** An interface describing the data returned by calling "workbookCreated.retrieve()". */
+        interface WorkbookCreatedData {
+            /**
+             *
+             * Returns a value that uniquely identifies the WorkbookCreated object.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            id?: string;
+        }
+        /** An interface describing the data returned by calling "worksheet.retrieve()". */
+        interface WorksheetData {
+            /**
+             *
+             * Gets or sets the worksheet's gridlines flag.
+            This flag determines whether gridlines are visible to the user.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            gridlines?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's headings flag.
+            This flag determines whether headings are visible to the user.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            headings?: boolean;
+            /**
+             *
+             * Returns a value that uniquely identifies the worksheet in a given workbook. The value of the identifier remains the same even when the worksheet is renamed or moved. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            id?: string;
+            /**
+             *
+             * The display name of the worksheet.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            name?: string;
+            /**
+             *
+             * The zero-based position of the worksheet within the workbook.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            position?: number;
+            /**
+             *
+             * Gets or sets the worksheet's gridlines flag.
+            This flag determines whether gridlines are visible to the user.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showGridlines?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's headings flag.
+            This flag determines whether headings are visible to the user.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showHeadings?: boolean;
+            /**
+             *
+             * Returns the standard (default) height of all the rows in the worksheet, in points. Read-only.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            standardHeight?: number;
+            /**
+             *
+             * Returns or sets the standard (default) width of all the columns in the worksheet.
+            One unit of column width is equal to the width of one character in the Normal style. For proportional fonts, the width of the character 0 (zero) is used.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            standardWidth?: number;
+            /**
+             *
+             * Gets or sets the worksheet tab color.
+            When retrieving the tab color, if the worksheet is invisible, the value will be null. If the worksheet is visible but the tab color is set to auto, an empty string will be returned. Otherwise, the property will be set to a color, in the form "#123456"
+            When setting the color, use an empty-string to set an "auto" color, or a real color otherwise.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            tabColor?: string;
+            /**
+             *
+             * The Visibility of the worksheet.
+             *
+             * [Api set: ExcelApi 1.1 for reading visibility; 1.2 for setting it.]
+             */
+            visibility?: ExcelOp.SheetVisibility | "Visible" | "Hidden" | "VeryHidden";
+        }
+        /** An interface describing the data returned by calling "worksheetCollection.retrieve()". */
+        interface WorksheetCollectionData {
+            items?: ExcelOp.Interfaces.WorksheetData[];
+        }
+        /** An interface describing the data returned by calling "worksheetProtection.retrieve()". */
+        interface WorksheetProtectionData {
+            /**
+             *
+             * Sheet protection options.
+             *
+             * [Api set: ExcelApi 1.2]
+             */
+            options?: ExcelOp.WorksheetProtectionOptions;
+            /**
+             *
+             * Indicates if the worksheet is protected. Read-Only.
+             *
+             * [Api set: ExcelApi 1.2]
+             */
+            protected?: boolean;
+        }
+        /** An interface describing the data returned by calling "range.retrieve()". */
+        interface RangeData {
+            /**
+             *
+             * Represents the range reference in A1-style. Address value will contain the Sheet reference (e.g. Sheet1!A1:B4). Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            address?: string;
+            /**
+             *
+             * Represents range reference for the specified range in the language of the user. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            addressLocal?: string;
+            /**
+             *
+             * Number of cells in the range. This API will return -1 if the cell count exceeds 2^31-1 (2,147,483,647). Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            cellCount?: number;
+            /**
+             *
+             * Represents the total number of columns in the range. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            columnCount?: number;
+            /**
+             *
+             * Represents if all columns of the current range are hidden.
+             *
+             * [Api set: ExcelApi 1.2]
+             */
+            columnHidden?: boolean;
+            /**
+             *
+             * Represents the column number of the first cell in the range. Zero-indexed. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            columnIndex?: number;
+            /**
+             *
+             * Represents the formula in A1-style notation.
+            When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            formulas?: any[][];
+            /**
+             *
+             * Represents the formula in A1-style notation, in the user's language and number-formatting locale.  For example, the English "=SUM(A1, 1.5)" formula would become "=SUMME(A1; 1,5)" in German.
+            When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            formulasLocal?: any[][];
+            /**
+             *
+             * Represents the formula in R1C1-style notation.
+            When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
+             *
+             * [Api set: ExcelApi 1.2]
+             */
+            formulasR1C1?: any[][];
+            /**
+             *
+             * Represents if all cells of the current range are hidden.
+             *
+             * [Api set: ExcelApi 1.2]
+             */
+            hidden?: boolean;
+            /**
+             *
+             * Represents the hyperlink for the current range.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            hyperlink?: ExcelOp.RangeHyperlink;
+            /**
+             *
+             * Represents if the current range is an entire column.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            isEntireColumn?: boolean;
+            /**
+             *
+             * Represents if the current range is an entire row.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            isEntireRow?: boolean;
+            /**
+             *
+             * Represents the data type state of each cell. Read-only.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            linkedDataTypeState?: ExcelOp.LinkedDataTypeState[][];
+            /**
+             *
+             * Represents Excel's number format code for the given range.
+            When setting number format to a range, the value argument can be either a single value (string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            numberFormat?: any[][];
+            /**
+             *
+             * Represents Excel's number format code for the given range as a string in the language of the user.
+            When setting number format local to a range, the value argument can be either a single value (string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            numberFormatLocal?: any[][];
+            /**
+             *
+             * Returns the total number of rows in the range. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            rowCount?: number;
+            /**
+             *
+             * Represents if all rows of the current range are hidden.
+             *
+             * [Api set: ExcelApi 1.2]
+             */
+            rowHidden?: boolean;
+            /**
+             *
+             * Returns the row number of the first cell in the range. Zero-indexed. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            rowIndex?: number;
+            /**
+             *
+             * Represents the style of the current range.
+            If the styles of the cells are inconsistent, null will be returned.
+            For custom styles, the style name will be returned. For built-in styles, a string representing a value in the BuiltInStyle enum will be returned.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            style?: string;
+            /**
+             *
+             * Text values of the specified range. The Text value will not depend on the cell width. The # sign substitution that happens in Excel UI will not affect the text value returned by the API. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            text?: string[][];
+            /**
+             *
+             * Represents the type of data of each cell. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            valueTypes?: ExcelOp.RangeValueType[][];
+            /**
+             *
+             * Represents the raw values of the specified range. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
+            When setting values to a range, the value argument can be either a single value (string, number or boolean) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            values?: any[][];
+        }
+        /** An interface describing the data returned by calling "rangeView.retrieve()". */
+        interface RangeViewData {
+            /**
+             *
+             * Represents the cell addresses of the RangeView.
+             *
+             * [Api set: ExcelApi 1.3]
+             */
+            cellAddresses?: any[][];
+            /**
+             *
+             * Returns the number of visible columns. Read-only.
+             *
+             * [Api set: ExcelApi 1.3]
+             */
+            columnCount?: number;
+            /**
+             *
+             * Represents the formula in A1-style notation.
+             *
+             * [Api set: ExcelApi 1.3]
+             */
+            formulas?: any[][];
+            /**
+             *
+             * Represents the formula in A1-style notation, in the user's language and number-formatting locale.  For example, the English "=SUM(A1, 1.5)" formula would become "=SUMME(A1; 1,5)" in German.
+             *
+             * [Api set: ExcelApi 1.3]
+             */
+            formulasLocal?: any[][];
+            /**
+             *
+             * Represents the formula in R1C1-style notation.
+             *
+             * [Api set: ExcelApi 1.3]
+             */
+            formulasR1C1?: any[][];
+            /**
+             *
+             * Returns a value that represents the index of the RangeView. Read-only.
+             *
+             * [Api set: ExcelApi 1.3]
+             */
+            index?: number;
+            /**
+             *
+             * Represents Excel's number format code for the given cell.
+             *
+             * [Api set: ExcelApi 1.3]
+             */
+            numberFormat?: any[][];
+            /**
+             *
+             * Returns the number of visible rows. Read-only.
+             *
+             * [Api set: ExcelApi 1.3]
+             */
+            rowCount?: number;
+            /**
+             *
+             * Text values of the specified range. The Text value will not depend on the cell width. The # sign substitution that happens in Excel UI will not affect the text value returned by the API. Read-only.
+             *
+             * [Api set: ExcelApi 1.3]
+             */
+            text?: string[][];
+            /**
+             *
+             * Represents the type of data of each cell. Read-only.
+             *
+             * [Api set: ExcelApi 1.3]
+             */
+            valueTypes?: ExcelOp.RangeValueType[][];
+            /**
+             *
+             * Represents the raw values of the specified range view. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
+             *
+             * [Api set: ExcelApi 1.3]
+             */
+            values?: any[][];
+        }
+        /** An interface describing the data returned by calling "rangeViewCollection.retrieve()". */
+        interface RangeViewCollectionData {
+            items?: ExcelOp.Interfaces.RangeViewData[];
+        }
+        /** An interface describing the data returned by calling "settingCollection.retrieve()". */
+        interface SettingCollectionData {
+            items?: ExcelOp.Interfaces.SettingData[];
+        }
+        /** An interface describing the data returned by calling "setting.retrieve()". */
+        interface SettingData {
+            /**
+             *
+             * Returns the key that represents the id of the Setting. Read-only.
+             *
+             * [Api set: ExcelApi 1.4]
+             */
+            key?: string;
+            /**
+             *
+             * Represents the value stored for this setting.
+             *
+             * [Api set: ExcelApi 1.4]
+             */
+            value?: any;
+        }
+        /** An interface describing the data returned by calling "namedItemCollection.retrieve()". */
+        interface NamedItemCollectionData {
+            items?: ExcelOp.Interfaces.NamedItemData[];
+        }
+        /** An interface describing the data returned by calling "namedItem.retrieve()". */
+        interface NamedItemData {
+            /**
+             *
+             * Represents the comment associated with this name.
+             *
+             * [Api set: ExcelApi 1.4]
+             */
+            comment?: string;
+            /**
+             *
+             * Gets or sets the formula of the named item.  Formula always starts with a '=' sign.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            formula?: any;
+            /**
+             *
+             * The name of the object. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            name?: string;
+            /**
+             *
+             * Indicates whether the name is scoped to the workbook or to a specific worksheet. Possible values are: Worksheet, Workbook. Read-only.
+             *
+             * [Api set: ExcelApi 1.4]
+             */
+            scope?: ExcelOp.NamedItemScope | "Worksheet" | "Workbook";
+            /**
+             *
+             * Indicates the type of the value returned by the name's formula. See Excel.NamedItemType for details. Read-only.
+             *
+             * [Api set: ExcelApi 1.1 for String,Integer,Double,Boolean,Range,Error; 1.7 for Array]
+             */
+            type?: ExcelOp.NamedItemType | "String" | "Integer" | "Double" | "Boolean" | "Range" | "Error" | "Array";
+            /**
+             *
+             * Represents the value computed by the name's formula. For a named range, will return the range address. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            value?: any;
+            /**
+             *
+             * Specifies whether the object is visible or not.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            visible?: boolean;
+        }
+        /** An interface describing the data returned by calling "namedItemArrayValues.retrieve()". */
+        interface NamedItemArrayValuesData {
+            /**
+             *
+             * Represents the types for each item in the named item array
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            types?: ExcelOp.RangeValueType[][];
+            /**
+             *
+             * Represents the values of each item in the named item array.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            values?: any[][];
+        }
+        /** An interface describing the data returned by calling "binding.retrieve()". */
+        interface BindingData {
+            /**
+             *
+             * Represents binding identifier. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            id?: string;
+            /**
+             *
+             * Returns the type of the binding. See Excel.BindingType for details. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            type?: ExcelOp.BindingType | "Range" | "Table" | "Text";
+        }
+        /** An interface describing the data returned by calling "bindingCollection.retrieve()". */
+        interface BindingCollectionData {
+            /**
+             *
+             * Returns the number of bindings in the collection. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            count?: number;
+            items?: ExcelOp.Interfaces.BindingData[];
+        }
+        /** An interface describing the data returned by calling "tableCollection.retrieve()". */
+        interface TableCollectionData {
+            /**
+             *
+             * Returns the number of tables in the workbook. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            count?: number;
+            items?: ExcelOp.Interfaces.TableData[];
+        }
+        /** An interface describing the data returned by calling "tableScopedCollection.retrieve()". */
+        interface TableScopedCollectionData {
+            items?: ExcelOp.Interfaces.TableData[];
+        }
+        /** An interface describing the data returned by calling "table.retrieve()". */
+        interface TableData {
+            /**
+             *
+             * Indicates whether the first column contains special formatting.
+             *
+             * [Api set: ExcelApi 1.3]
+             */
+            highlightFirstColumn?: boolean;
+            /**
+             *
+             * Indicates whether the last column contains special formatting.
+             *
+             * [Api set: ExcelApi 1.3]
+             */
+            highlightLastColumn?: boolean;
+            /**
+             *
+             * Returns a value that uniquely identifies the table in a given workbook. The value of the identifier remains the same even when the table is renamed. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            id?: string;
+            /**
+             *
+             * Returns a numeric id.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            legacyId?: string;
+            /**
+             *
+             * Name of the table.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            name?: string;
+            /**
+             *
+             * Indicates whether the columns show banded formatting in which odd columns are highlighted differently from even ones to make reading the table easier.
+             *
+             * [Api set: ExcelApi 1.3]
+             */
+            showBandedColumns?: boolean;
+            /**
+             *
+             * Indicates whether the rows show banded formatting in which odd rows are highlighted differently from even ones to make reading the table easier.
+             *
+             * [Api set: ExcelApi 1.3]
+             */
+            showBandedRows?: boolean;
+            /**
+             *
+             * Indicates whether the filter buttons are visible at the top of each column header. Setting this is only allowed if the table contains a header row.
+             *
+             * [Api set: ExcelApi 1.3]
+             */
+            showFilterButton?: boolean;
+            /**
+             *
+             * Indicates whether the header row is visible or not. This value can be set to show or remove the header row.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            showHeaders?: boolean;
+            /**
+             *
+             * Indicates whether the total row is visible or not. This value can be set to show or remove the total row.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            showTotals?: boolean;
+            /**
+             *
+             * Constant value that represents the Table style. Possible values are: TableStyleLight1 thru TableStyleLight21, TableStyleMedium1 thru TableStyleMedium28, TableStyleStyleDark1 thru TableStyleStyleDark11. A custom user-defined style present in the workbook can also be specified.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            style?: string;
+        }
+        /** An interface describing the data returned by calling "tableColumnCollection.retrieve()". */
+        interface TableColumnCollectionData {
+            /**
+             *
+             * Returns the number of columns in the table. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            count?: number;
+            items?: ExcelOp.Interfaces.TableColumnData[];
+        }
+        /** An interface describing the data returned by calling "tableColumn.retrieve()". */
+        interface TableColumnData {
+            /**
+             *
+             * Returns a unique key that identifies the column within the table. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            id?: number;
+            /**
+             *
+             * Returns the index number of the column within the columns collection of the table. Zero-indexed. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            index?: number;
+            /**
+             *
+             * Represents the name of the table column.
+             *
+             * [Api set: ExcelApi 1.1 for getting the name; 1.4 for setting it.]
+             */
+            name?: string;
+            /**
+             *
+             * Represents the raw values of the specified range. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            values?: any[][];
+        }
+        /** An interface describing the data returned by calling "tableRowCollection.retrieve()". */
+        interface TableRowCollectionData {
+            /**
+             *
+             * Returns the number of rows in the table. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            count?: number;
+            items?: ExcelOp.Interfaces.TableRowData[];
+        }
+        /** An interface describing the data returned by calling "tableRow.retrieve()". */
+        interface TableRowData {
+            /**
+             *
+             * Returns the index number of the row within the rows collection of the table. Zero-indexed. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            index?: number;
+            /**
+             *
+             * Represents the raw values of the specified range. The data returned could be of type string, number, or a boolean. Cell that contain an error will return the error string.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            values?: any[][];
+        }
+        /** An interface describing the data returned by calling "dataValidation.retrieve()". */
+        interface DataValidationData {
+            /**
+             *
+             * Error alert when user enters invalid data.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            errorAlert?: ExcelOp.DataValidationErrorAlert;
+            /**
+             *
+             * Ignore blanks: no data validation will be performed on blank cells, it defaults to true.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            ignoreBlanks?: boolean;
+            /**
+             *
+             * Prompt when users select a cell.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            prompt?: ExcelOp.DataValidationPrompt;
+            /**
+             *
+             * Data Validation rule that contains different type of data validation criteria.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rule?: ExcelOp.DataValidationRule;
+            /**
+             *
+             * Type of the data validation, see Excel.DataValidationType for details.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            type?: ExcelOp.DataValidationType | "None" | "WholeNumber" | "Decimal" | "List" | "Date" | "Time" | "TextLength" | "Custom" | "Inconsistent" | "MixedCriteria";
+            /**
+             *
+             * Represents if all cell values are valid according to the data validation rules.
+            Returns true if all cell values are valid, or false if all cell values are invalid.
+            Returns null if there are both valid and invalid cell values within the range.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            valid?: boolean;
+        }
+        /** An interface describing the data returned by calling "removeDuplicatesResult.retrieve()". */
+        interface RemoveDuplicatesResultData {
+            /**
+             *
+             * Number of duplicated rows removed by the operation.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            removed?: number;
+            /**
+             *
+             * Number of remaining unique rows present in the resulting range.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            uniqueRemaining?: number;
+        }
+        /** An interface describing the data returned by calling "rangeFormat.retrieve()". */
+        interface RangeFormatData {
+            /**
+             *
+             * Indicates if text is automatically indented when text alignment is set to equal distribution.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            autoIndent?: boolean;
+            /**
+             *
+             * Gets or sets the width of all colums within the range. If the column widths are not uniform, null will be returned.
+             *
+             * [Api set: ExcelApi 1.2]
+             */
+            columnWidth?: number;
+            /**
+             *
+             * Represents the horizontal alignment for the specified object. See Excel.HorizontalAlignment for details.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            horizontalAlignment?: ExcelOp.HorizontalAlignment | "General" | "Left" | "Center" | "Right" | "Fill" | "Justify" | "CenterAcrossSelection" | "Distributed";
+            /**
+             *
+             * An integer from 0 to 250 that indicates the indent level.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            indentLevel?: number;
+            /**
+             *
+             * Returns the distance, in points, from left edge of the worksheet to left edge of the range. Read-only.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            left?: number;
+            /**
+             *
+             * The reading order for the range.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            readingOrder?: ExcelOp.ReadingOrder | "Context" | "LeftToRight" | "RightToLeft";
+            /**
+             *
+             * Gets or sets the height of all rows in the range. If the row heights are not uniform, null will be returned.
+             *
+             * [Api set: ExcelApi 1.2]
+             */
+            rowHeight?: number;
+            /**
+             *
+             * Indicates if text automatically shrinks to fit in the available column width.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            shrinkToFit?: boolean;
+            /**
+             *
+             * Gets or sets the text orientation of all the cells within the range.
+            The text orientation should be an integer either from -90 to 90, or 180 for vertically-oriented text.
+            If the orientation within a range are not uniform, then null will be returned.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            textOrientation?: number;
+            /**
+             *
+             * Returns the distance, in points, from top edge of the worksheet to top edge of the range. Read-only.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            top?: number;
+            /**
+             *
+             * Determines if the row height of the Range object equals the standard height of the sheet.
+            Returns True if the row height of the Range object equals the standard height of the sheet.
+            Returns Null if the range contains more than one row and the rows aren't all the same height.
+            Returns False otherwise.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            useStandardHeight?: boolean;
+            /**
+             *
+             * Indicates whether the columnwidth of the Range object equals the standard width of the sheet.
+            Returns True if the column width of the Range object equals the standard width of the sheet.
+            Returns Null if the range contains more than one column and the columns aren't all the same height.
+            Returns False otherwise.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            useStandardWidth?: boolean;
+            /**
+             *
+             * Represents the vertical alignment for the specified object. See Excel.VerticalAlignment for details.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            verticalAlignment?: ExcelOp.VerticalAlignment | "Top" | "Center" | "Bottom" | "Justify" | "Distributed";
+            /**
+             *
+             * Indicates if Excel wraps the text in the object. A null value indicates that the entire range doesn't have uniform wrap setting
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            wrapText?: boolean;
+        }
+        /** An interface describing the data returned by calling "formatProtection.retrieve()". */
+        interface FormatProtectionData {
+            /**
+             *
+             * Indicates if Excel hides the formula for the cells in the range. A null value indicates that the entire range doesn't have uniform formula hidden setting.
+             *
+             * [Api set: ExcelApi 1.2]
+             */
+            formulaHidden?: boolean;
+            /**
+             *
+             * Indicates if Excel locks the cells in the object. A null value indicates that the entire range doesn't have uniform lock setting.
+             *
+             * [Api set: ExcelApi 1.2]
+             */
+            locked?: boolean;
+        }
+        /** An interface describing the data returned by calling "rangeFill.retrieve()". */
+        interface RangeFillData {
+            /**
+             *
+             * HTML color code representing the color of the border line, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange")
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            color?: string;
+        }
+        /** An interface describing the data returned by calling "rangeBorder.retrieve()". */
+        interface RangeBorderData {
+            /**
+             *
+             * HTML color code representing the color of the border line, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            color?: string;
+            /**
+             *
+             * Represents border identifier. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            id?: ExcelOp.BorderIndex | "EdgeTop" | "EdgeBottom" | "EdgeLeft" | "EdgeRight" | "InsideVertical" | "InsideHorizontal" | "DiagonalDown" | "DiagonalUp";
+            /**
+             *
+             * Constant value that indicates the specific side of the border. See Excel.BorderIndex for details. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            sideIndex?: ExcelOp.BorderIndex | "EdgeTop" | "EdgeBottom" | "EdgeLeft" | "EdgeRight" | "InsideVertical" | "InsideHorizontal" | "DiagonalDown" | "DiagonalUp";
+            /**
+             *
+             * One of the constants of line style specifying the line style for the border. See Excel.BorderLineStyle for details.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            style?: ExcelOp.BorderLineStyle | "None" | "Continuous" | "Dash" | "DashDot" | "DashDotDot" | "Dot" | "Double" | "SlantDashDot";
+            /**
+             *
+             * Specifies the weight of the border around a range. See Excel.BorderWeight for details.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            weight?: ExcelOp.BorderWeight | "Hairline" | "Thin" | "Medium" | "Thick";
+        }
+        /** An interface describing the data returned by calling "rangeBorderCollection.retrieve()". */
+        interface RangeBorderCollectionData {
+            /**
+             *
+             * Number of border objects in the collection. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            count?: number;
+            items?: ExcelOp.Interfaces.RangeBorderData[];
+        }
+        /** An interface describing the data returned by calling "rangeFont.retrieve()". */
+        interface RangeFontData {
+            /**
+             *
+             * Represents the bold status of font.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            bold?: boolean;
+            /**
+             *
+             * HTML color code representation of the text color. E.g. #FF0000 represents Red.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            color?: string;
+            /**
+             *
+             * Represents the italic status of the font.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            italic?: boolean;
+            /**
+             *
+             * Font name (e.g. "Calibri")
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            name?: string;
+            /**
+             *
+             * Font size.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            size?: number;
+            /**
+             *
+             * Type of underline applied to the font. See Excel.RangeUnderlineStyle for details.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            underline?: ExcelOp.RangeUnderlineStyle | "None" | "Single" | "Double" | "SingleAccountant" | "DoubleAccountant";
+        }
+        /** An interface describing the data returned by calling "chartCollection.retrieve()". */
+        interface ChartCollectionData {
+            /**
+             *
+             * Returns the number of charts in the worksheet. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            count?: number;
+            items?: ExcelOp.Interfaces.ChartData[];
+        }
+        /** An interface describing the data returned by calling "chart.retrieve()". */
+        interface ChartData {
+            /**
+             *
+             * Returns or sets a ChartCategoryLabelLevel enumeration constant referring to
+            the level of where the category labels are being sourced from. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            categoryLabelLevel?: number;
+            /**
+             *
+             * Represents the type of the chart. See Excel.ChartType for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            chartType?: ExcelOp.ChartType | "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar";
+            /**
+             *
+             * Returns or sets an integer that represents the color scheme for the chart. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            colorScheme?: number;
+            /**
+             *
+             * Returns or sets the way that blank cells are plotted on a chart. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            displayBlanksAs?: ExcelOp.ChartDisplayBlanksAs | "NotPlotted" | "Zero" | "Interplotted";
+            /**
+             *
+             * Represents the height, in points, of the chart object.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            height?: number;
+            /**
+             *
+             * The unique id of chart. Read-only.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            id?: string;
+            /**
+             *
+             * The distance, in points, from the left side of the chart to the worksheet origin.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            left?: number;
+            /**
+             *
+             * Represents the name of a chart object.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            name?: string;
+            /**
+             *
+             * Returns or sets the way columns or rows are used as data series on the chart. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            plotBy?: ExcelOp.ChartPlotBy | "Rows" | "Columns";
+            /**
+             *
+             * True if only visible cells are plotted. False if both visible and hidden cells are plotted. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            plotVisibleOnly?: boolean;
+            /**
+             *
+             * True if the chart area of the chart has rounded corners. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            roundedCorners?: boolean;
+            /**
+             *
+             * Returns or sets a ChartSeriesNameLevel enumeration constant referring to
+            the level of where the series names are being sourced from. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            seriesNameLevel?: number;
+            /**
+             *
+             * Represents whether to display all field buttons on a PivotChart.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            showAllFieldButtons?: boolean;
+            /**
+             *
+             * Represents whether to display axis field buttons on a PivotChart.
+            The ShowAxisFieldButtons property corresponds to the Show Axis Field Buttons command on the Field Buttons drop-down list of the Analyze tab, which is available when a PivotChart is selected.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showAxisFieldButtons?: boolean;
+            /**
+             *
+             * Represents whether to to show the data labels when the value is greater than the maximum value on the value axis.
+            If value axis became smaller than the size of data points, you can use this property to set whether to show the data labels.
+            This property applies to 2-D charts only.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showDataLabelsOverMaximum?: boolean;
+            /**
+             *
+             * Represents whether to display legend field buttons on a PivotChart.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showLegendFieldButtons?: boolean;
+            /**
+             *
+             * Represents whether to display report filter field buttons on a PivotChart.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showReportFilterFieldButtons?: boolean;
+            /**
+             *
+             * Represents whether to display show value field buttons on a PivotChart.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showValueFieldButtons?: boolean;
+            /**
+             *
+             * Returns or sets the chart style for the chart. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            style?: number;
+            /**
+             *
+             * Represents the distance, in points, from the top edge of the object to the top of row 1 (on a worksheet) or the top of the chart area (on a chart).
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            top?: number;
+            /**
+             *
+             * Represents the width, in points, of the chart object.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            width?: number;
+        }
+        /** An interface describing the data returned by calling "chartSeriesCollection.retrieve()". */
+        interface ChartSeriesCollectionData {
+            /**
+             *
+             * Returns the number of series in the collection. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            count?: number;
+            items?: ExcelOp.Interfaces.ChartSeriesData[];
+        }
+        /** An interface describing the data returned by calling "chartSeries.retrieve()". */
+        interface ChartSeriesData {
+            /**
+             *
+             * Returns or sets the group for the specified series. Read/Write
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            axisGroup?: ExcelOp.ChartAxisGroup | "Primary" | "Secondary";
+            /**
+             *
+             * Returns or sets the scale factor for bubbles in the specified chart group. Can be an integer value from 0 (zero) to 300, corresponding to a percentage of the default size. Applies only to bubble charts. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            bubbleScale?: number;
+            /**
+             *
+             * Represents the chart type of a series. See Excel.ChartType for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            chartType?: ExcelOp.ChartType | "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar";
+            /**
+             *
+             * Represents the doughnut hole size of a chart series.  Only valid on doughnut and doughnutExploded charts.
+            Throws an invalid argument exception on invalid charts.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            doughnutHoleSize?: number;
+            /**
+             *
+             * Returns or sets the explosion value for a pie-chart or doughnut-chart slice. Returns 0 (zero) if there's no explosion (the tip of the slice is in the center of the pie). Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            explosion?: number;
+            /**
+             *
+             * Boolean value representing if the series is filtered or not. Not applicable for surface charts.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            filtered?: boolean;
+            /**
+             *
+             * Returns or sets the angle of the first pie-chart or doughnut-chart slice, in degrees (clockwise from vertical). Applies only to pie, 3-D pie, and doughnut charts. Can be a value from 0 through 360. Read/Write
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            firstSliceAngle?: number;
+            /**
+             *
+             * Represents the gap width of a chart series.  Only valid on bar and column charts, as well as
+            specific classes of line and pie charts.  Throws an invalid argument exception on invalid charts.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            gapWidth?: number;
+            /**
+             *
+             * Boolean value representing if the series has data labels or not.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            hasDataLabels?: boolean;
+            /**
+             *
+             * True if Microsoft Excel show leaderlines for each datalabel in series. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            hasLeaderLines?: boolean;
+            /**
+             *
+             * True if Microsoft Excel inverts the pattern in the item when it corresponds to a negative number. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            invertIfNegative?: boolean;
+            /**
+             *
+             * Represents markers background color of a chart series.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            markerBackgroundColor?: string;
+            /**
+             *
+             * Represents markers foreground color of a chart series.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            markerForegroundColor?: string;
+            /**
+             *
+             * Represents marker size of a chart series.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            markerSize?: number;
+            /**
+             *
+             * Represents marker style of a chart series. See Excel.ChartMarkerStyle for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            markerStyle?: ExcelOp.ChartMarkerStyle | "Invalid" | "Automatic" | "None" | "Square" | "Diamond" | "Triangle" | "X" | "Star" | "Dot" | "Dash" | "Circle" | "Plus" | "Picture";
+            /**
+             *
+             * Represents the name of a series in a chart.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            name?: string;
+            /**
+             *
+             * Specifies how bars and columns are positioned. Can be a value between – 100 and 100. Applies only to 2-D bar and 2-D column charts. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            overlap?: number;
+            /**
+             *
+             * Represents the plot order of a chart series within the chart group.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            plotOrder?: number;
+            /**
+             *
+             * Returns or sets the size of the secondary section of either a pie of pie chart or a bar of pie chart, as a percentage of the size of the primary pie. Can be a value from 5 to 200. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            secondPlotSize?: number;
+            /**
+             *
+             * Boolean value representing if the series has a shadow or not.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            showShadow?: boolean;
+            /**
+             *
+             * Boolean value representing if the series is smooth or not. Only applicable for line and scatter charts.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            smooth?: boolean;
+            /**
+             *
+             * Returns or sets the way the two sections of either a pie of pie chart or a bar of pie chart are split. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            splitType?: ExcelOp.ChartSplitStype | "SplitByPosition" | "SplitByValue" | "SplitByPercentValue" | "SplitByCustomSplit";
+            /**
+             *
+             * Returns or sets the threshold value separating the two sections of either a pie of pie chart or a bar of pie chart. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            splitValue?: number;
+            /**
+             *
+             * Returns the value that represents the series type.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            type?: ExcelOp.ChartSeriesType | "Column" | "Bar" | "Bar3D" | "Line" | "Pie" | "XYScatter" | "Area" | "Area3D" | "Doughnut" | "Radar" | "Surface3D" | "Column3D";
+            /**
+             *
+             * True if Microsoft Excel assigns a different color or pattern to each data marker. The chart must contain only one series. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            varyByCategories?: boolean;
+        }
+        /** An interface describing the data returned by calling "chartPointsCollection.retrieve()". */
+        interface ChartPointsCollectionData {
+            /**
+             *
+             * Returns the number of chart points in the series. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            count?: number;
+            items?: ExcelOp.Interfaces.ChartPointData[];
+        }
+        /** An interface describing the data returned by calling "chartPoint.retrieve()". */
+        interface ChartPointData {
+            /**
+             *
+             * Represents whether a data point has datalabel. Not applicable for surface charts.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            hasDataLabel?: boolean;
+            /**
+             *
+             * HTML color code representation of the marker background color of data point. E.g. #FF0000 represents Red.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            markerBackgroundColor?: string;
+            /**
+             *
+             * HTML color code representation of the marker foreground color of data point. E.g. #FF0000 represents Red.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            markerForegroundColor?: string;
+            /**
+             *
+             * Represents marker size of data point.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            markerSize?: number;
+            /**
+             *
+             * Represents marker style of a chart data point. See Excel.ChartMarkerStyle for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            markerStyle?: ExcelOp.ChartMarkerStyle | "Invalid" | "Automatic" | "None" | "Square" | "Diamond" | "Triangle" | "X" | "Star" | "Dot" | "Dash" | "Circle" | "Plus" | "Picture";
+            /**
+             *
+             * Returns the value of a chart point. Read-only.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            value?: any;
+        }
+        /** An interface describing the data returned by calling "chartAxis.retrieve()". */
+        interface ChartAxisData {
+            /**
+             *
+             * Represents the alignment for the specified axis tick label. See Excel.ChartTextHorizontalAlignment for detail.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            alignment?: ExcelOp.ChartTickLabelAlignment | "Center" | "Left" | "Right";
+            /**
+             *
+             * Represents the group for the specified axis. See Excel.ChartAxisGroup for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            axisGroup?: ExcelOp.ChartAxisGroup | "Primary" | "Secondary";
+            /**
+             *
+             * Returns or sets the base unit for the specified category axis.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            baseTimeUnit?: ExcelOp.ChartAxisTimeUnit | "Days" | "Months" | "Years";
+            /**
+             *
+             * Returns or sets the category axis type.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            categoryType?: ExcelOp.ChartAxisCategoryType | "Automatic" | "TextAxis" | "DateAxis";
+            /**
+             * [DEPRECATED; kept for back-compat with existing first-party solutions]. Please use `Position` instead.
+             * Represents the specified axis where the other axis crosses. See Excel.ChartAxisPosition for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            crosses?: ExcelOp.ChartAxisPosition | "Automatic" | "Maximum" | "Minimum" | "Custom";
+            /**
+             * [DEPRECATED; kept for back-compat with existing first-party solutions]. Please use `PositionAt` instead.
+             * Represents the specified axis where the other axis crosses at. Read Only. Set to this property should use SetCrossesAt(double) method.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            crossesAt?: number;
+            /**
+             *
+             * Represents the custom axis display unit value. Read Only. To set this property, please use the SetCustomDisplayUnit(double) method.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            customDisplayUnit?: number;
+            /**
+             *
+             * Represents the axis display unit. See Excel.ChartAxisDisplayUnit for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            displayUnit?: ExcelOp.ChartAxisDisplayUnit | "None" | "Hundreds" | "Thousands" | "TenThousands" | "HundredThousands" | "Millions" | "TenMillions" | "HundredMillions" | "Billions" | "Trillions" | "Custom";
+            /**
+             *
+             * Represents the height, in points, of the chart axis. Null if the axis's not visible.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            height?: number;
+            /**
+             *
+             * Represents whether value axis crosses the category axis between categories.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            isBetweenCategories?: boolean;
+            /**
+             *
+             * Represents the distance, in points, from the left edge of the axis to the left of chart area. Null if the axis's not visible.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            left?: number;
+            /**
+             *
+             * Represents the base of the logarithm when using logarithmic scales.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            logBase?: number;
+            /**
+             *
+             * Represents the type of major tick mark for the specified axis. See Excel.ChartAxisTickMark for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            majorTickMark?: ExcelOp.ChartAxisTickMark | "None" | "Cross" | "Inside" | "Outside";
+            /**
+             *
+             * Returns or sets the major unit scale value for the category axis when the CategoryType property is set to TimeScale.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            majorTimeUnitScale?: ExcelOp.ChartAxisTimeUnit | "Days" | "Months" | "Years";
+            /**
+             *
+             * Represents the interval between two major tick marks. Can be set to a numeric value or an empty string.  The returned value is always a number.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            majorUnit?: any;
+            /**
+             *
+             * Represents the maximum value on the value axis.  Can be set to a numeric value or an empty string (for automatic axis values).  The returned value is always a number.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            maximum?: any;
+            /**
+             *
+             * Represents the minimum value on the value axis. Can be set to a numeric value or an empty string (for automatic axis values).  The returned value is always a number.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            minimum?: any;
+            /**
+             *
+             * Represents the type of minor tick mark for the specified axis. See Excel.ChartAxisTickMark for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            minorTickMark?: ExcelOp.ChartAxisTickMark | "None" | "Cross" | "Inside" | "Outside";
+            /**
+             *
+             * Returns or sets the minor unit scale value for the category axis when the CategoryType property is set to TimeScale.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            minorTimeUnitScale?: ExcelOp.ChartAxisTimeUnit | "Days" | "Months" | "Years";
+            /**
+             *
+             * Represents the interval between two minor tick marks. "Can be set to a numeric value or an empty string (for automatic axis values). The returned value is always a number.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            minorUnit?: any;
+            /**
+             *
+             * Represents whether an axis is multilevel or not.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            multiLevel?: boolean;
+            /**
+             *
+             * Represents the format code for the axis tick label.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormat?: string;
+            /**
+             *
+             * Represents whether the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells).
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormatLinked?: boolean;
+            /**
+             *
+             * Represents the distance between the levels of labels, and the distance between the first level and the axis line. The value should be an integer from 0 to 1000.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            offset?: number;
+            /**
+             *
+             * Represents the specified axis position where the other axis crosses. See Excel.ChartAxisPosition for details.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            position?: ExcelOp.ChartAxisPosition | "Automatic" | "Maximum" | "Minimum" | "Custom";
+            /**
+             *
+             * Represents the specified axis position where the other axis crosses at. Read Only. Set to this property should use SetPositionAt(double) method.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            positionAt?: number;
+            /**
+             *
+             * Represents whether Microsoft Excel plots data points from last to first.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            reversePlotOrder?: boolean;
+            /**
+             *
+             * Represents the value axis scale type. See Excel.ChartAxisScaleType for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            scaleType?: ExcelOp.ChartAxisScaleType | "Linear" | "Logarithmic";
+            /**
+             *
+             * Represents whether the axis display unit label is visible.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            showDisplayUnitLabel?: boolean;
+            /**
+             *
+             * Represents the text orientation of the axis tick label. The value should be an integer either from -90 to 90, or 180 for vertically-oriented text.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            textOrientation?: any;
+            /**
+             *
+             * Represents the position of tick-mark labels on the specified axis. See Excel.ChartAxisTickLabelPosition for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            tickLabelPosition?: ExcelOp.ChartAxisTickLabelPosition | "NextToAxis" | "High" | "Low" | "None";
+            /**
+             *
+             * Represents the number of categories or series between tick-mark labels. Can be a value from 1 through 31999 or an empty string for automatic setting. The returned value is always a number.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            tickLabelSpacing?: any;
+            /**
+             *
+             * Represents the number of categories or series between tick marks.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            tickMarkSpacing?: number;
+            /**
+             *
+             * Represents the distance, in points, from the top edge of the axis to the top of chart area. Null if the axis's not visible.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            top?: number;
+            /**
+             *
+             * Represents the axis type. See Excel.ChartAxisType for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            type?: ExcelOp.ChartAxisType | "Invalid" | "Category" | "Value" | "Series";
+            /**
+             *
+             * A boolean value represents the visibility of the axis.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            visible?: boolean;
+            /**
+             *
+             * Represents the width, in points, of the chart axis. Null if the axis's not visible.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            width?: number;
+        }
+        /** An interface describing the data returned by calling "chartAxisTitle.retrieve()". */
+        interface ChartAxisTitleData {
+            /**
+             *
+             * Represents the axis title.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            text?: string;
+            /**
+             *
+             * A boolean that specifies the visibility of an axis title.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            visible?: boolean;
+        }
+        /** An interface describing the data returned by calling "chartDataLabels.retrieve()". */
+        interface ChartDataLabelsData {
+            /**
+             *
+             * Represents whether data labels automatically generates appropriate text based on context.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            autoText?: boolean;
+            /**
+             *
+             * Represents the horizontal alignment for chart data label. See Excel.ChartTextHorizontalAlignment for details.
+            This property is valid only when TextOrientation of data label is 0.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            horizontalAlignment?: ExcelOp.ChartTextHorizontalAlignment | "Center" | "Left" | "Right" | "Justify" | "Distributed";
+            /**
+             *
+             * Represents the format code for data labels.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormat?: string;
+            /**
+             *
+             * Represents whether the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells).
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormatLinked?: boolean;
+            /**
+             *
+             * DataLabelPosition value that represents the position of the data label. See Excel.ChartDataLabelPosition for details.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            position?: ExcelOp.ChartDataLabelPosition | "Invalid" | "None" | "Center" | "InsideEnd" | "InsideBase" | "OutsideEnd" | "Left" | "Right" | "Top" | "Bottom" | "BestFit" | "Callout";
+            /**
+             *
+             * String representing the separator used for the data labels on a chart.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            separator?: string;
+            /**
+             *
+             * Boolean value representing if the data label bubble size is visible or not.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            showBubbleSize?: boolean;
+            /**
+             *
+             * Boolean value representing if the data label category name is visible or not.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            showCategoryName?: boolean;
+            /**
+             *
+             * Boolean value representing if the data label legend key is visible or not.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            showLegendKey?: boolean;
+            /**
+             *
+             * Boolean value representing if the data label percentage is visible or not.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            showPercentage?: boolean;
+            /**
+             *
+             * Boolean value representing if the data label series name is visible or not.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            showSeriesName?: boolean;
+            /**
+             *
+             * Boolean value representing if the data label value is visible or not.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            showValue?: boolean;
+            /**
+             *
+             * Represents the text orientation of data labels. The value should be an integer either from -90 to 90, or 180 for vertically-oriented text.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            textOrientation?: number;
+            /**
+             *
+             * Represents the vertical alignment of chart data label. See Excel.ChartTextVerticalAlignment for details.
+            This property is valid only when TextOrientation of data label is 90, -90 or 180.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            verticalAlignment?: ExcelOp.ChartTextVerticalAlignment | "Center" | "Bottom" | "Top" | "Justify" | "Distributed";
+        }
+        /** An interface describing the data returned by calling "chartDataLabel.retrieve()". */
+        interface ChartDataLabelData {
+            /**
+             *
+             * Boolean value representing if data label automatically generates appropriate text based on context.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            autoText?: boolean;
+            /**
+             *
+             * String value that represents the formula of chart data label using A1-style notation.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            formula?: string;
+            /**
+             *
+             * Returns the height, in points, of the chart data label. Read-only. Null if chart data label is not visible.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            height?: number;
+            /**
+             *
+             * Represents the horizontal alignment for chart data label. See Excel.ChartTextHorizontalAlignment for details.
+            This property is valid only when TextOrientation of data label is 90, -90 or 180.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            horizontalAlignment?: ExcelOp.ChartTextHorizontalAlignment | "Center" | "Left" | "Right" | "Justify" | "Distributed";
+            /**
+             *
+             * Represents the distance, in points, from the left edge of chart data label to the left edge of chart area. Null if chart data label is not visible.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            left?: number;
+            /**
+             *
+             * String value that represents the format code for data label.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormat?: string;
+            /**
+             *
+             * Boolean value representing if the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells).
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormatLinked?: boolean;
+            /**
+             *
+             * DataLabelPosition value that represents the position of the data label. See Excel.ChartDataLabelPosition for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            position?: ExcelOp.ChartDataLabelPosition | "Invalid" | "None" | "Center" | "InsideEnd" | "InsideBase" | "OutsideEnd" | "Left" | "Right" | "Top" | "Bottom" | "BestFit" | "Callout";
+            /**
+             *
+             * String representing the separator used for the data label on a chart.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            separator?: string;
+            /**
+             *
+             * Boolean value representing if the data label bubble size is visible or not.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            showBubbleSize?: boolean;
+            /**
+             *
+             * Boolean value representing if the data label category name is visible or not.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            showCategoryName?: boolean;
+            /**
+             *
+             * Boolean value representing if the data label legend key is visible or not.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            showLegendKey?: boolean;
+            /**
+             *
+             * Boolean value representing if the data label percentage is visible or not.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            showPercentage?: boolean;
+            /**
+             *
+             * Boolean value representing if the data label series name is visible or not.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            showSeriesName?: boolean;
+            /**
+             *
+             * Boolean value representing if the data label value is visible or not.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            showValue?: boolean;
+            /**
+             *
+             * String representing the text of the data label on a chart.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            text?: string;
+            /**
+             *
+             * Represents the text orientation of chart data label. The value should be an integer either from -90 to 90, or 180 for vertically-oriented text.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            textOrientation?: number;
+            /**
+             *
+             * Represents the distance, in points, from the top edge of chart data label to the top of chart area. Null if chart data label is not visible.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            top?: number;
+            /**
+             *
+             * Represents the vertical alignment of chart data label. See Excel.ChartTextVerticalAlignment for details.
+            This property is valid only when TextOrientation of data label is 0.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            verticalAlignment?: ExcelOp.ChartTextVerticalAlignment | "Center" | "Bottom" | "Top" | "Justify" | "Distributed";
+            /**
+             *
+             * Returns the width, in points, of the chart data label. Read-only. Null if chart data label is not visible.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            width?: number;
+        }
+        /** An interface describing the data returned by calling "chartErrorBars.retrieve()". */
+        interface ChartErrorBarsData {
+            /**
+             *
+             * Represents whether have the end style cap for the error bars.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            endStyleCap?: boolean;
+            /**
+             *
+             * Represents which error-bar parts to include. See Excel.ChartErrorBarsInclude for details.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            include?: ExcelOp.ChartErrorBarsInclude | "Both" | "MinusValues" | "PlusValues";
+            /**
+             *
+             * Represents the range marked by error bars. See Excel.ChartErrorBarsType for details.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            type?: ExcelOp.ChartErrorBarsType | "FixedValue" | "Percent" | "StDev" | "StError" | "Custom";
+            /**
+             *
+             * Represents whether shown error bars.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            visible?: boolean;
+        }
+        /** An interface describing the data returned by calling "chartGridlines.retrieve()". */
+        interface ChartGridlinesData {
+            /**
+             *
+             * Boolean value representing if the axis gridlines are visible or not.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            visible?: boolean;
+        }
+        /** An interface describing the data returned by calling "chartLegend.retrieve()". */
+        interface ChartLegendData {
+            /**
+             *
+             * Represents the height, in points, of the legend on the chart. Null if legend is not visible.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            height?: number;
+            /**
+             *
+             * Represents the left, in points, of a chart legend. Null if legend is not visible.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            left?: number;
+            /**
+             *
+             * Boolean value for whether the chart legend should overlap with the main body of the chart.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            overlay?: boolean;
+            /**
+             *
+             * Represents the position of the legend on the chart. See Excel.ChartLegendPosition for details.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            position?: ExcelOp.ChartLegendPosition | "Invalid" | "Top" | "Bottom" | "Left" | "Right" | "Corner" | "Custom";
+            /**
+             *
+             * Represents if the legend has a shadow on the chart.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            showShadow?: boolean;
+            /**
+             *
+             * Represents the top of a chart legend.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            top?: number;
+            /**
+             *
+             * A boolean value the represents the visibility of a ChartLegend object.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            visible?: boolean;
+            /**
+             *
+             * Represents the width, in points, of the legend on the chart. Null if legend is not visible.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            width?: number;
+        }
+        /** An interface describing the data returned by calling "chartLegendEntry.retrieve()". */
+        interface ChartLegendEntryData {
+            /**
+             *
+             * Represents the height of the legendEntry on the chart Legend.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            height?: number;
+            /**
+             *
+             * Represents the index of the LegendEntry in the Chart Legend.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            index?: number;
+            /**
+             *
+             * Represents the left of a chart legendEntry.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            left?: number;
+            /**
+             *
+             * Represents the top of a chart legendEntry.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            top?: number;
+            /**
+             *
+             * Represents the visible of a chart legend entry.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            visible?: boolean;
+            /**
+             *
+             * Represents the width of the legendEntry on the chart Legend.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            width?: number;
+        }
+        /** An interface describing the data returned by calling "chartLegendEntryCollection.retrieve()". */
+        interface ChartLegendEntryCollectionData {
+            items?: ExcelOp.Interfaces.ChartLegendEntryData[];
+        }
+        /** An interface describing the data returned by calling "chartTitle.retrieve()". */
+        interface ChartTitleData {
+            /**
+             *
+             * Returns the height, in points, of the chart title. Read-only. Null if chart title is not visible.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            height?: number;
+            /**
+             *
+             * Represents the horizontal alignment for chart title.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            horizontalAlignment?: ExcelOp.ChartTextHorizontalAlignment | "Center" | "Left" | "Right" | "Justify" | "Distributed";
+            /**
+             *
+             * Represents the distance, in points, from the left edge of chart title to the left edge of chart area. Null if chart title's not visible.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            left?: number;
+            /**
+             *
+             * Boolean value representing if the chart title will overlay the chart or not.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            overlay?: boolean;
+            /**
+             *
+             * Represents the position of chart title. See Excel.ChartTitlePosition for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            position?: ExcelOp.ChartTitlePosition | "Automatic" | "Top" | "Bottom" | "Left" | "Right";
+            /**
+             *
+             * Represents a boolean value that determines if the chart title has a shadow.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            showShadow?: boolean;
+            /**
+             *
+             * Represents the title text of a chart.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            text?: string;
+            /**
+             *
+             * Represents the text orientation of chart title. The value should be an integer either from -90 to 90, or 180 for vertically-oriented text.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            textOrientation?: number;
+            /**
+             *
+             * Represents the distance, in points, from the top edge of chart title to the top of chart area. Null if chart title's not visible.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            top?: number;
+            /**
+             *
+             * Represents the vertical alignment of chart title. See Excel.ChartTextVerticalAlignment for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            verticalAlignment?: ExcelOp.ChartTextVerticalAlignment | "Center" | "Bottom" | "Top" | "Justify" | "Distributed";
+            /**
+             *
+             * A boolean value the represents the visibility of a chart title object.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            visible?: boolean;
+            /**
+             *
+             * Returns the width, in points, of the chart title. Read-only. Null if chart title is not visible.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            width?: number;
+        }
+        /** An interface describing the data returned by calling "chartBorder.retrieve()". */
+        interface ChartBorderData {
+            /**
+             *
+             * HTML color code representing the color of borders in the chart.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            color?: string;
+            /**
+             *
+             * Represents the line style of the border. See Excel.ChartLineStyle for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            lineStyle?: ExcelOp.ChartLineStyle | "None" | "Continuous" | "Dash" | "DashDot" | "DashDotDot" | "Dot" | "Grey25" | "Grey50" | "Grey75" | "Automatic" | "RoundDot";
+            /**
+             *
+             * Represents weight of the border, in points.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            weight?: number;
+        }
+        /** An interface describing the data returned by calling "chartLineFormat.retrieve()". */
+        interface ChartLineFormatData {
+            /**
+             *
+             * HTML color code representing the color of lines in the chart.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            color?: string;
+            /**
+             *
+             * Represents the line style. See Excel.ChartLineStyle for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            lineStyle?: ExcelOp.ChartLineStyle | "None" | "Continuous" | "Dash" | "DashDot" | "DashDotDot" | "Dot" | "Grey25" | "Grey50" | "Grey75" | "Automatic" | "RoundDot";
+            /**
+             *
+             * Represents weight of the line, in points.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            weight?: number;
+        }
+        /** An interface describing the data returned by calling "chartFont.retrieve()". */
+        interface ChartFontData {
+            /**
+             *
+             * Represents the bold status of font.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            bold?: boolean;
+            /**
+             *
+             * HTML color code representation of the text color. E.g. #FF0000 represents Red.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            color?: string;
+            /**
+             *
+             * Represents the italic status of the font.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            italic?: boolean;
+            /**
+             *
+             * Font name (e.g. "Calibri")
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            name?: string;
+            /**
+             *
+             * Size of the font (e.g. 11)
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            size?: number;
+            /**
+             *
+             * Type of underline applied to the font. See Excel.ChartUnderlineStyle for details.
+             *
+             * [Api set: ExcelApi 1.1]
+             */
+            underline?: ExcelOp.ChartUnderlineStyle | "None" | "Single";
+        }
+        /** An interface describing the data returned by calling "chartTrendline.retrieve()". */
+        interface ChartTrendlineData {
+            /**
+             *
+             * Represents the number of periods that the trendline extends backward.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            backwardPeriod?: number;
+            /**
+             *
+             * Represents the number of periods that the trendline extends forward.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            forwardPeriod?: number;
+            /**
+             *
+             * Represents the intercept value of the trendline. Can be set to a numeric value or an empty string (for automatic values). The returned value is always a number.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            intercept?: any;
+            /**
+             *
+             * Represents the period of a chart trendline. Only applicable for trendline with MovingAverage type.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            movingAveragePeriod?: number;
+            /**
+             *
+             * Represents the name of the trendline. Can be set to a string value, or can be set to null value represents automatic values. The returned value is always a string
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            name?: string;
+            /**
+             *
+             * Represents the order of a chart trendline. Only applicable for trendline with Polynomial type.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            polynomialOrder?: number;
+            /**
+             *
+             * True if the equation for the trendline is displayed on the chart.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showEquation?: boolean;
+            /**
+             *
+             * True if the R-squared for the trendline is displayed on the chart.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showRSquared?: boolean;
+            /**
+             *
+             * Represents the type of a chart trendline.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            type?: ExcelOp.ChartTrendlineType | "Linear" | "Exponential" | "Logarithmic" | "MovingAverage" | "Polynomial" | "Power";
+        }
+        /** An interface describing the data returned by calling "chartTrendlineCollection.retrieve()". */
+        interface ChartTrendlineCollectionData {
+            items?: ExcelOp.Interfaces.ChartTrendlineData[];
+        }
+        /** An interface describing the data returned by calling "chartTrendlineLabel.retrieve()". */
+        interface ChartTrendlineLabelData {
+            /**
+             *
+             * Boolean value representing if trendline label automatically generates appropriate text based on context.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            autoText?: boolean;
+            /**
+             *
+             * String value that represents the formula of chart trendline label using A1-style notation.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            formula?: string;
+            /**
+             *
+             * Returns the height, in points, of the chart trendline label. Read-only. Null if chart trendline label is not visible.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            height?: number;
+            /**
+             *
+             * Represents the horizontal alignment for chart trendline label. See Excel.ChartTextHorizontalAlignment for details.
+            This property is valid only when TextOrientation of trendline label is 90, -90 or 180.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            horizontalAlignment?: ExcelOp.ChartTextHorizontalAlignment | "Center" | "Left" | "Right" | "Justify" | "Distributed";
+            /**
+             *
+             * Represents the distance, in points, from the left edge of chart trendline label to the left edge of chart area. Null if chart trendline label is not visible.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            left?: number;
+            /**
+             *
+             * String value that represents the format code for trendline label.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormat?: string;
+            /**
+             *
+             * Boolean value representing if the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells).
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormatLinked?: boolean;
+            /**
+             *
+             * String representing the text of the trendline label on a chart.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            text?: string;
+            /**
+             *
+             * Represents the text orientation of chart trendline label. The value should be an integer either from -90 to 90, or 180 for vertically-oriented text.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            textOrientation?: number;
+            /**
+             *
+             * Represents the distance, in points, from the top edge of chart trendline label to the top of chart area. Null if chart trendline label is not visible.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            top?: number;
+            /**
+             *
+             * Represents the vertical alignment of chart trendline label. See Excel.ChartTextVerticalAlignment for details.
+            This property is valid only when TextOrientation of trendline label is 0.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            verticalAlignment?: ExcelOp.ChartTextVerticalAlignment | "Center" | "Bottom" | "Top" | "Justify" | "Distributed";
+            /**
+             *
+             * Returns the width, in points, of the chart trendline label. Read-only. Null if chart trendline label is not visible.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            width?: number;
+        }
+        /** An interface describing the data returned by calling "chartPlotArea.retrieve()". */
+        interface ChartPlotAreaData {
+            /**
+             *
+             * Represents the height value of plotArea.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            height?: number;
+            /**
+             *
+             * Represents the insideHeight value of plotArea.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            insideHeight?: number;
+            /**
+             *
+             * Represents the insideLeft value of plotArea.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            insideLeft?: number;
+            /**
+             *
+             * Represents the insideTop value of plotArea.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            insideTop?: number;
+            /**
+             *
+             * Represents the insideWidth value of plotArea.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            insideWidth?: number;
+            /**
+             *
+             * Represents the left value of plotArea.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            left?: number;
+            /**
+             *
+             * Represents the position of plotArea.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            position?: ExcelOp.ChartPlotAreaPosition | "Automatic" | "Custom";
+            /**
+             *
+             * Represents the top value of plotArea.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            top?: number;
+            /**
+             *
+             * Represents the width value of plotArea.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            width?: number;
+        }
+        /** An interface describing the data returned by calling "visualCollection.retrieve()". */
+        interface VisualCollectionData {
+            items?: ExcelOp.Interfaces.VisualData[];
+        }
+        /** An interface describing the data returned by calling "visual.retrieve()". */
+        interface VisualData {
+            /**
+             *
+             * The unique id of visual, not the guid of VisualDefinition. Read-only.
+             *
+             * [Api set: ExcelApi 99.9]
+             */
+            id?: string;
+        }
+        /** An interface describing the data returned by calling "visualProperty.retrieve()". */
+        interface VisualPropertyData {
+            /**
+             *
+             * Returns the property Id.
+             *
+             * [Api set: ExcelApi 99.9]
+             */
+            id?: string;
+            /**
+             *
+             * Returns the property localized name.
+             *
+             * [Api set: ExcelApi 99.9]
+             */
+            localizedName?: string;
+            /**
+             *
+             * Returns the localized property options for IEnumProperty only. If property type isn't enum, it returns null.
+             *
+             * [Api set: ExcelApi 99.9]
+             */
+            localizedOptions?: string[];
+            /**
+             *
+             * Returns the property options for IEnumProperty only. If property type isn't enum, it returns null.
+             *
+             * [Api set: ExcelApi 99.9]
+             */
+            options?: string[];
+            /**
+             *
+             * Returns the property type.
+             *
+             * [Api set: ExcelApi 99.9]
+             */
+            type?: ExcelOp.VisualPropertyType | "Object" | "Collection" | "String" | "Double" | "Int" | "Bool" | "Enum" | "Color";
+            /**
+             *
+             * Returns the property value.
+             *
+             * [Api set: ExcelApi 99.9]
+             */
+            value?: any;
+        }
+        /** An interface describing the data returned by calling "visualPropertyCollection.retrieve()". */
+        interface VisualPropertyCollectionData {
+            items?: ExcelOp.Interfaces.VisualPropertyData[];
+        }
+        /** An interface describing the data returned by calling "tableSort.retrieve()". */
+        interface TableSortData {
+            /**
+             *
+             * Represents the current conditions used to last sort the table.
+             *
+             * [Api set: ExcelApi 1.2]
+             */
+            fields?: ExcelOp.SortField[];
+            /**
+             *
+             * Represents whether the casing impacted the last sort of the table.
+             *
+             * [Api set: ExcelApi 1.2]
+             */
+            matchCase?: boolean;
+            /**
+             *
+             * Represents Chinese character ordering method last used to sort the table.
+             *
+             * [Api set: ExcelApi 1.2]
+             */
+            method?: ExcelOp.SortMethod | "PinYin" | "StrokeCount";
+        }
+        /** An interface describing the data returned by calling "filter.retrieve()". */
+        interface FilterData {
+            /**
+             *
+             * The currently applied filter on the given column.
+             *
+             * [Api set: ExcelApi 1.2]
+             */
+            criteria?: ExcelOp.FilterCriteria;
+        }
+        /** An interface describing the data returned by calling "customXmlPartScopedCollection.retrieve()". */
+        interface CustomXmlPartScopedCollectionData {
+            items?: ExcelOp.Interfaces.CustomXmlPartData[];
+        }
+        /** An interface describing the data returned by calling "customXmlPartCollection.retrieve()". */
+        interface CustomXmlPartCollectionData {
+            items?: ExcelOp.Interfaces.CustomXmlPartData[];
+        }
+        /** An interface describing the data returned by calling "customXmlPart.retrieve()". */
+        interface CustomXmlPartData {
+            /**
+             *
+             * The custom XML part's ID. Read-only.
+             *
+             * [Api set: ExcelApi 1.5]
+             */
+            id?: string;
+            /**
+             *
+             * The custom XML part's namespace URI. Read-only.
+             *
+             * [Api set: ExcelApi 1.5]
+             */
+            namespaceUri?: string;
+        }
+        /** An interface describing the data returned by calling "pivotTableCollection.retrieve()". */
+        interface PivotTableCollectionData {
+            items?: ExcelOp.Interfaces.PivotTableData[];
+        }
+        /** An interface describing the data returned by calling "pivotTable.retrieve()". */
+        interface PivotTableData {
+            /**
+             *
+             * True if the PivotTable report shows grand totals for columns.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            columnGrandTotals?: boolean;
+            /**
+             *
+             * True if the field list should be shown or hidden from the UI.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            enableFieldList?: boolean;
+            /**
+             *
+             * Id of the PivotTable.
+             *
+             * [Api set: ExcelApi 1.5]
+             */
+            id?: string;
+            /**
+             *
+             * Name of the PivotTable.
+             *
+             * [Api set: ExcelApi 1.3]
+             */
+            name?: string;
+            /**
+             *
+             * True if the PivotTable report shows grand totals for rows.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rowGrandTotals?: boolean;
+        }
+        /** An interface describing the data returned by calling "pivotHierarchyCollection.retrieve()". */
+        interface PivotHierarchyCollectionData {
+            items?: ExcelOp.Interfaces.PivotHierarchyData[];
+        }
+        /** An interface describing the data returned by calling "pivotHierarchy.retrieve()". */
+        interface PivotHierarchyData {
+            /**
+             *
+             * Id of the PivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            id?: string;
+            /**
+             *
+             * Name of the PivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            name?: string;
+        }
+        /** An interface describing the data returned by calling "rowColumnPivotHierarchyCollection.retrieve()". */
+        interface RowColumnPivotHierarchyCollectionData {
+            /**
+             *
+             * Gets or sets the position of the built-in values field if it is applicable on the current axis.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            builtInValuesPosition?: number;
+            items?: ExcelOp.Interfaces.RowColumnPivotHierarchyData[];
+        }
+        /** An interface describing the data returned by calling "rowColumnPivotHierarchy.retrieve()". */
+        interface RowColumnPivotHierarchyData {
+            /**
+             *
+             * Id of the RowColumnPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            id?: string;
+            /**
+             *
+             * Name of the RowColumnPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            name?: string;
+            /**
+             *
+             * Number format of the RowColumnPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormat?: string;
+            /**
+             *
+             * Position of the RowColumnPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            position?: number;
+            /**
+             *
+             * Determines whether to show all items of the RowColumnPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showAllItems?: boolean;
+            /**
+             *
+             * Subtotals of the RowColumnPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            subtotals?: ExcelOp.Subtotals;
+        }
+        /** An interface describing the data returned by calling "filterPivotHierarchyCollection.retrieve()". */
+        interface FilterPivotHierarchyCollectionData {
+            items?: ExcelOp.Interfaces.FilterPivotHierarchyData[];
+        }
+        /** An interface describing the data returned by calling "filterPivotHierarchy.retrieve()". */
+        interface FilterPivotHierarchyData {
+            /**
+             *
+             * Determines whether to allow multiple filter items.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            enableMultipleFilterItems?: boolean;
+            /**
+             *
+             * Id of the FilterPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            id?: string;
+            /**
+             *
+             * Name of the FilterPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            name?: string;
+            /**
+             *
+             * Number format of the FilterPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormat?: string;
+            /**
+             *
+             * Position of the FilterPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            position?: number;
+            /**
+             *
+             * Determines whether to show all items of the FilterPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showAllItems?: boolean;
+            /**
+             *
+             * Subtotals of the FilterPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            subtotals?: ExcelOp.Subtotals;
+        }
+        /** An interface describing the data returned by calling "dataPivotHierarchyCollection.retrieve()". */
+        interface DataPivotHierarchyCollectionData {
+            items?: ExcelOp.Interfaces.DataPivotHierarchyData[];
+        }
+        /** An interface describing the data returned by calling "dataPivotHierarchy.retrieve()". */
+        interface DataPivotHierarchyData {
+            /**
+             *
+             * Id of the DataPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            id?: string;
+            /**
+             *
+             * Name of the DataPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            name?: string;
+            /**
+             *
+             * Number format of the DataPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormat?: string;
+            /**
+             *
+             * Position of the DataPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            position?: number;
+            /**
+             *
+             * Determines whether the data should be sown as a specific summary calculation or not.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showAs?: ExcelOp.ShowAsRule;
+            /**
+             *
+             * Determines whether to show all items of the DataPivotHierarchy.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            summarizeBy?: ExcelOp.AggregationFunction | "Automatic" | "Sum" | "Count" | "Average" | "Max" | "Min" | "Product" | "CountNumbers" | "StandardDeviation" | "StandardDeviationP" | "Variation" | "VariationP";
+        }
+        /** An interface describing the data returned by calling "pivotFieldCollection.retrieve()". */
+        interface PivotFieldCollectionData {
+            items?: ExcelOp.Interfaces.PivotFieldData[];
+        }
+        /** An interface describing the data returned by calling "pivotField.retrieve()". */
+        interface PivotFieldData {
+            /**
+             *
+             * Id of the PivotField.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            id?: string;
+            /**
+             *
+             * Name of the PivotField.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            name?: string;
+        }
+        /** An interface describing the data returned by calling "pivotItemCollection.retrieve()". */
+        interface PivotItemCollectionData {
+            items?: ExcelOp.Interfaces.PivotItemData[];
+        }
+        /** An interface describing the data returned by calling "pivotItem.retrieve()". */
+        interface PivotItemData {
+            /**
+             *
+             * Id of the PivotItem.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            id?: string;
+            /**
+             *
+             * Name of the PivotItem.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            name?: string;
+            /**
+             *
+             * Determines whether details are shown or not.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showDetail?: boolean;
+            /**
+             *
+             * Determines whether the PivotItem is visible or not.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            visible?: boolean;
+        }
+        /** An interface describing the data returned by calling "documentProperties.retrieve()". */
+        interface DocumentPropertiesData {
+            /**
+             *
+             * Gets or sets the author of the workbook.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            author?: string;
+            /**
+             *
+             * Gets or sets the category of the workbook.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            category?: string;
+            /**
+             *
+             * Gets or sets the comments of the workbook.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            comments?: string;
+            /**
+             *
+             * Gets or sets the company of the workbook.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            company?: string;
+            /**
+             *
+             * Gets the creation date of the workbook. Read only.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            creationDate?: Date;
+            /**
+             *
+             * Gets or sets the keywords of the workbook.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            keywords?: string;
+            /**
+             *
+             * Gets the last author of the workbook. Read only.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            lastAuthor?: string;
+            /**
+             *
+             * Gets or sets the manager of the workbook.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            manager?: string;
+            /**
+             *
+             * Gets the revision number of the workbook. Read only.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            revisionNumber?: number;
+            /**
+             *
+             * Gets or sets the subject of the workbook.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            subject?: string;
+            /**
+             *
+             * Gets or sets the title of the workbook.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            title?: string;
+        }
+        /** An interface describing the data returned by calling "customProperty.retrieve()". */
+        interface CustomPropertyData {
+            /**
+             *
+             * Gets the key of the custom property. Read only.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            key?: string;
+            /**
+             *
+             * Gets the value type of the custom property. Read only.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            type?: ExcelOp.DocumentPropertyType | "Number" | "Boolean" | "Date" | "String" | "Float";
+            /**
+             *
+             * Gets or sets the value of the custom property.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            value?: any;
+        }
+        /** An interface describing the data returned by calling "customPropertyCollection.retrieve()". */
+        interface CustomPropertyCollectionData {
+            items?: ExcelOp.Interfaces.CustomPropertyData[];
+        }
+        /** An interface describing the data returned by calling "conditionalFormatCollection.retrieve()". */
+        interface ConditionalFormatCollectionData {
+            items?: ExcelOp.Interfaces.ConditionalFormatData[];
+        }
+        /** An interface describing the data returned by calling "conditionalFormat.retrieve()". */
+        interface ConditionalFormatData {
+            /**
+             *
+             * The Priority of the Conditional Format within the current ConditionalFormatCollection.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            id?: string;
+            /**
+             *
+             * The priority (or index) within the conditional format collection that this conditional format currently exists in. Changing this also
+            changes other conditional formats' priorities, to allow for a contiguous priority order.
+            Use a negative priority to begin from the back.
+            Priorities greater than than bounds will get and set to the maximum (or minimum if negative) priority.
+            Also note that if you change the priority, you have to re-fetch a new copy of the object at that new priority location if you want to make further changes to it.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            priority?: number;
+            /**
+             *
+             * If the conditions of this conditional format are met, no lower-priority formats shall take effect on that cell.
+            Null on databars, icon sets, and colorscales as there's no concept of StopIfTrue for these
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            stopIfTrue?: boolean;
+            /**
+             *
+             * A type of conditional format. Only one can be set at a time. Read-Only.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            type?: ExcelOp.ConditionalFormatType | "Custom" | "DataBar" | "ColorScale" | "IconSet" | "TopBottom" | "PresetCriteria" | "ContainsText" | "CellValue";
+        }
+        /** An interface describing the data returned by calling "dataBarConditionalFormat.retrieve()". */
+        interface DataBarConditionalFormatData {
+            /**
+             *
+             * HTML color code representing the color of the Axis line, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
+            "" (empty string) if no axis is present or set.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            axisColor?: string;
+            /**
+             *
+             * Representation of how the axis is determined for an Excel data bar.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            axisFormat?: ExcelOp.ConditionalDataBarAxisFormat | "Automatic" | "None" | "CellMidPoint";
+            /**
+             *
+             * Represents the direction that the data bar graphic should be based on.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            barDirection?: ExcelOp.ConditionalDataBarDirection | "Context" | "LeftToRight" | "RightToLeft";
+            /**
+             *
+             * The rule for what consistutes the lower bound (and how to calculate it, if applicable) for a data bar.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            lowerBoundRule?: ExcelOp.ConditionalDataBarRule;
+            /**
+             *
+             * If true, hides the values from the cells where the data bar is applied.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            showDataBarOnly?: boolean;
+            /**
+             *
+             * The rule for what constitutes the upper bound (and how to calculate it, if applicable) for a data bar.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            upperBoundRule?: ExcelOp.ConditionalDataBarRule;
+        }
+        /** An interface describing the data returned by calling "conditionalDataBarPositiveFormat.retrieve()". */
+        interface ConditionalDataBarPositiveFormatData {
+            /**
+             *
+             * HTML color code representing the color of the border line, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
+            "" (empty string) if no border is present or set.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            borderColor?: string;
+            /**
+             *
+             * HTML color code representing the fill color, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            fillColor?: string;
+            /**
+             *
+             * Boolean representation of whether or not the DataBar has a gradient.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            gradientFill?: boolean;
+        }
+        /** An interface describing the data returned by calling "conditionalDataBarNegativeFormat.retrieve()". */
+        interface ConditionalDataBarNegativeFormatData {
+            /**
+             *
+             * HTML color code representing the color of the border line, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
+            "Empty String" if no border is present or set.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            borderColor?: string;
+            /**
+             *
+             * HTML color code representing the fill color, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            fillColor?: string;
+            /**
+             *
+             * Boolean representation of whether or not the negative DataBar has the same border color as the positive DataBar.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            matchPositiveBorderColor?: boolean;
+            /**
+             *
+             * Boolean representation of whether or not the negative DataBar has the same fill color as the positive DataBar.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            matchPositiveFillColor?: boolean;
+        }
+        /** An interface describing the data returned by calling "conditionalFormatRule.retrieve()". */
+        interface ConditionalFormatRuleData {
+            /**
+             *
+             * The formula, if required, to evaluate the conditional format rule on.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            formula?: string;
+            /**
+             *
+             * The formula, if required, to evaluate the conditional format rule on in the user's language.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            formulaLocal?: string;
+            /**
+             *
+             * The formula, if required, to evaluate the conditional format rule on in R1C1-style notation.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            formulaR1C1?: string;
+        }
+        /** An interface describing the data returned by calling "iconSetConditionalFormat.retrieve()". */
+        interface IconSetConditionalFormatData {
+            /**
+             *
+             * An array of Criteria and IconSets for the rules and potential custom icons for conditional icons. Note that for the first criterion only the custom icon can be modified, while type, formula and operator will be ignored when set.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            criteria?: ExcelOp.ConditionalIconCriterion[];
+            /**
+             *
+             * If true, reverses the icon orders for the IconSet. Note that this cannot be set if custom icons are used.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            reverseIconOrder?: boolean;
+            /**
+             *
+             * If true, hides the values and only shows icons.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            showIconOnly?: boolean;
+            /**
+             *
+             * If set, displays the IconSet option for the conditional format.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            style?: ExcelOp.IconSet | "Invalid" | "ThreeArrows" | "ThreeArrowsGray" | "ThreeFlags" | "ThreeTrafficLights1" | "ThreeTrafficLights2" | "ThreeSigns" | "ThreeSymbols" | "ThreeSymbols2" | "FourArrows" | "FourArrowsGray" | "FourRedToBlack" | "FourRating" | "FourTrafficLights" | "FiveArrows" | "FiveArrowsGray" | "FiveRating" | "FiveQuarters" | "ThreeStars" | "ThreeTriangles" | "FiveBoxes";
+        }
+        /** An interface describing the data returned by calling "colorScaleConditionalFormat.retrieve()". */
+        interface ColorScaleConditionalFormatData {
+            /**
+             *
+             * The criteria of the color scale. Midpoint is optional when using a two point color scale.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            criteria?: ExcelOp.ConditionalColorScaleCriteria;
+            /**
+             *
+             * If true the color scale will have three points (minimum, midpoint, maximum), otherwise it will have two (minimum, maximum).
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            threeColorScale?: boolean;
+        }
+        /** An interface describing the data returned by calling "topBottomConditionalFormat.retrieve()". */
+        interface TopBottomConditionalFormatData {
+            /**
+             *
+             * The criteria of the Top/Bottom conditional format.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            rule?: ExcelOp.ConditionalTopBottomRule;
+        }
+        /** An interface describing the data returned by calling "presetCriteriaConditionalFormat.retrieve()". */
+        interface PresetCriteriaConditionalFormatData {
+            /**
+             *
+             * The rule of the conditional format.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            rule?: ExcelOp.ConditionalPresetCriteriaRule;
+        }
+        /** An interface describing the data returned by calling "textConditionalFormat.retrieve()". */
+        interface TextConditionalFormatData {
+            /**
+             *
+             * The rule of the conditional format.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            rule?: ExcelOp.ConditionalTextComparisonRule;
+        }
+        /** An interface describing the data returned by calling "cellValueConditionalFormat.retrieve()". */
+        interface CellValueConditionalFormatData {
+            /**
+             *
+             * Represents the Rule object on this conditional format.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            rule?: ExcelOp.ConditionalCellValueRule;
+        }
+        /** An interface describing the data returned by calling "conditionalRangeFormat.retrieve()". */
+        interface ConditionalRangeFormatData {
+            /**
+             *
+             * Represents Excel's number format code for the given range. Cleared if null is passed in.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            numberFormat?: any;
+        }
+        /** An interface describing the data returned by calling "conditionalRangeFont.retrieve()". */
+        interface ConditionalRangeFontData {
+            /**
+             *
+             * Represents the bold status of font.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            bold?: boolean;
+            /**
+             *
+             * HTML color code representation of the text color. E.g. #FF0000 represents Red.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            color?: string;
+            /**
+             *
+             * Represents the italic status of the font.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            italic?: boolean;
+            /**
+             *
+             * Represents the strikethrough status of the font.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            strikethrough?: boolean;
+            /**
+             *
+             * Type of underline applied to the font. See Excel.ConditionalRangeFontUnderlineStyle for details.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            underline?: ExcelOp.ConditionalRangeFontUnderlineStyle | "None" | "Single" | "Double";
+        }
+        /** An interface describing the data returned by calling "conditionalRangeFill.retrieve()". */
+        interface ConditionalRangeFillData {
+            /**
+             *
+             * HTML color code representing the color of the fill, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            color?: string;
+        }
+        /** An interface describing the data returned by calling "conditionalRangeBorder.retrieve()". */
+        interface ConditionalRangeBorderData {
+            /**
+             *
+             * HTML color code representing the color of the border line, of the form #RRGGBB (e.g. "FFA500") or as a named HTML color (e.g. "orange").
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            color?: string;
+            /**
+             *
+             * Represents border identifier. Read-only.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            id?: ExcelOp.ConditionalRangeBorderIndex | "EdgeTop" | "EdgeBottom" | "EdgeLeft" | "EdgeRight";
+            /**
+             *
+             * Constant value that indicates the specific side of the border. See Excel.ConditionalRangeBorderIndex for details. Read-only.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            sideIndex?: ExcelOp.ConditionalRangeBorderIndex | "EdgeTop" | "EdgeBottom" | "EdgeLeft" | "EdgeRight";
+            /**
+             *
+             * One of the constants of line style specifying the line style for the border. See Excel.BorderLineStyle for details.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            style?: ExcelOp.ConditionalRangeBorderLineStyle | "None" | "Continuous" | "Dash" | "DashDot" | "DashDotDot" | "Dot";
+        }
+        /** An interface describing the data returned by calling "conditionalRangeBorderCollection.retrieve()". */
+        interface ConditionalRangeBorderCollectionData {
+            /**
+             *
+             * Number of border objects in the collection. Read-only.
+             *
+             * [Api set: ExcelApi 1.6]
+             */
+            count?: number;
+            items?: ExcelOp.Interfaces.ConditionalRangeBorderData[];
+        }
+        /** An interface describing the data returned by calling "customFunction.retrieve()". */
+        interface CustomFunctionData {
+            /**
+             *
+             * Represents whether the function expects multiple argument sets at a time.
+             *
+             * [Api set: CustomFunctions 1.1]
+             */
+            batching?: boolean;
+            /**
+             *
+             * Represents whether the function supports cancellation.
+             *
+             * [Api set: CustomFunctions 1.1]
+             */
+            cancelable?: boolean;
+            /**
+             *
+             * Useful description of the function.
+             *
+             * [Api set: CustomFunctions 1.1]
+             */
+            description?: string;
+            /**
+             *
+             * The ID of the function. Read-only.
+             *
+             * [Api set: CustomFunctions 1.1]
+             */
+            id?: string;
+            /**
+             *
+             * The name of the function.
+             *
+             * [Api set: CustomFunctions 1.1]
+             */
+            name?: string;
+            /**
+             *
+             * Parameters of the function.
+             *
+             * [Api set: CustomFunctions 1.1]
+             */
+            parameters?: ExcelOp.CustomFunctionParameter[];
+            /**
+             *
+             * The dimensionality of result values.
+             *
+             * [Api set: CustomFunctions 1.1]
+             */
+            resultDimensionality?: ExcelOp.CustomFunctionDimensionality | "Invalid" | "Scalar" | "Matrix";
+            /**
+             *
+             * The type of result values.
+             *
+             * [Api set: CustomFunctions 1.1]
+             */
+            resultType?: ExcelOp.CustomFunctionValueType | "Invalid" | "Boolean" | "Number" | "String" | "ISODate";
+            /**
+             *
+             * Represents whether the function supports returning results multiple times.
+             *
+             * [Api set: CustomFunctions 1.1]
+             */
+            streaming?: boolean;
+            /**
+             *
+             * The type of the function.
+             *
+             * [Api set: CustomFunctions 1.1]
+             */
+            type?: ExcelOp.CustomFunctionType | "Invalid" | "Script" | "WebService";
+        }
+        /** An interface describing the data returned by calling "customFunctionCollection.retrieve()". */
+        interface CustomFunctionCollectionData {
+            items?: ExcelOp.Interfaces.CustomFunctionData[];
+        }
+        /** An interface describing the data returned by calling "style.retrieve()". */
+        interface StyleData {
+            /**
+             *
+             * Indicates if text is automatically indented when the text alignment in a cell is set to equal distribution.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            addIndent?: boolean;
+            /**
+             *
+             * Indicates if text is automatically indented when the text alignment in a cell is set to equal distribution.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            autoIndent?: boolean;
+            /**
+             *
+             * Indicates if the style is a built-in style.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            builtIn?: boolean;
+            /**
+             *
+             * Indicates if the formula will be hidden when the worksheet is protected.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            formulaHidden?: boolean;
+            /**
+             *
+             * Represents the horizontal alignment for the style. See Excel.HorizontalAlignment for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            horizontalAlignment?: ExcelOp.HorizontalAlignment | "General" | "Left" | "Center" | "Right" | "Fill" | "Justify" | "CenterAcrossSelection" | "Distributed";
+            /**
+             *
+             * Indicates if the style includes the AutoIndent, HorizontalAlignment, VerticalAlignment, WrapText, IndentLevel, and TextOrientation properties.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            includeAlignment?: boolean;
+            /**
+             *
+             * Indicates if the style includes the Color, ColorIndex, LineStyle, and Weight border properties.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            includeBorder?: boolean;
+            /**
+             *
+             * Indicates if the style includes the Background, Bold, Color, ColorIndex, FontStyle, Italic, Name, Size, Strikethrough, Subscript, Superscript, and Underline font properties.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            includeFont?: boolean;
+            /**
+             *
+             * Indicates if the style includes the NumberFormat property.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            includeNumber?: boolean;
+            /**
+             *
+             * Indicates if the style includes the Color, ColorIndex, InvertIfNegative, Pattern, PatternColor, and PatternColorIndex interior properties.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            includePatterns?: boolean;
+            /**
+             *
+             * Indicates if the style includes the FormulaHidden and Locked protection properties.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            includeProtection?: boolean;
+            /**
+             *
+             * An integer from 0 to 250 that indicates the indent level for the style.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            indentLevel?: number;
+            /**
+             *
+             * Indicates if the object is locked when the worksheet is protected.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            locked?: boolean;
+            /**
+             *
+             * The name of the style.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            name?: string;
+            /**
+             *
+             * The format code of the number format for the style.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            numberFormat?: string;
+            /**
+             *
+             * The localized format code of the number format for the style.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            numberFormatLocal?: string;
+            /**
+             *
+             * The text orientation for the style.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            orientation?: number;
+            /**
+             *
+             * The reading order for the style.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            readingOrder?: ExcelOp.ReadingOrder | "Context" | "LeftToRight" | "RightToLeft";
+            /**
+             *
+             * Indicates if text automatically shrinks to fit in the available column width.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            shrinkToFit?: boolean;
+            /**
+             *
+             * The text orientation for the style.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            textOrientation?: number;
+            /**
+             *
+             * Represents the vertical alignment for the style. See Excel.VerticalAlignment for details.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            verticalAlignment?: ExcelOp.VerticalAlignment | "Top" | "Center" | "Bottom" | "Justify" | "Distributed";
+            /**
+             *
+             * Indicates if Microsoft Excel wraps the text in the object.
+             *
+             * [Api set: ExcelApi 1.7]
+             */
+            wrapText?: boolean;
+        }
+        /** An interface describing the data returned by calling "styleCollection.retrieve()". */
+        interface StyleCollectionData {
+            items?: ExcelOp.Interfaces.StyleData[];
+        }
+        /** An interface describing the data returned by calling "pageLayout.retrieve()". */
+        interface PageLayoutData {
+            /**
+             *
+             * Gets or sets the worksheet's black and white print option.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            blackAndWhite?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's bottom page margin to use for printing in points.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            bottomMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's center horizontally flag. This flag determines whether the worksheet will be centered horizontally when it's printed.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerHorizontally?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's center vertically flag. This flag determines whether the worksheet will be centered vertically when it's printed.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerVertically?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's draft mode option. If true the sheet will be printed without graphics.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            draft?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's first page number to print. Null value represents "auto" page numbering.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            firstPageNumber?: number | "";
+            /**
+             *
+             * Gets or sets the worksheet's footer margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            footerMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's header margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            headerMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's left margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            leftMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's orientation of the page.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            orientation?: ExcelOp.PageOrientation | "Portrait" | "Landscape";
+            /**
+             *
+             * Gets or sets the worksheet's paper size of the page.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            paperSize?: ExcelOp.PaperType | "Letter" | "LetterSmall" | "Tabloid" | "Ledger" | "Legal" | "Statement" | "Executive" | "A3" | "A4" | "A4Small" | "A5" | "B4" | "B5" | "Folio" | "Quatro" | "Paper10x14" | "Paper11x17" | "Note" | "Envelope9" | "Envelope10" | "Envelope11" | "Envelope12" | "Envelope14" | "Csheet" | "Dsheet" | "Esheet" | "EnvelopeDL" | "EnvelopeC5" | "EnvelopeC3" | "EnvelopeC4" | "EnvelopeC6" | "EnvelopeC65" | "EnvelopeB4" | "EnvelopeB5" | "EnvelopeB6" | "EnvelopeItaly" | "EnvelopeMonarch" | "EnvelopePersonal" | "FanfoldUS" | "FanfoldStdGerman" | "FanfoldLegalGerman";
+            /**
+             *
+             * Gets or sets whether the worksheet's comments should be displayed when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printComments?: ExcelOp.PrintComments | "PrintNoComments" | "PrintEndSheet" | "PrintInPlace";
+            /**
+             *
+             * Gets or sets the worksheet's print errors option.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printErrors?: ExcelOp.PrintErrorType | "ErrorsDisplayed" | "ErrorsBlank" | "ErrorsDash" | "ErrorsNotAvailable";
+            /**
+             *
+             * Gets or sets the worksheet's print gridlines flag. This flag determines whether gridlines will be printed or not.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printGridlines?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's print headings flag. This flag determines whether headings will be printed or not.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printHeadings?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's page print order option. This specifies the order to use for processing the page number printed.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printOrder?: ExcelOp.PrintOrder | "DownThenOver" | "OverThenDown";
+            /**
+             *
+             * Gets or sets the worksheet's right margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rightMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's top margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            topMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's print zoom options.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            zoom?: ExcelOp.PageLayoutZoomOptions;
+        }
+        /** An interface describing the data returned by calling "headerFooter.retrieve()". */
+        interface HeaderFooterData {
+            /**
+             *
+             * Gets or sets the center footer of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerFooter?: string;
+            /**
+             *
+             * Gets or sets the center header of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerHeader?: string;
+            /**
+             *
+             * Gets or sets the left footer of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            leftFooter?: string;
+            /**
+             *
+             * Gets or sets the left header of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            leftHeader?: string;
+            /**
+             *
+             * Gets or sets the right footer of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rightFooter?: string;
+            /**
+             *
+             * Gets or sets the right header of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rightHeader?: string;
+        }
+        /** An interface describing the data returned by calling "headerFooterGroup.retrieve()". */
+        interface HeaderFooterGroupData {
+            /**
+             *
+             * Gets or sets the state of which headers/footers are set. See Excel.HeaderFooterState for details.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            state?: ExcelOp.HeaderFooterState | "General" | "FirstGeneral" | "OddEven" | "FirstOddEven";
+            /**
+             *
+             * Gets or sets a flag indicating if headers/footers are aligned with the page margins set in the page layout options for the worksheet.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            useSheetMargins?: boolean;
+            /**
+             *
+             * Gets or sets a flag indicating if headers/footers should be scaled by the page percentage scale set in the page layout options for the worksheet.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            useSheetScale?: boolean;
+        }
+        /** An interface describing the data returned by calling "pageBreak.retrieve()". */
+        interface PageBreakData {
+            /**
+             *
+             * Represents the column index for the page break
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            columnIndex?: number;
+            /**
+             *
+             * Represents the row index for the page break
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rowIndex?: number;
+        }
+        /** An interface describing the data returned by calling "pageBreakCollection.retrieve()". */
+        interface PageBreakCollectionData {
+            items?: ExcelOp.Interfaces.PageBreakData[];
+        }
+        /** An interface describing the data returned by calling "areaCollection.retrieve()". */
+        interface AreaCollectionData {
+            items?: ExcelOp.Interfaces.RangeData[];
+        }
+        /** An interface describing the data returned by calling "shapeCollection.retrieve()". */
+        interface ShapeCollectionData {
+            items?: ExcelOp.Interfaces.ShapeData[];
+        }
+        /** An interface describing the data returned by calling "shape.retrieve()". */
+        interface ShapeData {
+            /**
+             *
+             * Represents the height, in points, of the shape.
+            Throws an invalid argument exception when set with negative value or zero as input.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            height?: number;
+            /**
+             *
+             * Represents the shape identifier. Read-only.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            id?: number;
+            /**
+             *
+             * The distance, in points, from the left side of the shape to the left of the worksheet.
+            Throws an invalid argument exception when set with negative value as input.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            left?: number;
+            /**
+             *
+             * Represents the name of the shape. Read-only.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            name?: string;
+            /**
+             *
+             * Represents the rotation, in degrees, of the shape.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rotation?: number;
+            /**
+             *
+             * The distance, in points, from the top edge of the shape to the top of the worksheet.
+            Throws an invalid argument exception when set with negative value as input.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            top?: number;
+            /**
+             *
+             * Represents the width, in points, of the shape.
+            Throws an invalid argument exception when set with negative value or zero as input.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            width?: number;
+        }
+        /** An interface describing the data returned by calling "geometricShape.retrieve()". */
+        interface GeometricShapeData {
+            /**
+             *
+             * Represents the shape identifier. Read-only.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            id?: number;
+        }
+        /** An interface describing the data returned by calling "image.retrieve()". */
+        interface ImageData {
+            /**
+             *
+             * Represents the shape identifier for the image object. Read-only.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            id?: number;
+        }
+        /** An interface describing the data returned by calling "functionResult.retrieve()". */
+        interface FunctionResultData<T> {
+            /**
+             *
+             * Error value (such as "#DIV/0") representing the error. If the error string is not set, then the function succeeded, and its result is written to the Value field. The error is always in the English locale.
+             *
+             * [Api set: ExcelApi 1.2]
+             */
+            error?: string;
+            /**
+             *
+             * The value of function evaluation. The value field will be populated only if no error has occurred (i.e., the Error property is not set).
+             *
+             * [Api set: ExcelApi 1.2]
+             */
+            value?: T;
         }
     }
 }

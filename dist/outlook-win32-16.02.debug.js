@@ -8028,6 +8028,9 @@ OSF.InitializationHelper.prototype.loadAppSpecificScriptAndCreateOM = function O
                 case 16:
                     executeParameters = [data["uri"],data["name"],data["isInline"]];
                     break;
+                case 146:
+                    executeParameters = [data["base64String"],data["name"],data["isInline"]];
+                    break;
                 case 20:
                     executeParameters = [data["attachmentIndex"]];
                     break;
@@ -9142,6 +9145,24 @@ OSF.InitializationHelper.prototype.loadAppSpecificScriptAndCreateOM = function O
         $h.InitialData._defineReadOnlyProperty$i(this,"body",this.$$d__getBody$p$1);
         $h.InitialData._defineReadOnlyProperty$i(this,"from",this.$$d__getFrom$p$1)
     };
+    $h.ComposeItem._validateAndExtractCommonParametersForAddFileAttachmentApis$p = function(attachmentName, args, apiName, parameters, asyncContext, callback)
+    {
+        window["OSF"]["DDA"]["OutlookAppOm"]._instance$p._throwOnMethodCallForInsufficientPermission$i$0(2,apiName);
+        if(!$h.ScriptHelpers.isNonEmptyString(attachmentName))
+            throw Error.argument("attachmentName");
+        window["OSF"]["DDA"]["OutlookAppOm"]._throwOnOutOfRange$i(attachmentName.length,0,255,"attachmentName");
+        var commonParameters = $h.CommonParameters.parse(args,false);
+        var isInline = false;
+        if(!$h.ScriptHelpers.isNull(commonParameters._options$p$0))
+            isInline = $h.ScriptHelpers.isValueTrue(commonParameters._options$p$0["isInline"]);
+        parameters["val"] = {
+            name: attachmentName,
+            isInline: isInline,
+            __timeout__: 6e5
+        };
+        asyncContext["val"] = commonParameters._asyncContext$p$0;
+        callback["val"] = commonParameters._callback$p$0
+    };
     $h.ComposeItem.prototype = {
         _subject$p$1: null,
         _body$p$1: null,
@@ -9171,26 +9192,41 @@ OSF.InitializationHelper.prototype.loadAppSpecificScriptAndCreateOM = function O
     $h.ComposeItem.prototype.addFileAttachmentAsync = function(uri, attachmentName)
     {
         var args = [];
-        for(var $$pai_6 = 2; $$pai_6 < arguments["length"]; ++$$pai_6)
-            args[$$pai_6 - 2] = arguments[$$pai_6];
-        window["OSF"]["DDA"]["OutlookAppOm"]._instance$p._throwOnMethodCallForInsufficientPermission$i$0(2,"addFileAttachmentAsync");
+        for(var $$pai_9 = 2; $$pai_9 < arguments["length"]; ++$$pai_9)
+            args[$$pai_9 - 2] = arguments[$$pai_9];
+        var parameters;
+        var asyncContext;
+        var callback;
         if(!$h.ScriptHelpers.isNonEmptyString(uri))
             throw Error.argument("uri");
-        if(!$h.ScriptHelpers.isNonEmptyString(attachmentName))
-            throw Error.argument("attachmentName");
         window["OSF"]["DDA"]["OutlookAppOm"]._throwOnOutOfRange$i(uri.length,0,2048,"uri");
-        window["OSF"]["DDA"]["OutlookAppOm"]._throwOnOutOfRange$i(attachmentName.length,0,255,"attachmentName");
-        var commonParameters = $h.CommonParameters.parse(args,false);
-        var isInline = false;
-        if(!$h.ScriptHelpers.isNull(commonParameters._options$p$0))
-            isInline = $h.ScriptHelpers.isValueTrue(commonParameters._options$p$0["isInline"]);
-        var parameters = {
-                uri: uri,
-                name: attachmentName,
-                isInline: isInline,
-                __timeout__: 6e5
-            };
-        window["OSF"]["DDA"]["OutlookAppOm"]._instance$p._standardInvokeHostMethod$i$0(16,parameters,null,commonParameters._asyncContext$p$0,commonParameters._callback$p$0)
+        var $$t_6,
+            $$t_7,
+            $$t_8;
+        $h.ComposeItem._validateAndExtractCommonParametersForAddFileAttachmentApis$p(attachmentName,args,"addFileAttachmentAsync",$$t_6 = {val: parameters},$$t_7 = {val: asyncContext},$$t_8 = {val: callback}),parameters = $$t_6["val"],
+            asyncContext = $$t_7["val"],
+            callback = $$t_8["val"];
+        parameters["uri"] = uri;
+        window["OSF"]["DDA"]["OutlookAppOm"]._instance$p._standardInvokeHostMethod$i$0(16,parameters,null,asyncContext,callback)
+    };
+    $h.ComposeItem.prototype.addBase64FileAttachmentAsync = function(base64Encoded, attachmentName)
+    {
+        var args = [];
+        for(var $$pai_9 = 2; $$pai_9 < arguments["length"]; ++$$pai_9)
+            args[$$pai_9 - 2] = arguments[$$pai_9];
+        var parameters;
+        var asyncContext;
+        var callback;
+        if(!$h.ScriptHelpers.isNonEmptyString(base64Encoded))
+            throw Error.argument("base64Encoded");
+        var $$t_6,
+            $$t_7,
+            $$t_8;
+        $h.ComposeItem._validateAndExtractCommonParametersForAddFileAttachmentApis$p(attachmentName,args,"addBase64FileAttachmentAsync",$$t_6 = {val: parameters},$$t_7 = {val: asyncContext},$$t_8 = {val: callback}),parameters = $$t_6["val"],
+            asyncContext = $$t_7["val"],
+            callback = $$t_8["val"];
+        parameters["base64String"] = base64Encoded;
+        window["OSF"]["DDA"]["OutlookAppOm"]._instance$p._standardInvokeHostMethod$i$0(146,parameters,null,asyncContext,callback)
     };
     $h.ComposeItem.prototype.addItemAttachmentAsync = function(itemId, attachmentName)
     {
@@ -11506,6 +11542,7 @@ OSF.InitializationHelper.prototype.loadAppSpecificScriptAndCreateOM = function O
         getFromAsync: 107,
         getSharedPropertiesAsync: 108,
         messageParent: 144,
+        addBase64FileAttachmentAsync: 146,
         trackCtq: 400,
         recordTrace: 401,
         recordDataPoint: 402,
@@ -12205,6 +12242,7 @@ OSF.InitializationHelper.prototype.loadAppSpecificScriptAndCreateOM = function O
     $h.AttachmentConstants.attachmentParameterName = "attachments";
     $h.AttachmentConstants.attachmentTypeParameterName = "type";
     $h.AttachmentConstants.attachmentUrlParameterName = "url";
+    $h.AttachmentConstants.base64StringParameterName = "base64String";
     $h.AttachmentConstants.attachmentItemIdParameterName = "itemId";
     $h.AttachmentConstants.attachmentNameParameterName = "name";
     $h.AttachmentConstants.attachmentIsInlineParameterName = "isInline";
