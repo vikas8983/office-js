@@ -2,6 +2,7 @@
 // Project: http://dev.office.com
 // Definitions by: OfficeDev <https://github.com/OfficeDev>, Lance Austin <https://github.com/LanceEA>, Michael Zlatkovsky <https://github.com/Zlatkovsky>, Kim Brandl <https://github.com/kbrandl>, Ricky Kirkham <https://github.com/Rick-Kirkham>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+// TypeScript Version: 2.4
 
 /*
 office-js
@@ -14,12 +15,24 @@ Copyright (c) Microsoft Corporation
 ////////////////////////////////////////////////////////////////
 
 declare namespace Office {
+    export var Preview: {
+        startCustomFunctions(): Promise<void>;
+    }
+
+    export var Promise: PromiseConstructor;
     export var context: Context;
     /**
      * This method is called after the Office API was loaded.
      * @param reason Indicates how the app was initialized
      */
     export function initialize(reason: InitializationReason): void;
+    /**
+    * Ensures that the Office JavaScript APIs are ready to be called by the add-in. If the framework hasn't initialized yet, the callback or promise will wait until the Office host is ready to accept API calls.
+    * Note that though this API is intended to be used inside an Office add-in, it can also be used outside the add-in.  In that case, once Office.js determines that it is running outside of an Office host application, it will call the callback and resolve the promise with "null" for both the host and platform.
+    * @param callback - An optional callback method, that will receive the host and platform info. Alternatively, rather than use a callback, an add-in may simply wait for the Promise returned by the function to resolve.
+    * @returns A Promise that contains the host and platform info, once initialization is completed.
+    */
+    export function onReady(callback?: (info: { host: HostType, platform: PlatformType }) => any): Promise<{ host: HostType, platform: PlatformType }>;
     /**
      * Indicates if the large namespace for objects will be used or not.
      * @param useShortNamespace  Indicates if 'true' that the short namespace will be used
@@ -1566,7 +1579,7 @@ declare namespace Office {
 ////////////////////////////////////////////////////////////////
 
 declare namespace Office {
-    export module MailboxEnums {
+    namespace MailboxEnums {
         export enum AttachmentType {
             /**
              * The attachment is a file
@@ -3360,73 +3373,8 @@ declare namespace OfficeCore {
 
 
 declare namespace OfficeCore {
-    /**
-     * [Api set: Experimentation 1.1 (PREVIEW) (PREVIEW)]
-     */
-    class FlightingService extends OfficeExtension.ClientObject {
-        getFeature(featureName: string, type: string, defaultValue: number | boolean | string, possibleValues?: Array<number> | Array<string> | Array<boolean> | Array<ScopedValue>): OfficeCore.ABType;
-        getFeatureGate(featureName: string, scope?: string): OfficeCore.ABType;
-        resetOverride(featureName: string): void;
-        setOverride(featureName: string, type: string, value: number | boolean | string): void;
-        /**
-         * Create a new instance of OfficeCore.FlightingService object
-         */
-        static newObject(context: OfficeExtension.ClientRequestContext): OfficeCore.FlightingService;
-        toJSON(): {};
-    }
-    /**
-     *
-     * Provides information about the scoped value.
-     *
-     * [Api set: Experimentation 1.1 (PREVIEW) (PREVIEW)]
-     */
-    interface ScopedValue {
-        /**
-         *
-         * Gets the scope.
-         *
-         * [Api set: Experimentation 1.1 (PREVIEW) (PREVIEW)]
-         */
-        scope: string;
-        /**
-         *
-         * Gets the value.
-         *
-         * [Api set: Experimentation 1.1 (PREVIEW) (PREVIEW)]
-         */
-        value: string | number | boolean;
-    }
-    /**
-     * [Api set: Experimentation 1.1 (PREVIEW) (PREVIEW)]
-     */
-    class ABType extends OfficeExtension.ClientObject {
-        readonly value: string | number | boolean;
-        /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         */
-        load(option?: string | string[] | OfficeExtension.LoadOption): OfficeCore.ABType;
-        toJSON(): {
-            "value": string | number | boolean;
-        };
-    }
-    /**
-     * [Api set: Experimentation 1.1 (PREVIEW) (PREVIEW)]
-     */
-    namespace FeatureType {
-        var boolean: string;
-        var integer: string;
-        var string: string;
-    }
-    namespace ExperimentErrorCodes {
-        var generalException: string;
-    }
-    module Interfaces {
-    }
-}
-declare namespace OfficeCore {
     class RequestContext extends OfficeExtension.ClientRequestContext {
         constructor(url?: string | OfficeExtension.RequestUrlAndHeaderInfo | any);
-        readonly flightingService: FlightingService;
     }
 }
 
@@ -4265,7 +4213,16 @@ declare namespace Excel {
     class Application extends OfficeExtension.ClientObject {
         /**
          *
-         * Returns the calculation mode used in the workbook. See Excel.CalculationMode for details.
+         * Returns the Iterative Calculation settings.
+            On Excel for Windows and Excel for Mac, the settings will aplly to the Excel Application.
+            On Excel Online and Excel for other platforms, the settings will apply to the active workbook.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly iterativeCalculation: Excel.IterativeCalculation;
+        /**
+         *
+         * Returns the calculation mode used in the workbook, as defined by the constants in Excel.CalculationMode. Possible values are: `Automatic`, where Excel controls recalculation; `AutomaticExceptTables`, where Excel controls recalculation but ignores changes in tables; `Manual`, where calculation is done when the user requests it.
          *
          * [Api set: ExcelApi 1.1 for get, 1.8 for set]
          */
@@ -4325,6 +4282,49 @@ declare namespace Excel {
             expand?: string;
         }): Excel.Application;
         toJSON(): Excel.Interfaces.ApplicationData;
+    }
+    /**
+     *
+     * Represents the Iterative Calculation settings.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class IterativeCalculation extends OfficeExtension.ClientObject {
+        /**
+         *
+         * True if Excel will use iteration to resolve circular references.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        enabled: boolean;
+        /**
+         *
+         * Returns or sets the maximum amount of change between each iteration as Excel resolves circular references.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        maxChange: number;
+        /**
+         *
+         * Returns or sets the maximum number of iterations that Excel can use to resolve a circular reference.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        maxIteration: number;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        set(properties: Interfaces.IterativeCalculationUpdateData, options?: OfficeExtension.UpdateOptions): void;
+        /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
+        set(properties: IterativeCalculation): void;
+        /**
+         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+         */
+        load(option?: Excel.Interfaces.IterativeCalculationLoadOptions): Excel.IterativeCalculation;
+        load(option?: string | string[]): Excel.IterativeCalculation;
+        load(option?: {
+            select?: string;
+            expand?: string;
+        }): Excel.IterativeCalculation;
+        toJSON(): Excel.Interfaces.IterativeCalculationData;
     }
     /**
      *
@@ -4501,7 +4501,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          */
-        getSelectedRange(): Excel.Range;
+        getSelectedRange(allowMultiAreas?: boolean): Excel.Range;
         /**
          * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
          */
@@ -4618,6 +4618,13 @@ declare namespace Excel {
         readonly freezePanes: Excel.WorksheetFreezePanes;
         /**
          *
+         * Gets the horizontal page break collection for the worksheet. This collection only contains manual page breaks.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly horizontalPageBreaks: Excel.PageBreakCollection;
+        /**
+         *
          * Collection of names scoped to the current worksheet.
          *
          * [Api set: ExcelApi 1.4]
@@ -4658,6 +4665,13 @@ declare namespace Excel {
          * [Api set: ExcelApi 1.1]
          */
         readonly tables: Excel.TableCollection;
+        /**
+         *
+         * Gets the vertical page break collection for the worksheet. This collection only contains manual page breaks.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly verticalPageBreaks: Excel.PageBreakCollection;
         /**
          *
          * Returns a value that uniquely identifies the worksheet in a given workbook. The value of the identifier remains the same even when the worksheet is renamed or moved. Read-only.
@@ -4742,6 +4756,8 @@ declare namespace Excel {
          * Calculates all cells on a worksheet.
          *
          * [Api set: ExcelApi 1.6]
+         *
+         * @param markAllDirty True, to mark all as dirty.
          */
         calculate(markAllDirty: boolean): void;
         /**
@@ -4861,7 +4877,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          *
-         * @param valuesOnly Considers only cells with values as used cells (ignoring formatting). [Api set: ExcelApi 1.2]
+         * @param valuesOnly If true, considers only cells with values as used cells (ignoring formatting). [Api set: ExcelApi 1.2]
          */
         getUsedRange(valuesOnly?: boolean): Excel.Range;
         /**
@@ -4961,14 +4977,17 @@ declare namespace Excel {
          * Gets the number of worksheets in the collection.
          *
          * [Api set: ExcelApi 1.4]
+         *
+         * @param visibleOnly If true, considers only visible worksheets, skipping over any hidden ones.
          */
         getCount(visibleOnly?: boolean): OfficeExtension.ClientResult<number>;
         /**
          *
          * Gets the first worksheet in the collection.
-            If true, considers only visible worksheets, skipping over any hidden ones.
          *
          * [Api set: ExcelApi 1.5]
+         *
+         * @param visibleOnly If true, considers only visible worksheets, skipping over any hidden ones.
          */
         getFirst(visibleOnly?: boolean): Excel.Worksheet;
         /**
@@ -4992,9 +5011,10 @@ declare namespace Excel {
         /**
          *
          * Gets the last worksheet in the collection.
-            If true, considers only visible worksheets, skipping over any hidden ones.
          *
          * [Api set: ExcelApi 1.5]
+         *
+         * @param visibleOnly If true, considers only visible worksheets, skipping over any hidden ones.
          */
         getLast(visibleOnly?: boolean): Excel.Worksheet;
         /**
@@ -5402,6 +5422,13 @@ declare namespace Excel {
         readonly isEntireRow: boolean;
         /**
          *
+         * Represents the data type state of each cell. Read-only.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly linkedDataTypeState: Excel.LinkedDataTypeState[][];
+        /**
+         *
          * Represents Excel's number format code for the given range.
             When setting number format to a range, the value argument can be either a single value (string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
          *
@@ -5497,6 +5524,47 @@ declare namespace Excel {
          * @param applyTo Determines the type of clear action. See Excel.ClearApplyTo for details.
          */
         clear(applyTo?: "All" | "Formats" | "Contents" | "Hyperlinks" | "RemoveHyperlinks"): void;
+        /**
+         *
+         * Converts the range cells with datatypes into text.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        convertDataTypeToText(): void;
+        /**
+         *
+         * Converts the range cells into linked datatype in the worksheet.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param serviceID The Service ID which will be used to query the data.
+         * @param languageCulture Language Culture to query the service for.
+         */
+        convertToLinkedDataType(serviceID: number, languageCulture: string): void;
+        /**
+         *
+         * Copies cell data or formatting from the source range to the current range.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param sourceRange The source range to copy from.
+         * @param copyType The type of cell data or formatting to copy over. Default is "All".
+         * @param skipBlanks True if to skip blank cells in the source range. Default is false.
+         * @param transpose True if to transpose the cells in the destination range. Default is false.
+         */
+        copyFrom(sourceRange: Excel.Range | string, copyType?: Excel.RangeCopyType, skipBlanks?: boolean, transpose?: boolean): void;
+        /**
+         *
+         * Copies cell data or formatting from the source range to the current range.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param sourceRange The source range to copy from.
+         * @param copyType The type of cell data or formatting to copy over. Default is "All".
+         * @param skipBlanks True if to skip blank cells in the source range. Default is false.
+         * @param transpose True if to transpose the cells in the destination range. Default is false.
+         */
+        copyFrom(sourceRange: Excel.Range | string, copyType?: "All" | "Formulas" | "Values" | "Formats", skipBlanks?: boolean, transpose?: boolean): void;
         /**
          *
          * Deletes the cells associated with the range.
@@ -5788,7 +5856,6 @@ declare namespace Excel {
         /**
          *
          * Removes duplicate values from the range specified by the columns.
-            If the range has multiple areas, the "InvalidReference" error will be returned.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          *
@@ -5812,11 +5879,11 @@ declare namespace Excel {
         /**
          *
          * Selects the specified range in the Excel UI.
-            If multiple selection is not supported on the platform and the range has multiple areas, the "InvalidReference" error will be returned.
+            If true, a multi-area range can be selected; otherwise, only the first area will be selected. Default is false.
          *
          * [Api set: ExcelApi 1.1]
          */
-        select(): void;
+        select(allowMultiAreas?: boolean): void;
         /**
          *
          * Displays the card for an active cell if it has rich value content.
@@ -6116,7 +6183,7 @@ declare namespace Excel {
     }
     /**
      *
-     * Represents a collection of worksheet objects that are part of the workbook.
+     * Represents a collection of key-value pair setting objects that are part of the workbook. The scope is limited to per file and add-in (task-pane or content) combination.
      *
      * [Api set: ExcelApi 1.4]
      */
@@ -6175,7 +6242,7 @@ declare namespace Excel {
     }
     /**
      *
-     * Setting represents a key-value pair of a setting persisted to the document.
+     * Setting represents a key-value pair of a setting persisted to the document (per file per add-in). These custom key-value pair can be used to store state or lifecycle information needed by the content or task-pane add-in. Note that settings are persisted in the document and hence it is not a place to store any sensitive or protected information such as user information and password.
      *
      * [Api set: ExcelApi 1.4]
      */
@@ -6336,7 +6403,7 @@ declare namespace Excel {
         readonly name: string;
         /**
          *
-         * Indicates whether the name is scoped to the workbook or to a specific worksheet. Read-only.
+         * Indicates whether the name is scoped to the workbook or to a specific worksheet. Possible values are: Worksheet, Workbook. Read-only.
          *
          * [Api set: ExcelApi 1.4]
          */
@@ -6652,7 +6719,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          *
-         * @param address A Range object, or a string address or name of the range representing the data source. If the address does not contain a sheet name, the currently-active sheet is used. [Api set: ExcelApi 1.1 for string parameter; 1.3 for accepting a Range object as well]
+         * @param address A Range object, or a string address or name of the range representing the data source. If the address does not contain a sheet name, the currently-active sheet is used. [Api set: ExcelApi 1.1 / 1.3.  Prior to ExcelApi 1.3, this parameter must be a string. Starting with Excel Api 1.3, this parameter may be a Range object or a string.]
          * @param hasHeaders Boolean value that indicates whether the data being imported has column labels. If the source does not contain headers (i.e,. when this property set to false), Excel will automatically generate header shifting the data down by one row.
          */
         add(address: Excel.Range | string, hasHeaders: boolean): Excel.Table;
@@ -11235,6 +11302,13 @@ declare namespace Excel {
          * [Api set: ExcelApi 1.2]
          */
         sortOn?: Excel.SortOn | "Value" | "CellColor" | "FontColor" | "Icon";
+        /**
+         *
+         * Represents the subfield that is the target property name of a rich value to sort on.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        subField?: string;
     }
     /**
      *
@@ -11368,7 +11442,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.2]
          *
-         * @param values The list of values to show.
+         * @param values The list of values to show. This must be an array of strings or an array of Excel.FilterDateTime objects.
          */
         applyValuesFilter(values: Array<string | Excel.FilterDatetime>): void;
         /**
@@ -11448,6 +11522,13 @@ declare namespace Excel {
          * [Api set: ExcelApi 1.2]
          */
         operator?: Excel.FilterOperator | "And" | "Or";
+        /**
+         *
+         * The property used by the filter to do rich filter on richvalues.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        subField?: string;
         /**
          *
          * The set of values to be used as part of "values" filtering.
@@ -11585,7 +11666,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.5]
          *
-         * @param namespaceUri
+         * @param namespaceUri This must be a fully qualified schema URI; for example, "http://schemas.contoso.com/review/1.0".
          */
         getByNamespace(namespaceUri: string): Excel.CustomXmlPartScopedCollection;
         /**
@@ -12065,32 +12146,11 @@ declare namespace Excel {
         name: string;
         /**
          *
-         * Number format of the RowColumnPivotHierarchy.
-         *
-         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-         */
-        numberFormat: string;
-        /**
-         *
          * Position of the RowColumnPivotHierarchy.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         position: number;
-        /**
-         *
-         * Determines whether to show all items of the RowColumnPivotHierarchy.
-         *
-         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-         */
-        showAllItems: boolean;
-        /**
-         *
-         * Subtotals of the RowColumnPivotHierarchy.
-         *
-         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-         */
-        subtotals: Excel.Subtotals;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
         set(properties: Interfaces.RowColumnPivotHierarchyUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
@@ -12102,38 +12162,6 @@ declare namespace Excel {
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         setToDefault(): void;
-        /**
-         *
-         * Top/Bottom Filter the RowColumnPivotHierarchy.
-         *
-         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-         *
-         * @param criteriontype The criterion to use for the filter.
-         * @param rank The rank of the filter. For percent this has to be between 1 and 100.
-         * @param dataPivotHierarchy The DataPivotHierarchy on which the filter is based on.
-         */
-        setTopBottomValueFilter(criteriontype: Excel.PivotFilterTopBottomCriterion, rank: number, dataPivotHierarchy: Excel.DataPivotHierarchy): void;
-        /**
-         *
-         * Top/Bottom Filter the RowColumnPivotHierarchy.
-         *
-         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-         *
-         * @param criteriontype The criterion to use for the filter.
-         * @param rank The rank of the filter. For percent this has to be between 1 and 100.
-         * @param dataPivotHierarchy The DataPivotHierarchy on which the filter is based on.
-         */
-        setTopBottomValueFilter(criteriontype: "Invalid" | "TopItems" | "TopPercent" | "TopSum" | "BottomItems" | "BottomPercent" | "BottomSum", rank: number, dataPivotHierarchy: Excel.DataPivotHierarchy): void;
-        /**
-         *
-         * Sort the RowColumnPivotHierarchy. If a DataPivotHierarchy is specified, then sort will be applied based on it, if not sort will be based on the RowColumnPivotHierarchy itself.
-         *
-         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-         *
-         * @param ascending Represents whether the sorting is done in an ascending or descending order.
-         * @param dataPivotHierarchy If a DataPivotHierarchy is specified, then sort will be applied based on it, if not sort will be based on the RowColumnPivotHierarchy itself.
-         */
-        sort(ascending: boolean, dataPivotHierarchy?: Excel.DataPivotHierarchy): void;
         /**
          * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
          */
@@ -12192,7 +12220,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
-        remove(FilterPivotHierarchy: Excel.FilterPivotHierarchy): void;
+        remove(filterPivotHierarchy: Excel.FilterPivotHierarchy): void;
         /**
          * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
          */
@@ -12245,32 +12273,11 @@ declare namespace Excel {
         name: string;
         /**
          *
-         * Number format of the FilterPivotHierarchy.
-         *
-         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-         */
-        numberFormat: string;
-        /**
-         *
          * Position of the FilterPivotHierarchy.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         position: number;
-        /**
-         *
-         * Determines whether to show all items of the FilterPivotHierarchy.
-         *
-         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-         */
-        showAllItems: boolean;
-        /**
-         *
-         * Subtotals of the FilterPivotHierarchy.
-         *
-         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-         */
-        subtotals: Excel.Subtotals;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
         set(properties: Interfaces.FilterPivotHierarchyUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
@@ -12523,17 +12530,41 @@ declare namespace Excel {
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         name: string;
+        /**
+         *
+         * Number format of the PivotField.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        numberFormat: string;
+        /**
+         *
+         * Determines whether to show all items of the PivotField.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        showAllItems: boolean;
+        /**
+         *
+         * Subtotals of the PivotField.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        subtotals: Excel.Subtotals;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
         set(properties: Interfaces.PivotFieldUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: PivotField): void;
         /**
          *
-         * Gets the parent range associated with the PivotField.
+         * Sorts the PivotField. If a DataPivotHierarchy is specified, then sort will be applied based on it, if not sort will be based on the PivotField itself.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param ascending Represents whether the sorting is done in an ascending or descending order.
+         * @param dataPivotHierarchy If a DataPivotHierarchy is specified, then sort will be applied based on it, if not sort will be based on the RowColumnPivotHierarchy itself.
          */
-        getRange(): Excel.Range;
+        sort(ascending: boolean, dataPivotHierarchy?: Excel.DataPivotHierarchy): void;
         /**
          * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
          */
@@ -14790,36 +14821,237 @@ declare namespace Excel {
     class PageLayout extends OfficeExtension.ClientObject {
         /**
          *
-         * Gets or sets the black and white print option.
+         * Header and footer configuration for the worksheet.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly headersFooters: Excel.HeaderFooterGroup;
+        /**
+         *
+         * Gets or sets the worksheet's black and white print option.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         blackAndWhite: boolean;
         /**
          *
-         * Gets or sets the orientation of the page.
+         * Gets or sets the worksheet's bottom page margin to use for printing in points.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        bottomMargin: number;
+        /**
+         *
+         * Gets or sets the worksheet's center horizontally flag. This flag determines whether the worksheet will be centered horizontally when it's printed.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        centerHorizontally: boolean;
+        /**
+         *
+         * Gets or sets the worksheet's center vertically flag. This flag determines whether the worksheet will be centered vertically when it's printed.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        centerVertically: boolean;
+        /**
+         *
+         * Gets or sets the worksheet's draft mode option. If true the sheet will be printed without graphics.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        draft: boolean;
+        /**
+         *
+         * Gets or sets the worksheet's first page number to print. Null value represents "auto" page numbering.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        firstPageNumber: number | "";
+        /**
+         *
+         * Gets or sets the worksheet's footer margin, in points, for use when printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        footerMargin: number;
+        /**
+         *
+         * Gets or sets the worksheet's header margin, in points, for use when printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        headerMargin: number;
+        /**
+         *
+         * Gets or sets the worksheet's left margin, in points, for use when printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        leftMargin: number;
+        /**
+         *
+         * Gets or sets the worksheet's orientation of the page.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         orientation: Excel.PageOrientation | "Portrait" | "Landscape";
         /**
          *
-         * Gets or sets the paper size of the page.
+         * Gets or sets the worksheet's paper size of the page.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         paperSize: Excel.PaperType | "Letter" | "LetterSmall" | "Tabloid" | "Ledger" | "Legal" | "Statement" | "Executive" | "A3" | "A4" | "A4Small" | "A5" | "B4" | "B5" | "Folio" | "Quatro" | "Paper10x14" | "Paper11x17" | "Note" | "Envelope9" | "Envelope10" | "Envelope11" | "Envelope12" | "Envelope14" | "Csheet" | "Dsheet" | "Esheet" | "EnvelopeDL" | "EnvelopeC5" | "EnvelopeC3" | "EnvelopeC4" | "EnvelopeC6" | "EnvelopeC65" | "EnvelopeB4" | "EnvelopeB5" | "EnvelopeB6" | "EnvelopeItaly" | "EnvelopeMonarch" | "EnvelopePersonal" | "FanfoldUS" | "FanfoldStdGerman" | "FanfoldLegalGerman";
         /**
          *
-         * Gets or sets the print errors option.
+         * Gets or sets whether the worksheet's comments should be displayed when printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        printComments: Excel.PrintComments | "PrintNoComments" | "PrintEndSheet" | "PrintInPlace";
+        /**
+         *
+         * Gets or sets the worksheet's print errors option.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         printErrors: Excel.PrintErrorType | "ErrorsDisplayed" | "ErrorsBlank" | "ErrorsDash" | "ErrorsNotAvailable";
+        /**
+         *
+         * Gets or sets the worksheet's print gridlines flag. This flag determines whether gridlines will be printed or not.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        printGridlines: boolean;
+        /**
+         *
+         * Gets or sets the worksheet's print headings flag. This flag determines whether headings will be printed or not.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        printHeadings: boolean;
+        /**
+         *
+         * Gets or sets the worksheet's page print order option. This specifies the order to use for processing the page number printed.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        printOrder: Excel.PrintOrder | "DownThenOver" | "OverThenDown";
+        /**
+         *
+         * Gets or sets the worksheet's right margin, in points, for use when printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        rightMargin: number;
+        /**
+         *
+         * Gets or sets the worksheet's top margin, in points, for use when printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        topMargin: number;
+        /**
+         *
+         * Gets or sets the worksheet's print zoom options.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        zoom: Excel.PageLayoutZoomOptions;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
         set(properties: Interfaces.PageLayoutUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: PageLayout): void;
+        /**
+         *
+         * Gets the range object representing the print area for the worksheet. If not set, this will return a null object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getPrintArea(): Excel.Range;
+        /**
+         *
+         * Gets the range object representing the print area for the worksheet.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getPrintAreaOrNullObject(): Excel.Range;
+        /**
+         *
+         * Gets the range object representing the title columns.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getPrintTitleColumns(): Excel.Range;
+        /**
+         *
+         * Gets the range object representing the title columns. If not set, this will return a null object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getPrintTitleColumnsOrNullObject(): Excel.Range;
+        /**
+         *
+         * Gets the range object representing the title rows.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getPrintTitleRows(): Excel.Range;
+        /**
+         *
+         * Gets the range object representing the title rows. If not set, this will return a null object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getPrintTitleRowsOrNullObject(): Excel.Range;
+        /**
+         *
+         * Sets the worksheet's print area.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param printArea The range of the content to print.
+         */
+        setPrintArea(printArea: Excel.Range | string): void;
+        /**
+         *
+         * Sets the worksheet's page margins with units.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param unit Measurement unit for the margins provided.
+         * @param marginOptions Margin values to set, margins not provided will remain unchanged.
+         */
+        setPrintMargins(unit: Excel.PrintMarginUnit, marginOptions: Excel.PageLayoutMarginOptions): void;
+        /**
+         *
+         * Sets the worksheet's page margins with units.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param unit Measurement unit for the margins provided.
+         * @param marginOptions Margin values to set, margins not provided will remain unchanged.
+         */
+        setPrintMargins(unit: "Points" | "Inches" | "Centimeters", marginOptions: Excel.PageLayoutMarginOptions): void;
+        /**
+         *
+         * Sets the columns that contain the cells to be repeated at the left of each page of the worksheet for printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param printTitleColumns The columns to be repeated to the left of each page, range must span the entire column to be valid.
+         */
+        setPrintTitleColumns(printTitleColumns: Excel.Range | string): void;
+        /**
+         *
+         * Sets the rows that contain the cells to be repeated at the top of each page of the worksheet for printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param printTitleRows The rows to be repeated at the top of each page, range must span the entire row to be valid.
+         */
+        setPrintTitleRows(printTitleRows: Excel.Range | string): void;
         /**
          * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
          */
@@ -14830,6 +15062,309 @@ declare namespace Excel {
             expand?: string;
         }): Excel.PageLayout;
         toJSON(): Excel.Interfaces.PageLayoutData;
+    }
+    /**
+     *
+     * Represents page zoom properties.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface PageLayoutZoomOptions {
+        /**
+         *
+         * Number of pages to fit horizontally. This value can be null if percentage scale is used.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        horizontalFitToPages?: number;
+        /**
+         *
+         * Print page scale value can be between 10 and 400. This value can be null if fit to page tall or wide is specified.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        percentage?: number;
+        /**
+         *
+         * Number of pages to fit vertically. This value can be null if percentage scale is used.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        verticalFitToPages?: number;
+    }
+    /**
+     *
+     * Represents the options in page layout margins.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface PageLayoutMarginOptions {
+        /**
+         *
+         * Represents the page layout bottom margin in the unit specified to use for printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        bottom?: number;
+        /**
+         *
+         * Represents the page layout footer margin in the unit specified to use for printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        footer?: number;
+        /**
+         *
+         * Represents the page layout header margin in the unit specified to use for printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        header?: number;
+        /**
+         *
+         * Represents the page layout left margin in the unit specified to use for printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        left?: number;
+        /**
+         *
+         * Represents the page layout right margin in the unit specified to use for printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        right?: number;
+        /**
+         *
+         * Represents the page layout top margin in the unit specified to use for printing.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        top?: number;
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class HeaderFooter extends OfficeExtension.ClientObject {
+        /**
+         *
+         * Gets or sets the center footer of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        centerFooter: string;
+        /**
+         *
+         * Gets or sets the center header of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        centerHeader: string;
+        /**
+         *
+         * Gets or sets the left footer of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        leftFooter: string;
+        /**
+         *
+         * Gets or sets the left header of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        leftHeader: string;
+        /**
+         *
+         * Gets or sets the right footer of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        rightFooter: string;
+        /**
+         *
+         * Gets or sets the right header of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        rightHeader: string;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        set(properties: Interfaces.HeaderFooterUpdateData, options?: OfficeExtension.UpdateOptions): void;
+        /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
+        set(properties: HeaderFooter): void;
+        /**
+         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+         */
+        load(option?: Excel.Interfaces.HeaderFooterLoadOptions): Excel.HeaderFooter;
+        load(option?: string | string[]): Excel.HeaderFooter;
+        load(option?: {
+            select?: string;
+            expand?: string;
+        }): Excel.HeaderFooter;
+        toJSON(): Excel.Interfaces.HeaderFooterData;
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class HeaderFooterGroup extends OfficeExtension.ClientObject {
+        /**
+         *
+         * The header/footer to use for even pages, odd header/footer needs to be specified for odd pages.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly even: Excel.HeaderFooter;
+        /**
+         *
+         * The first page header/footer, for all other pages general or even/odd is used.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly first: Excel.HeaderFooter;
+        /**
+         *
+         * The general header/footer, used for all pages unless even/odd or first page is specified.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly general: Excel.HeaderFooter;
+        /**
+         *
+         * The header/footer to use for odd pages, even header/footer needs to be specified for even pages.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly odd: Excel.HeaderFooter;
+        /**
+         *
+         * Gets or sets the state of which headers/footers are set. See Excel.HeaderFooterState for details.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        state: Excel.HeaderFooterState | "General" | "FirstGeneral" | "OddEven" | "FirstOddEven";
+        /**
+         *
+         * Gets or sets a flag indicating if headers/footers are aligned with the page margins set in the page layout options for the worksheet.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        useSheetMargins: boolean;
+        /**
+         *
+         * Gets or sets a flag indicating if headers/footers should be scaled by the page percentage scale set in the page layout options for the worksheet.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        useSheetScale: boolean;
+        /** Sets multiple properties on the object at the same time, based on JSON input. */
+        set(properties: Interfaces.HeaderFooterGroupUpdateData, options?: OfficeExtension.UpdateOptions): void;
+        /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
+        set(properties: HeaderFooterGroup): void;
+        /**
+         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+         */
+        load(option?: Excel.Interfaces.HeaderFooterGroupLoadOptions): Excel.HeaderFooterGroup;
+        load(option?: string | string[]): Excel.HeaderFooterGroup;
+        load(option?: {
+            select?: string;
+            expand?: string;
+        }): Excel.HeaderFooterGroup;
+        toJSON(): Excel.Interfaces.HeaderFooterGroupData;
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class PageBreak extends OfficeExtension.ClientObject {
+        /**
+         *
+         * Represents the column index for the page break
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly columnIndex: number;
+        /**
+         *
+         * Represents the row index for the page break
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly rowIndex: number;
+        /**
+         *
+         * Deletes a page break object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        delete(): void;
+        /**
+         *
+         * Gets the first cell after the page break.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getRange(): Excel.Range;
+        /**
+         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+         */
+        load(option?: Excel.Interfaces.PageBreakLoadOptions): Excel.PageBreak;
+        load(option?: string | string[]): Excel.PageBreak;
+        load(option?: {
+            select?: string;
+            expand?: string;
+        }): Excel.PageBreak;
+        toJSON(): Excel.Interfaces.PageBreakData;
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class PageBreakCollection extends OfficeExtension.ClientObject {
+        /** Gets the loaded child items in this collection. */
+        readonly items: Excel.PageBreak[];
+        /**
+         *
+         * Adds a page break before the top-left cell of the range specified.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param pageBreakRange The range immediately after the page break to be added.
+         */
+        add(pageBreakRange: Excel.Range | string): Excel.PageBreak;
+        /**
+         *
+         * Gets the number of page breaks in the collection.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getCount(): OfficeExtension.ClientResult<number>;
+        /**
+         *
+         * Gets a page break object via the index.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param index Index of the page break.
+         */
+        getItem(index: number): Excel.PageBreak;
+        /**
+         *
+         * Resets all manual page breaks in the collection.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        resetPageBreaks(): void;
+        /**
+         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+         */
+        load(option?: Excel.Interfaces.PageBreakCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.PageBreakCollection;
+        load(option?: string | string[]): Excel.PageBreakCollection;
+        load(option?: OfficeExtension.LoadOption): Excel.PageBreakCollection;
+        toJSON(): Excel.Interfaces.PageBreakCollectionData;
     }
     /**
      *
@@ -16468,7 +17003,7 @@ declare namespace Excel {
         landscape = "Landscape",
     }
     /**
-     * [Api set: ExcelApi 1.7]
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
     enum PaperType {
         letter = "Letter",
@@ -16596,7 +17131,7 @@ declare namespace Excel {
         explanatoryText = "ExplanatoryText",
     }
     /**
-     * [Api set: ExcelApi 1.7]
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
     enum PrintErrorType {
         errorsDisplayed = "ErrorsDisplayed",
@@ -16613,6 +17148,117 @@ declare namespace Excel {
         after = "After",
         beginning = "Beginning",
         end = "End",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum PrintComments {
+        /**
+         *
+         * Comments will not be printed.
+         *
+         */
+        printNoComments = "PrintNoComments",
+        /**
+         *
+         * Comments will be printed as end notes at the end of the worksheet.
+         *
+         */
+        printEndSheet = "PrintEndSheet",
+        /**
+         *
+         * Comments will be printed where they were inserted in the worksheet.
+         *
+         */
+        printInPlace = "PrintInPlace",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum PrintOrder {
+        /**
+         *
+         * Process down the rows before processing across pages or page fields to the right.
+         *
+         */
+        downThenOver = "DownThenOver",
+        /**
+         *
+         * Process across pages or page fields to the right before moving down the rows.
+         *
+         */
+        overThenDown = "OverThenDown",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum PrintMarginUnit {
+        /**
+         *
+         * Assign the page margins in points. A point is 1/72 of an inch.
+         *
+         */
+        points = "Points",
+        /**
+         *
+         * Assign the page margins in inches.
+         *
+         */
+        inches = "Inches",
+        /**
+         *
+         * Assign the page margins in centimeters.
+         *
+         */
+        centimeters = "Centimeters",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum HeaderFooterState {
+        /**
+         *
+         * Only one general header/footer is used for all pages printed.
+         *
+         */
+        general = "General",
+        /**
+         *
+         * There is a seperate first page header/footer, and a general header/footer used for all other pages.
+         *
+         */
+        firstGeneral = "FirstGeneral",
+        /**
+         *
+         * There is a different header/footer for odd and even pages.
+         *
+         */
+        oddEven = "OddEven",
+        /**
+         *
+         * There is a seperate first page header/footer, then there is a seperate header/footer for odd and even pages.
+         *
+         */
+        firstOddEven = "FirstOddEven",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum RangeCopyType {
+        all = "All",
+        formulas = "Formulas",
+        values = "Values",
+        formats = "Formats",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum LinkedDataTypeState {
+        none = "None",
+        validLinkedData = "ValidLinkedData",
+        disambiguationNeeded = "DisambiguationNeeded",
+        brokenLinkedData = "BrokenLinkedData",
+        fetchingData = "FetchingData",
     }
     /**
      *
@@ -20428,12 +21074,45 @@ declare namespace Excel {
         /** An interface for updating data on the Application object, for use in "application.set({ ... })". */
         interface ApplicationUpdateData {
             /**
+            *
+            * Returns the Iterative Calculation settings.
+            On Excel for Windows and Excel for Mac, the settings will aplly to the Excel Application.
+            On Excel Online and Excel for other platforms, the settings will apply to the active workbook.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            iterativeCalculation?: Excel.Interfaces.IterativeCalculationUpdateData;
+            /**
              *
-             * Returns the calculation mode used in the workbook. See Excel.CalculationMode for details.
+             * Returns the calculation mode used in the workbook, as defined by the constants in Excel.CalculationMode. Possible values are: `Automatic`, where Excel controls recalculation; `AutomaticExceptTables`, where Excel controls recalculation but ignores changes in tables; `Manual`, where calculation is done when the user requests it.
              *
              * [Api set: ExcelApi 1.1 for get, 1.8 for set]
              */
             calculationMode?: Excel.CalculationMode | "Automatic" | "AutomaticExceptTables" | "Manual";
+        }
+        /** An interface for updating data on the IterativeCalculation object, for use in "iterativeCalculation.set({ ... })". */
+        interface IterativeCalculationUpdateData {
+            /**
+             *
+             * True if Excel will use iteration to resolve circular references.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            enabled?: boolean;
+            /**
+             *
+             * Returns or sets the maximum amount of change between each iteration as Excel resolves circular references.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            maxChange?: number;
+            /**
+             *
+             * Returns or sets the maximum number of iterations that Excel can use to resolve a circular reference.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            maxIteration?: number;
         }
         /** An interface for updating data on the Workbook object, for use in "workbook.set({ ... })". */
         interface WorkbookUpdateData {
@@ -22890,32 +23569,11 @@ declare namespace Excel {
             name?: string;
             /**
              *
-             * Number format of the RowColumnPivotHierarchy.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            numberFormat?: string;
-            /**
-             *
              * Position of the RowColumnPivotHierarchy.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             position?: number;
-            /**
-             *
-             * Determines whether to show all items of the RowColumnPivotHierarchy.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            showAllItems?: boolean;
-            /**
-             *
-             * Subtotals of the RowColumnPivotHierarchy.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            subtotals?: Excel.Subtotals;
         }
         /** An interface for updating data on the FilterPivotHierarchyCollection object, for use in "filterPivotHierarchyCollection.set({ ... })". */
         interface FilterPivotHierarchyCollectionUpdateData {
@@ -22946,32 +23604,11 @@ declare namespace Excel {
             name?: string;
             /**
              *
-             * Number format of the FilterPivotHierarchy.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            numberFormat?: string;
-            /**
-             *
              * Position of the FilterPivotHierarchy.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             position?: number;
-            /**
-             *
-             * Determines whether to show all items of the FilterPivotHierarchy.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            showAllItems?: boolean;
-            /**
-             *
-             * Subtotals of the FilterPivotHierarchy.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            subtotals?: Excel.Subtotals;
         }
         /** An interface for updating data on the DataPivotHierarchyCollection object, for use in "dataPivotHierarchyCollection.set({ ... })". */
         interface DataPivotHierarchyCollectionUpdateData {
@@ -23035,6 +23672,27 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             name?: string;
+            /**
+             *
+             * Number format of the PivotField.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormat?: string;
+            /**
+             *
+             * Determines whether to show all items of the PivotField.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showAllItems?: boolean;
+            /**
+             *
+             * Subtotals of the PivotField.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            subtotals?: Excel.Subtotals;
         }
         /** An interface for updating data on the PivotItemCollection object, for use in "pivotItemCollection.set({ ... })". */
         interface PivotItemCollectionUpdateData {
@@ -23837,33 +24495,252 @@ declare namespace Excel {
         /** An interface for updating data on the PageLayout object, for use in "pageLayout.set({ ... })". */
         interface PageLayoutUpdateData {
             /**
+            *
+            * Header and footer configuration for the worksheet.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            headersFooters?: Excel.Interfaces.HeaderFooterGroupUpdateData;
+            /**
              *
-             * Gets or sets the black and white print option.
+             * Gets or sets the worksheet's black and white print option.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             blackAndWhite?: boolean;
             /**
              *
-             * Gets or sets the orientation of the page.
+             * Gets or sets the worksheet's bottom page margin to use for printing in points.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            bottomMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's center horizontally flag. This flag determines whether the worksheet will be centered horizontally when it's printed.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerHorizontally?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's center vertically flag. This flag determines whether the worksheet will be centered vertically when it's printed.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerVertically?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's draft mode option. If true the sheet will be printed without graphics.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            draft?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's first page number to print. Null value represents "auto" page numbering.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            firstPageNumber?: number | "";
+            /**
+             *
+             * Gets or sets the worksheet's footer margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            footerMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's header margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            headerMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's left margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            leftMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's orientation of the page.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             orientation?: Excel.PageOrientation | "Portrait" | "Landscape";
             /**
              *
-             * Gets or sets the paper size of the page.
+             * Gets or sets the worksheet's paper size of the page.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             paperSize?: Excel.PaperType | "Letter" | "LetterSmall" | "Tabloid" | "Ledger" | "Legal" | "Statement" | "Executive" | "A3" | "A4" | "A4Small" | "A5" | "B4" | "B5" | "Folio" | "Quatro" | "Paper10x14" | "Paper11x17" | "Note" | "Envelope9" | "Envelope10" | "Envelope11" | "Envelope12" | "Envelope14" | "Csheet" | "Dsheet" | "Esheet" | "EnvelopeDL" | "EnvelopeC5" | "EnvelopeC3" | "EnvelopeC4" | "EnvelopeC6" | "EnvelopeC65" | "EnvelopeB4" | "EnvelopeB5" | "EnvelopeB6" | "EnvelopeItaly" | "EnvelopeMonarch" | "EnvelopePersonal" | "FanfoldUS" | "FanfoldStdGerman" | "FanfoldLegalGerman";
             /**
              *
-             * Gets or sets the print errors option.
+             * Gets or sets whether the worksheet's comments should be displayed when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printComments?: Excel.PrintComments | "PrintNoComments" | "PrintEndSheet" | "PrintInPlace";
+            /**
+             *
+             * Gets or sets the worksheet's print errors option.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             printErrors?: Excel.PrintErrorType | "ErrorsDisplayed" | "ErrorsBlank" | "ErrorsDash" | "ErrorsNotAvailable";
+            /**
+             *
+             * Gets or sets the worksheet's print gridlines flag. This flag determines whether gridlines will be printed or not.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printGridlines?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's print headings flag. This flag determines whether headings will be printed or not.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printHeadings?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's page print order option. This specifies the order to use for processing the page number printed.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printOrder?: Excel.PrintOrder | "DownThenOver" | "OverThenDown";
+            /**
+             *
+             * Gets or sets the worksheet's right margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rightMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's top margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            topMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's print zoom options.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            zoom?: Excel.PageLayoutZoomOptions;
+        }
+        /** An interface for updating data on the HeaderFooter object, for use in "headerFooter.set({ ... })". */
+        interface HeaderFooterUpdateData {
+            /**
+             *
+             * Gets or sets the center footer of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerFooter?: string;
+            /**
+             *
+             * Gets or sets the center header of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerHeader?: string;
+            /**
+             *
+             * Gets or sets the left footer of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            leftFooter?: string;
+            /**
+             *
+             * Gets or sets the left header of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            leftHeader?: string;
+            /**
+             *
+             * Gets or sets the right footer of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rightFooter?: string;
+            /**
+             *
+             * Gets or sets the right header of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rightHeader?: string;
+        }
+        /** An interface for updating data on the HeaderFooterGroup object, for use in "headerFooterGroup.set({ ... })". */
+        interface HeaderFooterGroupUpdateData {
+            /**
+            *
+            * The header/footer to use for even pages, odd header/footer needs to be specified for odd pages.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            even?: Excel.Interfaces.HeaderFooterUpdateData;
+            /**
+            *
+            * The first page header/footer, for all other pages general or even/odd is used.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            first?: Excel.Interfaces.HeaderFooterUpdateData;
+            /**
+            *
+            * The general header/footer, used for all pages unless even/odd or first page is specified.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            general?: Excel.Interfaces.HeaderFooterUpdateData;
+            /**
+            *
+            * The header/footer to use for odd pages, even header/footer needs to be specified for even pages.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            odd?: Excel.Interfaces.HeaderFooterUpdateData;
+            /**
+             *
+             * Gets or sets the state of which headers/footers are set. See Excel.HeaderFooterState for details.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            state?: Excel.HeaderFooterState | "General" | "FirstGeneral" | "OddEven" | "FirstOddEven";
+            /**
+             *
+             * Gets or sets a flag indicating if headers/footers are aligned with the page margins set in the page layout options for the worksheet.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            useSheetMargins?: boolean;
+            /**
+             *
+             * Gets or sets a flag indicating if headers/footers should be scaled by the page percentage scale set in the page layout options for the worksheet.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            useSheetScale?: boolean;
+        }
+        /** An interface for updating data on the PageBreakCollection object, for use in "pageBreakCollection.set({ ... })". */
+        interface PageBreakCollectionUpdateData {
+            items?: Excel.Interfaces.PageBreakData[];
         }
         /** An interface for updating data on the AreaCollection object, for use in "areaCollection.set({ ... })". */
         interface AreaCollectionUpdateData {
@@ -23928,12 +24805,45 @@ declare namespace Excel {
         /** An interface describing the data returned by calling "application.toJSON()". */
         interface ApplicationData {
             /**
+            *
+            * Returns the Iterative Calculation settings.
+            On Excel for Windows and Excel for Mac, the settings will aplly to the Excel Application.
+            On Excel Online and Excel for other platforms, the settings will apply to the active workbook.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            iterativeCalculation?: Excel.Interfaces.IterativeCalculationData;
+            /**
              *
-             * Returns the calculation mode used in the workbook. See Excel.CalculationMode for details.
+             * Returns the calculation mode used in the workbook, as defined by the constants in Excel.CalculationMode. Possible values are: `Automatic`, where Excel controls recalculation; `AutomaticExceptTables`, where Excel controls recalculation but ignores changes in tables; `Manual`, where calculation is done when the user requests it.
              *
              * [Api set: ExcelApi 1.1 for get, 1.8 for set]
              */
             calculationMode?: Excel.CalculationMode | "Automatic" | "AutomaticExceptTables" | "Manual";
+        }
+        /** An interface describing the data returned by calling "iterativeCalculation.toJSON()". */
+        interface IterativeCalculationData {
+            /**
+             *
+             * True if Excel will use iteration to resolve circular references.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            enabled?: boolean;
+            /**
+             *
+             * Returns or sets the maximum amount of change between each iteration as Excel resolves circular references.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            maxChange?: number;
+            /**
+             *
+             * Returns or sets the maximum number of iterations that Excel can use to resolve a circular reference.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            maxIteration?: number;
         }
         /** An interface describing the data returned by calling "workbook.toJSON()". */
         interface WorkbookData {
@@ -24098,6 +25008,13 @@ declare namespace Excel {
             charts?: Excel.Interfaces.ChartData[];
             /**
             *
+            * Gets the horizontal page break collection for the worksheet. This collection only contains manual page breaks.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            horizontalPageBreaks?: Excel.Interfaces.PageBreakData[];
+            /**
+            *
             * Collection of names scoped to the current worksheet.
             *
             * [Api set: ExcelApi 1.4]
@@ -24138,6 +25055,13 @@ declare namespace Excel {
             * [Api set: ExcelApi 1.1]
             */
             tables?: Excel.Interfaces.TableData[];
+            /**
+            *
+            * Gets the vertical page break collection for the worksheet. This collection only contains manual page breaks.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            verticalPageBreaks?: Excel.Interfaces.PageBreakData[];
             /**
              *
              * Returns a value that uniquely identifies the worksheet in a given workbook. The value of the identifier remains the same even when the worksheet is renamed or moved. Read-only.
@@ -24359,6 +25283,13 @@ declare namespace Excel {
              * [Api set: ExcelApi 1.7]
              */
             isEntireRow?: boolean;
+            /**
+             *
+             * Represents the data type state of each cell. Read-only.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            linkedDataTypeState?: Excel.LinkedDataTypeState[][];
             /**
              *
              * Represents Excel's number format code for the given range.
@@ -24590,7 +25521,7 @@ declare namespace Excel {
             name?: string;
             /**
              *
-             * Indicates whether the name is scoped to the workbook or to a specific worksheet. Read-only.
+             * Indicates whether the name is scoped to the workbook or to a specific worksheet. Possible values are: Worksheet, Workbook. Read-only.
              *
              * [Api set: ExcelApi 1.4]
              */
@@ -27252,32 +28183,11 @@ declare namespace Excel {
             name?: string;
             /**
              *
-             * Number format of the RowColumnPivotHierarchy.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            numberFormat?: string;
-            /**
-             *
              * Position of the RowColumnPivotHierarchy.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             position?: number;
-            /**
-             *
-             * Determines whether to show all items of the RowColumnPivotHierarchy.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            showAllItems?: boolean;
-            /**
-             *
-             * Subtotals of the RowColumnPivotHierarchy.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            subtotals?: Excel.Subtotals;
         }
         /** An interface describing the data returned by calling "filterPivotHierarchyCollection.toJSON()". */
         interface FilterPivotHierarchyCollectionData {
@@ -27322,32 +28232,11 @@ declare namespace Excel {
             name?: string;
             /**
              *
-             * Number format of the FilterPivotHierarchy.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            numberFormat?: string;
-            /**
-             *
              * Position of the FilterPivotHierarchy.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             position?: number;
-            /**
-             *
-             * Determines whether to show all items of the FilterPivotHierarchy.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            showAllItems?: boolean;
-            /**
-             *
-             * Subtotals of the FilterPivotHierarchy.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            subtotals?: Excel.Subtotals;
         }
         /** An interface describing the data returned by calling "dataPivotHierarchyCollection.toJSON()". */
         interface DataPivotHierarchyCollectionData {
@@ -27432,6 +28321,27 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             name?: string;
+            /**
+             *
+             * Number format of the PivotField.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormat?: string;
+            /**
+             *
+             * Determines whether to show all items of the PivotField.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showAllItems?: boolean;
+            /**
+             *
+             * Subtotals of the PivotField.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            subtotals?: Excel.Subtotals;
         }
         /** An interface describing the data returned by calling "pivotItemCollection.toJSON()". */
         interface PivotItemCollectionData {
@@ -28370,33 +29280,269 @@ declare namespace Excel {
         /** An interface describing the data returned by calling "pageLayout.toJSON()". */
         interface PageLayoutData {
             /**
+            *
+            * Header and footer configuration for the worksheet.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            headersFooters?: Excel.Interfaces.HeaderFooterGroupData;
+            /**
              *
-             * Gets or sets the black and white print option.
+             * Gets or sets the worksheet's black and white print option.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             blackAndWhite?: boolean;
             /**
              *
-             * Gets or sets the orientation of the page.
+             * Gets or sets the worksheet's bottom page margin to use for printing in points.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            bottomMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's center horizontally flag. This flag determines whether the worksheet will be centered horizontally when it's printed.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerHorizontally?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's center vertically flag. This flag determines whether the worksheet will be centered vertically when it's printed.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerVertically?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's draft mode option. If true the sheet will be printed without graphics.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            draft?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's first page number to print. Null value represents "auto" page numbering.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            firstPageNumber?: number | "";
+            /**
+             *
+             * Gets or sets the worksheet's footer margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            footerMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's header margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            headerMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's left margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            leftMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's orientation of the page.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             orientation?: Excel.PageOrientation | "Portrait" | "Landscape";
             /**
              *
-             * Gets or sets the paper size of the page.
+             * Gets or sets the worksheet's paper size of the page.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             paperSize?: Excel.PaperType | "Letter" | "LetterSmall" | "Tabloid" | "Ledger" | "Legal" | "Statement" | "Executive" | "A3" | "A4" | "A4Small" | "A5" | "B4" | "B5" | "Folio" | "Quatro" | "Paper10x14" | "Paper11x17" | "Note" | "Envelope9" | "Envelope10" | "Envelope11" | "Envelope12" | "Envelope14" | "Csheet" | "Dsheet" | "Esheet" | "EnvelopeDL" | "EnvelopeC5" | "EnvelopeC3" | "EnvelopeC4" | "EnvelopeC6" | "EnvelopeC65" | "EnvelopeB4" | "EnvelopeB5" | "EnvelopeB6" | "EnvelopeItaly" | "EnvelopeMonarch" | "EnvelopePersonal" | "FanfoldUS" | "FanfoldStdGerman" | "FanfoldLegalGerman";
             /**
              *
-             * Gets or sets the print errors option.
+             * Gets or sets whether the worksheet's comments should be displayed when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printComments?: Excel.PrintComments | "PrintNoComments" | "PrintEndSheet" | "PrintInPlace";
+            /**
+             *
+             * Gets or sets the worksheet's print errors option.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             printErrors?: Excel.PrintErrorType | "ErrorsDisplayed" | "ErrorsBlank" | "ErrorsDash" | "ErrorsNotAvailable";
+            /**
+             *
+             * Gets or sets the worksheet's print gridlines flag. This flag determines whether gridlines will be printed or not.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printGridlines?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's print headings flag. This flag determines whether headings will be printed or not.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printHeadings?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's page print order option. This specifies the order to use for processing the page number printed.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printOrder?: Excel.PrintOrder | "DownThenOver" | "OverThenDown";
+            /**
+             *
+             * Gets or sets the worksheet's right margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rightMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's top margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            topMargin?: number;
+            /**
+             *
+             * Gets or sets the worksheet's print zoom options.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            zoom?: Excel.PageLayoutZoomOptions;
+        }
+        /** An interface describing the data returned by calling "headerFooter.toJSON()". */
+        interface HeaderFooterData {
+            /**
+             *
+             * Gets or sets the center footer of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerFooter?: string;
+            /**
+             *
+             * Gets or sets the center header of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerHeader?: string;
+            /**
+             *
+             * Gets or sets the left footer of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            leftFooter?: string;
+            /**
+             *
+             * Gets or sets the left header of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            leftHeader?: string;
+            /**
+             *
+             * Gets or sets the right footer of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rightFooter?: string;
+            /**
+             *
+             * Gets or sets the right header of the worksheet.
+            To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rightHeader?: string;
+        }
+        /** An interface describing the data returned by calling "headerFooterGroup.toJSON()". */
+        interface HeaderFooterGroupData {
+            /**
+            *
+            * The header/footer to use for even pages, odd header/footer needs to be specified for odd pages.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            even?: Excel.Interfaces.HeaderFooterData;
+            /**
+            *
+            * The first page header/footer, for all other pages general or even/odd is used.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            first?: Excel.Interfaces.HeaderFooterData;
+            /**
+            *
+            * The general header/footer, used for all pages unless even/odd or first page is specified.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            general?: Excel.Interfaces.HeaderFooterData;
+            /**
+            *
+            * The header/footer to use for odd pages, even header/footer needs to be specified for even pages.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            odd?: Excel.Interfaces.HeaderFooterData;
+            /**
+             *
+             * Gets or sets the state of which headers/footers are set. See Excel.HeaderFooterState for details.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            state?: Excel.HeaderFooterState | "General" | "FirstGeneral" | "OddEven" | "FirstOddEven";
+            /**
+             *
+             * Gets or sets a flag indicating if headers/footers are aligned with the page margins set in the page layout options for the worksheet.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            useSheetMargins?: boolean;
+            /**
+             *
+             * Gets or sets a flag indicating if headers/footers should be scaled by the page percentage scale set in the page layout options for the worksheet.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            useSheetScale?: boolean;
+        }
+        /** An interface describing the data returned by calling "pageBreak.toJSON()". */
+        interface PageBreakData {
+            /**
+             *
+             * Represents the column index for the page break
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            columnIndex?: number;
+            /**
+             *
+             * Represents the row index for the page break
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rowIndex?: number;
+        }
+        /** An interface describing the data returned by calling "pageBreakCollection.toJSON()". */
+        interface PageBreakCollectionData {
+            items?: Excel.Interfaces.PageBreakData[];
         }
         /** An interface describing the data returned by calling "areaCollection.toJSON()". */
         interface AreaCollectionData {
@@ -28538,12 +29684,51 @@ declare namespace Excel {
         interface ApplicationLoadOptions {
             $all?: boolean;
             /**
+            *
+            * Returns the Iterative Calculation settings.
+            On Excel for Windows and Excel for Mac, the settings will aplly to the Excel Application.
+            On Excel Online and Excel for other platforms, the settings will apply to the active workbook.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            iterativeCalculation?: Excel.Interfaces.IterativeCalculationLoadOptions;
+            /**
              *
-             * Returns the calculation mode used in the workbook. See Excel.CalculationMode for details.
+             * Returns the calculation mode used in the workbook, as defined by the constants in Excel.CalculationMode. Possible values are: `Automatic`, where Excel controls recalculation; `AutomaticExceptTables`, where Excel controls recalculation but ignores changes in tables; `Manual`, where calculation is done when the user requests it.
              *
              * [Api set: ExcelApi 1.1 for get, 1.8 for set]
              */
             calculationMode?: boolean;
+        }
+        /**
+         *
+         * Represents the Iterative Calculation settings.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        interface IterativeCalculationLoadOptions {
+            $all?: boolean;
+            /**
+             *
+             * True if Excel will use iteration to resolve circular references.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            enabled?: boolean;
+            /**
+             *
+             * Returns or sets the maximum amount of change between each iteration as Excel resolves circular references.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            maxChange?: boolean;
+            /**
+             *
+             * Returns or sets the maximum number of iterations that Excel can use to resolve a circular reference.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            maxIteration?: boolean;
         }
         /**
          *
@@ -29024,6 +30209,13 @@ declare namespace Excel {
             isEntireRow?: boolean;
             /**
              *
+             * Represents the data type state of each cell. Read-only.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            linkedDataTypeState?: boolean;
+            /**
+             *
              * Represents Excel's number format code for the given range.
                 When setting number format to a range, the value argument can be either a single value (string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range.
              *
@@ -29265,7 +30457,7 @@ declare namespace Excel {
         }
         /**
          *
-         * Represents a collection of worksheet objects that are part of the workbook.
+         * Represents a collection of key-value pair setting objects that are part of the workbook. The scope is limited to per file and add-in (task-pane or content) combination.
          *
          * [Api set: ExcelApi 1.4]
          */
@@ -29288,7 +30480,7 @@ declare namespace Excel {
         }
         /**
          *
-         * Setting represents a key-value pair of a setting persisted to the document.
+         * Setting represents a key-value pair of a setting persisted to the document (per file per add-in). These custom key-value pair can be used to store state or lifecycle information needed by the content or task-pane add-in. Note that settings are persisted in the document and hence it is not a place to store any sensitive or protected information such as user information and password.
          *
          * [Api set: ExcelApi 1.4]
          */
@@ -29361,7 +30553,7 @@ declare namespace Excel {
             name?: boolean;
             /**
              *
-             * For EACH ITEM in the collection: Indicates whether the name is scoped to the workbook or to a specific worksheet. Read-only.
+             * For EACH ITEM in the collection: Indicates whether the name is scoped to the workbook or to a specific worksheet. Possible values are: Worksheet, Workbook. Read-only.
              *
              * [Api set: ExcelApi 1.4]
              */
@@ -29440,7 +30632,7 @@ declare namespace Excel {
             name?: boolean;
             /**
              *
-             * Indicates whether the name is scoped to the workbook or to a specific worksheet. Read-only.
+             * Indicates whether the name is scoped to the workbook or to a specific worksheet. Possible values are: Worksheet, Workbook. Read-only.
              *
              * [Api set: ExcelApi 1.4]
              */
@@ -33436,32 +34628,11 @@ declare namespace Excel {
             name?: boolean;
             /**
              *
-             * For EACH ITEM in the collection: Number format of the RowColumnPivotHierarchy.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            numberFormat?: boolean;
-            /**
-             *
              * For EACH ITEM in the collection: Position of the RowColumnPivotHierarchy.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             position?: boolean;
-            /**
-             *
-             * For EACH ITEM in the collection: Determines whether to show all items of the RowColumnPivotHierarchy.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            showAllItems?: boolean;
-            /**
-             *
-             * For EACH ITEM in the collection: Subtotals of the RowColumnPivotHierarchy.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            subtotals?: boolean;
         }
         /**
          *
@@ -33487,32 +34658,11 @@ declare namespace Excel {
             name?: boolean;
             /**
              *
-             * Number format of the RowColumnPivotHierarchy.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            numberFormat?: boolean;
-            /**
-             *
              * Position of the RowColumnPivotHierarchy.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             position?: boolean;
-            /**
-             *
-             * Determines whether to show all items of the RowColumnPivotHierarchy.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            showAllItems?: boolean;
-            /**
-             *
-             * Subtotals of the RowColumnPivotHierarchy.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            subtotals?: boolean;
         }
         /**
          *
@@ -33552,32 +34702,11 @@ declare namespace Excel {
             name?: boolean;
             /**
              *
-             * For EACH ITEM in the collection: Number format of the FilterPivotHierarchy.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            numberFormat?: boolean;
-            /**
-             *
              * For EACH ITEM in the collection: Position of the FilterPivotHierarchy.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             position?: boolean;
-            /**
-             *
-             * For EACH ITEM in the collection: Determines whether to show all items of the FilterPivotHierarchy.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            showAllItems?: boolean;
-            /**
-             *
-             * For EACH ITEM in the collection: Subtotals of the FilterPivotHierarchy.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            subtotals?: boolean;
         }
         /**
          *
@@ -33617,32 +34746,11 @@ declare namespace Excel {
             name?: boolean;
             /**
              *
-             * Number format of the FilterPivotHierarchy.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            numberFormat?: boolean;
-            /**
-             *
              * Position of the FilterPivotHierarchy.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             position?: boolean;
-            /**
-             *
-             * Determines whether to show all items of the FilterPivotHierarchy.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            showAllItems?: boolean;
-            /**
-             *
-             * Subtotals of the FilterPivotHierarchy.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            subtotals?: boolean;
         }
         /**
          *
@@ -33782,6 +34890,27 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             name?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Number format of the PivotField.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormat?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Determines whether to show all items of the PivotField.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showAllItems?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Subtotals of the PivotField.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            subtotals?: boolean;
         }
         /**
          *
@@ -33805,6 +34934,27 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             name?: boolean;
+            /**
+             *
+             * Number format of the PivotField.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormat?: boolean;
+            /**
+             *
+             * Determines whether to show all items of the PivotField.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showAllItems?: boolean;
+            /**
+             *
+             * Subtotals of the PivotField.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            subtotals?: boolean;
         }
         /**
          *
@@ -35347,33 +36497,294 @@ declare namespace Excel {
         interface PageLayoutLoadOptions {
             $all?: boolean;
             /**
+            *
+            * Header and footer configuration for the worksheet.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            headersFooters?: Excel.Interfaces.HeaderFooterGroupLoadOptions;
+            /**
              *
-             * Gets or sets the black and white print option.
+             * Gets or sets the worksheet's black and white print option.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             blackAndWhite?: boolean;
             /**
              *
-             * Gets or sets the orientation of the page.
+             * Gets or sets the worksheet's bottom page margin to use for printing in points.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            bottomMargin?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's center horizontally flag. This flag determines whether the worksheet will be centered horizontally when it's printed.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerHorizontally?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's center vertically flag. This flag determines whether the worksheet will be centered vertically when it's printed.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerVertically?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's draft mode option. If true the sheet will be printed without graphics.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            draft?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's first page number to print. Null value represents "auto" page numbering.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            firstPageNumber?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's footer margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            footerMargin?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's header margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            headerMargin?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's left margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            leftMargin?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's orientation of the page.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             orientation?: boolean;
             /**
              *
-             * Gets or sets the paper size of the page.
+             * Gets or sets the worksheet's paper size of the page.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             paperSize?: boolean;
             /**
              *
-             * Gets or sets the print errors option.
+             * Gets or sets whether the worksheet's comments should be displayed when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printComments?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's print errors option.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             printErrors?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's print gridlines flag. This flag determines whether gridlines will be printed or not.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printGridlines?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's print headings flag. This flag determines whether headings will be printed or not.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printHeadings?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's page print order option. This specifies the order to use for processing the page number printed.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            printOrder?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's right margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rightMargin?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's top margin, in points, for use when printing.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            topMargin?: boolean;
+            /**
+             *
+             * Gets or sets the worksheet's print zoom options.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            zoom?: boolean;
+        }
+        /**
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        interface HeaderFooterLoadOptions {
+            $all?: boolean;
+            /**
+             *
+             * Gets or sets the center footer of the worksheet.
+                To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerFooter?: boolean;
+            /**
+             *
+             * Gets or sets the center header of the worksheet.
+                To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            centerHeader?: boolean;
+            /**
+             *
+             * Gets or sets the left footer of the worksheet.
+                To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            leftFooter?: boolean;
+            /**
+             *
+             * Gets or sets the left header of the worksheet.
+                To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            leftHeader?: boolean;
+            /**
+             *
+             * Gets or sets the right footer of the worksheet.
+                To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rightFooter?: boolean;
+            /**
+             *
+             * Gets or sets the right header of the worksheet.
+                To apply font formatting or insert a variable value, use format codes specified here: https://msdn.microsoft.com/en-us/library/bb225426.aspx.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rightHeader?: boolean;
+        }
+        /**
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        interface HeaderFooterGroupLoadOptions {
+            $all?: boolean;
+            /**
+            *
+            * The header/footer to use for even pages, odd header/footer needs to be specified for odd pages.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            even?: Excel.Interfaces.HeaderFooterLoadOptions;
+            /**
+            *
+            * The first page header/footer, for all other pages general or even/odd is used.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            first?: Excel.Interfaces.HeaderFooterLoadOptions;
+            /**
+            *
+            * The general header/footer, used for all pages unless even/odd or first page is specified.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            general?: Excel.Interfaces.HeaderFooterLoadOptions;
+            /**
+            *
+            * The header/footer to use for odd pages, even header/footer needs to be specified for even pages.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            odd?: Excel.Interfaces.HeaderFooterLoadOptions;
+            /**
+             *
+             * Gets or sets the state of which headers/footers are set. See Excel.HeaderFooterState for details.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            state?: boolean;
+            /**
+             *
+             * Gets or sets a flag indicating if headers/footers are aligned with the page margins set in the page layout options for the worksheet.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            useSheetMargins?: boolean;
+            /**
+             *
+             * Gets or sets a flag indicating if headers/footers should be scaled by the page percentage scale set in the page layout options for the worksheet.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            useSheetScale?: boolean;
+        }
+        /**
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        interface PageBreakLoadOptions {
+            $all?: boolean;
+            /**
+             *
+             * Represents the column index for the page break
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            columnIndex?: boolean;
+            /**
+             *
+             * Represents the row index for the page break
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rowIndex?: boolean;
+        }
+        /**
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        interface PageBreakCollectionLoadOptions {
+            $all?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents the column index for the page break
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            columnIndex?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents the row index for the page break
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rowIndex?: boolean;
         }
         /**
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
@@ -35495,6 +36906,13 @@ declare namespace Excel {
              * [Api set: ExcelApi 1.7]
              */
             isEntireRow?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents the data type state of each cell. Read-only.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            linkedDataTypeState?: boolean;
             /**
              *
              * For EACH ITEM in the collection: Represents Excel's number format code for the given range.
