@@ -1,4 +1,4 @@
-/* Version: 16.0.9320.1000 */
+/* Version: 16.0.9330.1000 */
 /*
 	Copyright (c) Microsoft Corporation.  All rights reserved.
 */
@@ -3262,7 +3262,7 @@ var Excel;
 			/// <summary> Represents the Excel application that manages the workbook. [Api set: ExcelApi 1.1] </summary>
 			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
 			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
-			/// <field name="calculationMode" type="String">Returns the calculation mode used in the workbook. See Excel.CalculationMode for details. [Api set: ExcelApi 1.1 for get, 1.8 for set]</field>
+			/// <field name="calculationMode" type="String">Returns the calculation mode used in the workbook, as defined by the constants in Excel.CalculationMode. Possible values are: `Automatic`, where Excel controls recalculation; `AutomaticExceptTables`, where Excel controls recalculation but ignores changes in tables; `Manual`, where calculation is done when the user requests it. [Api set: ExcelApi 1.1 for get, 1.8 for set]</field>
 		}
 
 		Application.prototype.load = function(option) {
@@ -6775,7 +6775,7 @@ var Excel;
 			/// <summary>
 			/// Gets a new scoped collection of custom XML parts whose namespaces match the given namespace. [Api set: ExcelApi 1.5]
 			/// </summary>
-			/// <param name="namespaceUri" type="String"></param>
+			/// <param name="namespaceUri" type="String">This must be a fully qualified schema URI; for example, &quot;http://schemas.contoso.com/review/1.0&quot;.</param>
 			/// <returns type="Excel.CustomXmlPartScopedCollection"></returns>
 		}
 		CustomXmlPartCollection.prototype.getCount = function() {
@@ -7232,7 +7232,7 @@ var Excel;
 			/// <summary>
 			/// Apply a &quot;Values&quot; filter to the column for the given values. [Api set: ExcelApi 1.2]
 			/// </summary>
-			/// <param name="values" type="Array" >The list of values to show.</param>
+			/// <param name="values" type="Array" >The list of values to show. This must be an array of strings or an array of Excel.FilterDateTime objects.</param>
 			/// <returns ></returns>
 		}
 		Filter.prototype.clear = function() {
@@ -10615,7 +10615,7 @@ var Excel;
 			/// <field name="comment" type="String">Represents the comment associated with this name. [Api set: ExcelApi 1.4]</field>
 			/// <field name="formula" >Gets or sets the formula of the named item.  Formula always starts with a &apos;=&apos; sign. [Api set: ExcelApi 1.7]</field>
 			/// <field name="name" type="String">The name of the object. Read-only. [Api set: ExcelApi 1.1]</field>
-			/// <field name="scope" type="String">Indicates whether the name is scoped to the workbook or to a specific worksheet. Read-only. [Api set: ExcelApi 1.4]</field>
+			/// <field name="scope" type="String">Indicates whether the name is scoped to the workbook or to a specific worksheet. Possible values are: Worksheet, Workbook. Read-only. [Api set: ExcelApi 1.4]</field>
 			/// <field name="type" type="String">Indicates the type of the value returned by the name&apos;s formula. See Excel.NamedItemType for details. Read-only. [Api set: ExcelApi 1.1 for String,Integer,Double,Boolean,Range,Error; 1.7 for Array]</field>
 			/// <field name="value" >Represents the value computed by the name&apos;s formula. For a named range, will return the range address. Read-only. [Api set: ExcelApi 1.1]</field>
 			/// <field name="visible" type="Boolean">Specifies whether the object is visible or not. [Api set: ExcelApi 1.1]</field>
@@ -10800,56 +10800,6 @@ var Excel;
 
 var Excel;
 (function (Excel) {
-	/// <summary> [Api set: ExcelApi 1.7] </summary>
-	var PaperType = {
-		__proto__: null,
-		"letter": "letter",
-		"letterSmall": "letterSmall",
-		"tabloid": "tabloid",
-		"ledger": "ledger",
-		"legal": "legal",
-		"statement": "statement",
-		"executive": "executive",
-		"a3": "a3",
-		"a4": "a4",
-		"a4Small": "a4Small",
-		"a5": "a5",
-		"b4": "b4",
-		"b5": "b5",
-		"folio": "folio",
-		"quatro": "quatro",
-		"paper10x14": "paper10x14",
-		"paper11x17": "paper11x17",
-		"note": "note",
-		"envelope9": "envelope9",
-		"envelope10": "envelope10",
-		"envelope11": "envelope11",
-		"envelope12": "envelope12",
-		"envelope14": "envelope14",
-		"csheet": "csheet",
-		"dsheet": "dsheet",
-		"esheet": "esheet",
-		"envelopeDL": "envelopeDL",
-		"envelopeC5": "envelopeC5",
-		"envelopeC3": "envelopeC3",
-		"envelopeC4": "envelopeC4",
-		"envelopeC6": "envelopeC6",
-		"envelopeC65": "envelopeC65",
-		"envelopeB4": "envelopeB4",
-		"envelopeB5": "envelopeB5",
-		"envelopeB6": "envelopeB6",
-		"envelopeItaly": "envelopeItaly",
-		"envelopeMonarch": "envelopeMonarch",
-		"envelopePersonal": "envelopePersonal",
-		"fanfoldUS": "fanfoldUS",
-		"fanfoldStdGerman": "fanfoldStdGerman",
-		"fanfoldLegalGerman": "fanfoldLegalGerman",
-	}
-	Excel.PaperType = PaperType;
-})(Excel || (Excel = {__proto__: null}));
-
-var Excel;
-(function (Excel) {
 	var PivotTable = (function(_super) {
 		__extends(PivotTable, _super);
 		function PivotTable() {
@@ -10987,19 +10937,6 @@ var Excel;
 		return PresetCriteriaConditionalFormat;
 	})(OfficeExtension.ClientObject);
 	Excel.PresetCriteriaConditionalFormat = PresetCriteriaConditionalFormat;
-})(Excel || (Excel = {__proto__: null}));
-
-var Excel;
-(function (Excel) {
-	/// <summary> [Api set: ExcelApi 1.7] </summary>
-	var PrintErrorType = {
-		__proto__: null,
-		"errorsDisplayed": "errorsDisplayed",
-		"errorsBlank": "errorsBlank",
-		"errorsDash": "errorsDash",
-		"errorsNotAvailable": "errorsNotAvailable",
-	}
-	Excel.PrintErrorType = PrintErrorType;
 })(Excel || (Excel = {__proto__: null}));
 
 var Excel;
@@ -11267,9 +11204,9 @@ var Excel;
 			/// <param name="across" type="Boolean" optional="true">Set true to merge cells in each row of the specified range as separate merged cells. The default value is false.</param>
 			/// <returns ></returns>
 		}
-		Range.prototype.select = function() {
+		Range.prototype.select = function(allowMultiAreas) {
 			/// <summary>
-			/// Selects the specified range in the Excel UI.              If multiple selection is not supported on the platform and the range has multiple areas, the &quot;InvalidReference&quot; error will be returned. [Api set: ExcelApi 1.1]
+			/// Selects the specified range in the Excel UI. If true, a multi-area range can be selected; otherwise, only the first area will be selected. Default is false. [Api set: ExcelApi 1.1]
 			/// </summary>
 			/// <returns ></returns>
 		}
@@ -11790,7 +11727,7 @@ var Excel;
 	var Setting = (function(_super) {
 		__extends(Setting, _super);
 		function Setting() {
-			/// <summary> Setting represents a key-value pair of a setting persisted to the document. [Api set: ExcelApi 1.4] </summary>
+			/// <summary> Setting represents a key-value pair of a setting persisted to the document (per file per add-in). These custom key-value pair can be used to store state or lifecycle information needed by the content or task-pane add-in. Note that settings are persisted in the document and hence it is not a place to store any sensitive or protected information such as user information and password. [Api set: ExcelApi 1.4] </summary>
 			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
 			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
 			/// <field name="key" type="String">Returns the key that represents the id of the Setting. Read-only. [Api set: ExcelApi 1.4]</field>
@@ -11836,7 +11773,7 @@ var Excel;
 	var SettingCollection = (function(_super) {
 		__extends(SettingCollection, _super);
 		function SettingCollection() {
-			/// <summary> Represents a collection of worksheet objects that are part of the workbook. [Api set: ExcelApi 1.4] </summary>
+			/// <summary> Represents a collection of key-value pair setting objects that are part of the workbook. The scope is limited to per file and add-in (task-pane or content) combination. [Api set: ExcelApi 1.4] </summary>
 			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
 			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
 			/// <field name="onSettingsChanged" type="OfficeExtension.EventHandlers">Occurs when the Settings in the document are changed. [Api set: ExcelApi 1.4]</field>
@@ -12275,7 +12212,7 @@ var Excel;
 			/// <summary>
 			/// Create a new table. The range object or source address determines the worksheet under which the table will be added. If the table cannot be added (e.g., because the address is invalid, or the table would overlap with another table), an error will be thrown. [Api set: ExcelApi 1.1]
 			/// </summary>
-			/// <param name="address" >A Range object, or a string address or name of the range representing the data source. If the address does not contain a sheet name, the currently-active sheet is used. [Api set: ExcelApi 1.1 for string parameter; 1.3 for accepting a Range object as well]</param>
+			/// <param name="address" >A Range object, or a string address or name of the range representing the data source. If the address does not contain a sheet name, the currently-active sheet is used. [Api set: ExcelApi 1.1 / 1.3.  Prior to ExcelApi 1.3, this parameter must be a string. Starting with Excel Api 1.3, this parameter may be a Range object or a string.]</param>
 			/// <param name="hasHeaders" type="Boolean">Boolean value that indicates whether the data being imported has column labels. If the source does not contain headers (i.e,. when this property set to false), Excel will automatically generate header shifting the data down by one row.</param>
 			/// <returns type="Excel.Table"></returns>
 		}
@@ -12809,7 +12746,7 @@ var Excel;
 			/// </summary>
 			/// <returns type="Excel.Range"></returns>
 		}
-		Workbook.prototype.getSelectedRange = function() {
+		Workbook.prototype.getSelectedRange = function(allowMultiAreas) {
 			/// <summary>
 			/// Gets the currently selected range from the workbook. [Api set: ExcelApi 1.1]
 			/// </summary>
@@ -12931,6 +12868,7 @@ var Excel;
 			/// <summary>
 			/// Calculates all cells on a worksheet. [Api set: ExcelApi 1.6]
 			/// </summary>
+			/// <param name="markAllDirty" type="Boolean">True, to mark all as dirty.</param>
 			/// <returns ></returns>
 		}
 		Worksheet.prototype.copy = function(positionType, relativeTo) {
@@ -13002,7 +12940,7 @@ var Excel;
 			/// <summary>
 			/// The used range is the smallest range that encompasses any cells that have a value or formatting assigned to them. If the entire worksheet is blank, this function will return the top left cell (i.e.,: it will *not* throw an error). [Api set: ExcelApi 1.1]
 			/// </summary>
-			/// <param name="valuesOnly" type="Boolean" optional="true">Considers only cells with values as used cells (ignoring formatting). [Api set: ExcelApi 1.2]</param>
+			/// <param name="valuesOnly" type="Boolean" optional="true">If true, considers only cells with values as used cells (ignoring formatting). [Api set: ExcelApi 1.2]</param>
 			/// <returns type="Excel.Range"></returns>
 		}
 		Worksheet.prototype.getUsedRangeOrNullObject = function(valuesOnly) {
@@ -13168,6 +13106,7 @@ var Excel;
 			/// <summary>
 			/// Gets the number of worksheets in the collection. [Api set: ExcelApi 1.4]
 			/// </summary>
+			/// <param name="visibleOnly" type="Boolean" optional="true">If true, considers only visible worksheets, skipping over any hidden ones.</param>
 			/// <returns type="OfficeExtension.ClientResult&lt;number&gt;"></returns>
 			var result = new OfficeExtension.ClientResult();
 			result.__proto__ = null;
@@ -13176,8 +13115,9 @@ var Excel;
 		}
 		WorksheetCollection.prototype.getFirst = function(visibleOnly) {
 			/// <summary>
-			/// Gets the first worksheet in the collection.              If true, considers only visible worksheets, skipping over any hidden ones. [Api set: ExcelApi 1.5]
+			/// Gets the first worksheet in the collection. [Api set: ExcelApi 1.5]
 			/// </summary>
+			/// <param name="visibleOnly" type="Boolean" optional="true">If true, considers only visible worksheets, skipping over any hidden ones.</param>
 			/// <returns type="Excel.Worksheet"></returns>
 		}
 		WorksheetCollection.prototype.getItem = function(key) {
@@ -13196,8 +13136,9 @@ var Excel;
 		}
 		WorksheetCollection.prototype.getLast = function(visibleOnly) {
 			/// <summary>
-			/// Gets the last worksheet in the collection.              If true, considers only visible worksheets, skipping over any hidden ones. [Api set: ExcelApi 1.5]
+			/// Gets the last worksheet in the collection. [Api set: ExcelApi 1.5]
 			/// </summary>
+			/// <param name="visibleOnly" type="Boolean" optional="true">If true, considers only visible worksheets, skipping over any hidden ones.</param>
 			/// <returns type="Excel.Worksheet"></returns>
 		}
 		WorksheetCollection.prototype.onActivated = {
@@ -13467,7 +13408,7 @@ var Excel;
 		var ApplicationUpdateData = (function() {
 			function ApplicationUpdateData() {
 				/// <summary>An interface for updating data on the Application object, for use in "application.set({ ... })".</summary>
-				/// <field name="calculationMode" type="String">Returns the calculation mode used in the workbook. See Excel.CalculationMode for details. [Api set: ExcelApi 1.1 for get, 1.8 for set]</field>;
+				/// <field name="calculationMode" type="String">Returns the calculation mode used in the workbook, as defined by the constants in Excel.CalculationMode. Possible values are: `Automatic`, where Excel controls recalculation; `AutomaticExceptTables`, where Excel controls recalculation but ignores changes in tables; `Manual`, where calculation is done when the user requests it. [Api set: ExcelApi 1.1 for get, 1.8 for set]</field>;
 			}
 			return ApplicationUpdateData;
 		})();

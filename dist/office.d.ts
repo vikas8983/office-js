@@ -2,6 +2,7 @@
 // Project: http://dev.office.com
 // Definitions by: OfficeDev <https://github.com/OfficeDev>, Lance Austin <https://github.com/LanceEA>, Michael Zlatkovsky <https://github.com/Zlatkovsky>, Kim Brandl <https://github.com/kbrandl>, Ricky Kirkham <https://github.com/Rick-Kirkham>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+// TypeScript Version: 2.4
 
 /*
 office-js
@@ -14,12 +15,24 @@ Copyright (c) Microsoft Corporation
 ////////////////////////////////////////////////////////////////
 
 declare namespace Office {
+    export var Preview: {
+        startCustomFunctions(): Promise<void>;
+    }
+
+    export var Promise: PromiseConstructor;
     export var context: Context;
     /**
      * This method is called after the Office API was loaded.
      * @param reason Indicates how the app was initialized
      */
     export function initialize(reason: InitializationReason): void;
+    /**
+    * Ensures that the Office JavaScript APIs are ready to be called by the add-in. If the framework hasn't initialized yet, the callback or promise will wait until the Office host is ready to accept API calls.
+    * Note that though this API is intended to be used inside an Office add-in, it can also be used outside the add-in.  In that case, once Office.js determines that it is running outside of an Office host application, it will call the callback and resolve the promise with "null" for both the host and platform.
+    * @param callback - An optional callback method, that will receive the host and platform info. Alternatively, rather than use a callback, an add-in may simply wait for the Promise returned by the function to resolve.
+    * @returns A Promise that contains the host and platform info, once initialization is completed.
+    */
+    export function onReady(callback?: (info: { host: HostType, platform: PlatformType }) => any): Promise<{ host: HostType, platform: PlatformType }>;
     /**
      * Indicates if the large namespace for objects will be used or not.
      * @param useShortNamespace  Indicates if 'true' that the short namespace will be used
@@ -1566,7 +1579,7 @@ declare namespace Office {
 ////////////////////////////////////////////////////////////////
 
 declare namespace Office {
-    export module MailboxEnums {
+    namespace MailboxEnums {
         export enum AttachmentType {
             /**
              * The attachment is a file
@@ -3360,73 +3373,8 @@ declare namespace OfficeCore {
 
 
 declare namespace OfficeCore {
-    /**
-     * [Api set: Experimentation 1.1 (PREVIEW) (PREVIEW)]
-     */
-    class FlightingService extends OfficeExtension.ClientObject {
-        getFeature(featureName: string, type: string, defaultValue: number | boolean | string, possibleValues?: Array<number> | Array<string> | Array<boolean> | Array<ScopedValue>): OfficeCore.ABType;
-        getFeatureGate(featureName: string, scope?: string): OfficeCore.ABType;
-        resetOverride(featureName: string): void;
-        setOverride(featureName: string, type: string, value: number | boolean | string): void;
-        /**
-         * Create a new instance of OfficeCore.FlightingService object
-         */
-        static newObject(context: OfficeExtension.ClientRequestContext): OfficeCore.FlightingService;
-        toJSON(): {};
-    }
-    /**
-     *
-     * Provides information about the scoped value.
-     *
-     * [Api set: Experimentation 1.1 (PREVIEW) (PREVIEW)]
-     */
-    interface ScopedValue {
-        /**
-         *
-         * Gets the scope.
-         *
-         * [Api set: Experimentation 1.1 (PREVIEW) (PREVIEW)]
-         */
-        scope: string;
-        /**
-         *
-         * Gets the value.
-         *
-         * [Api set: Experimentation 1.1 (PREVIEW) (PREVIEW)]
-         */
-        value: string | number | boolean;
-    }
-    /**
-     * [Api set: Experimentation 1.1 (PREVIEW) (PREVIEW)]
-     */
-    class ABType extends OfficeExtension.ClientObject {
-        readonly value: string | number | boolean;
-        /**
-         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
-         */
-        load(option?: string | string[] | OfficeExtension.LoadOption): OfficeCore.ABType;
-        toJSON(): {
-            "value": string | number | boolean;
-        };
-    }
-    /**
-     * [Api set: Experimentation 1.1 (PREVIEW) (PREVIEW)]
-     */
-    namespace FeatureType {
-        var boolean: string;
-        var integer: string;
-        var string: string;
-    }
-    namespace ExperimentErrorCodes {
-        var generalException: string;
-    }
-    module Interfaces {
-    }
-}
-declare namespace OfficeCore {
     class RequestContext extends OfficeExtension.ClientRequestContext {
         constructor(url?: string | OfficeExtension.RequestUrlAndHeaderInfo | any);
-        readonly flightingService: FlightingService;
     }
 }
 
@@ -4073,7 +4021,7 @@ declare namespace Excel {
     class Application extends OfficeExtension.ClientObject {
         /**
          *
-         * Returns the calculation mode used in the workbook. See Excel.CalculationMode for details.
+         * Returns the calculation mode used in the workbook, as defined by the constants in Excel.CalculationMode. Possible values are: `Automatic`, where Excel controls recalculation; `AutomaticExceptTables`, where Excel controls recalculation but ignores changes in tables; `Manual`, where calculation is done when the user requests it.
          *
          * [Api set: ExcelApi 1.1 for get, 1.8 for set]
          */
@@ -4240,7 +4188,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          */
-        getSelectedRange(): Excel.Range;
+        getSelectedRange(allowMultiAreas?: boolean): Excel.Range;
         /**
          * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
          */
@@ -4405,6 +4353,8 @@ declare namespace Excel {
          * Calculates all cells on a worksheet.
          *
          * [Api set: ExcelApi 1.6]
+         *
+         * @param markAllDirty True, to mark all as dirty.
          */
         calculate(markAllDirty: boolean): void;
         /**
@@ -4501,7 +4451,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          *
-         * @param valuesOnly Considers only cells with values as used cells (ignoring formatting). [Api set: ExcelApi 1.2]
+         * @param valuesOnly If true, considers only cells with values as used cells (ignoring formatting). [Api set: ExcelApi 1.2]
          */
         getUsedRange(valuesOnly?: boolean): Excel.Range;
         /**
@@ -4582,14 +4532,17 @@ declare namespace Excel {
          * Gets the number of worksheets in the collection.
          *
          * [Api set: ExcelApi 1.4]
+         *
+         * @param visibleOnly If true, considers only visible worksheets, skipping over any hidden ones.
          */
         getCount(visibleOnly?: boolean): OfficeExtension.ClientResult<number>;
         /**
          *
          * Gets the first worksheet in the collection.
-            If true, considers only visible worksheets, skipping over any hidden ones.
          *
          * [Api set: ExcelApi 1.5]
+         *
+         * @param visibleOnly If true, considers only visible worksheets, skipping over any hidden ones.
          */
         getFirst(visibleOnly?: boolean): Excel.Worksheet;
         /**
@@ -4613,9 +4566,10 @@ declare namespace Excel {
         /**
          *
          * Gets the last worksheet in the collection.
-            If true, considers only visible worksheets, skipping over any hidden ones.
          *
          * [Api set: ExcelApi 1.5]
+         *
+         * @param visibleOnly If true, considers only visible worksheets, skipping over any hidden ones.
          */
         getLast(visibleOnly?: boolean): Excel.Worksheet;
         /**
@@ -5340,11 +5294,11 @@ declare namespace Excel {
         /**
          *
          * Selects the specified range in the Excel UI.
-            If multiple selection is not supported on the platform and the range has multiple areas, the "InvalidReference" error will be returned.
+            If true, a multi-area range can be selected; otherwise, only the first area will be selected. Default is false.
          *
          * [Api set: ExcelApi 1.1]
          */
-        select(): void;
+        select(allowMultiAreas?: boolean): void;
         /**
          *
          * Displays the card for an active cell if it has rich value content.
@@ -5571,7 +5525,7 @@ declare namespace Excel {
     }
     /**
      *
-     * Represents a collection of worksheet objects that are part of the workbook.
+     * Represents a collection of key-value pair setting objects that are part of the workbook. The scope is limited to per file and add-in (task-pane or content) combination.
      *
      * [Api set: ExcelApi 1.4]
      */
@@ -5630,7 +5584,7 @@ declare namespace Excel {
     }
     /**
      *
-     * Setting represents a key-value pair of a setting persisted to the document.
+     * Setting represents a key-value pair of a setting persisted to the document (per file per add-in). These custom key-value pair can be used to store state or lifecycle information needed by the content or task-pane add-in. Note that settings are persisted in the document and hence it is not a place to store any sensitive or protected information such as user information and password.
      *
      * [Api set: ExcelApi 1.4]
      */
@@ -5791,7 +5745,7 @@ declare namespace Excel {
         readonly name: string;
         /**
          *
-         * Indicates whether the name is scoped to the workbook or to a specific worksheet. Read-only.
+         * Indicates whether the name is scoped to the workbook or to a specific worksheet. Possible values are: Worksheet, Workbook. Read-only.
          *
          * [Api set: ExcelApi 1.4]
          */
@@ -6107,7 +6061,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.1]
          *
-         * @param address A Range object, or a string address or name of the range representing the data source. If the address does not contain a sheet name, the currently-active sheet is used. [Api set: ExcelApi 1.1 for string parameter; 1.3 for accepting a Range object as well]
+         * @param address A Range object, or a string address or name of the range representing the data source. If the address does not contain a sheet name, the currently-active sheet is used. [Api set: ExcelApi 1.1 / 1.3.  Prior to ExcelApi 1.3, this parameter must be a string. Starting with Excel Api 1.3, this parameter may be a Range object or a string.]
          * @param hasHeaders Boolean value that indicates whether the data being imported has column labels. If the source does not contain headers (i.e,. when this property set to false), Excel will automatically generate header shifting the data down by one row.
          */
         add(address: Excel.Range | string, hasHeaders: boolean): Excel.Table;
@@ -9430,7 +9384,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.2]
          *
-         * @param values The list of values to show.
+         * @param values The list of values to show. This must be an array of strings or an array of Excel.FilterDateTime objects.
          */
         applyValuesFilter(values: Array<string | Excel.FilterDatetime>): void;
         /**
@@ -9647,7 +9601,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.5]
          *
-         * @param namespaceUri
+         * @param namespaceUri This must be a fully qualified schema URI; for example, "http://schemas.contoso.com/review/1.0".
          */
         getByNamespace(namespaceUri: string): Excel.CustomXmlPartScopedCollection;
         /**
@@ -12670,52 +12624,6 @@ declare namespace Excel {
     /**
      * [Api set: ExcelApi 1.7]
      */
-    enum PaperType {
-        letter = "Letter",
-        letterSmall = "LetterSmall",
-        tabloid = "Tabloid",
-        ledger = "Ledger",
-        legal = "Legal",
-        statement = "Statement",
-        executive = "Executive",
-        a3 = "A3",
-        a4 = "A4",
-        a4Small = "A4Small",
-        a5 = "A5",
-        b4 = "B4",
-        b5 = "B5",
-        folio = "Folio",
-        quatro = "Quatro",
-        paper10x14 = "Paper10x14",
-        paper11x17 = "Paper11x17",
-        note = "Note",
-        envelope9 = "Envelope9",
-        envelope10 = "Envelope10",
-        envelope11 = "Envelope11",
-        envelope12 = "Envelope12",
-        envelope14 = "Envelope14",
-        csheet = "Csheet",
-        dsheet = "Dsheet",
-        esheet = "Esheet",
-        envelopeDL = "EnvelopeDL",
-        envelopeC5 = "EnvelopeC5",
-        envelopeC3 = "EnvelopeC3",
-        envelopeC4 = "EnvelopeC4",
-        envelopeC6 = "EnvelopeC6",
-        envelopeC65 = "EnvelopeC65",
-        envelopeB4 = "EnvelopeB4",
-        envelopeB5 = "EnvelopeB5",
-        envelopeB6 = "EnvelopeB6",
-        envelopeItaly = "EnvelopeItaly",
-        envelopeMonarch = "EnvelopeMonarch",
-        envelopePersonal = "EnvelopePersonal",
-        fanfoldUS = "FanfoldUS",
-        fanfoldStdGerman = "FanfoldStdGerman",
-        fanfoldLegalGerman = "FanfoldLegalGerman",
-    }
-    /**
-     * [Api set: ExcelApi 1.7]
-     */
     enum ReadingOrder {
         /**
          *
@@ -12794,15 +12702,6 @@ declare namespace Excel {
         accent6_40 = "Accent6_40",
         accent6_60 = "Accent6_60",
         explanatoryText = "ExplanatoryText",
-    }
-    /**
-     * [Api set: ExcelApi 1.7]
-     */
-    enum PrintErrorType {
-        errorsDisplayed = "ErrorsDisplayed",
-        errorsBlank = "ErrorsBlank",
-        errorsDash = "ErrorsDash",
-        errorsNotAvailable = "ErrorsNotAvailable",
     }
     /**
      * [Api set: ExcelApi 1.7]
@@ -16619,7 +16518,7 @@ declare namespace Excel {
         interface ApplicationUpdateData {
             /**
              *
-             * Returns the calculation mode used in the workbook. See Excel.CalculationMode for details.
+             * Returns the calculation mode used in the workbook, as defined by the constants in Excel.CalculationMode. Possible values are: `Automatic`, where Excel controls recalculation; `AutomaticExceptTables`, where Excel controls recalculation but ignores changes in tables; `Manual`, where calculation is done when the user requests it.
              *
              * [Api set: ExcelApi 1.1 for get, 1.8 for set]
              */
@@ -18975,7 +18874,7 @@ declare namespace Excel {
         interface ApplicationData {
             /**
              *
-             * Returns the calculation mode used in the workbook. See Excel.CalculationMode for details.
+             * Returns the calculation mode used in the workbook, as defined by the constants in Excel.CalculationMode. Possible values are: `Automatic`, where Excel controls recalculation; `AutomaticExceptTables`, where Excel controls recalculation but ignores changes in tables; `Manual`, where calculation is done when the user requests it.
              *
              * [Api set: ExcelApi 1.1 for get, 1.8 for set]
              */
@@ -19520,7 +19419,7 @@ declare namespace Excel {
             name?: string;
             /**
              *
-             * Indicates whether the name is scoped to the workbook or to a specific worksheet. Read-only.
+             * Indicates whether the name is scoped to the workbook or to a specific worksheet. Possible values are: Worksheet, Workbook. Read-only.
              *
              * [Api set: ExcelApi 1.4]
              */
@@ -22044,7 +21943,7 @@ declare namespace Excel {
             $all?: boolean;
             /**
              *
-             * Returns the calculation mode used in the workbook. See Excel.CalculationMode for details.
+             * Returns the calculation mode used in the workbook, as defined by the constants in Excel.CalculationMode. Possible values are: `Automatic`, where Excel controls recalculation; `AutomaticExceptTables`, where Excel controls recalculation but ignores changes in tables; `Manual`, where calculation is done when the user requests it.
              *
              * [Api set: ExcelApi 1.1 for get, 1.8 for set]
              */
@@ -22640,7 +22539,7 @@ declare namespace Excel {
         }
         /**
          *
-         * Represents a collection of worksheet objects that are part of the workbook.
+         * Represents a collection of key-value pair setting objects that are part of the workbook. The scope is limited to per file and add-in (task-pane or content) combination.
          *
          * [Api set: ExcelApi 1.4]
          */
@@ -22663,7 +22562,7 @@ declare namespace Excel {
         }
         /**
          *
-         * Setting represents a key-value pair of a setting persisted to the document.
+         * Setting represents a key-value pair of a setting persisted to the document (per file per add-in). These custom key-value pair can be used to store state or lifecycle information needed by the content or task-pane add-in. Note that settings are persisted in the document and hence it is not a place to store any sensitive or protected information such as user information and password.
          *
          * [Api set: ExcelApi 1.4]
          */
@@ -22736,7 +22635,7 @@ declare namespace Excel {
             name?: boolean;
             /**
              *
-             * For EACH ITEM in the collection: Indicates whether the name is scoped to the workbook or to a specific worksheet. Read-only.
+             * For EACH ITEM in the collection: Indicates whether the name is scoped to the workbook or to a specific worksheet. Possible values are: Worksheet, Workbook. Read-only.
              *
              * [Api set: ExcelApi 1.4]
              */
@@ -22815,7 +22714,7 @@ declare namespace Excel {
             name?: boolean;
             /**
              *
-             * Indicates whether the name is scoped to the workbook or to a specific worksheet. Read-only.
+             * Indicates whether the name is scoped to the workbook or to a specific worksheet. Possible values are: Worksheet, Workbook. Read-only.
              *
              * [Api set: ExcelApi 1.4]
              */
