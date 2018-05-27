@@ -1,4 +1,4 @@
-/* Version: 16.0.9309.1000 */
+/* Version: 16.0.9330.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -57,6 +57,8 @@ _u.ExtensibilityStrings.l_PersistedNotificationArrayReadError_Text = "The API ca
 _u.ExtensibilityStrings.l_PersistedNotificationArraySaveError_Text = "The API call you made failed because notifications couldn't be persisted.";
 _u.ExtensibilityStrings.l_RecurrenceErrorMaxOccurrences_Text = "The recurring series exceeds the maximum limit of 999 occurrences.";
 _u.ExtensibilityStrings.l_RecurrenceErrorZeroOccurrences_Text = "The recurring series has no occurrences in the specified date range.";
+_u.ExtensibilityStrings.l_RecurrenceInvalidTimeZone_Text = "The specified time zone is not supported.";
+_u.ExtensibilityStrings.l_RecurrenceUnsupportedAlternateCalendar_Text = "The recurrence pattern was set by the user using an alternate calendar that is not supported.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Instance_SetAsync_Text = "A recurrence pattern can't be set for a single occurrence in a series.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Properties_Invalid_Text = "The recurrence pattern isn't valid. Please check that the specified recurrence properties align with the recurrence type.";
 _u.ExtensibilityStrings.l_SaveError_Text = "Connection error occurred while trying to save the item on the server.";

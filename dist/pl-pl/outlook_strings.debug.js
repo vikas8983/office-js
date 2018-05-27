@@ -1,4 +1,4 @@
-/* Version: 16.0.9309.1000 */
+/* Version: 16.0.9330.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -31,7 +31,7 @@ _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Co najmniej jeden z podany
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Żądanie przekracza limit rozmiaru 1 MB. Zmodyfikuj żądanie EWS.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Nie można dodać załączników, ponieważ wiadomość zawiera już maksymalną liczbę załączników";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "Oczyszczanie kodu HTML nie powiodło się.";
-_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "The user doesn't have the permissions required to perform this operation.";
+_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "Użytkownik nie ma uprawnień wymaganych do wykonania tej operacji.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Wystąpił wewnętrzny błąd formatu.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "Wewnętrzny błąd protokołu: „{0}”.";
 _u.ExtensibilityStrings.l_InvalidActionType_Text = "Wartość parametru „actionType” jest nieprawidłowa. Akceptowana wartość to „showTaskPane”."
@@ -57,6 +57,8 @@ _u.ExtensibilityStrings.l_PersistedNotificationArrayReadError_Text = "Wywołanie
 _u.ExtensibilityStrings.l_PersistedNotificationArraySaveError_Text = "Wywołanie interfejsu API nie powiodło się, ponieważ nie można zapisać powiadomień.";
 _u.ExtensibilityStrings.l_RecurrenceErrorMaxOccurrences_Text = "Seria cykliczna przekracza maksymalny limit 999 wystąpień.";
 _u.ExtensibilityStrings.l_RecurrenceErrorZeroOccurrences_Text = "Seria cykliczna nie ma żadnych wystąpień w określonym zakresie dat.";
+_u.ExtensibilityStrings.l_RecurrenceInvalidTimeZone_Text = "Podana strefa czasowa nie jest obsługiwana.";
+_u.ExtensibilityStrings.l_RecurrenceUnsupportedAlternateCalendar_Text = "Wzorzec cyklu został ustawiony przez użytkownika za pomocą kalendarza alternatywnego, który nie jest obsługiwany.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Instance_SetAsync_Text = "Nie można ustawić wzorca cyklu dla pojedynczego wystąpienia w serii.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Properties_Invalid_Text = "Wzorzec cyklu jest nieprawidłowy. Sprawdź, czy określone właściwości cyklu są zgodne z typem cyklu.";
 _u.ExtensibilityStrings.l_SaveError_Text = "Wystąpił błąd połączenia podczas próby zapisania elementu na serwerze.";

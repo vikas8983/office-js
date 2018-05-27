@@ -1,4 +1,4 @@
-/* Version: 16.0.9309.1000 */
+/* Version: 16.0.9330.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -31,7 +31,7 @@ _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Minimálne jedna zadaná e
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Požiadavka prekročila maximálnu veľkosť 1 MB. Upravte požiadavku EWS.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Prílohy sa nadajú pridať, pretože správa už obsahuje maximálny počet príloh";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "HTML čistenie zlyhalo.";
-_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "The user doesn't have the permissions required to perform this operation.";
+_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "Používateľ nemá povolenia potrebné na vykonanie tejto operácie.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Vyskytla sa interná chyba formátu.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "Interná chyba protokolu: {0}.";
 _u.ExtensibilityStrings.l_InvalidActionType_Text = "Hodnota parametra actionType je neplatná. Akceptovaná hodnota je showTaskPane."
@@ -57,6 +57,8 @@ _u.ExtensibilityStrings.l_PersistedNotificationArrayReadError_Text = "Uskutočne
 _u.ExtensibilityStrings.l_PersistedNotificationArraySaveError_Text = "Uskutočnené volanie rozhrania API zlyhalo, pretože oznámenia sa nepodarilo zachovať.";
 _u.ExtensibilityStrings.l_RecurrenceErrorMaxOccurrences_Text = "Rady opakovaných výskytov prekračujú maximálnu hodnotu 999 výskytov.";
 _u.ExtensibilityStrings.l_RecurrenceErrorZeroOccurrences_Text = "Rady opakovaných výskytov nemajú žiadne výskyty v rámci zadaného časového rozsahu.";
+_u.ExtensibilityStrings.l_RecurrenceInvalidTimeZone_Text = "Zadané časové pásmo nie je podporované.";
+_u.ExtensibilityStrings.l_RecurrenceUnsupportedAlternateCalendar_Text = "Spôsob opakovania bol používateľom nastavený pomocou alternatívneho kalendára, ktorý nie je podporovaný.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Instance_SetAsync_Text = "Spôsob opakovania sa nedá nastaviť pre jediný výskyt v rade.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Properties_Invalid_Text = "Spôsob opakovania nie je platný. Skontrolujte, či zadané vlastnosti opakovania zodpovedajú typu opakovania.";
 _u.ExtensibilityStrings.l_SaveError_Text = "Pri pokuse o uloženie položky na server sa vyskytla chyba pripojenia.";

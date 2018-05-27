@@ -1,4 +1,4 @@
-/* Version: 16.0.9309.1000 */
+/* Version: 16.0.9330.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -31,7 +31,7 @@ _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Vismaz viena norādītā e
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Pieprasījums pārsniedz 1 MB lieluma ierobežojumu. Lūdzu, modificējiet savu EWS pieprasījumu.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Pielikumus nevar pievienot, jo ziņojumam jau ir maksimālais pielikumu skaits";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "HTML tīrīšana neizdevās.";
-_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "The user doesn't have the permissions required to perform this operation.";
+_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "Lietotājam nav atļauju, kas ir nepieciešamas, lai veiktu šo darbību.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Radās iekšēja formāta kļūda.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "Iekšēja protokola kļūda: '{0}'.";
 _u.ExtensibilityStrings.l_InvalidActionType_Text = "Parametra actionType vērtība nav derīga. Akceptētā vērtība ir showTaskPane."
@@ -57,6 +57,8 @@ _u.ExtensibilityStrings.l_PersistedNotificationArrayReadError_Text = "API izsauk
 _u.ExtensibilityStrings.l_PersistedNotificationArraySaveError_Text = "API izsaukums, kuru veicāt, neizdevās, jo paziņojumus nevarēja saglabāt.";
 _u.ExtensibilityStrings.l_RecurrenceErrorMaxOccurrences_Text = "Periodiskā sērija pārsniedz maksimālo ierobežojumu 999 gadījumi.";
 _u.ExtensibilityStrings.l_RecurrenceErrorZeroOccurrences_Text = "Periodiskajai sērijai norādītajā datumu diapazonā nav gadījumu.";
+_u.ExtensibilityStrings.l_RecurrenceInvalidTimeZone_Text = "Norādītā laika josla netiek atbalstīta.";
+_u.ExtensibilityStrings.l_RecurrenceUnsupportedAlternateCalendar_Text = "Atkārtošanās shēmu iestatīja lietotājs, izmantojot alternatīvu kalendāru, kas netiek atbalstīts.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Instance_SetAsync_Text = "Atkārtošanās shēmu nevar iestatīt atsevišķam sērijas gadījumam.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Properties_Invalid_Text = "Atkārtošanās shēma nav derīga. Lūdzu, pārbaudiet, vai norādītie atkārtošanās rekvizīti atbilst atkārtošanās tipam.";
 _u.ExtensibilityStrings.l_SaveError_Text = "Mēģinot serverī saglabāt vienumu, radās savienojuma kļūda.";

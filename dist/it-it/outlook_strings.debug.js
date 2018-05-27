@@ -1,4 +1,4 @@
-/* Version: 16.0.9309.1000 */
+/* Version: 16.0.9330.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -31,7 +31,7 @@ _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Uno o più indirizzi di po
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Le dimensioni della richiesta superano il limite di 1 MB. Modificare la richiesta EWS.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Non è possibile aggiungere allegati perché il messaggio contiene già il numero massimo di allegati";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "La purificazione HTML non è riuscita.";
-_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "The user doesn't have the permissions required to perform this operation.";
+_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "L'utente non ha le autorizzazioni per eseguire questa operazione.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Errore di formato interno.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "Errore del protocollo interno: '{0}'.";
 _u.ExtensibilityStrings.l_InvalidActionType_Text = "Il valore del parametro 'actionType' non è valido. Il valore accettato è \"showTaskPane\"."
@@ -57,6 +57,8 @@ _u.ExtensibilityStrings.l_PersistedNotificationArrayReadError_Text = "La chiamat
 _u.ExtensibilityStrings.l_PersistedNotificationArraySaveError_Text = "La chiamata all'API effettuata non è riuscita perché non è stato possibile salvare le notifiche in modo persistente.";
 _u.ExtensibilityStrings.l_RecurrenceErrorMaxOccurrences_Text = "La serie ricorrente supera il limite massimo di 999 occorrenze.";
 _u.ExtensibilityStrings.l_RecurrenceErrorZeroOccurrences_Text = "La serie ricorrente non ha occorrenze nell\\'intervallo di date specificato.";
+_u.ExtensibilityStrings.l_RecurrenceInvalidTimeZone_Text = "Il fuso orario specificato non è supportato.";
+_u.ExtensibilityStrings.l_RecurrenceUnsupportedAlternateCalendar_Text = "Il criterio di ricorrenza è stato impostato dall\\'utente tramite un altro calendario non supportato.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Instance_SetAsync_Text = "Non è possibile impostare un criterio di ricorrenza per una singola occorrenza di una serie.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Properties_Invalid_Text = "Il criterio di ricorrenza non è valido. Verificare che le proprietà di ricorrenza specificate siano allineate con il tipo di ricorrenza.";
 _u.ExtensibilityStrings.l_SaveError_Text = "Si è verificato un errore di connessione durante il tentativo di salvare l\\'elemento nel server.";

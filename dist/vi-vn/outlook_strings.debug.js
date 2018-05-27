@@ -1,4 +1,4 @@
-/* Version: 16.0.9309.1000 */
+/* Version: 16.0.9330.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -31,7 +31,7 @@ _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Một hoặc nhiều đị
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Yêu cầu vượt quá giới hạn kích thước 1 MB. Vui lòng thay đổi yêu cầu EWS.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Không thể thêm phần đính kèm do thư đã đạt lượng tệp đính kèm tối đa";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "Làm sạch HTML đã thất bại.";
-_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "The user doesn't have the permissions required to perform this operation.";
+_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "Người dùng không có quyền cần thiết để thực hiện thao tác này.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Đã có lỗi định dạng nội bộ.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "Lỗi giao thức nội bộ: '{0}'.";
 _u.ExtensibilityStrings.l_InvalidActionType_Text = "Giá trị của tham số 'actionType' là không hợp lệ. Giá trị được chấp nhận là \"showTaskPane\"."
@@ -57,6 +57,8 @@ _u.ExtensibilityStrings.l_PersistedNotificationArrayReadError_Text = "Bạn khô
 _u.ExtensibilityStrings.l_PersistedNotificationArraySaveError_Text = "Bạn không gọi được API do không thể duy trì thông báo.";
 _u.ExtensibilityStrings.l_RecurrenceErrorMaxOccurrences_Text = "Chuỗi định kỳ vượt quá giới hạn tối đa 999 sự kiện.";
 _u.ExtensibilityStrings.l_RecurrenceErrorZeroOccurrences_Text = "Chuỗi định kỳ không có sự kiện nào trong phạm vi ngày được chỉ định.";
+_u.ExtensibilityStrings.l_RecurrenceInvalidTimeZone_Text = "Múi giờ đã chỉ định không được hỗ trợ.";
+_u.ExtensibilityStrings.l_RecurrenceUnsupportedAlternateCalendar_Text = "Kiểu lặp lại đã được người dùng đặt bằng cách sử dụng lịch thay thế không được hỗ trợ.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Instance_SetAsync_Text = "Không thể đặt kiểu lặp lại cho một sự kiện duy nhất trong chuỗi.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Properties_Invalid_Text = "Kiểu lặp lại không hợp lệ. Vui lòng kiểm tra để chắc rằng các thuộc tính lặp lại được chỉ định phù hợp với loại lặp lại.";
 _u.ExtensibilityStrings.l_SaveError_Text = "Đã xảy ra lỗi kết nối trong khi tìm cách lưu mục này trên máy chủ.";

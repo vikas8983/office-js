@@ -1,4 +1,4 @@
-/* Version: 16.0.9309.1000 */
+/* Version: 16.0.9330.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -31,7 +31,7 @@ _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Adierazitako helbide elekt
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Eskaerak 1 MB-ko gehienezko tamaina gainditzen du. Aldatu EWS eskaera.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Ezin da eranskinik gehitu mezuak jada gehienezko eranskin kopurua baitu";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "HTML immunizazioak huts egin du.";
-_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "The user doesn't have the permissions required to perform this operation.";
+_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "Erabiltzaileak ez du baimenik eragiketa hori egiteko.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Barruko formatu-errore bat izan da.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = 'Barneko protokolo-errorea: "{0}".';
 _u.ExtensibilityStrings.l_InvalidActionType_Text = '"actionType" parametroaren balioa ez da egokia. Onartzen den balioa "showTaskPane" da.'
@@ -57,6 +57,8 @@ _u.ExtensibilityStrings.l_PersistedNotificationArrayReadError_Text = "Ezin izan 
 _u.ExtensibilityStrings.l_PersistedNotificationArraySaveError_Text = "Ezin izan da erabili APIa, jakinarazpenak ezin izan direlako mantendu.";
 _u.ExtensibilityStrings.l_RecurrenceErrorMaxOccurrences_Text = "Serie errepikariak 999 gertaldiko muga gainditzen du.";
 _u.ExtensibilityStrings.l_RecurrenceErrorZeroOccurrences_Text = "Serie errepikariak ez du gertaldirik zehaztutako data barrutian.";
+_u.ExtensibilityStrings.l_RecurrenceInvalidTimeZone_Text = "Zehaztutako ordu-zonak ez du balio.";
+_u.ExtensibilityStrings.l_RecurrenceUnsupportedAlternateCalendar_Text = "Errepikatze-maiztasuna erabiltzaileak ezarri du, onartzen ez den ordezko egutegi bat erabilita.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Instance_SetAsync_Text = "Errepikatze-maiztasunak ezin dira ezarri serie bateko gertaldi bakarrean.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Properties_Invalid_Text = "Errepikatze-maiztasunak ez du balio. Egiaztatu zehaztutako errepikatzearen propietateak bat datozela errepikatze motarekin.";
 _u.ExtensibilityStrings.l_SaveError_Text = "Konexio-errore bat gertatu da elementua zerbitzarian gordetzean.";
