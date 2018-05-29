@@ -1,4 +1,9 @@
+version: 1.1.9-operational.2
 tag: operational
+githubReleaseUrl: https://github.com/OfficeDev/office-js/releases/tag/v1.1.9-operational.2
+githubViewUrl: https://github.com/OfficeDev/office-js/tree/v1.1.9-operational.2
+deployedAt: 2018-05-29 11:25 pm UTC  (2018-05-29 4:25 pm Pacific Time)
+
 history:
     adhocBranchName: __adhoc--operational--current--local--2018-05-29--4.22pm--colbys-op
     commitMessage: Operational API syntax testing
@@ -25,3 +30,14 @@ history:
             sha: >-
                 https://github.com/OfficeDev/office-js/commits/c66e48e5ff80a0de10eb883b83bd182492affe01
             message: '[BEGIN PUBLISH UPDATES] -- Operational API syntax testing'
+
+
+unpkgUrls: |-
+    this specific build number:
+        https://unpkg.com/@microsoft/office-js@1.1.9-operational.2/dist/office.js
+        https://unpkg.com/@microsoft/office-js@1.1.9-operational.2/dist/office.d.ts
+    builds using this same tag ("operational"):
+        https://unpkg.com/@microsoft/office-js@operational/dist/office.js
+        https://unpkg.com/@microsoft/office-js@operational/dist/office.d.ts
+
+buildLog: https://travis-ci.org/OfficeDev/office-js/builds/385442816
