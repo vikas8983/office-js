@@ -1,4 +1,4 @@
-/* Version: 16.0.9309.1000 */
+/* Version: 16.0.9330.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -31,7 +31,7 @@ _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Una o més de les adreces 
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "La sol·licitud supera la mida límit d'1 MB. Modifiqueu la sol·licitud de l'EWS.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "No s’han pogut afegir els fitxers adjunts perquè el missatge ja conté el nombre màxim de fitxers adjunts";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "El sanejament d'HTML ha fallat.";
-_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "The user doesn't have the permissions required to perform this operation.";
+_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "L'usuari no té els permisos necessaris per realitzar aquesta operació.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "S'ha produït un error de format intern.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "Error de protocol intern: '{0}'.";
 _u.ExtensibilityStrings.l_InvalidActionType_Text = 'El valor del paràmetre "actionType" no és vàlid. El valor acceptat és "showTaskPane".'
@@ -57,6 +57,8 @@ _u.ExtensibilityStrings.l_PersistedNotificationArrayReadError_Text = "La trucada
 _u.ExtensibilityStrings.l_PersistedNotificationArraySaveError_Text = "La trucada d'API que heu fet no s'ha processat perquè les notificacions no es poden desar.";
 _u.ExtensibilityStrings.l_RecurrenceErrorMaxOccurrences_Text = "La sèrie periòdica supera el límit màxim de 999 repeticions.";
 _u.ExtensibilityStrings.l_RecurrenceErrorZeroOccurrences_Text = "La sèrie periòdica no conté cap repetició en l'interval de dates especificat.";
+_u.ExtensibilityStrings.l_RecurrenceInvalidTimeZone_Text = "El fus horari especificat no s'admet.";
+_u.ExtensibilityStrings.l_RecurrenceUnsupportedAlternateCalendar_Text = "L'usuari que fa servir un calendari alternatiu que no s'admet ha establert el patró de freqüència.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Instance_SetAsync_Text = "No es pot establir un patró de periodicitat en una única ocurrència d'una sèrie.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Properties_Invalid_Text = "El patró de periodicitat no és vàlid. Comproveu que les propietats de periodicitat que heu especificat coincideixin amb el tipus de periodicitat.";
 _u.ExtensibilityStrings.l_SaveError_Text = "S'ha produït un error de connexió en provar de desar l'element al servidor.";
