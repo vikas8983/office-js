@@ -125,7 +125,7 @@ export function generateMarkdownDescription(context: {
         > #### Script Lab:
         > * Copy-paste both of the above URLs (**office.js** *and* **office.d.ts**) into the **Libraries** tab.  That's it.
         > #### TypeScript-based project:
-        > 1. \`npm install @microsoft/{{{version}}}\`  (for this specific build number)
+        > 1. \`npm install @microsoft/office-js@{{{version}}}\`  (for this specific build number)
         {{#if isOfficialBuild}}
         >         &nbsp;&nbsp;&nbsp;&nbsp; or
         >    \`npm install @microsoft/office-js@{{{npmPublishTag}}}\`  (for any version of the "npmPublishTag" tag)
