@@ -1,4 +1,4 @@
-/* Version: 16.0.9314.1000 */
+/* Version: 16.0.9330.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -31,7 +31,7 @@ _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Minimálně jedna ze zadan
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Požadavek nesmí být větší než 1 MB. Upravte svou žádost Webových služeb Exchange (EWS).";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Přílohy se nedají přidat, protože zpráva už má maximální možný počet příloh.";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "Sanitace HTML se nepovedla.";
-_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "The user doesn't have the permissions required to perform this operation.";
+_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "Uživatel nemá požadovaná oprávnění k provedení této operace.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Došlo k chybě vnitřního formátu.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "Vnitřní chyba protokolu: {0}.";
 _u.ExtensibilityStrings.l_InvalidActionType_Text = "Hodnota parametru actionType je neplatná. Platná je hodnota showTaskPane."
@@ -57,6 +57,8 @@ _u.ExtensibilityStrings.l_PersistedNotificationArrayReadError_Text = "Volání r
 _u.ExtensibilityStrings.l_PersistedNotificationArraySaveError_Text = "Volání rozhraní API, které jste provedli, selhalo, protože oznámení nebylo možné nastavit jako trvalá.";
 _u.ExtensibilityStrings.l_RecurrenceErrorMaxOccurrences_Text = "Řada opakovaných výskytů překračuje maximální limit 999 výskytů.";
 _u.ExtensibilityStrings.l_RecurrenceErrorZeroOccurrences_Text = "Řada opakovaných výskytů nemá v zadaném časovém období žádné výskyty.";
+_u.ExtensibilityStrings.l_RecurrenceInvalidTimeZone_Text = "Zadané časové pásmo není podporované.";
+_u.ExtensibilityStrings.l_RecurrenceUnsupportedAlternateCalendar_Text = "Uživatel nastavil způsob opakování pomocí alternativního kalendáře, který není podporovaný.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Instance_SetAsync_Text = "Způsob opakování se nedá nastavit pro jediný výskyt v řadě.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Properties_Invalid_Text = "Způsob opakování není platný. Zkontrolujte prosím, že zadané vlastnosti opakování odpovídají typu opakování.";
 _u.ExtensibilityStrings.l_SaveError_Text = "Při pokusu o uložení položky na server došlo k chybě připojení.";

@@ -1,4 +1,4 @@
-/* Version: 16.0.9314.1000 */
+/* Version: 16.0.9330.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -57,6 +57,8 @@ _u.ExtensibilityStrings.l_PersistedNotificationArrayReadError_Text = "［vriVR�
 _u.ExtensibilityStrings.l_PersistedNotificationArraySaveError_Text = "［xo4Kx］‏‏أبع[The API call you made failed because notifications couldn't be persisted.]לף";
 _u.ExtensibilityStrings.l_RecurrenceErrorMaxOccurrences_Text = "［X1pSJ］‏‏أبع[The recurring series exceeds the maximum limit of 999 occurrences.]לף";
 _u.ExtensibilityStrings.l_RecurrenceErrorZeroOccurrences_Text = "［bqfrU］‏‏أبع[The recurring series has no occurrences in the specified date range.]לף";
+_u.ExtensibilityStrings.l_RecurrenceInvalidTimeZone_Text = "［98QT7］‏‏أبع[The specified time zone is not supported.]לף";
+_u.ExtensibilityStrings.l_RecurrenceUnsupportedAlternateCalendar_Text = "［zXCzp］‏‏أبع[The recurrence pattern was set by the user using an alternate calendar that is not supported.]לף";
 _u.ExtensibilityStrings.l_Recurrence_Error_Instance_SetAsync_Text = "［XlOSr］‏‏أبع[A recurrence pattern can't be set for a single occurrence in a series.]לף";
 _u.ExtensibilityStrings.l_Recurrence_Error_Properties_Invalid_Text = "［UMYct］‏‏أبع[The recurrence pattern isn't valid. Please check that the specified recurrence properties align with the recurrence type.]לף";
 _u.ExtensibilityStrings.l_SaveError_Text = "［1d3LS］‏‏أبع[Connection error occurred while trying to save the item on the server.]לף";

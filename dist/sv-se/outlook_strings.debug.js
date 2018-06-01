@@ -1,4 +1,4 @@
-/* Version: 16.0.9314.1000 */
+/* Version: 16.0.9330.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -31,7 +31,7 @@ _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "En eller flera av de angiv
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Storleken på begäran överskrider gränsen på 1 MB. Ändra din EWS-begäran.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Det går inte att bifoga filer, eftersom meddelandet redan har högsta möjliga antal bifogade filer";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "HTML-rensningen misslyckades.";
-_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "The user doesn't have the permissions required to perform this operation.";
+_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "Användaren har inte behörighet att utföra den här åtgärden.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Ett internt formatfel uppstod.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "Internt protokollfel: {0}.";
 _u.ExtensibilityStrings.l_InvalidActionType_Text = 'Värdet för parametern "actionType" är ogiltigt. Accepterat värde är "showTaskPane".'
@@ -43,7 +43,7 @@ _u.ExtensibilityStrings.l_InvalidEndTime_Text = "Sluttiden kan inte vara före s
 _u.ExtensibilityStrings.l_InvalidEventDates_Text = "Slutdatumet infaller före startdatumet.";
 _u.ExtensibilityStrings.l_InvalidParameterValueError_Text = "Ogiltigt värde för parametern {0}.";
 _u.ExtensibilityStrings.l_InvalidSelection_Text = "Markeringen är ogiltig.";
-_u.ExtensibilityStrings.l_InvalidTime_Text = "Indata omvandlas inte till en giltigt tid.";
+_u.ExtensibilityStrings.l_InvalidTime_Text = "Indata omvandlas inte till en giltig tid.";
 _u.ExtensibilityStrings.l_MessageInDifferentStoreError_Text = "EWS-ID kan inte hämtas eftersom meddelandet har sparats i en annan lagring.";
 _u.ExtensibilityStrings.l_NoValidRecipientsProvided_Text = "Inga giltiga mottagare angavs.";
 _u.ExtensibilityStrings.l_NotificationKeyNotFound_Text = "Det finns inga aviseringar med den angivna nyckeln.";
@@ -57,6 +57,8 @@ _u.ExtensibilityStrings.l_PersistedNotificationArrayReadError_Text = "API-anrope
 _u.ExtensibilityStrings.l_PersistedNotificationArraySaveError_Text = "API-anropet du gjorde misslyckades eftersom aviseringar inte kunde göras beständiga.";
 _u.ExtensibilityStrings.l_RecurrenceErrorMaxOccurrences_Text = "Den återkommande serien överskrider gränsvärdet på 999 förekomster.";
 _u.ExtensibilityStrings.l_RecurrenceErrorZeroOccurrences_Text = "Den återkommande serien har inga förekomster i det angivna datumintervallet.";
+_u.ExtensibilityStrings.l_RecurrenceInvalidTimeZone_Text = "Den angivna tidszonen stöds inte.";
+_u.ExtensibilityStrings.l_RecurrenceUnsupportedAlternateCalendar_Text = "Upprepningsmönstret har angetts av användaren med en alternativ kalender som inte stöds.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Instance_SetAsync_Text = "Det går inte ange ett upprepningsmönster för en enstaka förekomst i en serie.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Properties_Invalid_Text = "Upprepningsmönstret är inte giltigt. Kontrollera att de angivna upprepningsegenskaperna stämmer överens med upprepningstypen.";
 _u.ExtensibilityStrings.l_SaveError_Text = "Det uppstod fel vid anslutning till spara objektet på servern.";

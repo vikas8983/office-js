@@ -1,4 +1,4 @@
-/* Version: 16.0.9314.1000 */
+/* Version: 16.0.9330.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -31,7 +31,7 @@ _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Vähemalt üks sisestatud 
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Taotlus ületab 1 MB mahupiirangu. Muutke oma EWS-i taotlust.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Manuseid ei saa lisada, kuna sõnumile on juba lisatud suurim lubatud arv manuseid";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "HTML-i puhastus nurjus.";
-_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "The user doesn't have the permissions required to perform this operation.";
+_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "Kasutajal pole selle toimingu tegemiseks nõutavaid õigusi.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Ilmnes sisemine vormingutõrge.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "Sisemine protokollitõrge: {0}.";
 _u.ExtensibilityStrings.l_InvalidActionType_Text = 'Parameetri "actionType" väärtus ei sobi. Aktsepteeritud väärtus on "showTaskPane".'
@@ -57,6 +57,8 @@ _u.ExtensibilityStrings.l_PersistedNotificationArrayReadError_Text = "Teie API-k
 _u.ExtensibilityStrings.l_PersistedNotificationArraySaveError_Text = "Teie API-kutse nurjus, kuna teatisi ei saanud püsivaks määrata.";
 _u.ExtensibilityStrings.l_RecurrenceErrorMaxOccurrences_Text = "Korduvas sarjas on rohkem kui lubatud 999 esinemiskorda.";
 _u.ExtensibilityStrings.l_RecurrenceErrorZeroOccurrences_Text = "Korduval sarjal pole määratud kuupäevavahemikus esinemiskordi.";
+_u.ExtensibilityStrings.l_RecurrenceInvalidTimeZone_Text = "Määratud ajavööndit ei toetata.";
+_u.ExtensibilityStrings.l_RecurrenceUnsupportedAlternateCalendar_Text = "Kasutaja määras kordussageduse alternatiivse kalendri kaudu, mida ei toetata.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Instance_SetAsync_Text = "Sarja ühe esinemiskorra jaoks ei kordussagedust määrata.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Properties_Invalid_Text = "Kordussagedus ei sobi. Veenduge, et määratud korduvusatribuudid vastaksid korduvuse tüübile.";
 _u.ExtensibilityStrings.l_SaveError_Text = "Üksuse serverisse salvestamise katsel tekkis ühendustõrge.";

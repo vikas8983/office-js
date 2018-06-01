@@ -1,4 +1,4 @@
-/* Version: 16.0.9314.1000 */
+/* Version: 16.0.9330.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -31,7 +31,7 @@ _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Un ou máis dos enderezos 
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "A solicitude excede o límite de 1 MB de tamaño. Modifica a solicitude de EWS.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Non se poden engadir anexos porque a mensaxe xa ten o número máximo de anexos";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "Erro da inmunización HTML.";
-_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "The user doesn't have the permissions required to perform this operation.";
+_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "O usuario non ten os permisos necesarios para realizar esta operación.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Erro de formato interno.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = 'Erro de protocolo interno: "{0}".';
 _u.ExtensibilityStrings.l_InvalidActionType_Text = 'O valor do parámetro "actionType" non é válido. O valor aceptado é "showTaskPane".'
@@ -57,6 +57,8 @@ _u.ExtensibilityStrings.l_PersistedNotificationArrayReadError_Text = "Non se pui
 _u.ExtensibilityStrings.l_PersistedNotificationArraySaveError_Text = "Non se puido realizar a chamada á API porque as notificacións non se puideron conservar.";
 _u.ExtensibilityStrings.l_RecurrenceErrorMaxOccurrences_Text = "A serie periódica supera o límite máximo de 999 ocorrencias.";
 _u.ExtensibilityStrings.l_RecurrenceErrorZeroOccurrences_Text = "A serie periódica non ten ocorrencias no intervalo de datas especificado.";
+_u.ExtensibilityStrings.l_RecurrenceInvalidTimeZone_Text = "O fuso horario especificado non se admite.";
+_u.ExtensibilityStrings.l_RecurrenceUnsupportedAlternateCalendar_Text = "O usuario estableceu o padrón de periodicidade usando un calendario alternativo que non é compatible.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Instance_SetAsync_Text = "Non se pode establecer unha periodicidade para un só evento da serie.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Properties_Invalid_Text = "A periodicidade non é válida. Comproba que as propiedades de periodicidade especificadas se corresponden co tipo de periodicidade.";
 _u.ExtensibilityStrings.l_SaveError_Text = "Houbo un problema de conexión ao tentar gardar o elemento no servidor.";

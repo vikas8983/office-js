@@ -1,4 +1,4 @@
-/* Version: 16.0.9314.1000 */
+/* Version: 16.0.9330.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -31,7 +31,7 @@ _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Vähintään yksi annettu 
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Pyyntö ylittää yhden megatavun kokorajoituksen. Muokkaa EWS-pyyntöä.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Liitteitä ei voi lisätä, koska viestissä on jo suurin sallittu määrä liitteitä";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "HTML-koodin puhdistaminen epäonnistui.";
-_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "The user doesn't have the permissions required to perform this operation.";
+_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "Käyttäjällä ei ole oikeuksia tämän toiminnon suorittamiseen.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Virhe sisäisessä muodossa.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "Sisäinen protokollavirhe: {0}.";
 _u.ExtensibilityStrings.l_InvalidActionType_Text = "Parametrin actionType arvo on virheellinen. Hyväksytty arvo on showTaskPane."
@@ -57,6 +57,8 @@ _u.ExtensibilityStrings.l_PersistedNotificationArrayReadError_Text = "Tekemäsi 
 _u.ExtensibilityStrings.l_PersistedNotificationArraySaveError_Text = "Tekemäsi ohjelmointirajapinnan kutsu epäonnistui, koska ilmoituksia ei voitu määrittää pysyviksi.";
 _u.ExtensibilityStrings.l_RecurrenceErrorMaxOccurrences_Text = "Toistuva sarja ylittää 999 esiintymiskerran enimmäismäärän.";
 _u.ExtensibilityStrings.l_RecurrenceErrorZeroOccurrences_Text = "Toistuvalla sarjalla ei ole esiintymiskertoja määritetyllä ajanjaksolla.";
+_u.ExtensibilityStrings.l_RecurrenceInvalidTimeZone_Text = "Määritettyä aikavyöhykettä ei tueta.";
+_u.ExtensibilityStrings.l_RecurrenceUnsupportedAlternateCalendar_Text = "Toistumiskaavan määrittänyt käyttäjä käyttää vaihtoehtoista kalenteria, jota ei tueta.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Instance_SetAsync_Text = "Toistuvuuskaavan määrittäminen sarjan yksittäiselle esiintymiskerralle ei ole mahdollista.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Properties_Invalid_Text = "Toistumiskaava ei kelpaa. Tarkista, että määritetyt toistuvuusominaisuudet ovat yhtenevät toistuvuustyypin kanssa.";
 _u.ExtensibilityStrings.l_SaveError_Text = "Yhteysvirhe yritettäessä tallentaa kohdetta palvelimeen.";

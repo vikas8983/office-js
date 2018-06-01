@@ -1,4 +1,4 @@
-/* Version: 16.0.9314.1000 */
+/* Version: 16.0.9330.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -31,7 +31,7 @@ _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Neke od datih e-adresa su 
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Zahtev premašuje ograničenje veličine od 1 MB. Izmenite EWS zahtev.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Nije moguće dodati priloge zato što poruka već ima maksimalan broj priloga";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "HTML čišćenje nije uspelo.";
-_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "The user doesn't have the permissions required to perform this operation.";
+_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "Korisnik nema dozvole potrebne za obavljanje ove operacije.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Došlo je do interne greške u formatiranju.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "Interna greška protokola: '{0}'.";
 _u.ExtensibilityStrings.l_InvalidActionType_Text = "Vrednost parametra „actionType“ je nevažeća. Prihvatljiva vrednost je „showTaskPane“."
@@ -57,6 +57,8 @@ _u.ExtensibilityStrings.l_PersistedNotificationArrayReadError_Text = "API poziv 
 _u.ExtensibilityStrings.l_PersistedNotificationArraySaveError_Text = "API poziv koji ste uputili nije uspeo zato što nije moguće održati obaveštenja.";
 _u.ExtensibilityStrings.l_RecurrenceErrorMaxOccurrences_Text = "Periodična grupa premašuje maksimalno ograničenje od 999 pojavljivanja.";
 _u.ExtensibilityStrings.l_RecurrenceErrorZeroOccurrences_Text = "Periodična grupa se ne pojavljuje u navedenom opsegu datuma.";
+_u.ExtensibilityStrings.l_RecurrenceInvalidTimeZone_Text = "Navedena vremenska zona nije podržana.";
+_u.ExtensibilityStrings.l_RecurrenceUnsupportedAlternateCalendar_Text = "Korisnik je postavio obrazac ponavljanja pomoću alternativnog kalendara koji nije podržan.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Instance_SetAsync_Text = "Nije moguće postaviti obrazac ponavljanja za jedno pojavljivanje u grupi.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Properties_Invalid_Text = "Obrazac ponavljanja nije važeći. Proverite da li su navedena svojstva ponavljanja poravnata sa tipom ponavljanja.";
 _u.ExtensibilityStrings.l_SaveError_Text = "Došlo je do greške u povezivanju prilikom pokušaja čuvanja stavke na serveru.";
