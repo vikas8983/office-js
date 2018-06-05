@@ -1,4 +1,4 @@
-/* Version: 16.0.9314.1000 */
+/* Version: 16.0.9330.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -31,7 +31,7 @@ _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "ከቀረቡት የኢሜ�
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "ጥያቄው ከ 1 MB የመጠን ገደቡ በላይ ነው። እባክዎ የ EWSጥያቄዎ ያሻሽሉ።";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "መልእክቱ ከፍተኛው የአባሪዎች መጠን ስለያዘ ሌሎች አባሪዎች መጨመር አይቻልም";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "የ HTML ሳኒታይዜሽን አልተሳካም።";
-_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "The user doesn't have the permissions required to perform this operation.";
+_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "ተጠቃሚው ይህን ክንውን ለመፈጸም የሚይስፈልጉት ፈቃዶች የሉትም።";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "የውስጣዊ ቅርጽ ስህተት አጋጥሞ ነበር።";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "የውስጣዊ ፕሮቶኮል ስህተት: '{0}'።";
 _u.ExtensibilityStrings.l_InvalidActionType_Text = "የልኬት 'actionType' እሴት ልክ አይደለም። ተቀባይነት ያለው እሴት \"showTaskPane\" ነው።"
@@ -57,6 +57,8 @@ _u.ExtensibilityStrings.l_PersistedNotificationArrayReadError_Text = "እርስ�
 _u.ExtensibilityStrings.l_PersistedNotificationArraySaveError_Text = "እርስዎ ያደረጉት የAPI ጥሪ አልተሳካም ምክንያቱም ማሳወቂያዎች መቀመጥ አልቻሉም።";
 _u.ExtensibilityStrings.l_RecurrenceErrorMaxOccurrences_Text = "ተደጋግሞ የሚከሰት ተከታታይ ከፍተኛውን የ 999 ክስተቶች ገደብ አልፏል።";
 _u.ExtensibilityStrings.l_RecurrenceErrorZeroOccurrences_Text = "ተደጋግሞ የሚከሰት ተከታታይ በተጠቀሰው የጊዜ ክልል ውስጥ ምንም ክስተቶች የሉትም።";
+_u.ExtensibilityStrings.l_RecurrenceInvalidTimeZone_Text = "የተወሰነው የሰዓት ክልል አይደገፍም።";
+_u.ExtensibilityStrings.l_RecurrenceUnsupportedAlternateCalendar_Text = "የድግግሞሽ ጥለቱ የተዋቀረው ያልተደገፈ አማራጭ ቀን መቁጠሪያ በሚጠቀም ተጠቃሚ ነበር።";
 _u.ExtensibilityStrings.l_Recurrence_Error_Instance_SetAsync_Text = "የተደጋጋሚነት ጥለት በተከታታይ ውስጥ ለአንድ ክስተት መዘጋጀት አይችልም።";
 _u.ExtensibilityStrings.l_Recurrence_Error_Properties_Invalid_Text = "የተደጋጋሚነት ጥለት ልክ አይደለም። እባክዎ የተጠቀሱት የተደጋጋሚነት ባህሪዎች ከተደጋጋሚነት አይነቱ ጋር ይሰምራሉ።";
 _u.ExtensibilityStrings.l_SaveError_Text = "በአገልጋዩ ላይ ለማስቀመጥ በመሞከር ላይ የግንኙነት ስህተት ተከስቷል።";

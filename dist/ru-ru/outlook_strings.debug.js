@@ -1,4 +1,4 @@
-/* Version: 16.0.9314.1000 */
+/* Version: 16.0.9330.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -31,7 +31,7 @@ _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Один или неско
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Запрос превысил ограничение по размеру в 1 МБ. Измените ваш запрос EWS.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Невозможно добавить вложения, так как уже достигнуто их максимальное число для сообщения.";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "Не удалось выполнить очистку HTML.";
-_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "The user doesn't have the permissions required to perform this operation.";
+_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "У пользователя нет разрешений, необходимых для этой операции.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Произошла внутренняя ошибка форматирования.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = 'Внутренняя ошибка протокола: "{0}".';
 _u.ExtensibilityStrings.l_InvalidActionType_Text = "Параметр actionType имеет недопустимое значение. Допустимое значение — showTaskPane."
@@ -57,6 +57,8 @@ _u.ExtensibilityStrings.l_PersistedNotificationArrayReadError_Text = "При в�
 _u.ExtensibilityStrings.l_PersistedNotificationArraySaveError_Text = "При вызове API произошел сбой, так как уведомления не удалось сохранить.";
 _u.ExtensibilityStrings.l_RecurrenceErrorMaxOccurrences_Text = "Повторяющийся ряд превышает ограничение в 999 экземпляров.";
 _u.ExtensibilityStrings.l_RecurrenceErrorZeroOccurrences_Text = "Повторяющийся ряд не имеет экземпляров в указанном диапазоне дат.";
+_u.ExtensibilityStrings.l_RecurrenceInvalidTimeZone_Text = "Указанный часовой пояс не поддерживается.";
+_u.ExtensibilityStrings.l_RecurrenceUnsupportedAlternateCalendar_Text = "Расписание повторения задано пользователем с помощью другого календаря, который не поддерживается.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Instance_SetAsync_Text = "Невозможно задать расписание повторения для отдельного события в серии.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Properties_Invalid_Text = "Расписание повторения недопустимо. Убедитесь в том, что указанные свойства повторения согласуются с его типом.";
 _u.ExtensibilityStrings.l_SaveError_Text = "Ошибка подключения при сохранении элемента на сервере.";

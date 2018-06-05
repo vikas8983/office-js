@@ -1,4 +1,4 @@
-/* Version: 16.0.9314.1000 */
+/* Version: 16.0.9330.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -31,7 +31,7 @@ _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Satu atau beberapa alamat 
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Permintaan tersebut melebihi batas ukuran 1 MB. Harap ubah permintaan EWS Anda.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Lampiran tidak dapat ditambahkan karena pesan sudah mencapai jumlah maksimum lampiran";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "Sanitasi HTML telah gagal.";
-_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "The user doesn't have the permissions required to perform this operation.";
+_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "Pengguna tidak memiliki izin yang diperlukan untuk menjalankan operasi ini.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Terjadi kesalahan format internal.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "Kesalahan protokol internal: '{0}'.";
 _u.ExtensibilityStrings.l_InvalidActionType_Text = "Nilai parameter 'actionType' tidak valid. Nilai yang diterima adalah \"showTaskPane\"."
@@ -57,6 +57,8 @@ _u.ExtensibilityStrings.l_PersistedNotificationArrayReadError_Text = "Panggilan 
 _u.ExtensibilityStrings.l_PersistedNotificationArraySaveError_Text = "Panggilan API yang Anda buat gagal karena pemberitahuan tidak dapat dilakukan.";
 _u.ExtensibilityStrings.l_RecurrenceErrorMaxOccurrences_Text = "Seri berulang melebihi batas maksimum dari 999 kejadian.";
 _u.ExtensibilityStrings.l_RecurrenceErrorZeroOccurrences_Text = "Seri berulang tidak memiliki kejadian dalam rentang tanggal tertentu.";
+_u.ExtensibilityStrings.l_RecurrenceInvalidTimeZone_Text = "Zona waktu yang ditentukan tidak didukung.";
+_u.ExtensibilityStrings.l_RecurrenceUnsupportedAlternateCalendar_Text = "Pola pengulangan diatur oleh pengguna menggunakan kalender alternatif yang tidak didukung.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Instance_SetAsync_Text = "Pola pengulangan tidak dapat diatur untuk satu kemunculan dalam seri.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Properties_Invalid_Text = "Pola pengulangan tidak valid. Harap periksa bahwa properti pengulangan tertentu selaras dengan tipe pengulangan.";
 _u.ExtensibilityStrings.l_SaveError_Text = "Kesalahan koneksi terjadi ketika mencoba menyimpan item di server.";

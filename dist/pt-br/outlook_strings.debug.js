@@ -1,4 +1,4 @@
-/* Version: 16.0.9314.1000 */
+/* Version: 16.0.9330.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -31,7 +31,7 @@ _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Um ou mais endereços de e
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "A solicitação excede o limite de tamanho de 1 MB. Modifique sua solicitação EWS.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Anexos não podem ser adicionados, pois a mensagem já possui o número máximo de anexos";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "A limpeza de HTML falhou.";
-_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "The user doesn't have the permissions required to perform this operation.";
+_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "O usuário não tem as permissões necessárias para executar esta operação.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Houve um erro de formato interno.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "Erro de protocolo interno: '{0}'.";
 _u.ExtensibilityStrings.l_InvalidActionType_Text = 'O valor do parâmetro "actionType" é inválido. O valor aceito é "showTaskPane".'
@@ -57,6 +57,8 @@ _u.ExtensibilityStrings.l_PersistedNotificationArrayReadError_Text = "A chamada 
 _u.ExtensibilityStrings.l_PersistedNotificationArraySaveError_Text = "A chamada à API que você fez falhou porque não foi possível manter as notificações.";
 _u.ExtensibilityStrings.l_RecurrenceErrorMaxOccurrences_Text = "A série recorrente excede o limite máximo de 999 ocorrências.";
 _u.ExtensibilityStrings.l_RecurrenceErrorZeroOccurrences_Text = "A série recorrente não tem nenhuma ocorrência no intervalo de datas especificado.";
+_u.ExtensibilityStrings.l_RecurrenceInvalidTimeZone_Text = "O fuso horário especificado não tem suporte.";
+_u.ExtensibilityStrings.l_RecurrenceUnsupportedAlternateCalendar_Text = "O padrão de recorrência foi definido pelo usuário usando um calendário alternativo sem suporte.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Instance_SetAsync_Text = "Não é possível definir um padrão de recorrência para uma única ocorrência de uma série.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Properties_Invalid_Text = "O padrão de recorrência não é válido. Verifique se as propriedades de recorrência especificadas estão de acordo com o tipo de recorrência.";
 _u.ExtensibilityStrings.l_SaveError_Text = "Ocorreu um erro de conexão ao tentar salvar o item no servidor.";

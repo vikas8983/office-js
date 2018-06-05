@@ -1,4 +1,4 @@
-/* Version: 16.0.9314.1000 */
+/* Version: 16.0.9330.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -31,7 +31,7 @@ _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "하나 이상의 제공된
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "요청이 제한 크기 1MB를 초과합니다. EWS 요청을 수정하십시오.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "메시지에 이미 최대 개수의 첨부 파일이 있으므로 첨부 파일을 추가할 수 없습니다.";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "HTML 삭제가 실패했습니다.";
-_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "The user doesn't have the permissions required to perform this operation.";
+_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "사용자에게 이 작업을 수행하는 데 필요한 권한이 없습니다.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "내부 형식 오류가 발생했습니다.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "내부 프로토콜 오류입니다. {0}";
 _u.ExtensibilityStrings.l_InvalidActionType_Text = "'actionType' 매개 변수의 값이 잘못되었습니다. 허용되는 값은 \"showTaskPane\"입니다."
@@ -57,6 +57,8 @@ _u.ExtensibilityStrings.l_PersistedNotificationArrayReadError_Text = "보관된 
 _u.ExtensibilityStrings.l_PersistedNotificationArraySaveError_Text = "알림을 보관할 수 없어 API를 호출하지 못했습니다.";
 _u.ExtensibilityStrings.l_RecurrenceErrorMaxOccurrences_Text = "되풀이 모임이 항목 최대 한도 999개를 초과했습니다.";
 _u.ExtensibilityStrings.l_RecurrenceErrorZeroOccurrences_Text = "지정된 날짜 범위의 되풀이 모임에 항목이 없습니다.";
+_u.ExtensibilityStrings.l_RecurrenceInvalidTimeZone_Text = "지정된 표준 시간대는 지원되지 않습니다.";
+_u.ExtensibilityStrings.l_RecurrenceUnsupportedAlternateCalendar_Text = "이 되풀이 패턴은 지원되지 않는 다른 달력을 통해 설정되었습니다.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Instance_SetAsync_Text = "일련의 단일 항목에 대한 되풀이 방법을 설정할 수 없습니다.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Properties_Invalid_Text = "되풀이 방법이 잘못되었습니다. 지정된 되풀이 속성이 되풀이 유형에 부응하는지 확인하세요.";
 _u.ExtensibilityStrings.l_SaveError_Text = "서버에서 항목을 저장하는 동안 연결 오류가 발생했습니다.";

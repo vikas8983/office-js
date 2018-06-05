@@ -1,4 +1,4 @@
-/* Version: 16.0.9314.1000 */
+/* Version: 16.0.9330.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -31,7 +31,7 @@ _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Neke su od navedenih adres
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Taj zahtjev premašuje ograničenje veličine od 1 MB. Izmijenite EWS zahtjev.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Privici se ne mogu dodati jer poruka već sadrži maksimalni broj privitaka";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "Sanitizacija HTML-a nije uspjela.";
-_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "The user doesn't have the permissions required to perform this operation.";
+_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "Korisnik nema dozvole za izvođenje te operacije.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Došlo je do interne pogreške oblika.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "Interna pogreška protokola: '{0}'.";
 _u.ExtensibilityStrings.l_InvalidActionType_Text = 'Vrijednost parametra "actionType" nije valjana. Prihvaćena je vrijednost "showTaskPane".'
@@ -57,6 +57,8 @@ _u.ExtensibilityStrings.l_PersistedNotificationArrayReadError_Text = "Pozivanje 
 _u.ExtensibilityStrings.l_PersistedNotificationArraySaveError_Text = "Pozivanje API-ja nije uspjelo jer obavijesti nije bilo moguće trajno pohraniti.";
 _u.ExtensibilityStrings.l_RecurrenceErrorMaxOccurrences_Text = "Ponavljajući niz prekoračuje ograničenje od 999 pojava.";
 _u.ExtensibilityStrings.l_RecurrenceErrorZeroOccurrences_Text = "U navedenom rasponu datuma nema pojava ponavljajućeg niza.";
+_u.ExtensibilityStrings.l_RecurrenceInvalidTimeZone_Text = "Navedena vremenska zona nije podržana.";
+_u.ExtensibilityStrings.l_RecurrenceUnsupportedAlternateCalendar_Text = "Korisnik je uzorak ponavljanja postavio pomoću drugog kalendara koji nije podržan.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Instance_SetAsync_Text = "Uzorak ponavljanja nije moguće postaviti za jednu pojavu u nizu.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Properties_Invalid_Text = "Uzorak ponavljanja nije valjan. Provjerite jesu li navedena svojstva ponavljanja u skladu s vrstom ponavljanja.";
 _u.ExtensibilityStrings.l_SaveError_Text = "Prilikom pokušaja spremanja stavke na poslužitelj pojavila se pogreška veze.";

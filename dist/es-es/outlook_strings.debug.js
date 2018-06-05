@@ -1,4 +1,4 @@
-/* Version: 16.0.9314.1000 */
+/* Version: 16.0.9330.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -31,7 +31,7 @@ _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Una o varias direcciones d
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "La solicitud supera el límite de tamaño de 1 MB. Modifique la solicitud de EWS.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "No se pueden agregar datos adjuntos porque el mensaje ya tiene el número máximo de datos adjuntos";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "La inmunización HTML ha fallado.";
-_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "The user doesn't have the permissions required to perform this operation.";
+_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "El usuario no tiene los permisos necesarios para realizar esta operación.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Hubo un error de formato interno.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = 'Error de protocolo interno: "{0}".';
 _u.ExtensibilityStrings.l_InvalidActionType_Text = 'El valor del parámetro "actionType" no es válido. El valor aceptado es "showTaskPane".'
@@ -57,6 +57,8 @@ _u.ExtensibilityStrings.l_PersistedNotificationArrayReadError_Text = "No se pudo
 _u.ExtensibilityStrings.l_PersistedNotificationArraySaveError_Text = "No se pudo realizar la llamada API debido a que las notificaciones no se han podido guardar.";
 _u.ExtensibilityStrings.l_RecurrenceErrorMaxOccurrences_Text = "La serie periódica supera el límite máximo de repeticiones (999).";
 _u.ExtensibilityStrings.l_RecurrenceErrorZeroOccurrences_Text = "La serie periódica no tiene ninguna repetición en el intervalo de fechas especificado.";
+_u.ExtensibilityStrings.l_RecurrenceInvalidTimeZone_Text = "No se admite la zona horaria especificada.";
+_u.ExtensibilityStrings.l_RecurrenceUnsupportedAlternateCalendar_Text = "El usuario estableció el patrón de periodicidad con un calendario alternativo que no es compatible.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Instance_SetAsync_Text = "No se puede establecer un patrón de periodicidad para una sola aparición de una serie.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Properties_Invalid_Text = "El patrón de periodicidad no es válido. Compruebe que las propiedades de frecuencia especificadas se alineen con el tipo de periodicidad.";
 _u.ExtensibilityStrings.l_SaveError_Text = "Se produjo un error conexión al intentar guardar el elemento en el servidor.";
