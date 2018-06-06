@@ -1,4 +1,4 @@
-/* Version: 16.0.9309.1000 */
+/* Version: 16.0.9330.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -31,7 +31,7 @@ _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Egy vagy több megadott e-
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "A kérés túllépi az 1 MB-os méretkorlátot. Módosítsa az EWS-kérést.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Nem vehetők fel mellékletek, mert az üzenethez már a maximális számú melléklet van csatolva";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "Nem sikerült a HTML-tisztítás.";
-_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "The user doesn't have the permissions required to perform this operation.";
+_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "A felhasználó nem rendelkezik a művelet elvégzéséhez szükséges engedélyekkel.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Belső formátumhiba történt.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "Belső protokollhiba: {0}.";
 _u.ExtensibilityStrings.l_InvalidActionType_Text = "Érvénytelen az actionType paraméter értéke. Csak a showTaskPane érték adható meg."
@@ -57,6 +57,8 @@ _u.ExtensibilityStrings.l_PersistedNotificationArrayReadError_Text = "Sikertelen
 _u.ExtensibilityStrings.l_PersistedNotificationArraySaveError_Text = "Sikertelen volt az API-hívás, mert nem sikerült megőrizni az értesítéseket.";
 _u.ExtensibilityStrings.l_RecurrenceErrorMaxOccurrences_Text = "A megengedettnél (999) több előfordulást próbált beállítani az ismétlődő sorozathoz.";
 _u.ExtensibilityStrings.l_RecurrenceErrorZeroOccurrences_Text = "Az ismétlődő sorozathoz nem tartoznak előfordulások a megadott dátumtartományban.";
+_u.ExtensibilityStrings.l_RecurrenceInvalidTimeZone_Text = "Nem ismertük fel a megadott időzónát.";
+_u.ExtensibilityStrings.l_RecurrenceUnsupportedAlternateCalendar_Text = "Az ismétlődési szabályt a felhasználó állította be egy nem támogatott másik naptárral.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Instance_SetAsync_Text = "Sorozat részét képező egyszeri alkalomhoz nem állítható be ismétlődési szabály.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Properties_Invalid_Text = "Érvénytelen az ismétlődési szabály. Kérjük, ellenőrizze, hogy a megadott ismétlődési tulajdonságok megfelelnek-e az ismétlődési típusnak.";
 _u.ExtensibilityStrings.l_SaveError_Text = "Csatlakozási hiba történt az elem kiszolgálóra mentése közben.";

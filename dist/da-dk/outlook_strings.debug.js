@@ -1,4 +1,4 @@
-/* Version: 16.0.9309.1000 */
+/* Version: 16.0.9330.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -31,7 +31,7 @@ _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "En eller flere af de angiv
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Forespørgslen overskrider grænsen på 1 MB. Rediger EWS-anmodningen.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Vedhæftede filer kan ikke tilføjes, fordi meddelelsen har allerede det maksimale antal vedhæftede filer";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "HTML-santizationen mislykkedes.";
-_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "The user doesn't have the permissions required to perform this operation.";
+_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "Brugeren har ikke tilladelser til at udføre denne handling.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Der opstod en intern formatfejl.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "Intern protokolfejl: '{0}'.";
 _u.ExtensibilityStrings.l_InvalidActionType_Text = 'Værdien af parameteren "actionType" er ugyldig. Den accepterede værdi er "showTaskPane".'
@@ -57,6 +57,8 @@ _u.ExtensibilityStrings.l_PersistedNotificationArrayReadError_Text = "Det API-ka
 _u.ExtensibilityStrings.l_PersistedNotificationArraySaveError_Text = "Det API-kald, du foretog, mislykkedes, fordi meddelelserne ikke kunne gøres permanente.";
 _u.ExtensibilityStrings.l_RecurrenceErrorMaxOccurrences_Text = "Den tilbagevendende serie overskrider det maksimale antal forekomster på 999.";
 _u.ExtensibilityStrings.l_RecurrenceErrorZeroOccurrences_Text = "Den tilbagevendende serie har ingen forekomster i det angivne datointerval.";
+_u.ExtensibilityStrings.l_RecurrenceInvalidTimeZone_Text = "Den angivne tidszone er ikke understøttet.";
+_u.ExtensibilityStrings.l_RecurrenceUnsupportedAlternateCalendar_Text = "Gentagelsesmønsteret er angivet af brugeren ved hjælp af en alternativ kalender, der ikke understøttes.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Instance_SetAsync_Text = "Der kan ikke angives et gentagelsesmønster for en enkelt forekomst i en serie.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Properties_Invalid_Text = "Gentagelsesmønsteret er ikke gyldigt. Kontrollér, at de angivne egenskaber for gentagelse justeres til gentagelsestypen.";
 _u.ExtensibilityStrings.l_SaveError_Text = "Der opstod forbindelsesfejl under forsøget på at gemme elementet på serveren.";

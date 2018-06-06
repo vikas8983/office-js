@@ -1,4 +1,4 @@
-/* Version: 16.0.9309.1000 */
+/* Version: 16.0.9330.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -31,7 +31,7 @@ _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "אחת או יותר מכ�
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "הבקשה חורגת ממגבלת הגודל, ‎1 MB. שנה את בקשת EWS שלך.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "אין אפשרות להוסיף קבצים מצורפים מאחר שההודעה כוללת כבר את מספר הקבצים המצורפים המרבי";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "יצירת HTML עם תגים בטוחים נכשלה.";
-_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "The user doesn't have the permissions required to perform this operation.";
+_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "המשתמש לא קיבל את ההרשאות הדרושות לביצוע פעולה זו.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "אירעה שגיאת עיצוב פנימית.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "שגיאת פרוטוקול פנימית: '{0}'.";
 _u.ExtensibilityStrings.l_InvalidActionType_Text = "הערך של הפרמטר 'actionType' אינו חוקי. הערך המקובל הוא 'showTaskPane'."
@@ -57,6 +57,8 @@ _u.ExtensibilityStrings.l_PersistedNotificationArrayReadError_Text = "קריאת
 _u.ExtensibilityStrings.l_PersistedNotificationArraySaveError_Text = "קריאת ה- API שביצעת נכשלה מאחר שלא היתה אפשרות להפוך את ההודעות למתמידות.";
 _u.ExtensibilityStrings.l_RecurrenceErrorMaxOccurrences_Text = "הסידרה החוזרת חורגת מהמגבלה המרבית, 999 מופעים.";
 _u.ExtensibilityStrings.l_RecurrenceErrorZeroOccurrences_Text = "לסידרה החוזרת אין מופעים בטווח התאריכים שצוין.";
+_u.ExtensibilityStrings.l_RecurrenceInvalidTimeZone_Text = "אזור הזמן שצוין אינו נתמך.";
+_u.ExtensibilityStrings.l_RecurrenceUnsupportedAlternateCalendar_Text = "תבנית המופע החוזר הוגדרה על-ידי המשתמש באמצעות לוח שנה חלופי שאינו נתמך.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Instance_SetAsync_Text = "אין אפשרות להגדיר תבנית מופע חוזר עבור מופע בודד בסידרה.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Properties_Invalid_Text = "תבנית המופע החוזר אינה חוקית. בדוק שמאפייני המופע החוזר שצוינו מתאימים לסוג המופע החוזר.";
 _u.ExtensibilityStrings.l_SaveError_Text = "אירעה שגיאת חיבור בעת ניסיון לשמור את הפריט בשרת.";

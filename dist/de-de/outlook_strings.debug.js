@@ -1,4 +1,4 @@
-/* Version: 16.0.9309.1000 */
+/* Version: 16.0.9330.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -31,7 +31,7 @@ _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Mindestens eine der angege
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Die Anforderung überschreitet die Größenbeschränkung von 1 MB. Ändern Sie Ihre EWS-Anforderung.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Anlagen können nicht hinzugefügt werden, da die Nachricht bereits die maximal zulässige Anzahl an Anlagen aufweist.";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "Fehler bei der HTML-Bereinigung";
-_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "The user doesn't have the permissions required to perform this operation.";
+_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "Der Benutzer verfügt nicht über die erforderlichen Berechtigungen, um diesen Vorgang auszuführen.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Interner Formatfehler";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "Interner Protokollfehler: '{0}'.";
 _u.ExtensibilityStrings.l_InvalidActionType_Text = 'Der Wert des Parameters "actionType" ist ungültig. Der akzeptierte Wert ist "showTaskPane".'
@@ -57,6 +57,8 @@ _u.ExtensibilityStrings.l_PersistedNotificationArrayReadError_Text = "Fehler Ihr
 _u.ExtensibilityStrings.l_PersistedNotificationArraySaveError_Text = "Fehler Ihres API-Aufrufs, weil Benachrichtigungen nicht beibehalten werden konnten.";
 _u.ExtensibilityStrings.l_RecurrenceErrorMaxOccurrences_Text = "Die Terminserie überschreitet das maximale Limit von 999 Serienelementen.";
 _u.ExtensibilityStrings.l_RecurrenceErrorZeroOccurrences_Text = "Die Terminserie hat im angegebenen Datumsbereich keine Serienelemente.";
+_u.ExtensibilityStrings.l_RecurrenceInvalidTimeZone_Text = "Die angegebene Zeitzone wird nicht unterstützt.";
+_u.ExtensibilityStrings.l_RecurrenceUnsupportedAlternateCalendar_Text = "Das Serienmuster wurde vom Benutzer unter Verwendung eines alternativen Kalenders festgelegt, der nicht unterstützt wird.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Instance_SetAsync_Text = "Ein Serienmuster kann nicht für ein einzelnes Element in einer Serie festgelegt werden.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Properties_Invalid_Text = "Das Serienmuster ist ungültig. Überprüfen Sie, ob die angegebenen Serieneigenschaften mit dem Serientyp in Einklang stehen.";
 _u.ExtensibilityStrings.l_SaveError_Text = "Verbindungsfehler beim Speichern des Elements auf dem Server.";
