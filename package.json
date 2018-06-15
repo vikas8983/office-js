@@ -24,5 +24,6 @@
         "url": "https://stackoverflow.com/questions/tagged/office-js"
     },
     "homepage": "https://dev.office.com/docs/add-ins/overview/office-add-ins",
-    "license": "LICENSE"
+    "license": "LICENSE",
+    "types": "./dist/office.d.ts"
 }
