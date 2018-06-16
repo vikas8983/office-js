@@ -1,4 +1,4 @@
-/* Version: 16.0.9309.1000 */
+/* Version: 16.0.10309.10000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -33,8 +33,8 @@ Strings.OfficeOM.L_CoercionTypeNotSupported = "Does dim modd delio â'r math o o
 Strings.OfficeOM.L_ColIndexOutOfRange = "Mae gwerth mynegau'r golofn y tu allan i'r ystod sy'n cael ei chaniatáu. Defnyddiwch werth (0 neu fwy) sy'n llai na nifer y colofnau.";
 Strings.OfficeOM.L_ConnectionFailureWithDetails = "Methodd y cais gyda’r cod statws {0}, y cod gwall {1} a’r neges gwall ganlynol: {2}";
 Strings.OfficeOM.L_ConnectionFailureWithStatus = "Methodd y cais gyda’r cod statws {0}.";
-Strings.OfficeOM.L_CustomFunctionDefinitionMissing = "Rhaid i briodwedd sydd â'r enw hwn ac sy’n cynrychioli diffiniad y ffwythiant fodoli ar Excel.CustomFunctions.";
-Strings.OfficeOM.L_CustomFunctionImplementationMissing = "Rhaid i’r briodwedd gyda'r enw hwn ar Excel.CustomFunctions sy’n cynrychioli diffiniad y ffwythiant gynnwys priodwedd ‘galw’ sy’n gweithredu’r ffwythiant.";
+Strings.OfficeOM.L_CustomFunctionDefinitionMissing = "Rhaid i briodwedd sydd â'r enw hwn ac sy’n cynrychioli diffiniad y ffwythiant fodoli ar Excel.Script.CustomFunctions.";
+Strings.OfficeOM.L_CustomFunctionImplementationMissing = "Rhaid i’r briodwedd gyda'r enw hwn ar Excel.Script.CustomFunctions sy’n cynrychioli diffiniad y ffwythiant gynnwys priodwedd ‘galw’ sy’n gweithredu’r ffwythiant.";
 Strings.OfficeOM.L_CustomFunctionNameCannotSplit = "Rhaid i enw'r swyddogaeth gynnwys bwlch enw heb fod yn wag ac enw byr heb fod yn wag.";
 Strings.OfficeOM.L_CustomFunctionNameContainsBadChars = "Gall enw'r swyddogaeth gynnwys llythrennau, digidau, tanlinellau, ac atalnodau llawn yn unig.";
 Strings.OfficeOM.L_CustomXmlError = "Gwall XML Personol.";

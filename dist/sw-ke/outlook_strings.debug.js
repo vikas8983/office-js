@@ -1,4 +1,4 @@
-/* Version: 16.0.9309.1000 */
+/* Version: 16.0.10309.10000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -31,9 +31,11 @@ _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Moja au zaidi ya anwani za
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Ombi linazidizisha kipimo cha ukubwa wa MB 1. Tafadhali rekebisha ombi lako la EWS.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Viambatisho haviwezi kuongezwa kwa sababu ujumbe tayari una idadi ya juu zaidi za viambatisho";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "Usafishaji wa HTML haujafaulu.";
-_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "The user doesn't have the permissions required to perform this operation.";
+_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "Mtumiaji hana vibali hitajika ili kutenda uendeshaji huu.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "Kulikuwa na hitilafu ya umbizo ya ndani.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "Hitilafu ya itifaki ya ndani: '{0}'.";
+_u.ExtensibilityStrings.l_Internal_Server_Error_Text = "Seva ya Exchange imerudisha kosa. Tafadhali angalia katika kipengee cha uchunguzi kwa maelezo zaidi.";
+_u.ExtensibilityStrings.l_Internet_Not_Connected_Error_Text = "Mtumiaji hajaunganishwa tena kwenye mtandao. Tafadhali angalia muunganisho wako wa mtandao na ujaribu tena.";
 _u.ExtensibilityStrings.l_InvalidActionType_Text = "Thamani ya parameta 'actionType' si sahihi. Thamani inayokubaliwa ni \"showTaskPane\"."
 _u.ExtensibilityStrings.l_InvalidAttachmentId_Text = "ID ya kitambulisho ni batili.";
 _u.ExtensibilityStrings.l_InvalidAttachmentPath_Text = "Kijia cha kiambatisho kilikuwa batili.";
@@ -51,12 +53,15 @@ _u.ExtensibilityStrings.l_NullOrEmptyParameterError_Text = "Parameta '{0}' ni ya
 _u.ExtensibilityStrings.l_NumberOfNotificationsExceeded_Text = "Taarifa haikuweza kuongezwa kwa sababu kikomo cha taarifa kimefikishwa.";
 _u.ExtensibilityStrings.l_NumberOfRecipientsExceeded_Text = "Idadi ya jumla ya wapokeaji katika uga haiwezi kuzidi {0}.";
 _u.ExtensibilityStrings.l_OffsetNotfound_Text = "Usawazishaji wa muhuri huu wa muda haukuweza kupatikana.";
+_u.ExtensibilityStrings.l_Olk_Http_Error_Text = "Ombi halijafaulu. Tafadhali angalia katika kipengee cha uchunguzi kwa msimbo wa kosa la HTTP.";
 _u.ExtensibilityStrings.l_ParameterValueTooLongError_Text = "Thamani ya parameta '{0}' ni ndefu sana. Idadi ya juu zaidi ya vibambo ni '{1}'.";
 _u.ExtensibilityStrings.l_ParametersNotAsExpected_Text = "Paramita zilizopo hazilingani na umbizo linalotarajiwa.";
 _u.ExtensibilityStrings.l_PersistedNotificationArrayReadError_Text = "Simu ya API uliyopiga haikufaulu kwa sababu taarifa za kurudiwa hazikuweza kurejeshwa.";
 _u.ExtensibilityStrings.l_PersistedNotificationArraySaveError_Text = "Simu ya API uliyopiga haikufaulu kwa sababu taarifa za mara kwa mara hazikuweza kurudiwa.";
 _u.ExtensibilityStrings.l_RecurrenceErrorMaxOccurrences_Text = "Mfululizo wa kujirudia unazidi kipimo cha juu zaidi vya matukio 999.";
 _u.ExtensibilityStrings.l_RecurrenceErrorZeroOccurrences_Text = "Mfululizo wa kujirudia hauna matukio katika masafa ya tarehe iliyobainishwa.";
+_u.ExtensibilityStrings.l_RecurrenceInvalidTimeZone_Text = "Majira ya saa uliyobainishwa hayaauniwi.";
+_u.ExtensibilityStrings.l_RecurrenceUnsupportedAlternateCalendar_Text = "Ruwaza ya kurudia iliwekwa na mtumiaji kwa kutumia kalenda mbadala ambayo haiauniwi.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Instance_SetAsync_Text = "Mtindo wa kurudia hauwezi kuwekwa kwa tukio moja katika mfululizo.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Properties_Invalid_Text = "Ruwaza ya kurudiarudia si sahihi. Tafadhali hakikisha kuwa sifa za kurudiarudia zilizobainishwa zinalingana na aina ya kurudiarudia.";
 _u.ExtensibilityStrings.l_SaveError_Text = "Hitilafu ya muunganisho imetokea wakati wa kujaribu kuhifadhi kipengee kwenye seva.";

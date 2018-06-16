@@ -1,4 +1,4 @@
-/* Version: 16.0.9309.1000 */
+/* Version: 16.0.10309.10000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -33,8 +33,8 @@ Strings.OfficeOM.L_CoercionTypeNotSupported = "ನಿರ್ದಿಷ್ಟಪಡ
 Strings.OfficeOM.L_ColIndexOutOfRange = "ಕಾಲಂ ಸೂಚ್ಯಂಕ ಮೌಲ್ಯವು ಅನುಮತಿಸಿದ ವ್ಯಾಪ್ತಿಯ ಹೊರಗಿರುತ್ತದೆ. ಕಾಲಂಗಳ ಸಂಖ್ಯೆಗಿಂತ ಕಡಿಮೆಯಿರುವ ಮೌಲ್ಯವೊಂದನ್ನು (0 ಅಥವಾ ಹೆಚ್ಚು) ಬಳಸಿ.";
 Strings.OfficeOM.L_ConnectionFailureWithDetails = "{0} ಸ್ಥಿತಿ ಕೋಡ್, {1} ದೋಷ ಕೋಡ್ ಮತ್ತು ಮುಂದಿನ ದೋಷ ಸಂದೇಶದ ಜೊತೆಗೆ ವಿನಂತಿಯು ವಿಫಲವಾಗಿದೆ: {2}";
 Strings.OfficeOM.L_ConnectionFailureWithStatus = "{0} ಸ್ಥಿತಿ ಕೋಡ್ ಜೊತೆಗೆ ವಿನಂತಿಯು ವಿಫಲವಾಗಿದೆ.";
-Strings.OfficeOM.L_CustomFunctionDefinitionMissing = "ಕಾರ್ಯದ ವಿವರಣೆಯನ್ನು ಪ್ರತಿನಿಧಿಸುವ ಈ ಹೆಸರಿನ ಗುಣಲಕ್ಷಣವು Excel.CustomFunctions ನಲ್ಲಿ ಅಸ್ತಿತ್ವದಲ್ಲಿರಬೇಕು.";
-Strings.OfficeOM.L_CustomFunctionImplementationMissing = "ಕಾರ್ಯದ ವಿವರಣೆಯನ್ನು ಪ್ರತಿನಿಧಿಸುವ Excel.CustomFunctions ನಲ್ಲಿರುವ ಈ ಹೆಸರಿನ ಗುಣಲಕ್ಷಣವು ಕಾರ್ಯವನ್ನು ಜಾರಿಗೊಳಿಸುವ 'ಕರೆ' ಗುಣಲಕ್ಷಣವನ್ನು ಒಳಗೊಂಡಿರಬೇಕು.";
+Strings.OfficeOM.L_CustomFunctionDefinitionMissing = "ಕಾರ್ಯದ ವಿವರಣೆಯನ್ನು ಪ್ರತಿನಿಧಿಸುವ ಈ ಹೆಸರಿನ ಗುಣಲಕ್ಷಣವು Excel.Script.CustomFunctions ನಲ್ಲಿ ಅಸ್ತಿತ್ವದಲ್ಲಿರಬೇಕು.";
+Strings.OfficeOM.L_CustomFunctionImplementationMissing = "ಕಾರ್ಯದ ವಿವರಣೆಯನ್ನು ಪ್ರತಿನಿಧಿಸುವ Excel.Script.CustomFunctions ನಲ್ಲಿರುವ ಈ ಹೆಸರಿನ ಗುಣಲಕ್ಷಣವು ಕಾರ್ಯವನ್ನು ಜಾರಿಗೊಳಿಸುವ 'ಕರೆ' ಗುಣಲಕ್ಷಣವನ್ನು ಒಳಗೊಂಡಿರಬೇಕು.";
 Strings.OfficeOM.L_CustomFunctionNameCannotSplit = "ಕಾರ್ಯದ ಹೆಸರು ಖಾಲಿಯಿಲ್ಲದ ಹೆಸರಿನ ಸ್ಥಳವನ್ನು ಮತ್ತು ಖಾಲಿಯಿಲ್ಲದ ಸಂಕ್ಷಿಪ್ತ ಹೆಸರನ್ನು ಒಳಗೊಂಡಿರಬೇಕು.";
 Strings.OfficeOM.L_CustomFunctionNameContainsBadChars = "ಕಾರ್ಯದ ಹೆಸರು ಕೇವಲ ಅಕ್ಷರಗಳು, ಅಂಕಿಗಳು, ಅಡಿಗೆರೆಗಳು ಮತ್ತು ಅಲ್ಪವಿರಾಮಗಳನ್ನು ಮಾತ್ರ ಒಳಗೊಂಡಿರಬಹುದು.";
 Strings.OfficeOM.L_CustomXmlError = "ಕಸ್ಟಮ್ XML ದೋಷ.";

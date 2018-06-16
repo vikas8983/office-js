@@ -1,4 +1,4 @@
-/* Version: 16.0.9309.1000 */
+/* Version: 16.0.10309.10000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -33,8 +33,8 @@ Strings.OfficeOM.L_CoercionTypeNotSupported = "குறிப்பிடப்
 Strings.OfficeOM.L_ColIndexOutOfRange = "நெடுவரிசையின் இண்டெக்ஸ் மதிப்பு, அனுமதிக்கப்பட்ட வரம்புக்கு வெளியே உள்ளது. நெடுவரிசைகளின் எண்ணிக்கையை விடக் குறைவான மதிப்பை (0 அல்லது அதற்கு மேற்பட்டது) பயன்படுத்தவும்.";
 Strings.OfficeOM.L_ConnectionFailureWithDetails = "{0} நிலைக் குறியீடு, பிழைக் குறியீடு {1} மற்றும் பின்வரும் பிழைச் செய்தியுடன் கோரிக்கைத் தோல்வியடைந்தது: {2}";
 Strings.OfficeOM.L_ConnectionFailureWithStatus = "{0} நிலைக் குறியீட்டுடன் கோரிக்கைத் தோல்வியடைந்தது.";
-Strings.OfficeOM.L_CustomFunctionDefinitionMissing = "செயல்பாட்டின் வரையறையை விவரிக்கும் இந்தப் பெயரில் உள்ள சொத்து Excel.CustomFunctions-இல் இருக்க வேண்டும்.";
-Strings.OfficeOM.L_CustomFunctionImplementationMissing = "Excel.CustomFunctions-இல் இந்தப் பெயரில் செயல்பாட்டின் வரையறையை விவரிக்கும் சொத்தானது, செயல்பாட்டை செயல்படுத்தும் 'அழைப்பு' சொத்தைக் கொண்டிருக்க வேண்டும்.";
+Strings.OfficeOM.L_CustomFunctionDefinitionMissing = "செயல்பாட்டின் வரையறையை விவரிக்கும் இந்தப் பெயரில் உள்ள பண்பு Excel.Script.CustomFunctions-இல் இருக்க வேண்டும்.";
+Strings.OfficeOM.L_CustomFunctionImplementationMissing = "Excel.Script.CustomFunctions-இல் இந்தப் பெயரில் செயல்பாட்டின் வரையறையை விவரிக்கும் பண்பானது, செயல்பாட்டைச் செயல்படுத்தும் 'அழைப்பு' பண்பைக் கொண்டிருக்க வேண்டும்.";
 Strings.OfficeOM.L_CustomFunctionNameCannotSplit = "செயல்பாட்டுப் பெயரில் காலியாக இல்லாத பெயர்கள் மற்றும் காலியாக இல்லாத குறுகிய பெயர் இருக்க வேண்டும்.";
 Strings.OfficeOM.L_CustomFunctionNameContainsBadChars = "செயல்பாட்டுப் பெயரில் எழுத்துகள், எண்கள், அடிக்கோடுகள் மற்றும் முற்றுப் புள்ளிகள் மட்டுமே இருக்கலாம்.";
 Strings.OfficeOM.L_CustomXmlError = "தனிப்பயன் XML பிழை.";
