@@ -1,9 +1,4 @@
-version: 1.1.9-custom-functions-preview.3
 tag: custom-functions-preview
-githubReleaseUrl: https://github.com/OfficeDev/office-js/releases/tag/v1.1.9-custom-functions-preview.3
-githubViewUrl: https://github.com/OfficeDev/office-js/tree/v1.1.9-custom-functions-preview.3
-deployedAt: 2018-06-16 12:37 am UTC  (2018-06-15 5:37 pm Pacific Time)
-
 history:
     adhocBranchName: >-
         __adhoc--custom-functions-preview--beta--local-enlistment--2018-06-15--5.23pm
@@ -12,11 +7,15 @@ history:
     fullCommitHistory:
         - 
             sha: >-
+                https://github.com/OfficeDev/office-js/commits/749c97cd0c2664070d0c188d7b672119ee2319f7
+            message: >-
+                Update office.js loader with "window.CustomFunctionMappings"
+        - 
+            sha: >-
                 https://github.com/OfficeDev/office-js/commits/eab4a1e5abce2039158dc97478fe847e22acceb5
             message: >-
                 JS dist files --
-                __adhoc--custom-functions-preview--beta--local-enlistment--2018-06-15--5.23pm
-                (excluding "office.js" loader)
+                __adhoc--custom-functions-preview--beta--local-enlistment--2018-06-15--5.23pm (excluding "office.js" loader)
         - 
             sha: >-
                 https://github.com/OfficeDev/office-js/commits/52f944f89dd5404d15ceea32b55fab18bae826b7
@@ -39,14 +38,3 @@ history:
             message: >-
                 [BEGIN PUBLISH UPDATES] --
                 __adhoc--custom-functions-preview--beta--local-enlistment--2018-06-15--5.23pm
-
-
-unpkgUrls: |-
-    this specific build number:
-        https://unpkg.com/@microsoft/office-js@1.1.9-custom-functions-preview.3/dist/office.js
-        https://unpkg.com/@microsoft/office-js@1.1.9-custom-functions-preview.3/dist/office.d.ts
-    builds using this same tag ("custom-functions-preview"):
-        https://unpkg.com/@microsoft/office-js@custom-functions-preview/dist/office.js
-        https://unpkg.com/@microsoft/office-js@custom-functions-preview/dist/office.d.ts
-
-buildLog: https://travis-ci.org/OfficeDev/office-js/builds/392954494
