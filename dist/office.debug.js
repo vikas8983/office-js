@@ -1564,6 +1564,9 @@ OSF._OfficeAppFactory = (function OSF__OfficeAppFactory() {
             window.history.replaceState = null;
             window.history.pushState = null;
         }
+        if (_hostInfo.hostType == "excel") {
+            window.CustomFunctionMappings = {};
+        }
     };
     initialize();
     return {
