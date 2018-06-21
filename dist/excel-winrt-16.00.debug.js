@@ -1,7 +1,7 @@
 /* Excel WinRT-specific API library */
-/* Version: 16.0.10309.30000 */
+/* Version: 16.0.10306.30000 */
 
-/* Office.js Version: 16.0.10311.10000 */ 
+/* Office.js Version: 16.0.10212.10000 */ 
 /*
 	Copyright (c) Microsoft Corporation.  All rights reserved.
 */
@@ -1099,8 +1099,7 @@ OSF.AgaveHostAction={
 	"MouseEnter": 19,
 	"MouseLeave": 20,
 	"UpdateTargetUrl": 21,
-	"InstallCustomFunctions": 22,
-	"SendTelemetryEvent": 23
+	"InstallCustomFunctions": 22
 };
 OSF.SharedConstants={
 	"NotificationConversationIdSuffix": '_ntf'
@@ -1221,7 +1220,6 @@ Microsoft.Office.WebExtension.Parameters={
 	ForceAddAccount: "forceAddAccount",
 	AuthChallenge: "authChallenge",
 	Reserved: "reserved",
-	Tcid: "tcid",
 	Xml: "xml",
 	Namespace: "namespace",
 	Prefix: "prefix",
@@ -1352,9 +1350,7 @@ OSF.DDA.MethodDispId={
 	dispidSetDataNodeTextMethod: 143,
 	dispidMessageParentMethod: 144,
 	dispidSendMessageMethod: 145,
-	dispidExecuteFeature: 146,
-	dispidQueryFeature: 147,
-	dispidMethodMax: 147
+	dispidMethodMax: 145
 };
 OSF.DDA.EventDispId={
 	dispidEventMin: 0,
@@ -3033,8 +3029,6 @@ OSF.DDA.DispIdHost.Facade=function OSF_DDA_DispIdHost_Facade(getDelegateMethods,
 		"OpenBrowserWindow": did.dispidOpenBrowserWindow,
 		"CreateDocumentAsync": did.dispidCreateDocumentMethod,
 		"InsertFormAsync": did.dispidInsertFormMethod,
-		"ExecuteFeature": did.dispidExecuteFeature,
-		"QueryFeature": did.dispidQueryFeature,
 		"AddDataPartAsync": did.dispidAddDataPartMethod,
 		"GetDataPartByIdAsync": did.dispidGetDataPartByIdMethod,
 		"GetDataPartsByNameSpaceAsync": did.dispidGetDataPartsByNamespaceMethod,
@@ -3898,9 +3892,6 @@ OSF.DDA.SafeArray.Delegate._onException=function OSF_DDA_SafeArray_Delegate$OnEx
 			case -2147209089:
 				status=OSF.DDA.ErrorCodeManager.errorCodes.ooeInvalidParam;
 				break;
-			case -2147208704:
-				status=OSF.DDA.ErrorCodeManager.errorCodes.ooeTooManyIncompleteRequests;
-				break;
 			case -2146827850:
 			default:
 				status=OSF.DDA.ErrorCodeManager.errorCodes.ooeInternalError;
@@ -4237,12 +4228,6 @@ OSF.InitializationHelper.prototype.prepareApiSurface=function OSF_Initialization
 	}
 	if (OSF.DDA.OpenBrowser) {
 		OSF.DDA.DispIdHost.addAsyncMethods(appContext.ui, [OSF.DDA.AsyncMethodNames.OpenBrowserWindow]);
-	}
-	if (OSF.DDA.ExecuteFeature) {
-		OSF.DDA.DispIdHost.addAsyncMethods(appContext.ui, [OSF.DDA.AsyncMethodNames.ExecuteFeature]);
-	}
-	if (OSF.DDA.QueryFeature) {
-		OSF.DDA.DispIdHost.addAsyncMethods(appContext.ui, [OSF.DDA.AsyncMethodNames.QueryFeature]);
 	}
 	if (OSF.DDA.Auth) {
 		appContext.auth=new OSF.DDA.Auth();
@@ -5476,7 +5461,7 @@ var OSFAppTelemetry;
 		}
 		appInfo.message=context.get_hostCustomMessage();
 		appInfo.officeJSVersion=OSF.ConstantNames.FileVersion;
-		appInfo.hostJSVersion="16.0.10311.10000";
+		appInfo.hostJSVersion="16.0.10212.10000";
 		if (context._wacHostEnvironment) {
 			appInfo.wacHostEnvironment=context._wacHostEnvironment;
 		}
@@ -14371,6 +14356,7 @@ var OfficeCore;
 		ErrorCodes["apiNotAvailable"]="ApiNotAvailable";
 		ErrorCodes["clientError"]="ClientError";
 		ErrorCodes["generalException"]="GeneralException";
+		ErrorCodes["interactiveFlowAborted"]="InteractiveFlowAborted";
 		ErrorCodes["invalidArgument"]="InvalidArgument";
 		ErrorCodes["invalidGrant"]="InvalidGrant";
 		ErrorCodes["invalidResourceUrl"]="InvalidResourceUrl";
@@ -14378,7 +14364,6 @@ var OfficeCore;
 		ErrorCodes["serverError"]="ServerError";
 		ErrorCodes["unsupportedUserIdentity"]="UnsupportedUserIdentity";
 		ErrorCodes["userNotSignedIn"]="UserNotSignedIn";
-		ErrorCodes["interactiveFlowAborted"]="InteractiveFlowAborted";
 	})(ErrorCodes=OfficeCore.ErrorCodes || (OfficeCore.ErrorCodes={}));
 })(OfficeCore || (OfficeCore={}));
 
@@ -14942,7 +14927,18 @@ var Excel;
 		});
 		Object.defineProperty(Application.prototype, "_navigationPropertyNames", {
 			get: function () {
-				return ["iterativeCalculation"];
+				return ["iterativeCalculation", "customFunctions"];
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(Application.prototype, "customFunctions", {
+			get: function () {
+				_throwIfApiNotSupported("Application.customFunctions", "CustomFunctions", "1.2", _hostName);
+				if (!this._Cu) {
+					this._Cu=_createPropertyObject(Excel.CustomFunctionsService, this, "CustomFunctions", false, 4);
+				}
+				return this._Cu;
 			},
 			enumerable: true,
 			configurable: true
@@ -14971,7 +14967,9 @@ var Excel;
 			configurable: true
 		});
 		Application.prototype.set=function (properties, options) {
-			this._recursivelySet(properties, options, ["calculationMode"], ["iterativeCalculation"], []);
+			this._recursivelySet(properties, options, ["calculationMode"], ["iterativeCalculation"], [
+				"customFunctions"
+			]);
 		};
 		Application.prototype.update=function (properties) {
 			this._recursivelyUpdate(properties);
@@ -15007,7 +15005,7 @@ var Excel;
 			if (!_isUndefined(obj["CalculationMode"])) {
 				this._C=obj["CalculationMode"];
 			}
-			_handleNavigationPropertyResults(this, obj, ["iterativeCalculation", "IterativeCalculation"]);
+			_handleNavigationPropertyResults(this, obj, ["customFunctions", "CustomFunctions", "iterativeCalculation", "IterativeCalculation"]);
 		};
 		Application.prototype.load=function (option) {
 			return _load(this, option);
@@ -15142,6 +15140,86 @@ var Excel;
 		return IterativeCalculation;
 	}(OfficeExtension.ClientObject));
 	Excel.IterativeCalculation=IterativeCalculation;
+	var _typeCustomFunctionsService="CustomFunctionsService";
+	var CustomFunctionsService=(function (_super) {
+		__extends(CustomFunctionsService, _super);
+		function CustomFunctionsService() {
+			return _super !==null && _super.apply(this, arguments) || this;
+		}
+		Object.defineProperty(CustomFunctionsService.prototype, "_className", {
+			get: function () {
+				return "CustomFunctionsService";
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(CustomFunctionsService.prototype, "_scalarPropertyNames", {
+			get: function () {
+				return ["isEnabled", "isStreamingEnabled", "isNativeExecution"];
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(CustomFunctionsService.prototype, "isEnabled", {
+			get: function () {
+				_throwIfNotLoaded("isEnabled", this._I, _typeCustomFunctionsService, this._isNull);
+				return this._I;
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(CustomFunctionsService.prototype, "isNativeExecution", {
+			get: function () {
+				_throwIfNotLoaded("isNativeExecution", this._Is, _typeCustomFunctionsService, this._isNull);
+				return this._Is;
+			},
+			enumerable: true,
+			configurable: true
+		});
+		Object.defineProperty(CustomFunctionsService.prototype, "isStreamingEnabled", {
+			get: function () {
+				_throwIfNotLoaded("isStreamingEnabled", this._IsS, _typeCustomFunctionsService, this._isNull);
+				return this._IsS;
+			},
+			enumerable: true,
+			configurable: true
+		});
+		CustomFunctionsService.prototype.register=function (metadata, javascript) {
+			_invokeMethod(this, "Register", 0, [metadata, javascript], 0, 0);
+		};
+		CustomFunctionsService.prototype._handleResult=function (value) {
+			_super.prototype._handleResult.call(this, value);
+			if (_isNullOrUndefined(value))
+				return;
+			var obj=value;
+			_fixObjectPathIfNecessary(this, obj);
+			if (!_isUndefined(obj["IsEnabled"])) {
+				this._I=obj["IsEnabled"];
+			}
+			if (!_isUndefined(obj["IsNativeExecution"])) {
+				this._Is=obj["IsNativeExecution"];
+			}
+			if (!_isUndefined(obj["IsStreamingEnabled"])) {
+				this._IsS=obj["IsStreamingEnabled"];
+			}
+		};
+		CustomFunctionsService.prototype.load=function (option) {
+			return _load(this, option);
+		};
+		CustomFunctionsService.prototype._handleRetrieveResult=function (value, result) {
+			_super.prototype._handleRetrieveResult.call(this, value, result);
+			_processRetrieveResult(this, value, result);
+		};
+		CustomFunctionsService.prototype.toJSON=function () {
+			return _toJson(this, {
+				"isEnabled": this._I,
+				"isNativeExecution": this._Is,
+				"isStreamingEnabled": this._IsS,
+			}, {});
+		};
+		return CustomFunctionsService;
+	}(OfficeExtension.ClientObject));
+	Excel.CustomFunctionsService=CustomFunctionsService;
 	var _typeWorkbook="Workbook";
 	var Workbook=(function (_super) {
 		__extends(Workbook, _super);
