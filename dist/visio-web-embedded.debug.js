@@ -8634,9 +8634,6 @@ var Visio;
 	Visio.run=run;
 })(Visio || (Visio={}));
 
-OfficeExtension.Utility._doApiNotSupportedCheck=true;
-
-
 Object.defineProperty(OfficeExtension.SessionBase, "_overrideSession", {
     get: function () {
         if (this._overrideSessionInternal) {
