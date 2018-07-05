@@ -1,4 +1,9 @@
+version: 1.1.9-lumen.2
 tag: lumen
+githubReleaseUrl: https://github.com/OfficeDev/office-js/releases/tag/v1.1.9-lumen.2
+githubViewUrl: https://github.com/OfficeDev/office-js/tree/v1.1.9-lumen.2
+deployedAt: 2018-07-05 11:43 pm UTC  (2018-07-05 4:43 pm Pacific Time)
+
 history:
     adhocBranchName: __adhoc--lumen--current--local--2018-07-05--4.29pm
     commitMessage: __adhoc--lumen--current--local--2018-07-05--4.29pm
@@ -31,3 +36,14 @@ history:
             message: >-
                 [BEGIN PUBLISH UPDATES] --
                 __adhoc--lumen--current--local--2018-07-05--4.29pm
+
+
+unpkgUrls: |-
+    this specific build number:
+        https://unpkg.com/@microsoft/office-js@1.1.9-lumen.2/dist/office.js
+        https://unpkg.com/@microsoft/office-js@1.1.9-lumen.2/dist/office.d.ts
+    builds using this same tag ("lumen"):
+        https://unpkg.com/@microsoft/office-js@lumen/dist/office.js
+        https://unpkg.com/@microsoft/office-js@lumen/dist/office.d.ts
+
+buildLog: https://travis-ci.org/OfficeDev/office-js/builds/400665195
