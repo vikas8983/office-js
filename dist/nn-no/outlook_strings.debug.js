@@ -1,4 +1,4 @@
-/* Version: 16.0.10319.10000 */
+/* Version: 16.0.10702.10000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -58,7 +58,7 @@ _u.ExtensibilityStrings.l_ParameterValueTooLongError_Text = "Verdien for {0}-par
 _u.ExtensibilityStrings.l_ParametersNotAsExpected_Text = "Dei oppgitte parametrane samsvarer ikkje med det forventa formatet.";
 _u.ExtensibilityStrings.l_PersistedNotificationArrayReadError_Text = "API-kallet du utførte, mislukkast fordi dei faste meldingane ikkje kan hentast.";
 _u.ExtensibilityStrings.l_PersistedNotificationArraySaveError_Text = "API-kallet du utførte, mislukkast fordi varslingane ikkje kan behaldast.";
-_u.ExtensibilityStrings.l_RecurrenceErrorMaxOccurrences_Text = "Den regelmessige serien overstig den maksimale grensa på 999 hendingar.";
+_u.ExtensibilityStrings.l_RecurrenceErrorMaxOccurrences_Text = "Den regelmessige serien overstig grensa på maksimalt 999 hendingar.";
 _u.ExtensibilityStrings.l_RecurrenceErrorZeroOccurrences_Text = "Den regelmessige serien inneheld ingen hendingar i den angitte tidsperioden.";
 _u.ExtensibilityStrings.l_RecurrenceInvalidTimeZone_Text = "Dei spesifiserte tidssonene blir ikkje støtta.";
 _u.ExtensibilityStrings.l_RecurrenceUnsupportedAlternateCalendar_Text = "Mønsteret for gjentakingar blei angitt av brukaren ved hjelp av ein alternativ kalender som ikkje blir støtta.";

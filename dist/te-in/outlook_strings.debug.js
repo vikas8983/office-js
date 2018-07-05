@@ -1,4 +1,4 @@
-/* Version: 16.0.10319.10000 */
+/* Version: 16.0.10702.10000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -35,7 +35,7 @@ _u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "ఈ చర్య
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "అంతర్గత ఆకృతి దోషం ఏర్పడింది.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "అంతర్గత ప్రోటోకాల్ దోషం: '{0}'.";
 _u.ExtensibilityStrings.l_Internal_Server_Error_Text = "Exchange సర్వర్ దోషాన్ని అందించింది. దయచేసి మరింత సమాచారం కోసం సమస్యల విశ్లేషణ ఆబ్జెక్ట్‌ని చూడండి.";
-_u.ExtensibilityStrings.l_Internet_Not_Connected_Error_Text = "వినియోగదారు నెట్‌వర్క్‌కి అనుసంధానించలేదు. దయచేసి మీ నెట్‌వర్క్ అనుసంధానించిన తర్వాత మళ్లీ ప్రయత్నించండి.";
+_u.ExtensibilityStrings.l_Internet_Not_Connected_Error_Text = "వినియోగదారు నెట్‌వర్క్‌కి అనుసంధానించలేదు. దయచేసి మీ నెట్‌వర్క్ అనుసంధానాన్ని తనిఖీ చేసి, తర్వాత మళ్లీ ప్రయత్నించండి.";
 _u.ExtensibilityStrings.l_InvalidActionType_Text = "పరామితి 'actionType' విలువ చెల్లదు. ఆమోదించిన విలువ \"showTaskPane\"."
 _u.ExtensibilityStrings.l_InvalidAttachmentId_Text = "జోడింపు ID చెల్లదు.";
 _u.ExtensibilityStrings.l_InvalidAttachmentPath_Text = "జోడింపు మార్గం చెల్లదు.";

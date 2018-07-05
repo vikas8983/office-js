@@ -1,4 +1,4 @@
-/* Version: 16.0.10319.10000 */
+/* Version: 16.0.10702.10000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -26,7 +26,7 @@ _u.ExtensibilityStrings.l_DisplayNameTooLong_Text = "Одно или неско�
 _u.ExtensibilityStrings.l_DisplayReplyFormHtmlBodyRequired_Text = "Наличие htmlBody обязательно.";
 _u.ExtensibilityStrings.l_DuplicateNotificationKey_Text = "Уведомление с указанным ключом уже существует.";
 _u.ExtensibilityStrings.l_ElevatedPermissionNeededForMethod_Text = 'Для вызова метода "{0}" требуются повышенные привилегии.';
-_u.ExtensibilityStrings.l_ElevatedPermissionNeeded_Text = "Для доступа к защищенным членам JavaScript API для Office требуются повышенные привилегии.";
+_u.ExtensibilityStrings.l_ElevatedPermissionNeeded_Text = "Для доступа к защищенным элементам JavaScript API для Office требуются повышенные привилегии.";
 _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "Один или несколько указанных адресов электронной почты имеют слишком большую длину.";
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "Запрос превысил ограничение по размеру в 1 МБ. Измените ваш запрос EWS.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "Невозможно добавить вложения, так как уже достигнуто их максимальное число для сообщения.";
