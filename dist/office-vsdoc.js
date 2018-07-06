@@ -1,4 +1,4 @@
-/* Version: 16.0.10320.10000 */
+/* Version: 16.0.10325.30000 */
 /*
 	Copyright (c) Microsoft Corporation.  All rights reserved.
 */
@@ -3253,6 +3253,23 @@ var OfficeCore;
 OfficeCore.__proto__ = null;
 
 
+
+var Excel;
+(function (Excel) {
+	var Interfaces;
+	(function (Interfaces) {
+		var AgaveVisualUpdateEventArgs = (function() {
+			function AgaveVisualUpdateEventArgs() {
+				/// <summary> Update for an AgaveVisual, contains a JSON payload with data and/or properties updates [Api set: ExcelApi 99.9] </summary>
+				/// <field name="payload" type="String">JSON payload with data and/or properties updates [Api set: ExcelApi 99.9]</field>
+				/// <field name="type" type="String">Gets the type of the event. See Excel.EventType for details. [Api set: ExcelApi 99.9]</field>
+			}
+			return AgaveVisualUpdateEventArgs;
+		})();
+		Interfaces.AgaveVisualUpdateEventArgs.__proto__ = null;
+		Interfaces.AgaveVisualUpdateEventArgs = AgaveVisualUpdateEventArgs;
+	})(Interfaces = Excel.Interfaces || (Excel.Interfaces = { __proto__: null}));
+})(Excel || (Excel = {__proto__: null}));
 
 var Excel;
 (function (Excel) {
@@ -7952,6 +7969,87 @@ var Excel;
 		return DataConnectionCollection;
 	})(OfficeExtension.ClientObject);
 	Excel.DataConnectionCollection = DataConnectionCollection;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	var DataControllerClient = (function(_super) {
+		__extends(DataControllerClient, _super);
+		function DataControllerClient() {
+			/// <summary> Represents how the Visual is setup to use the data source. [Api set: ExcelApi 99.9] </summary>
+			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
+			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
+		}
+
+		DataControllerClient.prototype.load = function(option) {
+			/// <summary>
+			/// Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+			/// </summary>
+			/// <param name="option" type="string | string[] | OfficeExtension.LoadOption"/>
+			/// <returns type="Excel.DataControllerClient"/>
+		}
+		DataControllerClient.prototype.addField = function(wellId, fieldId, position) {
+			/// <summary>
+			/// Add a field to well. [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <param name="wellId" type="Number">The id of the well that the field will be added to.</param>
+			/// <param name="fieldId" type="Number">The id of the field to add to the well.</param>
+			/// <param name="position" type="Number">The position in the well where the field should be added.</param>
+			/// <returns ></returns>
+		}
+		DataControllerClient.prototype.getAssociatedFields = function(wellId) {
+			/// <summary>
+			/// Gets an array of JSON objects representing the fields associated with the specified wellId.              The the objects in the array have an id(number) and name(string). [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <param name="wellId" type="Number">The id of the well to get the associated fields for.</param>
+			/// <returns type="OfficeExtension.ClientResult&lt;string&gt;"></returns>
+			var result = new OfficeExtension.ClientResult();
+			result.__proto__ = null;
+			result.value = '';
+			return result;
+		}
+		DataControllerClient.prototype.getAvailableFields = function(wellId) {
+			/// <summary>
+			/// Gets an array of JSON objects representing the fields that may be associated with wellId.              The the objects in the array have an id(number) and name(string). [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <param name="wellId" type="Number">The id of the well to get the available fields for.</param>
+			/// <returns type="OfficeExtension.ClientResult&lt;string&gt;"></returns>
+			var result = new OfficeExtension.ClientResult();
+			result.__proto__ = null;
+			result.value = '';
+			return result;
+		}
+		DataControllerClient.prototype.getWells = function() {
+			/// <summary>
+			/// Gets an array of JSON objects representing this visual&apos;s wells.              The the objects in the array have an id(number) and name(string). [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <returns type="OfficeExtension.ClientResult&lt;string&gt;"></returns>
+			var result = new OfficeExtension.ClientResult();
+			result.__proto__ = null;
+			result.value = '';
+			return result;
+		}
+		DataControllerClient.prototype.moveField = function(wellId, fromPosition, toPosition) {
+			/// <summary>
+			/// Move a field from one position to another in a well. [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <param name="wellId" type="Number">The id of the well to be moved.</param>
+			/// <param name="fromPosition" type="Number">The position in the well of the field to be moved.</param>
+			/// <param name="toPosition" type="Number">The new position for the field</param>
+			/// <returns ></returns>
+		}
+		DataControllerClient.prototype.removeField = function(wellId, position) {
+			/// <summary>
+			/// Remove a field from a well. [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <param name="wellId" type="Number">The id of the well that will have a field removed.</param>
+			/// <param name="position" type="Number">The position in the well of the field that should be removed</param>
+			/// <returns ></returns>
+		}
+
+		return DataControllerClient;
+	})(OfficeExtension.ClientObject);
+	Excel.DataControllerClient = DataControllerClient;
 })(Excel || (Excel = {__proto__: null}));
 
 var Excel;
@@ -13311,6 +13409,7 @@ var Excel;
 			/// <field name="layout" type="Excel.PivotLayout">The PivotLayout describing the layout and visual structure of the PivotTable. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="name" type="String">Name of the PivotTable. [Api set: ExcelApi 1.3]</field>
 			/// <field name="rowHierarchies" type="Excel.RowColumnPivotHierarchyCollection">The Row Pivot Hierarchies of the PivotTable. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="useCustomSortLists" type="Boolean">True if the PivotTable should use custom lists when sorting. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="worksheet" type="Excel.Worksheet">The worksheet containing the current PivotTable. [Api set: ExcelApi 1.3]</field>
 		}
 
@@ -13538,6 +13637,7 @@ var Excel;
 			/// <field name="formulas" type="Array" elementType="Array">Represents the formula in A1-style notation. When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range. [Api set: ExcelApi 1.1]</field>
 			/// <field name="formulasLocal" type="Array" elementType="Array">Represents the formula in A1-style notation, in the user&apos;s language and number-formatting locale.  For example, the English &quot;=SUM(A1, 1.5)&quot; formula would become &quot;=SUMME(A1; 1,5)&quot; in German. When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range. [Api set: ExcelApi 1.1]</field>
 			/// <field name="formulasR1C1" type="Array" elementType="Array">Represents the formula in R1C1-style notation. When setting formulas to a range, the value argument can be either a single value (a string) or a two-dimensional array. If the argument is a single value, it will be applied to all cells in the range. [Api set: ExcelApi 1.2]</field>
+			/// <field name="hasSpill" type="Boolean">Represents if all cells have a spill border.              Returns true if all cells have a spill border, or false if all cells do not have a spill border.              Returns null if there are cells both with and without spill borders within the range. [Api set: ExcelApi 99.9]</field>
 			/// <field name="hidden" type="Boolean">Represents if all cells of the current range are hidden. Read-only. [Api set: ExcelApi 1.2]</field>
 			/// <field name="hyperlink" type="Excel.Interfaces.RangeHyperlink">Represents the hyperlink for the current range. [Api set: ExcelApi 1.7]</field>
 			/// <field name="isEntireColumn" type="Boolean">Represents if the current range is an entire column. Read-only. [Api set: ExcelApi 1.7]</field>
@@ -13799,6 +13899,18 @@ var Excel;
 			/// </summary>
 			/// <param name="cellType" type="String">The type of cells to include.</param>
 			/// <param name="cellValueType" type="String" optional="true">If cellType is either Constants or Formulas, this argument is used to determine which types of cells to include in the result. These values can be combined together to return more than one type. The default is to select all constants or formulas, no matter what the type.</param>
+			/// <returns type="Excel.Range"></returns>
+		}
+		Range.prototype.getSpillParent = function() {
+			/// <summary>
+			/// Gets the range object containing the anchor cell for a cell getting spilled into. Fails if applied to a range with more than one cell. Read only. [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <returns type="Excel.Range"></returns>
+		}
+		Range.prototype.getSpillingToRange = function() {
+			/// <summary>
+			/// Gets the range object containing the spill range when called on an anchor cell. Fails if applied to a range with more than one cell. Read only. [Api set: ExcelApi 99.9]
+			/// </summary>
 			/// <returns type="Excel.Range"></returns>
 		}
 		Range.prototype.getSurroundingRegion = function() {
@@ -15937,6 +16049,340 @@ var Excel;
 
 var Excel;
 (function (Excel) {
+	var Visual = (function(_super) {
+		__extends(Visual, _super);
+		function Visual() {
+			/// <summary> Represents a visual object in a workbook. [Api set: ExcelApi 99.9] </summary>
+			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
+			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
+			/// <field name="id" type="String">The unique id of visual, not the guid of VisualDefinition. Read-only. [Api set: ExcelApi 99.9]</field>
+			/// <field name="properties" type="Excel.VisualPropertyCollection">Gets all properties of the visual. Read-only. [Api set: ExcelApi 99.9]</field>
+		}
+
+		Visual.prototype.load = function(option) {
+			/// <summary>
+			/// Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+			/// </summary>
+			/// <param name="option" type="string | string[] | OfficeExtension.LoadOption"/>
+			/// <returns type="Excel.Visual"/>
+		}
+		Visual.prototype.changeDataSource = function(dataSourceType, dataSourceContent) {
+			/// <summary>
+			/// Get the preview of a visual. [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <param name="dataSourceType" type="String">The data source type of visual. e.g. xlFormula</param>
+			/// <param name="dataSourceContent" type="String">The data source content. e.g. Sheet1!$C$5:$D$7</param>
+			/// <returns ></returns>
+		}
+		Visual.prototype.delete = function() {
+			/// <summary>
+			/// Delete the visual. [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <returns ></returns>
+		}
+		Visual.prototype.getChildProperties = function(parentPropId) {
+			/// <summary>
+			/// Get the child properties of the specific parent property Id. [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <param name="parentPropId" type="String" optional="true">Parent property Id. Omitting this parameter will return the root-level properties.</param>
+			/// <returns type="Excel.VisualPropertyCollection"></returns>
+		}
+		Visual.prototype.getDataControllerClient = function() {
+			/// <summary>
+			/// Get the DataControllerClient for the visual [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <returns type="Excel.DataControllerClient"></returns>
+		}
+		Visual.prototype.getDataSource = function() {
+			/// <summary>
+			/// Gets a string represening the visual&apos;s current data source. e.g. Sheet1!$C$5:$D$7 [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <returns type="OfficeExtension.ClientResult&lt;string&gt;"></returns>
+			var result = new OfficeExtension.ClientResult();
+			result.__proto__ = null;
+			result.value = '';
+			return result;
+		}
+		Visual.prototype.getProperty = function(propName) {
+			/// <summary>
+			/// GetProperty [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <returns type="OfficeExtension.ClientResult&lt;any&gt;"></returns>
+			var result = new OfficeExtension.ClientResult();
+			result.__proto__ = null;
+			result.value = null;
+			return result;
+		}
+		Visual.prototype.setProperty = function(propName, value) {
+			/// <summary>
+			/// SetProperty [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <returns ></returns>
+		}
+		Visual.prototype.setPropertyToDefault = function(propName) {
+			/// <summary>
+			/// Returns true when the property&apos;s value is currently the default [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <returns ></returns>
+		}
+
+		return Visual;
+	})(OfficeExtension.ClientObject);
+	Excel.Visual = Visual;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	/// <summary> [Api set: ExcelApi 99.9] </summary>
+	var VisualCategory = {
+		__proto__: null,
+		"column": "column",
+		"bar": "bar",
+		"line": "line",
+		"area": "area",
+		"pie": "pie",
+		"donut": "donut",
+		"scatter": "scatter",
+		"bubble": "bubble",
+		"statistical": "statistical",
+		"stock": "stock",
+		"combo": "combo",
+		"hierarchy": "hierarchy",
+		"surface": "surface",
+		"map": "map",
+		"funnel": "funnel",
+		"radar": "radar",
+		"waterfall": "waterfall",
+		"threeD": "threeD",
+		"other": "other",
+	}
+	Excel.VisualCategory = VisualCategory;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	var VisualCollection = (function(_super) {
+		__extends(VisualCollection, _super);
+		function VisualCollection() {
+			/// <summary> A collection of all the visuals on a worksheet. [Api set: ExcelApi 99.9] </summary>
+			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
+			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
+			/// <field name="onAgaveVisualUpdate" type="OfficeExtension.EventHandlers">Data and properties updates for agave visuals              AgaveVisuals will be registered to this event on bootstrap, other types of visuals do not use this [Api set: ExcelApi 99.9]</field>
+			/// <field name="onSelectionChanged" type="OfficeExtension.EventHandlers">Occurs when a selection is changed. [Api set: ExcelApi 99.9]</field>
+			/// <field name="items" type="Array" elementType="Excel.Visual">Gets the loaded child items in this collection.</field>
+		}
+
+		VisualCollection.prototype.load = function(option) {
+			/// <summary>
+			/// Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+			/// </summary>
+			/// <param name="option" type="string | string[] | OfficeExtension.LoadOption"/>
+			/// <returns type="Excel.VisualCollection"/>
+		}
+		VisualCollection.prototype.add = function(visualDefinitionGuid, dataSourceType, dataSourceContent) {
+			/// <summary>
+			/// Creates a new visual. [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <param name="visualDefinitionGuid" type="String">The guid of a VisualDefinition, not the id for an instance of a Visual.</param>
+			/// <param name="dataSourceType" type="String" optional="true">The data source type of visual. e.g. xlFormula</param>
+			/// <param name="dataSourceContent" type="String" optional="true">The data source content</param>
+			/// <returns type="Excel.Visual"></returns>
+		}
+		VisualCollection.prototype.getCount = function() {
+			/// <summary>
+			/// Returns the number of visuals in the worksheet. [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <returns type="OfficeExtension.ClientResult&lt;number&gt;"></returns>
+			var result = new OfficeExtension.ClientResult();
+			result.__proto__ = null;
+			result.value = 0;
+			return result;
+		}
+		VisualCollection.prototype.getDefinitions = function() {
+			/// <summary>
+			/// Gets all visual definitions. [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <returns type="OfficeExtension.ClientResult&lt;Excel.VisualDefinition[]&gt;"></returns>
+			var result = new OfficeExtension.ClientResult();
+			result.__proto__ = null;
+			result.value = [];
+			return result;
+		}
+		VisualCollection.prototype.getPreview = function(visualDefinitionGuid, width, height, dpi) {
+			/// <summary>
+			/// Get the preview of a visual. [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <param name="visualDefinitionGuid" type="String">The guid of a VisualDefinition, not the id for an instance of a Visual.</param>
+			/// <param name="width" type="Number">The width of the preview.</param>
+			/// <param name="height" type="Number">The height of the preview.</param>
+			/// <param name="dpi" type="Number">The dpi setting.</param>
+			/// <returns type="OfficeExtension.ClientResult&lt;string&gt;"></returns>
+			var result = new OfficeExtension.ClientResult();
+			result.__proto__ = null;
+			result.value = '';
+			return result;
+		}
+		VisualCollection.prototype.getSelectedOrNullObject = function() {
+			/// <summary>
+			/// Gets the selected Visual if and only if one Visual is selected.              If no Visual is selected, the return object&apos;s isNull property will be true. [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <returns type="Excel.Visual"></returns>
+		}
+		VisualCollection.prototype.onAgaveVisualUpdate = {
+			__proto__: null,
+			add: function (handler) {
+				/// <param name="handler" type="function(eventArgs: Excel.Interfaces.AgaveVisualUpdateEventArgs)">Handler for the event. EventArgs: Update for an AgaveVisual, contains a JSON payload with data and/or properties updates </param>
+				/// <returns type="OfficeExtension.EventHandlerResult"></returns>
+				var eventInfo = new Excel.Interfaces.AgaveVisualUpdateEventArgs();
+				eventInfo.__proto__ = null;
+				handler(eventInfo);
+			},
+			remove: function (handler) {
+				/// <param name="handler" type="function(eventArgs: Excel.Interfaces.AgaveVisualUpdateEventArgs)">Handler for the event.</param>
+				return;
+			}
+		};
+		VisualCollection.prototype.onSelectionChanged = {
+			__proto__: null,
+			add: function (handler) {
+				/// <param name="handler" type="function(eventArgs: Excel.Interfaces.VisualSelectionChangedEventArgs)">Handler for the event. EventArgs: Provides information about the visual that raised the SelectionChanged event. </param>
+				/// <returns type="OfficeExtension.EventHandlerResult"></returns>
+				var eventInfo = new Excel.Interfaces.VisualSelectionChangedEventArgs();
+				eventInfo.__proto__ = null;
+				handler(eventInfo);
+			},
+			remove: function (handler) {
+				/// <param name="handler" type="function(eventArgs: Excel.Interfaces.VisualSelectionChangedEventArgs)">Handler for the event.</param>
+				return;
+			}
+		};
+
+		return VisualCollection;
+	})(OfficeExtension.ClientObject);
+	Excel.VisualCollection = VisualCollection;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	var Interfaces;
+	(function (Interfaces) {
+		var VisualDefinition = (function() {
+			function VisualDefinition() {
+				/// <summary> Represents a visual definition [Api set: ExcelApi 99.9] </summary>
+				/// <field name="category" type="String">Represents the category of a visual definition. [Api set: ExcelApi 99.9]</field>
+				/// <field name="categoryRank" type="Number">Represents the category rank of a visual definition. [Api set: ExcelApi 99.9]</field>
+				/// <field name="description" type="String">Represents the decription of a visual definition. [Api set: ExcelApi 99.9]</field>
+				/// <field name="id" type="String">Represents the id of a visual definition. [Api set: ExcelApi 99.9]</field>
+				/// <field name="title" type="String">Represents the title of a visual definition. [Api set: ExcelApi 99.9]</field>
+			}
+			return VisualDefinition;
+		})();
+		Interfaces.VisualDefinition.__proto__ = null;
+		Interfaces.VisualDefinition = VisualDefinition;
+	})(Interfaces = Excel.Interfaces || (Excel.Interfaces = { __proto__: null}));
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	var VisualProperty = (function(_super) {
+		__extends(VisualProperty, _super);
+		function VisualProperty() {
+			/// <summary> This object represents the attributes for a property. [Api set: ExcelApi 99.9] </summary>
+			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
+			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
+			/// <field name="hasDefault" type="Boolean">Returns true when a default value for this property exists [Api set: ExcelApi 99.9]</field>
+			/// <field name="id" type="String">Returns the property Id. [Api set: ExcelApi 99.9]</field>
+			/// <field name="isDefault" type="Boolean">Returns true when the property&apos;s value is currently the default [Api set: ExcelApi 99.9]</field>
+			/// <field name="localizedName" type="String">Returns the property localized name. [Api set: ExcelApi 99.9]</field>
+			/// <field name="localizedOptions" type="Array" elementType="String">Returns the localized property options for IEnumProperty only. If property type isn&apos;t enum, it returns null. [Api set: ExcelApi 99.9]</field>
+			/// <field name="max" type="Number">Returns max value of the property. Only valid for INumericProperty properties. Returns null if it&apos;s invalid. [Api set: ExcelApi 99.9]</field>
+			/// <field name="min" type="Number">Returns min value of the property. Only valid for INumericProperty properties. Returns null if it&apos;s invalid. [Api set: ExcelApi 99.9]</field>
+			/// <field name="options" type="Array" elementType="String">Returns the property options for IEnumProperty only. If property type isn&apos;t enum, it returns null. [Api set: ExcelApi 99.9]</field>
+			/// <field name="stepSize" type="Number">Returns step size of the property. Only valid for INumericProperty properties. Returns null if it&apos;s invalid. [Api set: ExcelApi 99.9]</field>
+			/// <field name="type" type="String">Returns the property type. [Api set: ExcelApi 99.9]</field>
+			/// <field name="value" >Returns the property value. [Api set: ExcelApi 99.9]</field>
+		}
+
+		VisualProperty.prototype.load = function(option) {
+			/// <summary>
+			/// Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+			/// </summary>
+			/// <param name="option" type="string | string[] | OfficeExtension.LoadOption"/>
+			/// <returns type="Excel.VisualProperty"/>
+		}
+
+		return VisualProperty;
+	})(OfficeExtension.ClientObject);
+	Excel.VisualProperty = VisualProperty;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	var VisualPropertyCollection = (function(_super) {
+		__extends(VisualPropertyCollection, _super);
+		function VisualPropertyCollection() {
+			/// <summary> Represents a collection of visual object properties. [Api set: ExcelApi 99.9] </summary>
+			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
+			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
+			/// <field name="items" type="Array" elementType="Excel.VisualProperty">Gets the loaded child items in this collection.</field>
+		}
+
+		VisualPropertyCollection.prototype.load = function(option) {
+			/// <summary>
+			/// Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+			/// </summary>
+			/// <param name="option" type="string | string[] | OfficeExtension.LoadOption"/>
+			/// <returns type="Excel.VisualPropertyCollection"/>
+		}
+		VisualPropertyCollection.prototype.getCount = function() {
+			/// <summary>
+			/// Returns the number of properties in the collection. [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <returns type="OfficeExtension.ClientResult&lt;number&gt;"></returns>
+			var result = new OfficeExtension.ClientResult();
+			result.__proto__ = null;
+			result.value = 0;
+			return result;
+		}
+		VisualPropertyCollection.prototype.getItem = function(index) {
+			/// <summary>
+			/// Returns a property at given index [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <param name="index" type="Number">Represents the index in property array.</param>
+			/// <returns type="Excel.VisualProperty"></returns>
+		}
+		VisualPropertyCollection.prototype.getItemAt = function(index) {
+			/// <summary>
+			/// Returns a property at given index [Api set: ExcelApi 99.9]
+			/// </summary>
+			/// <param name="index" type="Number">Represents the index in property array.</param>
+			/// <returns type="Excel.VisualProperty"></returns>
+		}
+
+		return VisualPropertyCollection;
+	})(OfficeExtension.ClientObject);
+	Excel.VisualPropertyCollection = VisualPropertyCollection;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	/// <summary> [Api set: ExcelApi 99.9] </summary>
+	var VisualPropertyType = {
+		__proto__: null,
+		"object": "object",
+		"collection": "collection",
+		"string": "string",
+		"double": "double",
+		"int": "int",
+		"bool": "bool",
+		"enum": "enum",
+		"color": "color",
+	}
+	Excel.VisualPropertyType = VisualPropertyType;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
 	var Interfaces;
 	(function (Interfaces) {
 		var VisualSelectionChangedEventArgs = (function() {
@@ -16155,6 +16601,7 @@ var Excel;
 			/// <field name="tables" type="Excel.TableCollection">Collection of tables that are part of the worksheet. Read-only. [Api set: ExcelApi 1.1]</field>
 			/// <field name="verticalPageBreaks" type="Excel.PageBreakCollection">Gets the vertical page break collection for the worksheet. This collection only contains manual page breaks. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="visibility" type="String">The Visibility of the worksheet. [Api set: ExcelApi 1.1 for reading visibility; 1.2 for setting it.]</field>
+			/// <field name="visuals" type="Excel.VisualCollection">Returns collection of visuals that are part of the worksheet. [Api set: ExcelApi 99.9]</field>
 			/// <field name="onActivated" type="OfficeExtension.EventHandlers">Occurs when the worksheet is activated. [Api set: ExcelApi 1.7]</field>
 			/// <field name="onCalculated" type="OfficeExtension.EventHandlers">Occurs when the worksheet is calculated. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="onChanged" type="OfficeExtension.EventHandlers">Occurs when data changed on a specific worksheet. [Api set: ExcelApi 1.7]</field>
@@ -17918,6 +18365,7 @@ var Excel;
 			function PivotTableUpdateData() {
 				/// <summary>An interface for updating data on the PivotTable object, for use in "pivotTable.set({ ... })".</summary>
 				/// <field name="name" type="String">Name of the PivotTable. [Api set: ExcelApi 1.3]</field>;
+				/// <field name="useCustomSortLists" type="Boolean">True if the PivotTable should use custom lists when sorting. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
 			}
 			return PivotTableUpdateData;
 		})();
