@@ -1,49 +1,33 @@
-version: 1.1.8
-tag: release
-githubReleaseUrl: https://github.com/OfficeDev/office-js/releases/tag/v1.1.8
-githubViewUrl: https://github.com/OfficeDev/office-js/tree/v1.1.8
-deployedAt: 2018-05-02 9:44 pm UTC  (2018-05-02 2:44 pm Pacific Time)
-
+tag: lumen
 history:
-    adhocBranchName: __for_merging--release--16.0.9318.5450--2018-05-02--1.50pm
-    commitMessage: __for_merging--release--16.0.9318.5450--2018-05-02--1.50pm
+    adhocBranchName: __adhoc--lumen--current--local--2018-07-16--10.52pm
+    commitMessage: __adhoc--lumen--current--local--2018-07-16--10.52pm
     fullCommitHistory:
         - 
             sha: >-
-                https://github.com/OfficeDev/office-js/commits/96f2bd91eb5f19e75b3dc71b1ad063d14d169cee
+                https://github.com/OfficeDev/office-js/commits/f81d3e8ddb5c0cd6ab74237c6810dfd88e2acc53
             message: >-
                 JS dist files --
-                __for_merging--release--16.0.9318.5450--2018-05-02--1.50pm
+                __adhoc--lumen--current--local--2018-07-16--10.52pm
         - 
             sha: >-
-                https://github.com/OfficeDev/office-js/commits/1488f90a8e067a5e035b4ad28bc63de29febe724
+                https://github.com/OfficeDev/office-js/commits/151ed52081842fe944a6b4606a62020e88ed0c47
             message: >-
                 Localized strings --
-                __for_merging--release--16.0.9318.5450--2018-05-02--1.50pm
+                __adhoc--lumen--current--local--2018-07-16--10.52pm
         - 
             sha: >-
-                https://github.com/OfficeDev/office-js/commits/bf086552c06225498d171fd836f150da37f920ce
+                https://github.com/OfficeDev/office-js/commits/bfc53307b8050ea046cb18733126966acd8180c7
             message: Copying other assets from the release branch of the repo
         - 
             sha: >-
-                https://github.com/OfficeDev/office-js/commits/3e2dda0085a862ddd261cd6247567e00b9070a90
+                https://github.com/OfficeDev/office-js/commits/73fc0ac953927ca75c86ebd965f5a80e113142e2
             message: >-
                 [PUBLISH TOOL] Add deployment infrastructure for adhoc NPM
                 publish
         - 
             sha: >-
-                https://github.com/OfficeDev/office-js/commits/45091d4ee0c7d91b76da7bb2cc9ece83758bfc1c
+                https://github.com/OfficeDev/office-js/commits/0de892dd83dc8b0b23180e2d91d405279927b4c1
             message: >-
                 [BEGIN PUBLISH UPDATES] --
-                __for_merging--release--16.0.9318.5450--2018-05-02--1.50pm
-
-
-unpkgUrls: |-
-    this specific build number:
-        https://unpkg.com/@microsoft/office-js@1.1.8/dist/office.js
-        https://unpkg.com/@microsoft/office-js@1.1.8/dist/office.d.ts
-    builds using this same tag ("release"):
-        https://unpkg.com/@microsoft/office-js@release/dist/office.js
-        https://unpkg.com/@microsoft/office-js@release/dist/office.d.ts
-
-buildLog: https://travis-ci.org/OfficeDev/office-js/builds/374156710
+                __adhoc--lumen--current--local--2018-07-16--10.52pm
