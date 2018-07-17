@@ -1,5 +1,5 @@
 /* Excel WinRT-specific API library */
-/* Version: 16.0.10325.30000 */
+/* Version: 16.0.10706.30000 */
 
 /*
 	Copyright (c) Microsoft Corporation.  All rights reserved.
@@ -5475,7 +5475,7 @@ var OSFAppTelemetry;
 		}
 		appInfo.message=context.get_hostCustomMessage();
 		appInfo.officeJSVersion=OSF.ConstantNames.FileVersion;
-		appInfo.hostJSVersion="16.0.10325.30000";
+		appInfo.hostJSVersion="16.0.10706.30000";
 		if (context._wacHostEnvironment) {
 			appInfo.wacHostEnvironment=context._wacHostEnvironment;
 		}
@@ -15169,7 +15169,7 @@ var Excel;
 		});
 		Object.defineProperty(Application.prototype, "_navigationPropertyNames", {
 			get: function () {
-				return ["iterativeCalculation", "numberFormatting"];
+				return ["iterativeCalculation", "numberFormattingService"];
 			},
 			enumerable: true,
 			configurable: true
@@ -15185,11 +15185,11 @@ var Excel;
 			enumerable: true,
 			configurable: true
 		});
-		Object.defineProperty(Application.prototype, "numberFormatting", {
+		Object.defineProperty(Application.prototype, "numberFormattingService", {
 			get: function () {
-				_throwIfApiNotSupported("Application.numberFormatting", "NumberFormatting", "1", _hostName);
+				_throwIfApiNotSupported("Application.numberFormattingService", "NumberFormatting", "1.1", _hostName);
 				if (!this._N) {
-					this._N=_createPropertyObject(Excel.NumberFormattingService, this, "NumberFormatting", false, 4);
+					this._N=_createPropertyObject(Excel.NumberFormattingService, this, "NumberFormattingService", false, 4);
 				}
 				return this._N;
 			},
@@ -15228,7 +15228,7 @@ var Excel;
 		});
 		Application.prototype.set=function (properties, options) {
 			this._recursivelySet(properties, options, ["calculationMode"], ["iterativeCalculation"], [
-				"numberFormatting"
+				"numberFormattingService"
 			]);
 		};
 		Application.prototype.update=function (properties) {
@@ -15271,7 +15271,7 @@ var Excel;
 			if (!_isUndefined(obj["CalculationState"])) {
 				this._Cal=obj["CalculationState"];
 			}
-			_handleNavigationPropertyResults(this, obj, ["iterativeCalculation", "IterativeCalculation", "numberFormatting", "NumberFormatting"]);
+			_handleNavigationPropertyResults(this, obj, ["iterativeCalculation", "IterativeCalculation", "numberFormattingService", "NumberFormattingService"]);
 		};
 		Application.prototype.load=function (option) {
 			return _load(this, option);
@@ -15442,11 +15442,8 @@ var Excel;
 		NumberFormattingService.prototype.isDateTime=function (format) {
 			return _invokeMethod(this, "IsDateTime", 0, [format], 0, 0);
 		};
-		NumberFormattingService.prototype.isExponential=function (format) {
-			return _invokeMethod(this, "IsExponential", 0, [format], 0, 0);
-		};
-		NumberFormattingService.prototype.isFraction=function (format) {
-			return _invokeMethod(this, "IsFraction", 0, [format], 0, 0);
+		NumberFormattingService.prototype.isNumeric=function (format) {
+			return _invokeMethod(this, "IsNumeric", 0, [format], 0, 0);
 		};
 		NumberFormattingService.prototype.isPercent=function (format) {
 			return _invokeMethod(this, "IsPercent", 0, [format], 0, 0);
@@ -39978,7 +39975,7 @@ var Excel;
 		});
 		Object.defineProperty(Application.prototype, "_navigationPropertyNames", {
 			get: function () {
-				return ["iterativeCalculation", "numberFormatting"];
+				return ["iterativeCalculation", "numberFormattingService"];
 			},
 			enumerable: true,
 			configurable: true
@@ -39994,11 +39991,11 @@ var Excel;
 			enumerable: true,
 			configurable: true
 		});
-		Object.defineProperty(Application.prototype, "numberFormatting", {
+		Object.defineProperty(Application.prototype, "numberFormattingService", {
 			get: function () {
-				_throwIfApiNotSupported("Application.numberFormatting", "NumberFormatting", "1", _hostName);
+				_throwIfApiNotSupported("Application.numberFormattingService", "NumberFormatting", "1.1", _hostName);
 				if (!this._N) {
-					this._N=_createPropertyObject(Excel.NumberFormattingService, this, "NumberFormatting", false, 4);
+					this._N=_createPropertyObject(Excel.NumberFormattingService, this, "NumberFormattingService", false, 4);
 				}
 				return this._N;
 			},
@@ -40037,7 +40034,7 @@ var Excel;
 		});
 		Application.prototype.set=function (properties, options) {
 			this._recursivelySet(properties, options, ["calculationMode"], ["iterativeCalculation"], [
-				"numberFormatting"
+				"numberFormattingService"
 			]);
 		};
 		Application.prototype.update=function (properties) {
@@ -40080,7 +40077,7 @@ var Excel;
 			if (!_isUndefined(obj["CalculationState"])) {
 				this._Cal=obj["CalculationState"];
 			}
-			_handleNavigationPropertyResults(this, obj, ["iterativeCalculation", "IterativeCalculation", "numberFormatting", "NumberFormatting"]);
+			_handleNavigationPropertyResults(this, obj, ["iterativeCalculation", "IterativeCalculation", "numberFormattingService", "NumberFormattingService"]);
 		};
 		Application.prototype.load=function (option) {
 			return _load(this, option);
@@ -40251,11 +40248,8 @@ var Excel;
 		NumberFormattingService.prototype.isDateTime=function (format) {
 			return _invokeMethod(this, "IsDateTime", 0, [format], 0, 0);
 		};
-		NumberFormattingService.prototype.isExponential=function (format) {
-			return _invokeMethod(this, "IsExponential", 0, [format], 0, 0);
-		};
-		NumberFormattingService.prototype.isFraction=function (format) {
-			return _invokeMethod(this, "IsFraction", 0, [format], 0, 0);
+		NumberFormattingService.prototype.isNumeric=function (format) {
+			return _invokeMethod(this, "IsNumeric", 0, [format], 0, 0);
 		};
 		NumberFormattingService.prototype.isPercent=function (format) {
 			return _invokeMethod(this, "IsPercent", 0, [format], 0, 0);
