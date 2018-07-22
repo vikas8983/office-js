@@ -1,4 +1,4 @@
-/* Version: 16.0.10309.10000 */
+/* Version: 16.0.9309.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -33,8 +33,8 @@ Strings.OfficeOM.L_CoercionTypeNotSupported = "نوع تبدیل داده معی
 Strings.OfficeOM.L_ColIndexOutOfRange = "مقدار فهرست ستون خارج از محدوده مجاز است. از مقداری (0 یا بیشتر) استفاده کنید که کمتر از تعداد ستون ها باشد.";
 Strings.OfficeOM.L_ConnectionFailureWithDetails = "درخواست با کد وضعیت {0}، کد خطای {1} و پیام خطای زیر انجام نشد: {2}";
 Strings.OfficeOM.L_ConnectionFailureWithStatus = "درخواست با کد وضعیت {0} انجام نشد.";
-Strings.OfficeOM.L_CustomFunctionDefinitionMissing = "مشخصه‌ای با این نام که نشان‌دهنده تعریف تابع است باید در Excel.Script.CustomFunctions موجود باشد.";
-Strings.OfficeOM.L_CustomFunctionImplementationMissing = 'مشخصه‌ای با این نام در Excel.Script.CustomFunctions که نشان‌دهنده تعریف تابع است باید شامل ویژگی "call" باشد که این تابع را اجرا کند.';
+Strings.OfficeOM.L_CustomFunctionDefinitionMissing = "مشخصه‌ای با این نام که نمایش‌دهنده تعریف عملکرد است باید در Excel.CustomFunctions موجود باشد.";
+Strings.OfficeOM.L_CustomFunctionImplementationMissing = "مشخصه‌ای با این نام در Excel.CustomFunctions که نمایش‌دهنده تعریف عملکرد است باید شامل ویژگی «تماسی» باشد که این عملکرد را اجرا کند.";
 Strings.OfficeOM.L_CustomFunctionNameCannotSplit = "نام تابع باید شامل فضای نام غیر خالی و نام کوتاه غیر خالی باشد.";
 Strings.OfficeOM.L_CustomFunctionNameContainsBadChars = "نام تابع باید تنها شامل حروف، ارقام، خطوط زیرین و نقطه باشد.";
 Strings.OfficeOM.L_CustomXmlError = "خطای XML سفارشی.";

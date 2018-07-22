@@ -1,4 +1,4 @@
-/* Version: 16.0.10309.10000 */
+/* Version: 16.0.9309.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -33,8 +33,8 @@ Strings.OfficeOM.L_CoercionTypeNotSupported = "Hindi suportado ang tinukoy na ur
 Strings.OfficeOM.L_ColIndexOutOfRange = "Ang indese ng column ay lampas sa pinapayagang saklaw. Gumamit ng value (0 o mas mataas) na mas kaunti kaysa sa bilang ng mga column.";
 Strings.OfficeOM.L_ConnectionFailureWithDetails = "Nabigo ang kahilingan nang may status code na {0}, error code na {1} at sumusunod na mensahe ng error: {2}";
 Strings.OfficeOM.L_ConnectionFailureWithStatus = "Nabigo ang kahilingan nang may status code na {0}.";
-Strings.OfficeOM.L_CustomFunctionDefinitionMissing = "Dapat na mayroon sa Excel.Script.CustomFunctions na property na may ganitong pangalan na kumakatawan sa kahulugan ng function.";
-Strings.OfficeOM.L_CustomFunctionImplementationMissing = "Dapat na maglaman ang property na may ganitong pangalan sa Excel.CustomFunctions na kumakatawan sa kahulugan ng function ng property na 'call' na nagpapatupad sa function.";
+Strings.OfficeOM.L_CustomFunctionDefinitionMissing = "Dapat na may property sa Excel.CustomFunctions na may ganitong pangalan na kumakatawan sa definition ng function.";
+Strings.OfficeOM.L_CustomFunctionImplementationMissing = "Dapat na maglaman ang property na may ganitong pangalan sa Excel.CustomFunctions na kumakatawan sa definition ng function ng property na 'call' na nagpapatupad sa function.";
 Strings.OfficeOM.L_CustomFunctionNameCannotSplit = "Dapat na maglaman ang pangalan ng function ng hindi bakanteng namespace at hindi bakanteng maikling pangalan.";
 Strings.OfficeOM.L_CustomFunctionNameContainsBadChars = "Maaari lang maglaman ang pangalan ng function ng mga titik, numero, underscore, at tuldok.";
 Strings.OfficeOM.L_CustomXmlError = "Error ng Pasadyang XML.";

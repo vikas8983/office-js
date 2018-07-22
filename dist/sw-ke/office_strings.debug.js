@@ -1,4 +1,4 @@
-/* Version: 16.0.10309.10000 */
+/* Version: 16.0.9309.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -33,8 +33,8 @@ Strings.OfficeOM.L_CoercionTypeNotSupported = "Aina ya ulazimishaji uliobainishw
 Strings.OfficeOM.L_ColIndexOutOfRange = "Thamani ya kielezo cha safuwima inazidi masafa yanayoruhusiwa. Tumia thamani (0 au juu zaidi) iliyo chini ya idadi ya safuwima.";
 Strings.OfficeOM.L_ConnectionFailureWithDetails = "Ombi halikufaulu kwa msimbo wa hali ya {0}, msimbo wa hitilafu {1} na ujumbe wa hitilafu unaofuata: {2}";
 Strings.OfficeOM.L_ConnectionFailureWithStatus = "Ombi halikufaulu kwa msimbo wa hali ya {0}.";
-Strings.OfficeOM.L_CustomFunctionDefinitionMissing = "Sifa yenye jina hili inayowakilisha ufafanuzi wa kipengele lazima iwepo kwenye Excel.Script.CustomFunctions.";
-Strings.OfficeOM.L_CustomFunctionImplementationMissing = "Sifa yenye jina hili kwenye Excel.Script.CustomFunctions ambayo inawakilisha ufafanuzi wa kipengele lazima iwe na sifa ya 'call' inayotekeleza kipengele.";
+Strings.OfficeOM.L_CustomFunctionDefinitionMissing = "Sifa yenye jina hili inayowakilisha ufafanuzi wa kipengele lazima iwepo kwenye Excel.CustomFunctions.";
+Strings.OfficeOM.L_CustomFunctionImplementationMissing = "Sifa yenye jina hili kwenye Excel.CustomFunctions ambayo inawakilisha ufafanuzi wa kipengele lazima iwe na sifa ya 'call' inayotekeleza kipengele.";
 Strings.OfficeOM.L_CustomFunctionNameCannotSplit = "Laima kitendaji kiwe na nafasi ya jina isiyo tupu na jina fupi lisio tupu.";
 Strings.OfficeOM.L_CustomFunctionNameContainsBadChars = "Jina la kitendaji linaweza kuwa tu na herufi, tarakimu, mistari chini pekee na vitone.";
 Strings.OfficeOM.L_CustomXmlError = "Hitilafu Maalum ya XML.";

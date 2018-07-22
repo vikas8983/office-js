@@ -1,4 +1,4 @@
-/* Version: 16.0.10309.10000 */
+/* Version: 16.0.9309.1000 */
 
 Type.registerNamespace("_u");
 _u.ExtensibilityStrings = function()
@@ -31,11 +31,9 @@ _u.ExtensibilityStrings.l_EmailAddressTooLong_Text = "یک یا چند آدرس 
 _u.ExtensibilityStrings.l_EwsRequestOversized_Text = "درخواست بیش از حد مجاز 1 مگابایت است. لطفاً درخواست EWS خود را اصلاح کنید.";
 _u.ExtensibilityStrings.l_ExceededMaxNumberOfAttachments_Text = "نمی توان پیوستی را اضافه کرد زیرا این پیام از قبل حداکثر تعداد پیوست های مجاز را دارد";
 _u.ExtensibilityStrings.l_HtmlSanitizationFailure_Text = "پاکسازی HTML ناموفق بود.";
-_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "کاربر مجوزهای مورد نیاز برای اجرای این عملیات را ندارد.";
+_u.ExtensibilityStrings.l_Insufficient_Item_Permissions_Text = "The user doesn't have the permissions required to perform this operation.";
 _u.ExtensibilityStrings.l_InternalFormatError_Text = "خطای قالب داخلی رخ داد.";
 _u.ExtensibilityStrings.l_InternalProtocolError_Text = "خطای پروتکل داخلی: '{0}'.";
-_u.ExtensibilityStrings.l_Internal_Server_Error_Text = "The Exchange server returned an error. Please look at the diagnostics object for more information.";
-_u.ExtensibilityStrings.l_Internet_Not_Connected_Error_Text = "The user is no longer connected to the network. Please check your network connection and try again.";
 _u.ExtensibilityStrings.l_InvalidActionType_Text = "مقدار پارامتر 'actionType' نامعتبر است. این مقدار پذیرفته‌شده \"showTaskPane\" است."
 _u.ExtensibilityStrings.l_InvalidAttachmentId_Text = "شناسه پیوست نامعتبر بود.";
 _u.ExtensibilityStrings.l_InvalidAttachmentPath_Text = "مسیر پیوست نامعتبر بود.";
@@ -53,15 +51,12 @@ _u.ExtensibilityStrings.l_NullOrEmptyParameterError_Text = "پارامتر '{0}'
 _u.ExtensibilityStrings.l_NumberOfNotificationsExceeded_Text = "افزودن اعلان امکان‌پذیر نیست زیرا به حد مجاز اعلان رسیده است.";
 _u.ExtensibilityStrings.l_NumberOfRecipientsExceeded_Text = "تعداد کل گیرندگان در کارد نباید بیشتر از {0} باشد.";
 _u.ExtensibilityStrings.l_OffsetNotfound_Text = "افستی برای این مهر زمان یافت نشد.";
-_u.ExtensibilityStrings.l_Olk_Http_Error_Text = "The request has failed. Please look at the diagnostics object for the HTTP error code.";
 _u.ExtensibilityStrings.l_ParameterValueTooLongError_Text = "مقدار پارمتر '{0}' بسیار طولانی است. حداکثر مقدار نویسه‌ها '{1}' است.";
 _u.ExtensibilityStrings.l_ParametersNotAsExpected_Text = "پارامترهای تعیین شد با قالب مورد انتظار مطابقت ندارند.";
 _u.ExtensibilityStrings.l_PersistedNotificationArrayReadError_Text = "فراخوانی API از سوی شما انجام نشد زیرا امکان بازیابی اعلان‌های ادامه‌دار وجود ندارد.";
 _u.ExtensibilityStrings.l_PersistedNotificationArraySaveError_Text = "فراخوانی API از سوی شما انجام نشد زیرا امکان ادامه اعلان‌ها وجود ندارد.";
 _u.ExtensibilityStrings.l_RecurrenceErrorMaxOccurrences_Text = "سری بازگشتی از حداکثر مجاز 999 رخداد فراتر رفته است.";
 _u.ExtensibilityStrings.l_RecurrenceErrorZeroOccurrences_Text = "سری بازگشتی هیچ رخدادی در محدوده تاریخی مشخص‌شده ندارد.";
-_u.ExtensibilityStrings.l_RecurrenceInvalidTimeZone_Text = "منطقه زمانی مشخص‌شده پشتیبانی نمی‌شود.";
-_u.ExtensibilityStrings.l_RecurrenceUnsupportedAlternateCalendar_Text = "الگوی تکرار توسط کاربر و با استفاده از تقویم جایگزینی که پشتیبانی نمی‌شود تنظیم شد.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Instance_SetAsync_Text = "امکان تنظیم الگوی تکرار برای رویدادی خاص در یک مجموعه وجود ندارد.";
 _u.ExtensibilityStrings.l_Recurrence_Error_Properties_Invalid_Text = "الگوی تکرار معتبر نیست. لطفاً بررسی کنید که خصوصیات ویژه تکرار با نوع تکرار همخوانی داشته باشد.";
 _u.ExtensibilityStrings.l_SaveError_Text = "هنگام تلاش برای ذخیره این مورد در سرور، خطایی در اتصال رخ داد.";
