@@ -1,4 +1,4 @@
-/* Version: 16.0.10309.10000 */
+/* Version: 16.0.9309.1000 */
 
 Type.registerNamespace("Strings");
 Strings.OfficeOM = function()
@@ -33,8 +33,8 @@ Strings.OfficeOM.L_CoercionTypeNotSupported = "اختصاصی جبر کی قسم
 Strings.OfficeOM.L_ColIndexOutOfRange = "قدر کا اشاریہ کالم اجازت یافتہ حد اطلاق سے باہر ہے۔ (0 یا اعلی) قدر جو کالموں کی تعداد کے مقابلہ میں کم ہو اسے استعمال کریں۔";
 Strings.OfficeOM.L_ConnectionFailureWithDetails = "{0} کے حالت کوڈ کے ساتھ درخواست ناکام ہوگئی، نقص کوڈ {1} اور مندرجہ زیل نقص پیغام: {2}";
 Strings.OfficeOM.L_ConnectionFailureWithStatus = "{0} کے حالت کوڈ کے ساتھ درخواست ناکام ہوگئی۔";
-Strings.OfficeOM.L_CustomFunctionDefinitionMissing = "اس نام کے ساتھ خاصیت جو کہ فعل کہ تعریف کو ظاہر کرتی ہو Excel.Script.CustomFunctions پر موجود ہونی چاہیئے۔";
-Strings.OfficeOM.L_CustomFunctionImplementationMissing = "Excel.Script.CustomFunctions پر اس نام کے ساتھ خاصیت جوکہ فعل کی تعریف کو ظاہر کرتی ہو 'کال' خاصیت کی حامل ہونی چاہیئے جوکہ فعل کا نفاذ کرتی ہو۔";
+Strings.OfficeOM.L_CustomFunctionDefinitionMissing = "اس نام کے ساتھ خاصیت جو کہ فعل کہ تعریف کو ظاہر کرتی ہو Excel.CustomFunctions پر موجود ہونی چاہیئے۔";
+Strings.OfficeOM.L_CustomFunctionImplementationMissing = "Excel.CustomFunctions پر اس نام کے ساتھ خاصیت جوکہ فعل کی تعریف کو ظاہر کرتی ہو 'کال' خاصیت کی حامل ہونی چاہیئے جوکہ فعل کا نفاذ کرتی ہو۔";
 Strings.OfficeOM.L_CustomFunctionNameCannotSplit = "عملیے کا نام ایک غیر خالی نام جگہ اور غیر خالی مختصر نام کا حامل ہونا ضروری ہے۔";
 Strings.OfficeOM.L_CustomFunctionNameContainsBadChars = "یہ فعل صرف حروف، اعداد، انڈر سکور اور وقفوں کا حامل ہوسکتا ہے۔";
 Strings.OfficeOM.L_CustomXmlError = "مخصوص XML نقص۔";
