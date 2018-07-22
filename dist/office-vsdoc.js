@@ -1,4 +1,4 @@
-/* Version: 16.0.10718.10000 */
+/* Version: 16.0.10719.10000 */
 /*
 	Copyright (c) Microsoft Corporation.  All rights reserved.
 */
@@ -3319,6 +3319,13 @@ var Excel;
 			/// <param name="calculationType" type="String">Specifies the calculation type to use. See Excel.CalculationType for details.</param>
 			/// <returns ></returns>
 		}
+		Application.prototype.createWorkbook = function(base64File) {
+			/// <summary>
+			/// Creates a new hidden workbook by using an optional base64 encoded .xlsx file. [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <param name="base64File" type="String" optional="true">Optional. The base64 encoded .xlsx file. The default value is null.</param>
+			/// <returns type="Excel.WorkbookCreated"></returns>
+		}
 		Application.prototype.suspendApiCalculationUntilNextSync = function() {
 			/// <summary>
 			/// Suspends calculation until the next &quot;context.sync()&quot; is called. Once set, it is the developer&apos;s responsibility to re-calc the workbook, to ensure that any dependencies are propagated. [Api set: ExcelApi 1.6]
@@ -3804,6 +3811,7 @@ var Excel;
 			/// <field name="axes" type="Excel.ChartAxes">Represents chart axes. Read-only. [Api set: ExcelApi 1.1]</field>
 			/// <field name="categoryLabelLevel" type="Number">Returns or sets a ChartCategoryLabelLevel enumeration constant referring to               the level of where the category labels are being sourced from. Read/Write. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="chartType" type="String">Represents the type of the chart. See Excel.ChartType for details. [Api set: ExcelApi 1.7]</field>
+			/// <field name="colorScheme" type="Number">Returns or sets an integer that represents the color scheme for the chart. Read/Write. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="dataLabels" type="Excel.ChartDataLabels">Represents the datalabels on the chart. Read-only. [Api set: ExcelApi 1.1]</field>
 			/// <field name="displayBlanksAs" type="String">Returns or sets the way that blank cells are plotted on a chart. Read/Write. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="format" type="Excel.ChartAreaFormat">Encapsulates the format properties for the chart area. Read-only. [Api set: ExcelApi 1.1]</field>
@@ -3815,10 +3823,15 @@ var Excel;
 			/// <field name="plotArea" type="Excel.ChartPlotArea">Represents the plotArea for the chart. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="plotBy" type="String">Returns or sets the way columns or rows are used as data series on the chart. Read/Write. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="plotVisibleOnly" type="Boolean">True if only visible cells are plotted. False if both visible and hidden cells are plotted. Read/Write. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="roundedCorners" type="Boolean">True if the chart area of the chart has rounded corners. Read/Write. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="series" type="Excel.ChartSeriesCollection">Represents either a single series or collection of series in the chart. Read-only. [Api set: ExcelApi 1.1]</field>
 			/// <field name="seriesNameLevel" type="Number">Returns or sets a ChartSeriesNameLevel enumeration constant referring to              the level of where the series names are being sourced from. Read/Write. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="showAllFieldButtons" type="Boolean">Represents whether to display all field buttons on a PivotChart. [Api set: ExcelApi 1.7]</field>
+			/// <field name="showAxisFieldButtons" type="Boolean">Represents whether to display axis field buttons on a PivotChart.              The ShowAxisFieldButtons property corresponds to the Show Axis Field Buttons command on the Field Buttons drop-down list of the Analyze tab, which is available when a PivotChart is selected. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="showDataLabelsOverMaximum" type="Boolean">Represents whether to to show the data labels when the value is greater than the maximum value on the value axis.              If value axis became smaller than the size of data points, you can use this property to set whether to show the data labels.              This property applies to 2-D charts only. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="showLegendFieldButtons" type="Boolean">Represents whether to display legend field buttons on a PivotChart. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="showReportFilterFieldButtons" type="Boolean">Represents whether to display report filter field buttons on a PivotChart. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="showValueFieldButtons" type="Boolean">Represents whether to display show value field buttons on a PivotChart. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="style" type="Number">Returns or sets the chart style for the chart. Read/Write. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="title" type="Excel.ChartTitle">Represents the title of the specified chart, including the text, visibility, position, and formating of the title. Read-only. [Api set: ExcelApi 1.1]</field>
 			/// <field name="top" type="Number">Represents the distance, in points, from the top edge of the object to the top of row 1 (on a worksheet) or the top of the chart area (on a chart). [Api set: ExcelApi 1.1]</field>
@@ -3849,6 +3862,12 @@ var Excel;
 			/// <summary>Sets multiple properties on the object at the same time, based on an existing loaded object.</summary>
 			/// <param name="properties" type="Chart">An existing Chart object, with properties that have already been loaded and synced.</param>
 			/// </signature>
+		}
+		Chart.prototype.activate = function() {
+			/// <summary>
+			/// Activate the chart in the Excel UI. [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <returns ></returns>
 		}
 		Chart.prototype.delete = function() {
 			/// <summary>
@@ -4077,6 +4096,7 @@ var Excel;
 			/// <field name="minorUnit" >Represents the interval between two minor tick marks. Can be set to a numeric value or an empty string (for automatic axis values). The returned value is always a number. [Api set: ExcelApi 1.1]</field>
 			/// <field name="multiLevel" type="Boolean">Represents whether an axis is multilevel or not. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="numberFormat" type="String">Represents the format code for the axis tick label. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="numberFormatLinked" type="Boolean">Represents whether the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells). [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="offset" type="Number">Represents the distance between the levels of labels, and the distance between the first level and the axis line. The value should be an integer from 0 to 1000. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="position" type="String">Represents the specified axis position where the other axis crosses. See Excel.ChartAxisPosition for details. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="positionAt" type="Number">Represents the specified axis position where the other axis crosses at. Read Only. Set to this property should use SetPositionAt(double) method. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
@@ -4565,32 +4585,6 @@ var Excel;
 
 var Excel;
 (function (Excel) {
-	/// <summary> [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
-	var ChartColorScheme = {
-		__proto__: null,
-		"colorfulPalette1": "colorfulPalette1",
-		"colorfulPalette2": "colorfulPalette2",
-		"colorfulPalette3": "colorfulPalette3",
-		"colorfulPalette4": "colorfulPalette4",
-		"monochromaticPalette1": "monochromaticPalette1",
-		"monochromaticPalette2": "monochromaticPalette2",
-		"monochromaticPalette3": "monochromaticPalette3",
-		"monochromaticPalette4": "monochromaticPalette4",
-		"monochromaticPalette5": "monochromaticPalette5",
-		"monochromaticPalette6": "monochromaticPalette6",
-		"monochromaticPalette7": "monochromaticPalette7",
-		"monochromaticPalette8": "monochromaticPalette8",
-		"monochromaticPalette9": "monochromaticPalette9",
-		"monochromaticPalette10": "monochromaticPalette10",
-		"monochromaticPalette11": "monochromaticPalette11",
-		"monochromaticPalette12": "monochromaticPalette12",
-		"monochromaticPalette13": "monochromaticPalette13",
-	}
-	Excel.ChartColorScheme = ChartColorScheme;
-})(Excel || (Excel = {__proto__: null}));
-
-var Excel;
-(function (Excel) {
 	var ChartDataLabel = (function(_super) {
 		__extends(ChartDataLabel, _super);
 		function ChartDataLabel() {
@@ -4604,6 +4598,7 @@ var Excel;
 			/// <field name="horizontalAlignment" type="String">Represents the horizontal alignment for chart data label. See Excel.ChartTextHorizontalAlignment for details.              This property is valid only when TextOrientation of data label is 90, -90 or 180. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="left" type="Number">Represents the distance, in points, from the left edge of chart data label to the left edge of chart area. Null if chart data label is not visible. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="numberFormat" type="String">String value that represents the format code for data label. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="numberFormatLinked" type="Boolean">Boolean value representing if the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells). [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="position" type="String">DataLabelPosition value that represents the position of the data label. See Excel.ChartDataLabelPosition for details. [Api set: ExcelApi 1.7]</field>
 			/// <field name="separator" type="String">String representing the separator used for the data label on a chart. [Api set: ExcelApi 1.7]</field>
 			/// <field name="showBubbleSize" type="Boolean">Boolean value representing if the data label bubble size is visible or not. [Api set: ExcelApi 1.7]</field>
@@ -4721,6 +4716,7 @@ var Excel;
 			/// <field name="format" type="Excel.ChartDataLabelFormat">Represents the format of chart data labels, which includes fill and font formatting. Read-only. [Api set: ExcelApi 1.1]</field>
 			/// <field name="horizontalAlignment" type="String">Represents the horizontal alignment for chart data label. See Excel.ChartTextHorizontalAlignment for details.              This property is valid only when TextOrientation of data label is 0. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="numberFormat" type="String">Represents the format code for data labels. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="numberFormatLinked" type="Boolean">Represents whether the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells). [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="position" type="String">DataLabelPosition value that represents the position of the data label. See Excel.ChartDataLabelPosition for details. [Api set: ExcelApi 1.1]</field>
 			/// <field name="separator" type="String">String representing the separator used for the data labels on a chart. [Api set: ExcelApi 1.1]</field>
 			/// <field name="showBubbleSize" type="Boolean">Boolean value representing if the data label bubble size is visible or not. [Api set: ExcelApi 1.1]</field>
@@ -5652,6 +5648,7 @@ var Excel;
 			/// <field name="format" type="Excel.ChartSeriesFormat">Represents the formatting of a chart series, which includes fill and line formatting. Read-only. [Api set: ExcelApi 1.1]</field>
 			/// <field name="gapWidth" type="Number">Represents the gap width of a chart series.  Only valid on bar and column charts, as well as              specific classes of line and pie charts.  Throws an invalid argument exception on invalid charts. [Api set: ExcelApi 1.7]</field>
 			/// <field name="hasDataLabels" type="Boolean">Boolean value representing if the series has data labels or not. [Api set: ExcelApi 1.7]</field>
+			/// <field name="hasLeaderLines" type="Boolean">True if Microsoft Excel show leaderlines for each datalabel in series. Read/Write. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="invertIfNegative" type="Boolean">True if Microsoft Excel inverts the pattern in the item when it corresponds to a negative number. Read/Write. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="markerBackgroundColor" type="String">Represents markers background color of a chart series. [Api set: ExcelApi 1.7]</field>
 			/// <field name="markerForegroundColor" type="String">Represents markers foreground color of a chart series. [Api set: ExcelApi 1.7]</field>
@@ -5667,6 +5664,7 @@ var Excel;
 			/// <field name="splitType" type="String">Returns or sets the way the two sections of either a pie of pie chart or a bar of pie chart are split. Read/Write. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="splitValue" type="Number">Returns or sets the threshold value separating the two sections of either a pie of pie chart or a bar of pie chart. Read/Write. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="trendlines" type="Excel.ChartTrendlineCollection">Represents a collection of trendlines in the series. Read-only. [Api set: ExcelApi 1.7]</field>
+			/// <field name="type" type="String">Returns the value that represents the series type. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="varyByCategories" type="Boolean">True if Microsoft Excel assigns a different color or pattern to each data marker. The chart must contain only one series. Read/Write. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="xerrorBars" type="Excel.ChartErrorBars">Represents the error bar object for a chart series. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="yerrorBars" type="Excel.ChartErrorBars">Represents the error bar object for a chart series. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
@@ -5827,6 +5825,27 @@ var Excel;
 		return ChartSeriesFormat;
 	})(OfficeExtension.ClientObject);
 	Excel.ChartSeriesFormat = ChartSeriesFormat;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	/// <summary> [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
+	var ChartSeriesType = {
+		__proto__: null,
+		"column": "column",
+		"bar": "bar",
+		"bar3D": "bar3D",
+		"line": "line",
+		"pie": "pie",
+		"xyscatter": "xyscatter",
+		"area": "area",
+		"area3D": "area3D",
+		"doughnut": "doughnut",
+		"radar": "radar",
+		"surface3D": "surface3D",
+		"column3D": "column3D",
+	}
+	Excel.ChartSeriesType = ChartSeriesType;
 })(Excel || (Excel = {__proto__: null}));
 
 var Excel;
@@ -6160,6 +6179,7 @@ var Excel;
 			/// <field name="horizontalAlignment" type="String">Represents the horizontal alignment for chart trendline label. See Excel.ChartTextHorizontalAlignment for details.              This property is valid only when TextOrientation of trendline label is 90, -90 or 180. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="left" type="Number">Represents the distance, in points, from the left edge of chart trendline label to the left edge of chart area. Null if chart trendline label is not visible. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="numberFormat" type="String">String value that represents the format code for trendline label. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="numberFormatLinked" type="Boolean">Boolean value representing if the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells). [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="text" type="String">String representing the text of the trendline label on a chart. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="textOrientation" type="Number">Represents the text orientation of chart trendline label. The value should be an integer either from -90 to 90, or 180 for vertically-oriented text. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="top" type="Number">Represents the distance, in points, from the top edge of chart trendline label to the top of chart area. Null if chart trendline label is not visible. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
@@ -6330,9 +6350,6 @@ var Excel;
 		"area": "area",
 		"doughnut": "doughnut",
 		"radar": "radar",
-		"histogram": "histogram",
-		"pareto": "pareto",
-		"regionMap": "regionMap",
 	}
 	Excel.ChartType = ChartType;
 })(Excel || (Excel = {__proto__: null}));
@@ -8238,9 +8255,6 @@ var Excel;
 		"visualSelectionChanged": "visualSelectionChanged",
 		"agaveVisualUpdate": "agaveVisualUpdate",
 		"tableAdded": "tableAdded",
-		"tableDeleted": "tableDeleted",
-		"shapeActivated": "shapeActivated",
-		"shapeDeactivated": "shapeDeactivated",
 	}
 	Excel.EventType = EventType;
 })(Excel || (Excel = {__proto__: null}));
@@ -11650,6 +11664,217 @@ var Excel;
 
 var Excel;
 (function (Excel) {
+	var GeometricShape = (function(_super) {
+		__extends(GeometricShape, _super);
+		function GeometricShape() {
+			/// <summary> Represents a geometric shape object inside a worksheet. A geometric shape can be a line, rectangle, block arrow, equation, flowchart, start, banner, callout or basic shape in Excel. [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
+			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
+			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
+			/// <field name="id" type="Number">Represents the shape identifier. Read-only. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="shape" type="Excel.Shape">Returns the shape object for the geometric shape. Read-only. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+		}
+
+		GeometricShape.prototype.load = function(option) {
+			/// <summary>
+			/// Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+			/// </summary>
+			/// <param name="option" type="string | string[] | OfficeExtension.LoadOption"/>
+			/// <returns type="Excel.GeometricShape"/>
+		}
+
+		return GeometricShape;
+	})(OfficeExtension.ClientObject);
+	Excel.GeometricShape = GeometricShape;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	/// <summary> [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
+	var GeometricShapeType = {
+		__proto__: null,
+		"lineInverse": "lineInverse",
+		"triangle": "triangle",
+		"rightTriangle": "rightTriangle",
+		"rectangle": "rectangle",
+		"diamond": "diamond",
+		"parallelogram": "parallelogram",
+		"trapezoid": "trapezoid",
+		"nonIsoscelesTrapezoid": "nonIsoscelesTrapezoid",
+		"pentagon": "pentagon",
+		"hexagon": "hexagon",
+		"heptagon": "heptagon",
+		"octagon": "octagon",
+		"decagon": "decagon",
+		"dodecagon": "dodecagon",
+		"star4": "star4",
+		"star5": "star5",
+		"star6": "star6",
+		"star7": "star7",
+		"star8": "star8",
+		"star10": "star10",
+		"star12": "star12",
+		"star16": "star16",
+		"star24": "star24",
+		"star32": "star32",
+		"roundRectangle": "roundRectangle",
+		"round1Rectangle": "round1Rectangle",
+		"round2SameRectangle": "round2SameRectangle",
+		"round2DiagonalRectangle": "round2DiagonalRectangle",
+		"snipRoundRectangle": "snipRoundRectangle",
+		"snip1Rectangle": "snip1Rectangle",
+		"snip2SameRectangle": "snip2SameRectangle",
+		"snip2DiagonalRectangle": "snip2DiagonalRectangle",
+		"plaque": "plaque",
+		"ellipse": "ellipse",
+		"teardrop": "teardrop",
+		"homePlate": "homePlate",
+		"chevron": "chevron",
+		"pieWedge": "pieWedge",
+		"pie": "pie",
+		"blockArc": "blockArc",
+		"donut": "donut",
+		"noSmoking": "noSmoking",
+		"rightArrow": "rightArrow",
+		"leftArrow": "leftArrow",
+		"upArrow": "upArrow",
+		"downArrow": "downArrow",
+		"stripedRightArrow": "stripedRightArrow",
+		"notchedRightArrow": "notchedRightArrow",
+		"bentUpArrow": "bentUpArrow",
+		"leftRightArrow": "leftRightArrow",
+		"upDownArrow": "upDownArrow",
+		"leftUpArrow": "leftUpArrow",
+		"leftRightUpArrow": "leftRightUpArrow",
+		"quadArrow": "quadArrow",
+		"leftArrowCallout": "leftArrowCallout",
+		"rightArrowCallout": "rightArrowCallout",
+		"upArrowCallout": "upArrowCallout",
+		"downArrowCallout": "downArrowCallout",
+		"leftRightArrowCallout": "leftRightArrowCallout",
+		"upDownArrowCallout": "upDownArrowCallout",
+		"quadArrowCallout": "quadArrowCallout",
+		"bentArrow": "bentArrow",
+		"uturnArrow": "uturnArrow",
+		"circularArrow": "circularArrow",
+		"leftCircularArrow": "leftCircularArrow",
+		"leftRightCircularArrow": "leftRightCircularArrow",
+		"curvedRightArrow": "curvedRightArrow",
+		"curvedLeftArrow": "curvedLeftArrow",
+		"curvedUpArrow": "curvedUpArrow",
+		"curvedDownArrow": "curvedDownArrow",
+		"swooshArrow": "swooshArrow",
+		"cube": "cube",
+		"can": "can",
+		"lightningBolt": "lightningBolt",
+		"heart": "heart",
+		"sun": "sun",
+		"moon": "moon",
+		"smileyFace": "smileyFace",
+		"irregularSeal1": "irregularSeal1",
+		"irregularSeal2": "irregularSeal2",
+		"foldedCorner": "foldedCorner",
+		"bevel": "bevel",
+		"frame": "frame",
+		"halfFrame": "halfFrame",
+		"corner": "corner",
+		"diagonalStripe": "diagonalStripe",
+		"chord": "chord",
+		"arc": "arc",
+		"leftBracket": "leftBracket",
+		"rightBracket": "rightBracket",
+		"leftBrace": "leftBrace",
+		"rightBrace": "rightBrace",
+		"bracketPair": "bracketPair",
+		"bracePair": "bracePair",
+		"callout1": "callout1",
+		"callout2": "callout2",
+		"callout3": "callout3",
+		"accentCallout1": "accentCallout1",
+		"accentCallout2": "accentCallout2",
+		"accentCallout3": "accentCallout3",
+		"borderCallout1": "borderCallout1",
+		"borderCallout2": "borderCallout2",
+		"borderCallout3": "borderCallout3",
+		"accentBorderCallout1": "accentBorderCallout1",
+		"accentBorderCallout2": "accentBorderCallout2",
+		"accentBorderCallout3": "accentBorderCallout3",
+		"wedgeRectCallout": "wedgeRectCallout",
+		"wedgeRRectCallout": "wedgeRRectCallout",
+		"wedgeEllipseCallout": "wedgeEllipseCallout",
+		"cloudCallout": "cloudCallout",
+		"cloud": "cloud",
+		"ribbon": "ribbon",
+		"ribbon2": "ribbon2",
+		"ellipseRibbon": "ellipseRibbon",
+		"ellipseRibbon2": "ellipseRibbon2",
+		"leftRightRibbon": "leftRightRibbon",
+		"verticalScroll": "verticalScroll",
+		"horizontalScroll": "horizontalScroll",
+		"wave": "wave",
+		"doubleWave": "doubleWave",
+		"plus": "plus",
+		"flowChartProcess": "flowChartProcess",
+		"flowChartDecision": "flowChartDecision",
+		"flowChartInputOutput": "flowChartInputOutput",
+		"flowChartPredefinedProcess": "flowChartPredefinedProcess",
+		"flowChartInternalStorage": "flowChartInternalStorage",
+		"flowChartDocument": "flowChartDocument",
+		"flowChartMultidocument": "flowChartMultidocument",
+		"flowChartTerminator": "flowChartTerminator",
+		"flowChartPreparation": "flowChartPreparation",
+		"flowChartManualInput": "flowChartManualInput",
+		"flowChartManualOperation": "flowChartManualOperation",
+		"flowChartConnector": "flowChartConnector",
+		"flowChartPunchedCard": "flowChartPunchedCard",
+		"flowChartPunchedTape": "flowChartPunchedTape",
+		"flowChartSummingJunction": "flowChartSummingJunction",
+		"flowChartOr": "flowChartOr",
+		"flowChartCollate": "flowChartCollate",
+		"flowChartSort": "flowChartSort",
+		"flowChartExtract": "flowChartExtract",
+		"flowChartMerge": "flowChartMerge",
+		"flowChartOfflineStorage": "flowChartOfflineStorage",
+		"flowChartOnlineStorage": "flowChartOnlineStorage",
+		"flowChartMagneticTape": "flowChartMagneticTape",
+		"flowChartMagneticDisk": "flowChartMagneticDisk",
+		"flowChartMagneticDrum": "flowChartMagneticDrum",
+		"flowChartDisplay": "flowChartDisplay",
+		"flowChartDelay": "flowChartDelay",
+		"flowChartAlternateProcess": "flowChartAlternateProcess",
+		"flowChartOffpageConnector": "flowChartOffpageConnector",
+		"actionButtonBlank": "actionButtonBlank",
+		"actionButtonHome": "actionButtonHome",
+		"actionButtonHelp": "actionButtonHelp",
+		"actionButtonInformation": "actionButtonInformation",
+		"actionButtonForwardNext": "actionButtonForwardNext",
+		"actionButtonBackPrevious": "actionButtonBackPrevious",
+		"actionButtonEnd": "actionButtonEnd",
+		"actionButtonBeginning": "actionButtonBeginning",
+		"actionButtonReturn": "actionButtonReturn",
+		"actionButtonDocument": "actionButtonDocument",
+		"actionButtonSound": "actionButtonSound",
+		"actionButtonMovie": "actionButtonMovie",
+		"gear6": "gear6",
+		"gear9": "gear9",
+		"funnel": "funnel",
+		"mathPlus": "mathPlus",
+		"mathMinus": "mathMinus",
+		"mathMultiply": "mathMultiply",
+		"mathDivide": "mathDivide",
+		"mathEqual": "mathEqual",
+		"mathNotEqual": "mathNotEqual",
+		"cornerTabs": "cornerTabs",
+		"squareTabs": "squareTabs",
+		"plaqueTabs": "plaqueTabs",
+		"chartX": "chartX",
+		"chartStar": "chartStar",
+		"chartPlus": "chartPlus",
+	}
+	Excel.GeometricShapeType = GeometricShapeType;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
 	var HeaderFooter = (function(_super) {
 		__extends(HeaderFooter, _super);
 		function HeaderFooter() {
@@ -11858,6 +12083,31 @@ var Excel;
 
 var Excel;
 (function (Excel) {
+	var Image = (function(_super) {
+		__extends(Image, _super);
+		function Image() {
+			/// <summary> Represents an image object in the worksheet. [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
+			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
+			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
+			/// <field name="id" type="Number">Represents the shape identifier for the image object. Read-only. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="shape" type="Excel.Shape">Returns the shape object for the image. Read-only. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+		}
+
+		Image.prototype.load = function(option) {
+			/// <summary>
+			/// Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+			/// </summary>
+			/// <param name="option" type="string | string[] | OfficeExtension.LoadOption"/>
+			/// <returns type="Excel.Image"/>
+		}
+
+		return Image;
+	})(OfficeExtension.ClientObject);
+	Excel.Image = Image;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
 	/// <summary> [Api set: ExcelApi 1.2] </summary>
 	var ImageFittingMode = {
 		__proto__: null,
@@ -11985,7 +12235,6 @@ var Excel;
 		"tableSelectionChangedEvent": 100,
 		"tableDataChangedEvent": 101,
 		"tableAddedEvent": 102,
-		"tableDeletedEvent": 103,
 		"agaveVisualUpdateEvent": 150,
 		"customFunctionExecutionBeginEvent": 200,
 		"customFunctionExecutionEndEvent": 201,
@@ -11993,9 +12242,6 @@ var Excel;
 		"cancellationMessage": 1001,
 		"metadataMessage": 1002,
 		"visualSelectionChangedEvent": 2000,
-		"shapeSelectionChangedEvent": 2100,
-		"shapeActivatedEvent": 2101,
-		"shapeDeactivatedEvent": 2102,
 	}
 	Excel.MessageType = MessageType;
 })(Excel || (Excel = {__proto__: null}));
@@ -13001,18 +13247,6 @@ var Excel;
 
 var Excel;
 (function (Excel) {
-	/// <summary> [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
-	var Placement = {
-		__proto__: null,
-		"twoCell": "twoCell",
-		"oneCell": "oneCell",
-		"absolute": "absolute",
-	}
-	Excel.Placement = Placement;
-})(Excel || (Excel = {__proto__: null}));
-
-var Excel;
-(function (Excel) {
 	var PresetCriteriaConditionalFormat = (function(_super) {
 		__extends(PresetCriteriaConditionalFormat, _super);
 		function PresetCriteriaConditionalFormat() {
@@ -13274,6 +13508,18 @@ var Excel;
 			/// Gets a certain number of columns to the left of the current Range object. [Api set: ExcelApi 1.2]
 			/// </summary>
 			/// <param name="count" type="Number" optional="true">Optional. The number of columns to include in the resulting range. In general, use a positive number to create a range outside the current range. You can also use a negative number to create a range within the current range. The default value is 1.</param>
+			/// <returns type="Excel.Range"></returns>
+		}
+		Range.prototype.getDataValidationRange = function() {
+			/// <summary>
+			/// Returns a range with data validation rules. If there is no data validation rules within the range, this function will throw an ItemNotFound error. [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <returns type="Excel.Range"></returns>
+		}
+		Range.prototype.getDataValidationRangeOrNullObject = function() {
+			/// <summary>
+			/// Returns a range with data validation rules. If there is no data validation rules within the range, this function will return a null object. [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
 			/// <returns type="Excel.Range"></returns>
 		}
 		Range.prototype.getEntireColumn = function() {
@@ -14324,6 +14570,148 @@ var Excel;
 
 var Excel;
 (function (Excel) {
+	var Shape = (function(_super) {
+		__extends(Shape, _super);
+		function Shape() {
+			/// <summary> Represents a generic shape object in the worksheet. [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
+			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
+			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
+			/// <field name="altTextDescription" type="String">Returns or sets the alternative descriptive text string for a Shape object when the object is saved to a Web page. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="altTextTitle" type="String">Returns or sets the alternative title text string for a Shape object when the object is saved to a Web page. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="geometricShape" type="Excel.GeometricShape">Returns the geometric shape for the shape object. Error will be thrown, if the shape object is other shape type (Like, Image, SmartArt, etc.) rather than GeometricShape. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="height" type="Number">Represents the height, in points, of the shape.              Throws an invalid argument exception when set with negative value or zero as input. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="id" type="Number">Represents the shape identifier. Read-only. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="image" type="Excel.Image">Returns the image for the shape object. Error will be thrown, if the shape object is other shape type (Like, GeometricShape, SmartArt, etc.) rather than Image. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="left" type="Number">The distance, in points, from the left side of the shape to the left of the worksheet.              Throws an invalid argument exception when set with negative value as input. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="name" type="String">Represents the name of the shape. Read-only. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="rotation" type="Number">Represents the rotation, in degrees, of the shape. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="top" type="Number">The distance, in points, from the top edge of the shape to the top of the worksheet.              Throws an invalid argument exception when set with negative value as input. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="type" type="String">Returns the type of the specified shape. Read-only. See Excel.ShapeType for detail. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="width" type="Number">Represents the width, in points, of the shape.              Throws an invalid argument exception when set with negative value or zero as input. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="zorderPosition" type="Number">Returns the position of the specified shape in the z-order, the very bottom shape&apos;s z-order value is 0. Read-only. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+		}
+
+		Shape.prototype.load = function(option) {
+			/// <summary>
+			/// Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+			/// </summary>
+			/// <param name="option" type="string | string[] | OfficeExtension.LoadOption"/>
+			/// <returns type="Excel.Shape"/>
+		}
+
+		Shape.prototype.set = function() {
+			/// <signature>
+			/// <summary>Sets multiple properties on the object at the same time, based on JSON input.</summary>
+			/// <param name="properties" type="Excel.Interfaces.ShapeUpdateData">Properties described by the Excel.Interfaces.ShapeUpdateData interface.</param>
+			/// <param name="options" type="string">Options of the form { throwOnReadOnly?: boolean }
+			/// <br />
+			/// * throwOnReadOnly: Throw an error if the passed-in property list includes read-only properties (default = true).
+			/// </param>
+			/// </signature>
+			/// <signature>
+			/// <summary>Sets multiple properties on the object at the same time, based on an existing loaded object.</summary>
+			/// <param name="properties" type="Shape">An existing Shape object, with properties that have already been loaded and synced.</param>
+			/// </signature>
+		}
+		Shape.prototype.setZOrder = function(value) {
+			/// <summary>
+			/// Moves the specified shape in front of or behind other shapes in the collection (that is, changes the shape&apos;s position in the z-order). [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <param name="value" type="String">where to move the specified shape relative to the other shapes. See Excel.ShapeZOrder for detail.</param>
+			/// <returns ></returns>
+		}
+
+		return Shape;
+	})(OfficeExtension.ClientObject);
+	Excel.Shape = Shape;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	var ShapeCollection = (function(_super) {
+		__extends(ShapeCollection, _super);
+		function ShapeCollection() {
+			/// <summary> Represents all the shapes in the worksheet. [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
+			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
+			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
+			/// <field name="items" type="Array" elementType="Excel.Shape">Gets the loaded child items in this collection.</field>
+		}
+
+		ShapeCollection.prototype.load = function(option) {
+			/// <summary>
+			/// Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+			/// </summary>
+			/// <param name="option" type="string | string[] | OfficeExtension.LoadOption"/>
+			/// <returns type="Excel.ShapeCollection"/>
+		}
+		ShapeCollection.prototype.addGeometricShape = function(geometricShapeType, left, top, width, height) {
+			/// <summary>
+			/// Adds a geometric shape to worksheet. Returns a Shape object that represents the new shape. [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <param name="geometricShapeType" type="String">Represents the geometric type of the shape. See Excel.GeometricShapeType for details.</param>
+			/// <param name="left" type="Number">The distance, in points, from the left side of the shape to the left side of the worksheet.</param>
+			/// <param name="top" type="Number">The distance, in points, from the top edge of the shape to the top of the worksheet.</param>
+			/// <param name="width" type="Number">The width, in points, of the shape.</param>
+			/// <param name="height" type="Number">The height, in points, of the shape.</param>
+			/// <returns type="Excel.Shape"></returns>
+		}
+		ShapeCollection.prototype.addImage = function(base64ImageString) {
+			/// <summary>
+			/// Creates an image from a base64 string and adds it to worksheet. Returns the image object that represents the new Image. [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <param name="base64ImageString" type="String">A base64 encoded image in JPEG or PNG formats.</param>
+			/// <returns type="Excel.Image"></returns>
+		}
+		ShapeCollection.prototype.getCount = function() {
+			/// <summary>
+			/// Returns the number of shapes in the worksheet. Read-only. [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <returns type="OfficeExtension.ClientResult&lt;number&gt;"></returns>
+			var result = new OfficeExtension.ClientResult();
+			result.__proto__ = null;
+			result.value = 0;
+			return result;
+		}
+		ShapeCollection.prototype.getItem = function(shapeId) {
+			/// <summary>
+			/// Returns a shape identified by the shape id. Read-only. [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <param name="shapeId" type="Number">The identifier for the shape.</param>
+			/// <returns type="Excel.Shape"></returns>
+		}
+
+		return ShapeCollection;
+	})(OfficeExtension.ClientObject);
+	Excel.ShapeCollection = ShapeCollection;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	/// <summary> [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
+	var ShapeType = {
+		__proto__: null,
+		"unknown": "unknown",
+		"image": "image",
+		"geometricShape": "geometricShape",
+	}
+	Excel.ShapeType = ShapeType;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	/// <summary> [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
+	var ShapeZOrder = {
+		__proto__: null,
+		"bringToFront": "bringToFront",
+		"bringForward": "bringForward",
+		"sendToBack": "sendToBack",
+		"sendBackward": "sendBackward",
+	}
+	Excel.ShapeZOrder = ShapeZOrder;
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
 	/// <summary> [Api set: ExcelApi 1.1] </summary>
 	var SheetVisibility = {
 		__proto__: null,
@@ -14772,6 +15160,25 @@ var Excel;
 (function (Excel) {
 	var Interfaces;
 	(function (Interfaces) {
+		var TableAddedEventArgs = (function() {
+			function TableAddedEventArgs() {
+				/// <summary> Provides information about the table that raised the OnAdded event. [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
+				/// <field name="source" type="String">Gets the source of the event. See Excel.EventSource for details. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+				/// <field name="tableId" type="String">Gets the id of the table that is added. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+				/// <field name="type" type="String">Gets the type of the event. See Excel.EventType for details. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+				/// <field name="worksheetId" type="String">Gets the id of the worksheet in which the table is added. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			}
+			return TableAddedEventArgs;
+		})();
+		Interfaces.TableAddedEventArgs.__proto__ = null;
+		Interfaces.TableAddedEventArgs = TableAddedEventArgs;
+	})(Interfaces = Excel.Interfaces || (Excel.Interfaces = { __proto__: null}));
+})(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	var Interfaces;
+	(function (Interfaces) {
 		var TableChangedEventArgs = (function() {
 			function TableChangedEventArgs() {
 				/// <summary> Provides information about the table that raised the Changed event. [Api set: ExcelApi 1.7] </summary>
@@ -14798,6 +15205,7 @@ var Excel;
 			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
 			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
 			/// <field name="count" type="Number">Returns the number of tables in the workbook. Read-only. [Api set: ExcelApi 1.1]</field>
+			/// <field name="onAdded" type="OfficeExtension.EventHandlers">Occurs when new table is added in a workbook. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="onChanged" type="OfficeExtension.EventHandlers">Occurs when data changes on any table in a workbook, or a worksheet. [Api set: ExcelApi 1.7]</field>
 			/// <field name="items" type="Array" elementType="Excel.Table">Gets the loaded child items in this collection.</field>
 		}
@@ -14848,6 +15256,20 @@ var Excel;
 			/// <param name="key" >Name or ID of the table to be retrieved.</param>
 			/// <returns type="Excel.Table"></returns>
 		}
+		TableCollection.prototype.onAdded = {
+			__proto__: null,
+			add: function (handler) {
+				/// <param name="handler" type="function(eventArgs: Excel.Interfaces.TableAddedEventArgs)">Handler for the event. EventArgs: Provides information about the table that raised the OnAdded event. </param>
+				/// <returns type="OfficeExtension.EventHandlerResult"></returns>
+				var eventInfo = new Excel.Interfaces.TableAddedEventArgs();
+				eventInfo.__proto__ = null;
+				handler(eventInfo);
+			},
+			remove: function (handler) {
+				/// <param name="handler" type="function(eventArgs: Excel.Interfaces.TableAddedEventArgs)">Handler for the event.</param>
+				return;
+			}
+		};
 		TableCollection.prototype.onChanged = {
 			__proto__: null,
 			add: function (handler) {
@@ -15417,6 +15839,18 @@ var Excel;
 			/// </summary>
 			/// <returns type="Excel.Range"></returns>
 		}
+		Workbook.prototype.getActiveChart = function() {
+			/// <summary>
+			/// Gets the currently active chart in the workbook. If there is no active chart, will throw exception when invoke this statement [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <returns type="Excel.Chart"></returns>
+		}
+		Workbook.prototype.getActiveChartOrNullObject = function() {
+			/// <summary>
+			/// Gets the currently active chart in the workbook. If there is no active chart, will return null object [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <returns type="Excel.Chart"></returns>
+		}
 		Workbook.prototype.getIsActiveCollabSession = function() {
 			/// <summary>
 			/// True if the workbook is being edited by multiple users (co-authoring).              Please be aware there might be some delay between when the workbook status changes and when the changes are reflected on the result of the method. [Api set: ExcelApi BETA (PREVIEW ONLY)]
@@ -15461,6 +15895,7 @@ var Excel;
 			/// <summary> The WorkbookCreated object is the top level object created by Application.CreateWorkbook. A WorkbookCreated object is a special Workbook object. [Api set: ExcelApi BETA (PREVIEW ONLY)] </summary>
 			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
 			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
+			/// <field name="id" type="String">Returns a value that uniquely identifies the WorkbookCreated object. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 		}
 
 		WorkbookCreated.prototype.load = function(option) {
@@ -15469,6 +15904,12 @@ var Excel;
 			/// </summary>
 			/// <param name="option" type="string | string[] | OfficeExtension.LoadOption"/>
 			/// <returns type="Excel.WorkbookCreated"/>
+		}
+		WorkbookCreated.prototype.open = function() {
+			/// <summary>
+			/// Open the workbook. [Api set: ExcelApi BETA (PREVIEW ONLY)]
+			/// </summary>
+			/// <returns ></returns>
 		}
 
 		return WorkbookCreated;
@@ -15484,7 +15925,7 @@ var Excel;
 			/// <summary> Represents the protection of a workbook object. [Api set: ExcelApi 1.7] </summary>
 			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
 			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
-			/// <field name="protected" type="Boolean">Indicates if the workbook is protected. Read-Only. [Api set: ExcelApi 1.7]</field>
+			/// <field name="protected" type="Boolean">Indicates if the workbook is protected. Read-Only. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 		}
 
 		WorkbookProtection.prototype.load = function(option) {
@@ -15523,7 +15964,6 @@ var Excel;
 			/// <field name="context" type="Excel.RequestContext">The request context associated with this object.</field>
 			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
 			/// <field name="charts" type="Excel.ChartCollection">Returns collection of charts that are part of the worksheet. Read-only. [Api set: ExcelApi 1.1]</field>
-			/// <field name="enableCalculation" type="Boolean">Gets or sets the enableCalculation property of the worksheet.              True if Excel recalculates the worksheet when necessary. False if Excel doesn&apos;t recalculate the sheet. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="freezePanes" type="Excel.WorksheetFreezePanes">Gets an object that can be used to manipulate frozen panes on the worksheet. Read-only. [Api set: ExcelApi 1.7]</field>
 			/// <field name="horizontalPageBreaks" type="Excel.PageBreakCollection">Gets the horizontal page break collection for the worksheet. This collection only contains manual page breaks. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="id" type="String">Returns a value that uniquely identifies the worksheet in a given workbook. The value of the identifier remains the same even when the worksheet is renamed or moved. Read-only. [Api set: ExcelApi 1.1]</field>
@@ -15533,6 +15973,7 @@ var Excel;
 			/// <field name="pivotTables" type="Excel.PivotTableCollection">Collection of PivotTables that are part of the worksheet. Read-only. [Api set: ExcelApi 1.3]</field>
 			/// <field name="position" type="Number">The zero-based position of the worksheet within the workbook. [Api set: ExcelApi 1.1]</field>
 			/// <field name="protection" type="Excel.WorksheetProtection">Returns sheet protection object for a worksheet. Read-only. [Api set: ExcelApi 1.2]</field>
+			/// <field name="shapes" type="Excel.ShapeCollection">Returns the collection of all the Shape objects on the worksheet. Read-only. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="showGridlines" type="Boolean">Gets or sets the worksheet&apos;s gridlines flag.              This flag determines whether gridlines are visible to the user. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="showHeadings" type="Boolean">Gets or sets the worksheet&apos;s headings flag.              This flag determines whether headings are visible to the user. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="standardHeight" type="Number">Returns the standard (default) height of all the rows in the worksheet, in points. Read-only. [Api set: ExcelApi 1.7]</field>
@@ -15852,6 +16293,7 @@ var Excel;
 			/// <field name="onActivated" type="OfficeExtension.EventHandlers">Occurs when any worksheet in the workbook is activated. [Api set: ExcelApi 1.7]</field>
 			/// <field name="onAdded" type="OfficeExtension.EventHandlers">Occurs when a new worksheet is added to the workbook. [Api set: ExcelApi 1.7]</field>
 			/// <field name="onCalculated" type="OfficeExtension.EventHandlers">Occurs when any worksheet in the workbook is calculated. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
+			/// <field name="onChanged" type="OfficeExtension.EventHandlers">Occurs when any worksheet in the workbook is changed. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
 			/// <field name="onDeactivated" type="OfficeExtension.EventHandlers">Occurs when any worksheet in the workbook is deactivated. [Api set: ExcelApi 1.7]</field>
 			/// <field name="onDeleted" type="OfficeExtension.EventHandlers">Occurs when a worksheet is deleted from the workbook. [Api set: ExcelApi 1.7]</field>
 			/// <field name="items" type="Array" elementType="Excel.Worksheet">Gets the loaded child items in this collection.</field>
@@ -15955,6 +16397,20 @@ var Excel;
 			},
 			remove: function (handler) {
 				/// <param name="handler" type="function(eventArgs: Excel.Interfaces.WorksheetCalculatedEventArgs)">Handler for the event.</param>
+				return;
+			}
+		};
+		WorksheetCollection.prototype.onChanged = {
+			__proto__: null,
+			add: function (handler) {
+				/// <param name="handler" type="function(eventArgs: Excel.Interfaces.WorksheetChangedEventArgs)">Handler for the event. EventArgs: Provides information about the worksheet that raised the Changed event. </param>
+				/// <returns type="OfficeExtension.EventHandlerResult"></returns>
+				var eventInfo = new Excel.Interfaces.WorksheetChangedEventArgs();
+				eventInfo.__proto__ = null;
+				handler(eventInfo);
+			},
+			remove: function (handler) {
+				/// <param name="handler" type="function(eventArgs: Excel.Interfaces.WorksheetChangedEventArgs)">Handler for the event.</param>
 				return;
 			}
 		};
@@ -16286,7 +16742,6 @@ var Excel;
 			function WorksheetUpdateData() {
 				/// <summary>An interface for updating data on the Worksheet object, for use in "worksheet.set({ ... })".</summary>
 				/// <field name="pageLayout" type="Excel.Interfaces.PageLayoutUpdateData">Gets the PageLayout object of the worksheet. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>
-				/// <field name="enableCalculation" type="Boolean">Gets or sets the enableCalculation property of the worksheet.              True if Excel recalculates the worksheet when necessary. False if Excel doesn&apos;t recalculate the sheet. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
 				/// <field name="name" type="String">The display name of the worksheet. [Api set: ExcelApi 1.1]</field>;
 				/// <field name="position" type="Number">The zero-based position of the worksheet within the workbook. [Api set: ExcelApi 1.1]</field>;
 				/// <field name="showGridlines" type="Boolean">Gets or sets the worksheet&apos;s gridlines flag.              This flag determines whether gridlines are visible to the user. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
@@ -16576,15 +17031,21 @@ var Excel;
 				/// <field name="title" type="Excel.Interfaces.ChartTitleUpdateData">Represents the title of the specified chart, including the text, visibility, position, and formating of the title. [Api set: ExcelApi 1.1]</field>
 				/// <field name="categoryLabelLevel" type="Number">Returns or sets a ChartCategoryLabelLevel enumeration constant referring to               the level of where the category labels are being sourced from. Read/Write. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
 				/// <field name="chartType" type="String">Represents the type of the chart. See Excel.ChartType for details. [Api set: ExcelApi 1.7]</field>;
+				/// <field name="colorScheme" type="Number">Returns or sets an integer that represents the color scheme for the chart. Read/Write. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
 				/// <field name="displayBlanksAs" type="String">Returns or sets the way that blank cells are plotted on a chart. Read/Write. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
 				/// <field name="height" type="Number">Represents the height, in points, of the chart object. [Api set: ExcelApi 1.1]</field>;
 				/// <field name="left" type="Number">The distance, in points, from the left side of the chart to the worksheet origin. [Api set: ExcelApi 1.1]</field>;
 				/// <field name="name" type="String">Represents the name of a chart object. [Api set: ExcelApi 1.1]</field>;
 				/// <field name="plotBy" type="String">Returns or sets the way columns or rows are used as data series on the chart. Read/Write. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
 				/// <field name="plotVisibleOnly" type="Boolean">True if only visible cells are plotted. False if both visible and hidden cells are plotted. Read/Write. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="roundedCorners" type="Boolean">True if the chart area of the chart has rounded corners. Read/Write. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
 				/// <field name="seriesNameLevel" type="Number">Returns or sets a ChartSeriesNameLevel enumeration constant referring to              the level of where the series names are being sourced from. Read/Write. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
 				/// <field name="showAllFieldButtons" type="Boolean">Represents whether to display all field buttons on a PivotChart. [Api set: ExcelApi 1.7]</field>;
+				/// <field name="showAxisFieldButtons" type="Boolean">Represents whether to display axis field buttons on a PivotChart.              The ShowAxisFieldButtons property corresponds to the Show Axis Field Buttons command on the Field Buttons drop-down list of the Analyze tab, which is available when a PivotChart is selected. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
 				/// <field name="showDataLabelsOverMaximum" type="Boolean">Represents whether to to show the data labels when the value is greater than the maximum value on the value axis.              If value axis became smaller than the size of data points, you can use this property to set whether to show the data labels.              This property applies to 2-D charts only. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="showLegendFieldButtons" type="Boolean">Represents whether to display legend field buttons on a PivotChart. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="showReportFilterFieldButtons" type="Boolean">Represents whether to display report filter field buttons on a PivotChart. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="showValueFieldButtons" type="Boolean">Represents whether to display show value field buttons on a PivotChart. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
 				/// <field name="style" type="Number">Returns or sets the chart style for the chart. Read/Write. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
 				/// <field name="top" type="Number">Represents the distance, in points, from the top edge of the object to the top of row 1 (on a worksheet) or the top of the chart area (on a chart). [Api set: ExcelApi 1.1]</field>;
 				/// <field name="width" type="Number">Represents the width, in points, of the chart object. [Api set: ExcelApi 1.1]</field>;
@@ -16633,6 +17094,7 @@ var Excel;
 				/// <field name="firstSliceAngle" type="Number">Returns or sets the angle of the first pie-chart or doughnut-chart slice, in degrees (clockwise from vertical). Applies only to pie, 3-D pie, and doughnut charts. Can be a value from 0 through 360. Read/Write [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
 				/// <field name="gapWidth" type="Number">Represents the gap width of a chart series.  Only valid on bar and column charts, as well as              specific classes of line and pie charts.  Throws an invalid argument exception on invalid charts. [Api set: ExcelApi 1.7]</field>;
 				/// <field name="hasDataLabels" type="Boolean">Boolean value representing if the series has data labels or not. [Api set: ExcelApi 1.7]</field>;
+				/// <field name="hasLeaderLines" type="Boolean">True if Microsoft Excel show leaderlines for each datalabel in series. Read/Write. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
 				/// <field name="invertIfNegative" type="Boolean">True if Microsoft Excel inverts the pattern in the item when it corresponds to a negative number. Read/Write. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
 				/// <field name="markerBackgroundColor" type="String">Represents markers background color of a chart series. [Api set: ExcelApi 1.7]</field>;
 				/// <field name="markerForegroundColor" type="String">Represents markers foreground color of a chart series. [Api set: ExcelApi 1.7]</field>;
@@ -16755,6 +17217,7 @@ var Excel;
 				/// <field name="minorUnit" >Represents the interval between two minor tick marks. Can be set to a numeric value or an empty string (for automatic axis values). The returned value is always a number. [Api set: ExcelApi 1.1]</field>;
 				/// <field name="multiLevel" type="Boolean">Represents whether an axis is multilevel or not. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
 				/// <field name="numberFormat" type="String">Represents the format code for the axis tick label. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="numberFormatLinked" type="Boolean">Represents whether the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells). [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
 				/// <field name="offset" type="Number">Represents the distance between the levels of labels, and the distance between the first level and the axis line. The value should be an integer from 0 to 1000. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
 				/// <field name="position" type="String">Represents the specified axis position where the other axis crosses. See Excel.ChartAxisPosition for details. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
 				/// <field name="reversePlotOrder" type="Boolean">Represents whether Microsoft Excel plots data points from last to first. [Api set: ExcelApi 1.7]</field>;
@@ -16836,6 +17299,7 @@ var Excel;
 				/// <field name="autoText" type="Boolean">Represents whether data labels automatically generates appropriate text based on context. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
 				/// <field name="horizontalAlignment" type="String">Represents the horizontal alignment for chart data label. See Excel.ChartTextHorizontalAlignment for details.              This property is valid only when TextOrientation of data label is 0. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
 				/// <field name="numberFormat" type="String">Represents the format code for data labels. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="numberFormatLinked" type="Boolean">Represents whether the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells). [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
 				/// <field name="position" type="String">DataLabelPosition value that represents the position of the data label. See Excel.ChartDataLabelPosition for details. [Api set: ExcelApi 1.1]</field>;
 				/// <field name="separator" type="String">String representing the separator used for the data labels on a chart. [Api set: ExcelApi 1.1]</field>;
 				/// <field name="showBubbleSize" type="Boolean">Boolean value representing if the data label bubble size is visible or not. [Api set: ExcelApi 1.1]</field>;
@@ -16867,6 +17331,7 @@ var Excel;
 				/// <field name="horizontalAlignment" type="String">Represents the horizontal alignment for chart data label. See Excel.ChartTextHorizontalAlignment for details.              This property is valid only when TextOrientation of data label is 90, -90 or 180. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
 				/// <field name="left" type="Number">Represents the distance, in points, from the left edge of chart data label to the left edge of chart area. Null if chart data label is not visible. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
 				/// <field name="numberFormat" type="String">String value that represents the format code for data label. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="numberFormatLinked" type="Boolean">Boolean value representing if the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells). [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
 				/// <field name="position" type="String">DataLabelPosition value that represents the position of the data label. See Excel.ChartDataLabelPosition for details. [Api set: ExcelApi 1.7]</field>;
 				/// <field name="separator" type="String">String representing the separator used for the data label on a chart. [Api set: ExcelApi 1.7]</field>;
 				/// <field name="showBubbleSize" type="Boolean">Boolean value representing if the data label bubble size is visible or not. [Api set: ExcelApi 1.7]</field>;
@@ -17201,6 +17666,7 @@ var Excel;
 				/// <field name="horizontalAlignment" type="String">Represents the horizontal alignment for chart trendline label. See Excel.ChartTextHorizontalAlignment for details.              This property is valid only when TextOrientation of trendline label is 90, -90 or 180. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
 				/// <field name="left" type="Number">Represents the distance, in points, from the left edge of chart trendline label to the left edge of chart area. Null if chart trendline label is not visible. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
 				/// <field name="numberFormat" type="String">String value that represents the format code for trendline label. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="numberFormatLinked" type="Boolean">Boolean value representing if the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells). [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
 				/// <field name="text" type="String">String representing the text of the trendline label on a chart. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
 				/// <field name="textOrientation" type="Number">Represents the text orientation of chart trendline label. The value should be an integer either from -90 to 90, or 180 for vertically-oriented text. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
 				/// <field name="top" type="Number">Represents the distance, in points, from the top edge of chart trendline label to the top of chart area. Null if chart trendline label is not visible. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
@@ -17890,6 +18356,28 @@ var Excel;
 		Interfaces.HeaderFooterGroupUpdateData = HeaderFooterGroupUpdateData;
 	})(Interfaces = Excel.Interfaces || (Excel.Interfaces = { __proto__: null}));
 })(Excel || (Excel = {__proto__: null}));
+
+var Excel;
+(function (Excel) {
+	var Interfaces;
+	(function (Interfaces) {
+		var ShapeUpdateData = (function() {
+			function ShapeUpdateData() {
+				/// <summary>An interface for updating data on the Shape object, for use in "shape.set({ ... })".</summary>
+				/// <field name="altTextDescription" type="String">Returns or sets the alternative descriptive text string for a Shape object when the object is saved to a Web page. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="altTextTitle" type="String">Returns or sets the alternative title text string for a Shape object when the object is saved to a Web page. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="height" type="Number">Represents the height, in points, of the shape.              Throws an invalid argument exception when set with negative value or zero as input. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="left" type="Number">The distance, in points, from the left side of the shape to the left of the worksheet.              Throws an invalid argument exception when set with negative value as input. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="rotation" type="Number">Represents the rotation, in degrees, of the shape. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="top" type="Number">The distance, in points, from the top edge of the shape to the top of the worksheet.              Throws an invalid argument exception when set with negative value as input. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+				/// <field name="width" type="Number">Represents the width, in points, of the shape.              Throws an invalid argument exception when set with negative value or zero as input. [Api set: ExcelApi BETA (PREVIEW ONLY)]</field>;
+			}
+			return ShapeUpdateData;
+		})();
+		Interfaces.ShapeUpdateData.__proto__ = null;
+		Interfaces.ShapeUpdateData = ShapeUpdateData;
+	})(Interfaces = Excel.Interfaces || (Excel.Interfaces = { __proto__: null}));
+})(Excel || (Excel = {__proto__: null}));
 var Excel;
 (function (Excel) {
 	var RequestContext = (function (_super) {
@@ -17970,7 +18458,7 @@ var Word;
 	var Application = (function(_super) {
 		__extends(Application, _super);
 		function Application() {
-			/// <summary> Represents the application object. [Api set: WordApi 1.3] </summary>
+			/// <summary> The Application object. [Api set: WordApi 1.3] </summary>
 			/// <field name="context" type="Word.RequestContext">The request context associated with this object.</field>
 			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
 		}
@@ -17984,7 +18472,7 @@ var Word;
 		}
 		Application.prototype.createDocument = function(base64File) {
 			/// <summary>
-			/// Creates a new document by using an optional base64 encoded .docx file. [Api set: WordApi 1.3]
+			/// Creates a new hidden document by using an optional base64 encoded .docx file. [Api set: WordApi 1.3]
 			/// </summary>
 			/// <param name="base64File" type="String" optional="true">Optional. The base64 encoded .docx file. The default value is null.</param>
 			/// <returns type="Word.DocumentCreated"></returns>
@@ -18005,7 +18493,7 @@ var Word;
 			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
 			/// <field name="contentControls" type="Word.ContentControlCollection">Gets the collection of rich text content control objects in the body. Read-only. [Api set: WordApi 1.1]</field>
 			/// <field name="font" type="Word.Font">Gets the text format of the body. Use this to get and set font name, size, color and other properties. Read-only. [Api set: WordApi 1.1]</field>
-			/// <field name="inlinePictures" type="Word.InlinePictureCollection">Gets the collection of InlinePicture objects in the body. The collection does not include floating images. Read-only. [Api set: WordApi 1.1]</field>
+			/// <field name="inlinePictures" type="Word.InlinePictureCollection">Gets the collection of inlinePicture objects in the body. The collection does not include floating images. Read-only. [Api set: WordApi 1.1]</field>
 			/// <field name="lists" type="Word.ListCollection">Gets the collection of list objects in the body. Read-only. [Api set: WordApi 1.3]</field>
 			/// <field name="paragraphs" type="Word.ParagraphCollection">Gets the collection of paragraph objects in the body. Read-only. [Api set: WordApi 1.1]</field>
 			/// <field name="parentBody" type="Word.Body">Gets the parent body of the body. For example, a table cell body&apos;s parent body could be a header. Throws if there isn&apos;t a parent body. Read-only. [Api set: WordApi 1.3]</field>
@@ -18073,7 +18561,7 @@ var Word;
 			/// <summary>
 			/// Gets the whole body, or the starting or ending point of the body, as a range. [Api set: WordApi 1.3]
 			/// </summary>
-			/// <param name="rangeLocation" type="String" optional="true">Optional. The range location can be &apos;Whole&apos;, &apos;Start&apos;, &apos;End&apos;, &apos;After&apos;, or &apos;Content&apos;.</param>
+			/// <param name="rangeLocation" type="String" optional="true">Optional. The range location can be &apos;Whole&apos;, &apos;Start&apos;, &apos;End&apos;, &apos;After&apos; or &apos;Content&apos;.</param>
 			/// <returns type="Word.Range"></returns>
 		}
 		Body.prototype.insertBreak = function(breakType, insertLocation) {
@@ -18092,18 +18580,18 @@ var Word;
 		}
 		Body.prototype.insertFileFromBase64 = function(base64File, insertLocation) {
 			/// <summary>
-			/// Inserts a document into the body at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos;, or &apos;End&apos;. [Api set: WordApi 1.1]
+			/// Inserts a document into the body at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos; or &apos;End&apos;. [Api set: WordApi 1.1]
 			/// </summary>
 			/// <param name="base64File" type="String">Required. The base64 encoded content of a .docx file.</param>
-			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos;, or &apos;End&apos;.</param>
+			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos; or &apos;End&apos;.</param>
 			/// <returns type="Word.Range"></returns>
 		}
 		Body.prototype.insertHtml = function(html, insertLocation) {
 			/// <summary>
-			/// Inserts HTML at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos;, or &apos;End&apos;. [Api set: WordApi 1.1]
+			/// Inserts HTML at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos; or &apos;End&apos;. [Api set: WordApi 1.1]
 			/// </summary>
 			/// <param name="html" type="String">Required. The HTML to be inserted in the document.</param>
-			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos;, or &apos;End&apos;.</param>
+			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos; or &apos;End&apos;.</param>
 			/// <returns type="Word.Range"></returns>
 		}
 		Body.prototype.insertInlinePictureFromBase64 = function(base64EncodedImage, insertLocation) {
@@ -18116,10 +18604,10 @@ var Word;
 		}
 		Body.prototype.insertOoxml = function(ooxml, insertLocation) {
 			/// <summary>
-			/// Inserts OOXML at the specified location.  The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos;, or &apos;End&apos;. [Api set: WordApi 1.1]
+			/// Inserts OOXML at the specified location.  The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos; or &apos;End&apos;. [Api set: WordApi 1.1]
 			/// </summary>
 			/// <param name="ooxml" type="String">Required. The OOXML to be inserted.</param>
-			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos;, or &apos;End&apos;.</param>
+			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos; or &apos;End&apos;.</param>
 			/// <returns type="Word.Range"></returns>
 		}
 		Body.prototype.insertParagraph = function(paragraphText, insertLocation) {
@@ -18142,15 +18630,15 @@ var Word;
 		}
 		Body.prototype.insertText = function(text, insertLocation) {
 			/// <summary>
-			/// Inserts text into the body at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos;, or &apos;End&apos;. [Api set: WordApi 1.1]
+			/// Inserts text into the body at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos; or &apos;End&apos;. [Api set: WordApi 1.1]
 			/// </summary>
 			/// <param name="text" type="String">Required. Text to be inserted.</param>
-			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos;, or &apos;End&apos;.</param>
+			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos; or &apos;End&apos;.</param>
 			/// <returns type="Word.Range"></returns>
 		}
 		Body.prototype.search = function(searchText, searchOptions) {
 			/// <summary>
-			/// Performs a search with the specified SearchOptions on the scope of the body object. The search results are a collection of range objects. [Api set: WordApi 1.1]
+			/// Performs a search with the specified searchOptions on the scope of the body object. The search results are a collection of range objects. [Api set: WordApi 1.1]
 			/// </summary>
 			/// <param name="searchText" type="String">Required. The search text.</param>
 			/// <param name="searchOptions" type="Word.SearchOptions" optional="true">Optional. Options for the search.</param>
@@ -18160,7 +18648,7 @@ var Word;
 			/// <summary>
 			/// Selects the body and navigates the Word UI to it. [Api set: WordApi 1.1]
 			/// </summary>
-			/// <param name="selectionMode" type="String" optional="true">Optional. The selection mode can be &apos;Select&apos;, &apos;Start&apos;, or &apos;End&apos;. &apos;Select&apos; is the default.</param>
+			/// <param name="selectionMode" type="String" optional="true">Optional. The selection mode can be &apos;Select&apos;, &apos;Start&apos; or &apos;End&apos;. &apos;Select&apos; is the default.</param>
 			/// <returns ></returns>
 		}
 
@@ -18251,7 +18739,7 @@ var Word;
 
 var Word;
 (function (Word) {
-	/// <summary> Specifies the form of a break. [Api set: WordApi] </summary>
+	/// <summary> Page break, line break, and four section breaks [Api set: WordApi] </summary>
 	var BreakType = {
 		__proto__: null,
 		"page": "page",
@@ -18285,7 +18773,7 @@ var Word;
 			/// <summary> Represents a content control. Content controls are bounded and potentially labeled regions in a document that serve as containers for specific types of content. Individual content controls may contain contents such as images, tables, or paragraphs of formatted text. Currently, only rich text content controls are supported. [Api set: WordApi 1.1] </summary>
 			/// <field name="context" type="Word.RequestContext">The request context associated with this object.</field>
 			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
-			/// <field name="appearance" type="String">Gets or sets the appearance of the content control. The value can be &apos;BoundingBox&apos;, &apos;Tags&apos;, or &apos;Hidden&apos;. [Api set: WordApi 1.1]</field>
+			/// <field name="appearance" type="String">Gets or sets the appearance of the content control. The value can be &apos;boundingBox&apos;, &apos;tags&apos; or &apos;hidden&apos;. [Api set: WordApi 1.1]</field>
 			/// <field name="cannotDelete" type="Boolean">Gets or sets a value that indicates whether the user can delete the content control. Mutually exclusive with removeWhenEdited. [Api set: WordApi 1.1]</field>
 			/// <field name="cannotEdit" type="Boolean">Gets or sets a value that indicates whether the user can edit the contents of the content control. [Api set: WordApi 1.1]</field>
 			/// <field name="color" type="String">Gets or sets the color of the content control. Color is specified in &apos;#RRGGBB&apos; format or by using the color name. [Api set: WordApi 1.1]</field>
@@ -18376,7 +18864,7 @@ var Word;
 			/// <summary>
 			/// Gets the whole content control, or the starting or ending point of the content control, as a range. [Api set: WordApi 1.3]
 			/// </summary>
-			/// <param name="rangeLocation" type="String" optional="true">Optional. The range location can be &apos;Whole&apos;, &apos;Before&apos;, &apos;Start&apos;, &apos;End&apos;, &apos;After&apos;, or &apos;Content&apos;.</param>
+			/// <param name="rangeLocation" type="String" optional="true">Optional. The range location can be &apos;Whole&apos;, &apos;Before&apos;, &apos;Start&apos;, &apos;End&apos;, &apos;After&apos; or &apos;Content&apos;.</param>
 			/// <returns type="Word.Range"></returns>
 		}
 		ContentControl.prototype.getTextRanges = function(endingMarks, trimSpacing) {
@@ -18384,78 +18872,78 @@ var Word;
 			/// Gets the text ranges in the content control by using punctuation marks and/or other ending marks. [Api set: WordApi 1.3]
 			/// </summary>
 			/// <param name="endingMarks" type="Array" elementType="String">Required. The punctuation marks and/or other ending marks as an array of strings.</param>
-			/// <param name="trimSpacing" type="Boolean" optional="true">Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks, and paragraph end marks) from the start and end of the ranges returned in the range collection. Default is false which indicates that spacing characters at the start and end of the ranges are included in the range collection.</param>
+			/// <param name="trimSpacing" type="Boolean" optional="true">Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks and paragraph end marks) from the start and end of the ranges returned in the range collection. Default is false which indicates that spacing characters at the start and end of the ranges are included in the range collection.</param>
 			/// <returns type="Word.RangeCollection"></returns>
 		}
 		ContentControl.prototype.insertBreak = function(breakType, insertLocation) {
 			/// <summary>
-			/// Inserts a break at the specified location in the main document. The insertLocation value can be &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos;, or &apos;After&apos;. This method cannot be used with &apos;RichTextTable&apos;, &apos;RichTextTableRow&apos; and &apos;RichTextTableCell&apos; content controls. [Api set: WordApi 1.1]
+			/// Inserts a break at the specified location in the main document. The insertLocation value can be &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos; or &apos;After&apos;. This method cannot be used with &apos;RichTextTable&apos;, &apos;RichTextTableRow&apos; and &apos;RichTextTableCell&apos; content controls. [Api set: WordApi 1.1]
 			/// </summary>
 			/// <param name="breakType" type="String">Required. Type of break.</param>
-			/// <param name="insertLocation" type="String">Required. The value can be &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos;, or &apos;After&apos;.</param>
+			/// <param name="insertLocation" type="String">Required. The value can be &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos; or &apos;After&apos;.</param>
 			/// <returns ></returns>
 		}
 		ContentControl.prototype.insertFileFromBase64 = function(base64File, insertLocation) {
 			/// <summary>
-			/// Inserts a document into the content control at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos;, or &apos;End&apos;. [Api set: WordApi 1.1]
+			/// Inserts a document into the content control at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos; or &apos;End&apos;. [Api set: WordApi 1.1]
 			/// </summary>
 			/// <param name="base64File" type="String">Required. The base64 encoded content of a .docx file.</param>
-			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos;, or &apos;End&apos;. &apos;Replace&apos; cannot be used with &apos;RichTextTable&apos; and &apos;RichTextTableRow&apos; content controls.</param>
+			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos; or &apos;End&apos;. &apos;Replace&apos; cannot be used with &apos;RichTextTable&apos; and &apos;RichTextTableRow&apos; content controls.</param>
 			/// <returns type="Word.Range"></returns>
 		}
 		ContentControl.prototype.insertHtml = function(html, insertLocation) {
 			/// <summary>
-			/// Inserts HTML into the content control at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos;, or &apos;End&apos;. [Api set: WordApi 1.1]
+			/// Inserts HTML into the content control at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos; or &apos;End&apos;. [Api set: WordApi 1.1]
 			/// </summary>
 			/// <param name="html" type="String">Required. The HTML to be inserted in to the content control.</param>
-			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos;, or &apos;End&apos;. &apos;Replace&apos; cannot be used with &apos;RichTextTable&apos; and &apos;RichTextTableRow&apos; content controls.</param>
+			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos; or &apos;End&apos;. &apos;Replace&apos; cannot be used with &apos;RichTextTable&apos; and &apos;RichTextTableRow&apos; content controls.</param>
 			/// <returns type="Word.Range"></returns>
 		}
 		ContentControl.prototype.insertInlinePictureFromBase64 = function(base64EncodedImage, insertLocation) {
 			/// <summary>
-			/// Inserts an inline picture into the content control at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos;, or &apos;End&apos;. [Api set: WordApi 1.2]
+			/// Inserts an inline picture into the content control at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos; or &apos;End&apos;. [Api set: WordApi 1.2]
 			/// </summary>
 			/// <param name="base64EncodedImage" type="String">Required. The base64 encoded image to be inserted in the content control.</param>
-			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos;, or &apos;End&apos;. &apos;Replace&apos; cannot be used with &apos;RichTextTable&apos; and &apos;RichTextTableRow&apos; content controls.</param>
+			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos; or &apos;End&apos;. &apos;Replace&apos; cannot be used with &apos;RichTextTable&apos; and &apos;RichTextTableRow&apos; content controls.</param>
 			/// <returns type="Word.InlinePicture"></returns>
 		}
 		ContentControl.prototype.insertOoxml = function(ooxml, insertLocation) {
 			/// <summary>
-			/// Inserts OOXML into the content control at the specified location.  The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos;, or &apos;End&apos;. [Api set: WordApi 1.1]
+			/// Inserts OOXML into the content control at the specified location.  The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos; or &apos;End&apos;. [Api set: WordApi 1.1]
 			/// </summary>
 			/// <param name="ooxml" type="String">Required. The OOXML to be inserted in to the content control.</param>
-			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos;, or &apos;End&apos;. &apos;Replace&apos; cannot be used with &apos;RichTextTable&apos; and &apos;RichTextTableRow&apos; content controls.</param>
+			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos; or &apos;End&apos;. &apos;Replace&apos; cannot be used with &apos;RichTextTable&apos; and &apos;RichTextTableRow&apos; content controls.</param>
 			/// <returns type="Word.Range"></returns>
 		}
 		ContentControl.prototype.insertParagraph = function(paragraphText, insertLocation) {
 			/// <summary>
-			/// Inserts a paragraph at the specified location. The insertLocation value can be &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos;, or &apos;After&apos;. [Api set: WordApi 1.1]
+			/// Inserts a paragraph at the specified location. The insertLocation value can be &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos; or &apos;After&apos;. [Api set: WordApi 1.1]
 			/// </summary>
-			/// <param name="paragraphText" type="String">Required. The paragraph text to be inserted.</param>
-			/// <param name="insertLocation" type="String">Required. The value can be &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos;, or &apos;After&apos;. &apos;Before&apos; and &apos;After&apos; cannot be used with &apos;RichTextTable&apos;, &apos;RichTextTableRow&apos; and &apos;RichTextTableCell&apos; content controls.</param>
+			/// <param name="paragraphText" type="String">Required. The paragrph text to be inserted.</param>
+			/// <param name="insertLocation" type="String">Required. The value can be &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos; or &apos;After&apos;. &apos;Before&apos; and &apos;After&apos; cannot be used with &apos;RichTextTable&apos;, &apos;RichTextTableRow&apos; and &apos;RichTextTableCell&apos; content controls.</param>
 			/// <returns type="Word.Paragraph"></returns>
 		}
 		ContentControl.prototype.insertTable = function(rowCount, columnCount, insertLocation, values) {
 			/// <summary>
-			/// Inserts a table with the specified number of rows and columns into, or next to, a content control. The insertLocation value can be &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos;, or &apos;After&apos;. [Api set: WordApi 1.3]
+			/// Inserts a table with the specified number of rows and columns into, or next to, a content control. The insertLocation value can be &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos; or &apos;After&apos;. [Api set: WordApi 1.3]
 			/// </summary>
 			/// <param name="rowCount" type="Number">Required. The number of rows in the table.</param>
 			/// <param name="columnCount" type="Number">Required. The number of columns in the table.</param>
-			/// <param name="insertLocation" type="String">Required. The value can be &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos;, or &apos;After&apos;. &apos;Before&apos; and &apos;After&apos; cannot be used with &apos;RichTextTable&apos;, &apos;RichTextTableRow&apos; and &apos;RichTextTableCell&apos; content controls.</param>
+			/// <param name="insertLocation" type="String">Required. The value can be &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos; or &apos;After&apos;. &apos;Before&apos; and &apos;After&apos; cannot be used with &apos;RichTextTable&apos;, &apos;RichTextTableRow&apos; and &apos;RichTextTableCell&apos; content controls.</param>
 			/// <param name="values" type="Array" elementType="Array" optional="true">Optional 2D array. Cells are filled if the corresponding strings are specified in the array.</param>
 			/// <returns type="Word.Table"></returns>
 		}
 		ContentControl.prototype.insertText = function(text, insertLocation) {
 			/// <summary>
-			/// Inserts text into the content control at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos;, or &apos;End&apos;. [Api set: WordApi 1.1]
+			/// Inserts text into the content control at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos; or &apos;End&apos;. [Api set: WordApi 1.1]
 			/// </summary>
 			/// <param name="text" type="String">Required. The text to be inserted in to the content control.</param>
-			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos;, or &apos;End&apos;. &apos;Replace&apos; cannot be used with &apos;RichTextTable&apos; and &apos;RichTextTableRow&apos; content controls.</param>
+			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos; or &apos;End&apos;. &apos;Replace&apos; cannot be used with &apos;RichTextTable&apos; and &apos;RichTextTableRow&apos; content controls.</param>
 			/// <returns type="Word.Range"></returns>
 		}
 		ContentControl.prototype.search = function(searchText, searchOptions) {
 			/// <summary>
-			/// Performs a search with the specified SearchOptions on the scope of the content control object. The search results are a collection of range objects. [Api set: WordApi 1.1]
+			/// Performs a search with the specified searchOptions on the scope of the content control object. The search results are a collection of range objects. [Api set: WordApi 1.1]
 			/// </summary>
 			/// <param name="searchText" type="String">Required. The search text.</param>
 			/// <param name="searchOptions" type="Word.SearchOptions" optional="true">Optional. Options for the search.</param>
@@ -18465,7 +18953,7 @@ var Word;
 			/// <summary>
 			/// Selects the content control. This causes Word to scroll to the selection. [Api set: WordApi 1.1]
 			/// </summary>
-			/// <param name="selectionMode" type="String" optional="true">Optional. The selection mode can be &apos;Select&apos;, &apos;Start&apos;, or &apos;End&apos;. &apos;Select&apos; is the default.</param>
+			/// <param name="selectionMode" type="String" optional="true">Optional. The selection mode can be &apos;Select&apos;, &apos;Start&apos; or &apos;End&apos;. &apos;Select&apos; is the default.</param>
 			/// <returns ></returns>
 		}
 		ContentControl.prototype.split = function(delimiters, multiParagraphs, trimDelimiters, trimSpacing) {
@@ -18475,7 +18963,7 @@ var Word;
 			/// <param name="delimiters" type="Array" elementType="String">Required. The delimiters as an array of strings.</param>
 			/// <param name="multiParagraphs" type="Boolean" optional="true">Optional. Indicates whether a returned child range can cover multiple paragraphs. Default is false which indicates that the paragraph boundaries are also used as delimiters.</param>
 			/// <param name="trimDelimiters" type="Boolean" optional="true">Optional. Indicates whether to trim delimiters from the ranges in the range collection. Default is false which indicates that the delimiters are included in the ranges returned in the range collection.</param>
-			/// <param name="trimSpacing" type="Boolean" optional="true">Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks, and paragraph end marks) from the start and end of the ranges returned in the range collection. Default is false which indicates that spacing characters at the start and end of the ranges are included in the range collection.</param>
+			/// <param name="trimSpacing" type="Boolean" optional="true">Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks and paragraph end marks) from the start and end of the ranges returned in the range collection. Default is false which indicates that spacing characters at the start and end of the ranges are included in the range collection.</param>
 			/// <returns type="Word.RangeCollection"></returns>
 		}
 		ContentControl.prototype.onDataChanged = {
@@ -19391,12 +19879,12 @@ var Word;
 			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
 			/// <field name="bold" type="Boolean">Gets or sets a value that indicates whether the font is bold. True if the font is formatted as bold, otherwise, false. [Api set: WordApi 1.1]</field>
 			/// <field name="color" type="String">Gets or sets the color for the specified font. You can provide the value in the &apos;#RRGGBB&apos; format or the color name. [Api set: WordApi 1.1]</field>
-			/// <field name="doubleStrikeThrough" type="Boolean">Gets or sets a value that indicates whether the font has a double strikethrough. True if the font is formatted as double strikethrough text, otherwise, false. [Api set: WordApi 1.1]</field>
-			/// <field name="highlightColor" type="String">Gets or sets the highlight color. To set it, use a value either in the &apos;#RRGGBB&apos; format or the color name. To remove highlight color, set it to null. The returned highlight color can be in the &apos;#RRGGBB&apos; format, an empty string for mixed highlight colors, or null for no highlight color. [Api set: WordApi 1.1]</field>
+			/// <field name="doubleStrikeThrough" type="Boolean">Gets or sets a value that indicates whether the font has a double strike through. True if the font is formatted as double strikethrough text, otherwise, false. [Api set: WordApi 1.1]</field>
+			/// <field name="highlightColor" type="String">Gets or sets the highlight color. To set it, use a value either in the &apos;#RRGGBB&apos; format or the color name. To remove highlight color, set it to null. The returned highlight color can be in the &apos;#RRGGBB&apos; format, or an empty string for mixed highlight colors, or null for no highlight color. [Api set: WordApi 1.1]</field>
 			/// <field name="italic" type="Boolean">Gets or sets a value that indicates whether the font is italicized. True if the font is italicized, otherwise, false. [Api set: WordApi 1.1]</field>
 			/// <field name="name" type="String">Gets or sets a value that represents the name of the font. [Api set: WordApi 1.1]</field>
 			/// <field name="size" type="Number">Gets or sets a value that represents the font size in points. [Api set: WordApi 1.1]</field>
-			/// <field name="strikeThrough" type="Boolean">Gets or sets a value that indicates whether the font has a strikethrough. True if the font is formatted as strikethrough text, otherwise, false. [Api set: WordApi 1.1]</field>
+			/// <field name="strikeThrough" type="Boolean">Gets or sets a value that indicates whether the font has a strike through. True if the font is formatted as strikethrough text, otherwise, false. [Api set: WordApi 1.1]</field>
 			/// <field name="subscript" type="Boolean">Gets or sets a value that indicates whether the font is a subscript. True if the font is formatted as subscript, otherwise, false. [Api set: WordApi 1.1]</field>
 			/// <field name="superscript" type="Boolean">Gets or sets a value that indicates whether the font is a superscript. True if the font is formatted as superscript, otherwise, false. [Api set: WordApi 1.1]</field>
 			/// <field name="underline" type="String">Gets or sets a value that indicates the font&apos;s underline type. &apos;None&apos; if the font is not underlined. [Api set: WordApi 1.1]</field>
@@ -19487,7 +19975,7 @@ var Word;
 			/// <summary> Represents an inline picture. [Api set: WordApi 1.1] </summary>
 			/// <field name="context" type="Word.RequestContext">The request context associated with this object.</field>
 			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
-			/// <field name="altTextDescription" type="String">Gets or sets a string that represents the alternative text associated with the inline image. [Api set: WordApi 1.1]</field>
+			/// <field name="altTextDescription" type="String">Gets or sets a string that represents the alternative text associated with the inline image [Api set: WordApi 1.1]</field>
 			/// <field name="altTextTitle" type="String">Gets or sets a string that contains the title for the inline image. [Api set: WordApi 1.1]</field>
 			/// <field name="height" type="Number">Gets or sets a number that describes the height of the inline image. [Api set: WordApi 1.1]</field>
 			/// <field name="hyperlink" type="String">Gets or sets a hyperlink on the image. Use a &apos;#&apos; to separate the address part from the optional location part. [Api set: WordApi 1.1]</field>
@@ -19557,7 +20045,7 @@ var Word;
 			/// <summary>
 			/// Gets the picture, or the starting or ending point of the picture, as a range. [Api set: WordApi 1.3]
 			/// </summary>
-			/// <param name="rangeLocation" type="String" optional="true">Optional. The range location can be &apos;Whole&apos;, &apos;Start&apos;, or &apos;End&apos;.</param>
+			/// <param name="rangeLocation" type="String" optional="true">Optional. The range location can be &apos;Whole&apos;, &apos;Start&apos; or &apos;End&apos;.</param>
 			/// <returns type="Word.Range"></returns>
 		}
 		InlinePicture.prototype.insertBreak = function(breakType, insertLocation) {
@@ -19592,10 +20080,10 @@ var Word;
 		}
 		InlinePicture.prototype.insertInlinePictureFromBase64 = function(base64EncodedImage, insertLocation) {
 			/// <summary>
-			/// Inserts an inline picture at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Before&apos;, or &apos;After&apos;. [Api set: WordApi 1.2]
+			/// Inserts an inline picture at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Before&apos; or &apos;After&apos;. [Api set: WordApi 1.2]
 			/// </summary>
 			/// <param name="base64EncodedImage" type="String">Required. The base64 encoded image to be inserted.</param>
-			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Before&apos;, or &apos;After&apos;.</param>
+			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Before&apos; or &apos;After&apos;.</param>
 			/// <returns type="Word.InlinePicture"></returns>
 		}
 		InlinePicture.prototype.insertOoxml = function(ooxml, insertLocation) {
@@ -19626,7 +20114,7 @@ var Word;
 			/// <summary>
 			/// Selects the inline picture. This causes Word to scroll to the selection. [Api set: WordApi 1.2]
 			/// </summary>
-			/// <param name="selectionMode" type="String" optional="true">Optional. The selection mode can be &apos;Select&apos;, &apos;Start&apos;, or &apos;End&apos;. &apos;Select&apos; is the default.</param>
+			/// <param name="selectionMode" type="String" optional="true">Optional. The selection mode can be &apos;Select&apos;, &apos;Start&apos; or &apos;End&apos;. &apos;Select&apos; is the default.</param>
 			/// <returns ></returns>
 		}
 
@@ -19723,7 +20211,7 @@ var Word;
 			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
 			/// <field name="id" type="Number">Gets the list&apos;s id. [Api set: WordApi 1.3]</field>
 			/// <field name="levelExistences" type="Array" elementType="Boolean">Checks whether each of the 9 levels exists in the list. A true value indicates the level exists, which means there is at least one list item at that level. Read-only. [Api set: WordApi 1.3]</field>
-			/// <field name="levelTypes" type="Array" elementType="String">Gets all 9 level types in the list. Each type can be &apos;Bullet&apos;, &apos;Number&apos;, or &apos;Picture&apos;. Read-only. [Api set: WordApi 1.3]</field>
+			/// <field name="levelTypes" type="Array" elementType="String">Gets all 9 level types in the list. Each type can be &apos;Bullet&apos;, &apos;Number&apos; or &apos;Picture&apos;. Read-only. [Api set: WordApi 1.3]</field>
 			/// <field name="paragraphs" type="Word.ParagraphCollection">Gets paragraphs in the list. Read-only. [Api set: WordApi 1.3]</field>
 		}
 
@@ -19772,10 +20260,10 @@ var Word;
 		}
 		List.prototype.insertParagraph = function(paragraphText, insertLocation) {
 			/// <summary>
-			/// Inserts a paragraph at the specified location. The insertLocation value can be &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos;, or &apos;After&apos;. [Api set: WordApi 1.3]
+			/// Inserts a paragraph at the specified location. The insertLocation value can be &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos; or &apos;After&apos;. [Api set: WordApi 1.3]
 			/// </summary>
 			/// <param name="paragraphText" type="String">Required. The paragraph text to be inserted.</param>
-			/// <param name="insertLocation" type="String">Required. The value can be &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos;, or &apos;After&apos;.</param>
+			/// <param name="insertLocation" type="String">Required. The value can be &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos; or &apos;After&apos;.</param>
 			/// <returns type="Word.Paragraph"></returns>
 		}
 		List.prototype.resetLevelFont = function(level, resetFontName) {
@@ -19791,7 +20279,7 @@ var Word;
 			/// Sets the alignment of the bullet, number or picture at the specified level in the list. [Api set: WordApi 1.3]
 			/// </summary>
 			/// <param name="level" type="Number">Required. The level in the list.</param>
-			/// <param name="alignment" type="String">Required. The level alignment that can be &apos;Left&apos;, &apos;Centered&apos;, or &apos;Right&apos;.</param>
+			/// <param name="alignment" type="String">Required. The level alignment that can be &apos;left&apos;, &apos;centered&apos; or &apos;right&apos;.</param>
 			/// <returns ></returns>
 		}
 		List.prototype.setLevelBullet = function(level, listBullet, charCode, fontName) {
@@ -19954,7 +20442,7 @@ var Word;
 			/// <field name="context" type="Word.RequestContext">The request context associated with this object.</field>
 			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
 			/// <field name="level" type="Number">Gets or sets the level of the item in the list. [Api set: WordApi 1.3]</field>
-			/// <field name="listString" type="String">Gets the list item bullet, number, or picture as a string. Read-only. [Api set: WordApi 1.3]</field>
+			/// <field name="listString" type="String">Gets the list item bullet, number or picture as a string. Read-only. [Api set: WordApi 1.3]</field>
 			/// <field name="siblingIndex" type="Number">Gets the list item order number in relation to its siblings. Read-only. [Api set: WordApi 1.3]</field>
 		}
 
@@ -19982,23 +20470,23 @@ var Word;
 		}
 		ListItem.prototype.getAncestor = function(parentOnly) {
 			/// <summary>
-			/// Gets the list item parent, or the closest ancestor if the parent does not exist. Throws if the list item has no ancestor. [Api set: WordApi 1.3]
+			/// Gets the list item parent, or the closest ancestor if the parent does not exist. Throws if the list item has no ancester. [Api set: WordApi 1.3]
 			/// </summary>
-			/// <param name="parentOnly" type="Boolean" optional="true">Optional. Specifies only the list item&apos;s parent will be returned. The default is false that specifies to get the lowest ancestor.</param>
+			/// <param name="parentOnly" type="Boolean" optional="true">Optional. Specified only the list item&apos;s parent will be returned. The default is false that specifies to get the lowest ancestor.</param>
 			/// <returns type="Word.Paragraph"></returns>
 		}
 		ListItem.prototype.getAncestorOrNullObject = function(parentOnly) {
 			/// <summary>
-			/// Gets the list item parent, or the closest ancestor if the parent does not exist. Returns a null object if the list item has no ancestor. [Api set: WordApi 1.3]
+			/// Gets the list item parent, or the closest ancestor if the parent does not exist. Returns a null object if the list item has no ancester. [Api set: WordApi 1.3]
 			/// </summary>
-			/// <param name="parentOnly" type="Boolean" optional="true">Optional. Specifies only the list item&apos;s parent will be returned. The default is false that specifies to get the lowest ancestor.</param>
+			/// <param name="parentOnly" type="Boolean" optional="true">Optional. Specified only the list item&apos;s parent will be returned. The default is false that specifies to get the lowest ancestor.</param>
 			/// <returns type="Word.Paragraph"></returns>
 		}
 		ListItem.prototype.getDescendants = function(directChildrenOnly) {
 			/// <summary>
 			/// Gets all descendant list items of the list item. [Api set: WordApi 1.3]
 			/// </summary>
-			/// <param name="directChildrenOnly" type="Boolean" optional="true">Optional. Specifies only the list item&apos;s direct children will be returned. The default is false that indicates to get all descendant items.</param>
+			/// <param name="directChildrenOnly" type="Boolean" optional="true">Optional. Specified only the list item&apos;s direct children will be returned. The default is false that indicates to get all descendant items.</param>
 			/// <returns type="Word.ParagraphCollection"></returns>
 		}
 
@@ -20100,12 +20588,12 @@ var Word;
 			/// <field name="contentControls" type="Word.ContentControlCollection">Gets the collection of content control objects in the paragraph. Read-only. [Api set: WordApi 1.1]</field>
 			/// <field name="firstLineIndent" type="Number">Gets or sets the value, in points, for a first line or hanging indent. Use a positive value to set a first-line indent, and use a negative value to set a hanging indent. [Api set: WordApi 1.1]</field>
 			/// <field name="font" type="Word.Font">Gets the text format of the paragraph. Use this to get and set font name, size, color, and other properties. Read-only. [Api set: WordApi 1.1]</field>
-			/// <field name="inlinePictures" type="Word.InlinePictureCollection">Gets the collection of InlinePicture objects in the paragraph. The collection does not include floating images. Read-only. [Api set: WordApi 1.1]</field>
+			/// <field name="inlinePictures" type="Word.InlinePictureCollection">Gets the collection of inlinePicture objects in the paragraph. The collection does not include floating images. Read-only. [Api set: WordApi 1.1]</field>
 			/// <field name="isLastParagraph" type="Boolean">Indicates the paragraph is the last one inside its parent body. Read-only. [Api set: WordApi 1.3]</field>
 			/// <field name="isListItem" type="Boolean">Checks whether the paragraph is a list item. Read-only. [Api set: WordApi 1.3]</field>
 			/// <field name="leftIndent" type="Number">Gets or sets the left indent value, in points, for the paragraph. [Api set: WordApi 1.1]</field>
 			/// <field name="lineSpacing" type="Number">Gets or sets the line spacing, in points, for the specified paragraph. In the Word UI, this value is divided by 12. [Api set: WordApi 1.1]</field>
-			/// <field name="lineUnitAfter" type="Number">Gets or sets the amount of spacing, in grid lines, after the paragraph. [Api set: WordApi 1.1]</field>
+			/// <field name="lineUnitAfter" type="Number">Gets or sets the amount of spacing, in grid lines. after the paragraph. [Api set: WordApi 1.1]</field>
 			/// <field name="lineUnitBefore" type="Number">Gets or sets the amount of spacing, in grid lines, before the paragraph. [Api set: WordApi 1.1]</field>
 			/// <field name="list" type="Word.List">Gets the List to which this paragraph belongs. Throws if the paragraph is not in a list. Read-only. [Api set: WordApi 1.3]</field>
 			/// <field name="listItem" type="Word.ListItem">Gets the ListItem for the paragraph. Throws if the paragraph is not part of a list. Read-only. [Api set: WordApi 1.3]</field>
@@ -20224,7 +20712,7 @@ var Word;
 			/// <summary>
 			/// Gets the whole paragraph, or the starting or ending point of the paragraph, as a range. [Api set: WordApi 1.3]
 			/// </summary>
-			/// <param name="rangeLocation" type="String" optional="true">Optional. The range location can be &apos;Whole&apos;, &apos;Start&apos;, &apos;End&apos;, &apos;After&apos;, or &apos;Content&apos;.</param>
+			/// <param name="rangeLocation" type="String" optional="true">Optional. The range location can be &apos;Whole&apos;, &apos;Start&apos;, &apos;End&apos;, &apos;After&apos; or &apos;Content&apos;.</param>
 			/// <returns type="Word.Range"></returns>
 		}
 		Paragraph.prototype.getTextRanges = function(endingMarks, trimSpacing) {
@@ -20232,7 +20720,7 @@ var Word;
 			/// Gets the text ranges in the paragraph by using punctuation marks and/or other ending marks. [Api set: WordApi 1.3]
 			/// </summary>
 			/// <param name="endingMarks" type="Array" elementType="String">Required. The punctuation marks and/or other ending marks as an array of strings.</param>
-			/// <param name="trimSpacing" type="Boolean" optional="true">Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks, and paragraph end marks) from the start and end of the ranges returned in the range collection. Default is false which indicates that spacing characters at the start and end of the ranges are included in the range collection.</param>
+			/// <param name="trimSpacing" type="Boolean" optional="true">Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks and paragraph end marks) from the start and end of the ranges returned in the range collection. Default is false which indicates that spacing characters at the start and end of the ranges are included in the range collection.</param>
 			/// <returns type="Word.RangeCollection"></returns>
 		}
 		Paragraph.prototype.insertBreak = function(breakType, insertLocation) {
@@ -20251,34 +20739,34 @@ var Word;
 		}
 		Paragraph.prototype.insertFileFromBase64 = function(base64File, insertLocation) {
 			/// <summary>
-			/// Inserts a document into the paragraph at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos;, or &apos;End&apos;. [Api set: WordApi 1.1]
+			/// Inserts a document into the paragraph at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos; or &apos;End&apos;. [Api set: WordApi 1.1]
 			/// </summary>
 			/// <param name="base64File" type="String">Required. The base64 encoded content of a .docx file.</param>
-			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos;, or &apos;End&apos;.</param>
+			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos; or &apos;End&apos;.</param>
 			/// <returns type="Word.Range"></returns>
 		}
 		Paragraph.prototype.insertHtml = function(html, insertLocation) {
 			/// <summary>
-			/// Inserts HTML into the paragraph at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos;, or &apos;End&apos;. [Api set: WordApi 1.1]
+			/// Inserts HTML into the paragraph at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos; or &apos;End&apos;. [Api set: WordApi 1.1]
 			/// </summary>
 			/// <param name="html" type="String">Required. The HTML to be inserted in the paragraph.</param>
-			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos;, or &apos;End&apos;.</param>
+			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos; or &apos;End&apos;.</param>
 			/// <returns type="Word.Range"></returns>
 		}
 		Paragraph.prototype.insertInlinePictureFromBase64 = function(base64EncodedImage, insertLocation) {
 			/// <summary>
-			/// Inserts a picture into the paragraph at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos;, or &apos;End&apos;. [Api set: WordApi 1.1]
+			/// Inserts a picture into the paragraph at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos; or &apos;End&apos;. [Api set: WordApi 1.1]
 			/// </summary>
 			/// <param name="base64EncodedImage" type="String">Required. The base64 encoded image to be inserted.</param>
-			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos;, or &apos;End&apos;.</param>
+			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos; or &apos;End&apos;.</param>
 			/// <returns type="Word.InlinePicture"></returns>
 		}
 		Paragraph.prototype.insertOoxml = function(ooxml, insertLocation) {
 			/// <summary>
-			/// Inserts OOXML into the paragraph at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos;, or &apos;End&apos;. [Api set: WordApi 1.1]
+			/// Inserts OOXML into the paragraph at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos; or &apos;End&apos;. [Api set: WordApi 1.1]
 			/// </summary>
 			/// <param name="ooxml" type="String">Required. The OOXML to be inserted in the paragraph.</param>
-			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos;, or &apos;End&apos;.</param>
+			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos; or &apos;End&apos;.</param>
 			/// <returns type="Word.Range"></returns>
 		}
 		Paragraph.prototype.insertParagraph = function(paragraphText, insertLocation) {
@@ -20301,15 +20789,15 @@ var Word;
 		}
 		Paragraph.prototype.insertText = function(text, insertLocation) {
 			/// <summary>
-			/// Inserts text into the paragraph at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos;, or &apos;End&apos;. [Api set: WordApi 1.1]
+			/// Inserts text into the paragraph at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos; or &apos;End&apos;. [Api set: WordApi 1.1]
 			/// </summary>
 			/// <param name="text" type="String">Required. Text to be inserted.</param>
-			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos;, or &apos;End&apos;.</param>
+			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos; or &apos;End&apos;.</param>
 			/// <returns type="Word.Range"></returns>
 		}
 		Paragraph.prototype.search = function(searchText, searchOptions) {
 			/// <summary>
-			/// Performs a search with the specified SearchOptions on the scope of the paragraph object. The search results are a collection of range objects. [Api set: WordApi 1.1]
+			/// Performs a search with the specified searchOptions on the scope of the paragraph object. The search results are a collection of range objects. [Api set: WordApi 1.1]
 			/// </summary>
 			/// <param name="searchText" type="String">Required. The search text.</param>
 			/// <param name="searchOptions" type="Word.SearchOptions" optional="true">Optional. Options for the search.</param>
@@ -20319,7 +20807,7 @@ var Word;
 			/// <summary>
 			/// Selects and navigates the Word UI to the paragraph. [Api set: WordApi 1.1]
 			/// </summary>
-			/// <param name="selectionMode" type="String" optional="true">Optional. The selection mode can be &apos;Select&apos;, &apos;Start&apos;, or &apos;End&apos;. &apos;Select&apos; is the default.</param>
+			/// <param name="selectionMode" type="String" optional="true">Optional. The selection mode can be &apos;Select&apos;, &apos;Start&apos; or &apos;End&apos;. &apos;Select&apos; is the default.</param>
 			/// <returns ></returns>
 		}
 		Paragraph.prototype.split = function(delimiters, trimDelimiters, trimSpacing) {
@@ -20328,7 +20816,7 @@ var Word;
 			/// </summary>
 			/// <param name="delimiters" type="Array" elementType="String">Required. The delimiters as an array of strings.</param>
 			/// <param name="trimDelimiters" type="Boolean" optional="true">Optional. Indicates whether to trim delimiters from the ranges in the range collection. Default is false which indicates that the delimiters are included in the ranges returned in the range collection.</param>
-			/// <param name="trimSpacing" type="Boolean" optional="true">Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks, and paragraph end marks) from the start and end of the ranges returned in the range collection. Default is false which indicates that spacing characters at the start and end of the ranges are included in the range collection.</param>
+			/// <param name="trimSpacing" type="Boolean" optional="true">Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks and paragraph end marks) from the start and end of the ranges returned in the range collection. Default is false which indicates that spacing characters at the start and end of the ranges are included in the range collection.</param>
 			/// <returns type="Word.RangeCollection"></returns>
 		}
 		Paragraph.prototype.startNewList = function() {
@@ -20539,7 +21027,7 @@ var Word;
 			/// Gets the next text range by using punctuation marks and/or other ending marks. Throws if this text range is the last one. [Api set: WordApi 1.3]
 			/// </summary>
 			/// <param name="endingMarks" type="Array" elementType="String">Required. The punctuation marks and/or other ending marks as an array of strings.</param>
-			/// <param name="trimSpacing" type="Boolean" optional="true">Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks, and paragraph end marks) from the start and end of the returned range. Default is false which indicates that spacing characters at the start and end of the range are included.</param>
+			/// <param name="trimSpacing" type="Boolean" optional="true">Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks and paragraph end marks) from the start and end of the returned range. Default is false which indicates that spacing characters at the start and end of the range are included.</param>
 			/// <returns type="Word.Range"></returns>
 		}
 		Range.prototype.getNextTextRangeOrNullObject = function(endingMarks, trimSpacing) {
@@ -20547,7 +21035,7 @@ var Word;
 			/// Gets the next text range by using punctuation marks and/or other ending marks. Returns a null object if this text range is the last one. [Api set: WordApi 1.3]
 			/// </summary>
 			/// <param name="endingMarks" type="Array" elementType="String">Required. The punctuation marks and/or other ending marks as an array of strings.</param>
-			/// <param name="trimSpacing" type="Boolean" optional="true">Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks, and paragraph end marks) from the start and end of the returned range. Default is false which indicates that spacing characters at the start and end of the range are included.</param>
+			/// <param name="trimSpacing" type="Boolean" optional="true">Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks and paragraph end marks) from the start and end of the returned range. Default is false which indicates that spacing characters at the start and end of the range are included.</param>
 			/// <returns type="Word.Range"></returns>
 		}
 		Range.prototype.getOoxml = function() {
@@ -20564,7 +21052,7 @@ var Word;
 			/// <summary>
 			/// Clones the range, or gets the starting or ending point of the range as a new range. [Api set: WordApi 1.3]
 			/// </summary>
-			/// <param name="rangeLocation" type="String" optional="true">Optional. The range location can be &apos;Whole&apos;, &apos;Start&apos;, &apos;End&apos;, &apos;After&apos;, or &apos;Content&apos;.</param>
+			/// <param name="rangeLocation" type="String" optional="true">Optional. The range location can be &apos;Whole&apos;, &apos;Start&apos;, &apos;End&apos;, &apos;After&apos; or &apos;Content&apos;.</param>
 			/// <returns type="Word.Range"></returns>
 		}
 		Range.prototype.getTextRanges = function(endingMarks, trimSpacing) {
@@ -20572,7 +21060,7 @@ var Word;
 			/// Gets the text child ranges in the range by using punctuation marks and/or other ending marks. [Api set: WordApi 1.3]
 			/// </summary>
 			/// <param name="endingMarks" type="Array" elementType="String">Required. The punctuation marks and/or other ending marks as an array of strings.</param>
-			/// <param name="trimSpacing" type="Boolean" optional="true">Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks, and paragraph end marks) from the start and end of the ranges returned in the range collection. Default is false which indicates that spacing characters at the start and end of the ranges are included in the range collection.</param>
+			/// <param name="trimSpacing" type="Boolean" optional="true">Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks and paragraph end marks) from the start and end of the ranges returned in the range collection. Default is false which indicates that spacing characters at the start and end of the ranges are included in the range collection.</param>
 			/// <returns type="Word.RangeCollection"></returns>
 		}
 		Range.prototype.insertBookmark = function(name) {
@@ -20598,34 +21086,34 @@ var Word;
 		}
 		Range.prototype.insertFileFromBase64 = function(base64File, insertLocation) {
 			/// <summary>
-			/// Inserts a document at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos;, or &apos;After&apos;. [Api set: WordApi 1.1]
+			/// Inserts a document at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos; or &apos;After&apos;. [Api set: WordApi 1.1]
 			/// </summary>
 			/// <param name="base64File" type="String">Required. The base64 encoded content of a .docx file.</param>
-			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos;, or &apos;After&apos;.</param>
+			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos; or &apos;After&apos;.</param>
 			/// <returns type="Word.Range"></returns>
 		}
 		Range.prototype.insertHtml = function(html, insertLocation) {
 			/// <summary>
-			/// Inserts HTML at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos;, or &apos;After&apos;. [Api set: WordApi 1.1]
+			/// Inserts HTML at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos; or &apos;After&apos;. [Api set: WordApi 1.1]
 			/// </summary>
 			/// <param name="html" type="String">Required. The HTML to be inserted.</param>
-			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos;, or &apos;After&apos;.</param>
+			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos; or &apos;After&apos;.</param>
 			/// <returns type="Word.Range"></returns>
 		}
 		Range.prototype.insertInlinePictureFromBase64 = function(base64EncodedImage, insertLocation) {
 			/// <summary>
-			/// Inserts a picture at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos;, or &apos;After&apos;. [Api set: WordApi 1.2]
+			/// Inserts a picture at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos; or &apos;After&apos;. [Api set: WordApi 1.2]
 			/// </summary>
 			/// <param name="base64EncodedImage" type="String">Required. The base64 encoded image to be inserted.</param>
-			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos;, or &apos;After&apos;.</param>
+			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos; or &apos;After&apos;.</param>
 			/// <returns type="Word.InlinePicture"></returns>
 		}
 		Range.prototype.insertOoxml = function(ooxml, insertLocation) {
 			/// <summary>
-			/// Inserts OOXML at the specified location.  The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos;, or &apos;After&apos;. [Api set: WordApi 1.1]
+			/// Inserts OOXML at the specified location.  The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos; or &apos;After&apos;. [Api set: WordApi 1.1]
 			/// </summary>
 			/// <param name="ooxml" type="String">Required. The OOXML to be inserted.</param>
-			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos;, or &apos;After&apos;.</param>
+			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos; or &apos;After&apos;.</param>
 			/// <returns type="Word.Range"></returns>
 		}
 		Range.prototype.insertParagraph = function(paragraphText, insertLocation) {
@@ -20648,10 +21136,10 @@ var Word;
 		}
 		Range.prototype.insertText = function(text, insertLocation) {
 			/// <summary>
-			/// Inserts text at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos;, or &apos;After&apos;. [Api set: WordApi 1.1]
+			/// Inserts text at the specified location. The insertLocation value can be &apos;Replace&apos;, &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos; or &apos;After&apos;. [Api set: WordApi 1.1]
 			/// </summary>
 			/// <param name="text" type="String">Required. Text to be inserted.</param>
-			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos;, or &apos;After&apos;.</param>
+			/// <param name="insertLocation" type="String">Required. The value can be &apos;Replace&apos;, &apos;Start&apos;, &apos;End&apos;, &apos;Before&apos; or &apos;After&apos;.</param>
 			/// <returns type="Word.Range"></returns>
 		}
 		Range.prototype.intersectWith = function(range) {
@@ -20670,7 +21158,7 @@ var Word;
 		}
 		Range.prototype.search = function(searchText, searchOptions) {
 			/// <summary>
-			/// Performs a search with the specified SearchOptions on the scope of the range object. The search results are a collection of range objects. [Api set: WordApi 1.1]
+			/// Performs a search with the specified searchOptions on the scope of the range object. The search results are a collection of range objects. [Api set: WordApi 1.1]
 			/// </summary>
 			/// <param name="searchText" type="String">Required. The search text.</param>
 			/// <param name="searchOptions" type="Word.SearchOptions" optional="true">Optional. Options for the search.</param>
@@ -20680,7 +21168,7 @@ var Word;
 			/// <summary>
 			/// Selects and navigates the Word UI to the range. [Api set: WordApi 1.1]
 			/// </summary>
-			/// <param name="selectionMode" type="String" optional="true">Optional. The selection mode can be &apos;Select&apos;, &apos;Start&apos;, or &apos;End&apos;. &apos;Select&apos; is the default.</param>
+			/// <param name="selectionMode" type="String" optional="true">Optional. The selection mode can be &apos;Select&apos;, &apos;Start&apos; or &apos;End&apos;. &apos;Select&apos; is the default.</param>
 			/// <returns ></returns>
 		}
 		Range.prototype.split = function(delimiters, multiParagraphs, trimDelimiters, trimSpacing) {
@@ -20690,7 +21178,7 @@ var Word;
 			/// <param name="delimiters" type="Array" elementType="String">Required. The delimiters as an array of strings.</param>
 			/// <param name="multiParagraphs" type="Boolean" optional="true">Optional. Indicates whether a returned child range can cover multiple paragraphs. Default is false which indicates that the paragraph boundaries are also used as delimiters.</param>
 			/// <param name="trimDelimiters" type="Boolean" optional="true">Optional. Indicates whether to trim delimiters from the ranges in the range collection. Default is false which indicates that the delimiters are included in the ranges returned in the range collection.</param>
-			/// <param name="trimSpacing" type="Boolean" optional="true">Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks, and paragraph end marks) from the start and end of the ranges returned in the range collection. Default is false which indicates that spacing characters at the start and end of the ranges are included in the range collection.</param>
+			/// <param name="trimSpacing" type="Boolean" optional="true">Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks and paragraph end marks) from the start and end of the ranges returned in the range collection. Default is false which indicates that spacing characters at the start and end of the ranges are included in the range collection.</param>
 			/// <returns type="Word.RangeCollection"></returns>
 		}
 
@@ -20788,7 +21276,7 @@ var Word;
 			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
 			/// <field name="ignorePunct" type="Boolean">Gets or sets a value that indicates whether to ignore all punctuation characters between words. Corresponds to the Ignore punctuation check box in the Find and Replace dialog box. [Api set: WordApi 1.1]</field>
 			/// <field name="ignoreSpace" type="Boolean">Gets or sets a value that indicates whether to ignore all whitespace between words. Corresponds to the Ignore whitespace characters check box in the Find and Replace dialog box. [Api set: WordApi 1.1]</field>
-			/// <field name="matchCase" type="Boolean">Gets or sets a value that indicates whether to perform a case sensitive search. Corresponds to the Match case check box in the Find and Replace dialog box. [Api set: WordApi 1.1]</field>
+			/// <field name="matchCase" type="Boolean">Gets or sets a value that indicates whether to perform a case sensitive search. Corresponds to the Match case check box in the Find and Replace dialog box (Edit menu). [Api set: WordApi 1.1]</field>
 			/// <field name="matchPrefix" type="Boolean">Gets or sets a value that indicates whether to match words that begin with the search string. Corresponds to the Match prefix check box in the Find and Replace dialog box. [Api set: WordApi 1.1]</field>
 			/// <field name="matchSuffix" type="Boolean">Gets or sets a value that indicates whether to match words that end with the search string. Corresponds to the Match suffix check box in the Find and Replace dialog box. [Api set: WordApi 1.1]</field>
 			/// <field name="matchWholeWord" type="Boolean">Gets or sets a value that indicates whether to find operation only entire words, not text that is part of a larger word. Corresponds to the Find whole words only check box in the Find and Replace dialog box. [Api set: WordApi 1.1]</field>
@@ -20860,14 +21348,14 @@ var Word;
 			/// <summary>
 			/// Gets one of the section&apos;s footers. [Api set: WordApi 1.1]
 			/// </summary>
-			/// <param name="type" type="String">Required. The type of footer to return. This value can be: &apos;Primary&apos;, &apos;FirstPage&apos;, or &apos;EvenPages&apos;.</param>
+			/// <param name="type" type="String">Required. The type of footer to return. This value can be: &apos;primary&apos;, &apos;firstPage&apos; or &apos;evenPages&apos;.</param>
 			/// <returns type="Word.Body"></returns>
 		}
 		Section.prototype.getHeader = function(type) {
 			/// <summary>
 			/// Gets one of the section&apos;s headers. [Api set: WordApi 1.1]
 			/// </summary>
-			/// <param name="type" type="String">Required. The type of header to return. This value can be: &apos;Primary&apos;, &apos;FirstPage&apos;, or &apos;EvenPages&apos;.</param>
+			/// <param name="type" type="String">Required. The type of header to return. This value can be: &apos;primary&apos;, &apos;firstPage&apos; or &apos;evenPages&apos;.</param>
 			/// <returns type="Word.Body"></returns>
 		}
 		Section.prototype.getNext = function() {
@@ -21265,10 +21753,10 @@ var Word;
 			/// <summary> Represents a table in a Word document. [Api set: WordApi 1.3] </summary>
 			/// <field name="context" type="Word.RequestContext">The request context associated with this object.</field>
 			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
-			/// <field name="alignment" type="String">Gets or sets the alignment of the table against the page column. The value can be &apos;Left&apos;, &apos;Centered&apos;, or &apos;Right&apos;. [Api set: WordApi 1.3]</field>
+			/// <field name="alignment" type="String">Gets or sets the alignment of the table against the page column. The value can be &apos;left&apos;, &apos;centered&apos; or &apos;right&apos;. [Api set: WordApi 1.3]</field>
 			/// <field name="font" type="Word.Font">Gets the font. Use this to get and set font name, size, color, and other properties. Read-only. [Api set: WordApi 1.3]</field>
 			/// <field name="headerRowCount" type="Number">Gets and sets the number of header rows. [Api set: WordApi 1.3]</field>
-			/// <field name="horizontalAlignment" type="String">Gets and sets the horizontal alignment of every cell in the table. The value can be &apos;Left&apos;, &apos;Centered&apos;, &apos;Right&apos;, or &apos;Justified&apos;. [Api set: WordApi 1.3]</field>
+			/// <field name="horizontalAlignment" type="String">Gets and sets the horizontal alignment of every cell in the table. The value can be &apos;left&apos;, &apos;centered&apos;, &apos;right&apos;, or &apos;justified&apos;. [Api set: WordApi 1.3]</field>
 			/// <field name="isUniform" type="Boolean">Indicates whether all of the table rows are uniform. Read-only. [Api set: WordApi 1.3]</field>
 			/// <field name="nestingLevel" type="Number">Gets the nesting level of the table. Top-level tables have level 1. Read-only. [Api set: WordApi 1.3]</field>
 			/// <field name="parentBody" type="Word.Body">Gets the parent body of the table. Read-only. [Api set: WordApi 1.3]</field>
@@ -21280,7 +21768,7 @@ var Word;
 			/// <field name="parentTableOrNullObject" type="Word.Table">Gets the table that contains this table. Returns a null object if it is not contained in a table. Read-only. [Api set: WordApi 1.3]</field>
 			/// <field name="rowCount" type="Number">Gets the number of rows in the table. Read-only. [Api set: WordApi 1.3]</field>
 			/// <field name="rows" type="Word.TableRowCollection">Gets all of the table rows. Read-only. [Api set: WordApi 1.3]</field>
-			/// <field name="shadingColor" type="String">Gets and sets the shading color. Color is specified in &quot;#RRGGBB&quot; format or by using the color name. [Api set: WordApi 1.3]</field>
+			/// <field name="shadingColor" type="String">Gets and sets the shading color. [Api set: WordApi 1.3]</field>
 			/// <field name="style" type="String">Gets or sets the style name for the table. Use this property for custom styles and localized style names. To use the built-in styles that are portable between locales, see the &quot;styleBuiltIn&quot; property. [Api set: WordApi 1.3]</field>
 			/// <field name="styleBandedColumns" type="Boolean">Gets and sets whether the table has banded columns. [Api set: WordApi 1.3]</field>
 			/// <field name="styleBandedRows" type="Boolean">Gets and sets whether the table has banded rows. [Api set: WordApi 1.3]</field>
@@ -21290,7 +21778,7 @@ var Word;
 			/// <field name="styleTotalRow" type="Boolean">Gets and sets whether the table has a total (last) row with a special style. [Api set: WordApi 1.3]</field>
 			/// <field name="tables" type="Word.TableCollection">Gets the child tables nested one level deeper. Read-only. [Api set: WordApi 1.3]</field>
 			/// <field name="values" type="Array" elementType="Array">Gets and sets the text values in the table, as a 2D Javascript array. [Api set: WordApi 1.3]</field>
-			/// <field name="verticalAlignment" type="String">Gets and sets the vertical alignment of every cell in the table. The value can be &apos;Top&apos;, &apos;Center&apos;, or &apos;Bottom&apos;. [Api set: WordApi 1.3]</field>
+			/// <field name="verticalAlignment" type="String">Gets and sets the vertical alignment of every cell in the table. The value can be &apos;top&apos;, &apos;center&apos; or &apos;bottom&apos;. [Api set: WordApi 1.3]</field>
 			/// <field name="width" type="Number">Gets and sets the width of the table in points. [Api set: WordApi 1.3]</field>
 		}
 
@@ -21401,7 +21889,7 @@ var Word;
 			/// <summary>
 			/// Gets cell padding in points. [Api set: WordApi 1.3]
 			/// </summary>
-			/// <param name="cellPaddingLocation" type="String">Required. The cell padding location can be &apos;Top&apos;, &apos;Left&apos;, &apos;Bottom&apos;, or &apos;Right&apos;.</param>
+			/// <param name="cellPaddingLocation" type="String">Required. The cell padding location can be &apos;Top&apos;, &apos;Left&apos;, &apos;Bottom&apos; or &apos;Right&apos;.</param>
 			/// <returns type="OfficeExtension.ClientResult&lt;number&gt;"></returns>
 			var result = new OfficeExtension.ClientResult();
 			result.__proto__ = null;
@@ -21448,7 +21936,7 @@ var Word;
 			/// <summary>
 			/// Gets the range that contains this table, or the range at the start or end of the table. [Api set: WordApi 1.3]
 			/// </summary>
-			/// <param name="rangeLocation" type="String" optional="true">Optional. The range location can be &apos;Whole&apos;, &apos;Start&apos;, &apos;End&apos;, or &apos;After&apos;.</param>
+			/// <param name="rangeLocation" type="String" optional="true">Optional. The range location can be &apos;Whole&apos;, &apos;Start&apos;, &apos;End&apos; or &apos;After&apos;.</param>
 			/// <returns type="Word.Range"></returns>
 		}
 		Table.prototype.insertContentControl = function() {
@@ -21487,7 +21975,7 @@ var Word;
 		}
 		Table.prototype.search = function(searchText, searchOptions) {
 			/// <summary>
-			/// Performs a search with the specified SearchOptions on the scope of the table object. The search results are a collection of range objects. [Api set: WordApi 1.3]
+			/// Performs a search with the specified searchOptions on the scope of the table object. The search results are a collection of range objects. [Api set: WordApi 1.3]
 			/// </summary>
 			/// <param name="searchText" type="String">Required. The search text.</param>
 			/// <param name="searchOptions" type="Word.SearchOptions" optional="true">Optional. Options for the search.</param>
@@ -21497,14 +21985,14 @@ var Word;
 			/// <summary>
 			/// Selects the table, or the position at the start or end of the table, and navigates the Word UI to it. [Api set: WordApi 1.3]
 			/// </summary>
-			/// <param name="selectionMode" type="String" optional="true">Optional. The selection mode can be &apos;Select&apos;, &apos;Start&apos;, or &apos;End&apos;. &apos;Select&apos; is the default.</param>
+			/// <param name="selectionMode" type="String" optional="true">Optional. The selection mode can be &apos;Select&apos;, &apos;Start&apos; or &apos;End&apos;. &apos;Select&apos; is the default.</param>
 			/// <returns ></returns>
 		}
 		Table.prototype.setCellPadding = function(cellPaddingLocation, cellPadding) {
 			/// <summary>
 			/// Sets cell padding in points. [Api set: WordApi 1.3]
 			/// </summary>
-			/// <param name="cellPaddingLocation" type="String">Required. The cell padding location can be &apos;Top&apos;, &apos;Left&apos;, &apos;Bottom&apos;, or &apos;Right&apos;.</param>
+			/// <param name="cellPaddingLocation" type="String">Required. The cell padding location can be &apos;Top&apos;, &apos;Left&apos;, &apos;Bottom&apos; or &apos;Right&apos;.</param>
 			/// <param name="cellPadding" type="Number">Required. The cell padding.</param>
 			/// <returns ></returns>
 		}
@@ -21533,10 +22021,10 @@ var Word;
 	var TableBorder = (function(_super) {
 		__extends(TableBorder, _super);
 		function TableBorder() {
-			/// <summary> Specifies the border style. [Api set: WordApi 1.3] </summary>
+			/// <summary> Specifies the border style [Api set: WordApi 1.3] </summary>
 			/// <field name="context" type="Word.RequestContext">The request context associated with this object.</field>
 			/// <field name="isNull" type="Boolean">Returns a boolean value for whether the corresponding object is null. You must call "context.sync()" before reading the isNull property.</field>
-			/// <field name="color" type="String">Gets or sets the table border color. [Api set: WordApi 1.3]</field>
+			/// <field name="color" type="String">Gets or sets the table border color, as a hex value or name. [Api set: WordApi 1.3]</field>
 			/// <field name="type" type="String">Gets or sets the type of the table border. [Api set: WordApi 1.3]</field>
 			/// <field name="width" type="Number">Gets or sets the width, in points, of the table border. Not applicable to table border types that have fixed widths. [Api set: WordApi 1.3]</field>
 		}
@@ -21594,13 +22082,13 @@ var Word;
 			/// <field name="body" type="Word.Body">Gets the body object of the cell. Read-only. [Api set: WordApi 1.3]</field>
 			/// <field name="cellIndex" type="Number">Gets the index of the cell in its row. Read-only. [Api set: WordApi 1.3]</field>
 			/// <field name="columnWidth" type="Number">Gets and sets the width of the cell&apos;s column in points. This is applicable to uniform tables. [Api set: WordApi 1.3]</field>
-			/// <field name="horizontalAlignment" type="String">Gets and sets the horizontal alignment of the cell. The value can be &apos;Left&apos;, &apos;Centered&apos;, &apos;Right&apos;, or &apos;Justified&apos;. [Api set: WordApi 1.3]</field>
+			/// <field name="horizontalAlignment" type="String">Gets and sets the horizontal alignment of the cell. The value can be &apos;left&apos;, &apos;centered&apos;, &apos;right&apos;, or &apos;justified&apos;. [Api set: WordApi 1.3]</field>
 			/// <field name="parentRow" type="Word.TableRow">Gets the parent row of the cell. Read-only. [Api set: WordApi 1.3]</field>
 			/// <field name="parentTable" type="Word.Table">Gets the parent table of the cell. Read-only. [Api set: WordApi 1.3]</field>
 			/// <field name="rowIndex" type="Number">Gets the index of the cell&apos;s row in the table. Read-only. [Api set: WordApi 1.3]</field>
 			/// <field name="shadingColor" type="String">Gets or sets the shading color of the cell. Color is specified in &quot;#RRGGBB&quot; format or by using the color name. [Api set: WordApi 1.3]</field>
 			/// <field name="value" type="String">Gets and sets the text of the cell. [Api set: WordApi 1.3]</field>
-			/// <field name="verticalAlignment" type="String">Gets and sets the vertical alignment of the cell. The value can be &apos;Top&apos;, &apos;Center&apos;, or &apos;Bottom&apos;. [Api set: WordApi 1.3]</field>
+			/// <field name="verticalAlignment" type="String">Gets and sets the vertical alignment of the cell. The value can be &apos;top&apos;, &apos;center&apos; or &apos;bottom&apos;. [Api set: WordApi 1.3]</field>
 			/// <field name="width" type="Number">Gets the width of the cell in points. Read-only. [Api set: WordApi 1.3]</field>
 		}
 
@@ -21649,7 +22137,7 @@ var Word;
 			/// <summary>
 			/// Gets cell padding in points. [Api set: WordApi 1.3]
 			/// </summary>
-			/// <param name="cellPaddingLocation" type="String">Required. The cell padding location can be &apos;Top&apos;, &apos;Left&apos;, &apos;Bottom&apos;, or &apos;Right&apos;.</param>
+			/// <param name="cellPaddingLocation" type="String">Required. The cell padding location can be &apos;Top&apos;, &apos;Left&apos;, &apos;Bottom&apos; or &apos;Right&apos;.</param>
 			/// <returns type="OfficeExtension.ClientResult&lt;number&gt;"></returns>
 			var result = new OfficeExtension.ClientResult();
 			result.__proto__ = null;
@@ -21673,7 +22161,7 @@ var Word;
 			/// Adds columns to the left or right of the cell, using the cell&apos;s column as a template. This is applicable to uniform tables. The string values, if specified, are set in the newly inserted rows. [Api set: WordApi 1.3]
 			/// </summary>
 			/// <param name="insertLocation" type="String">Required. It can be &apos;Before&apos; or &apos;After&apos;.</param>
-			/// <param name="columnCount" type="Number">Required. Number of columns to add.</param>
+			/// <param name="columnCount" type="Number">Required. Number of columns to add</param>
 			/// <param name="values" type="Array" elementType="Array" optional="true">Optional 2D array. Cells are filled if the corresponding strings are specified in the array.</param>
 			/// <returns ></returns>
 		}
@@ -21690,7 +22178,7 @@ var Word;
 			/// <summary>
 			/// Sets cell padding in points. [Api set: WordApi 1.3]
 			/// </summary>
-			/// <param name="cellPaddingLocation" type="String">Required. The cell padding location can be &apos;Top&apos;, &apos;Left&apos;, &apos;Bottom&apos;, or &apos;Right&apos;.</param>
+			/// <param name="cellPaddingLocation" type="String">Required. The cell padding location can be &apos;Top&apos;, &apos;Left&apos;, &apos;Bottom&apos; or &apos;Right&apos;.</param>
 			/// <param name="cellPadding" type="Number">Required. The cell padding.</param>
 			/// <returns ></returns>
 		}
@@ -21833,14 +22321,14 @@ var Word;
 			/// <field name="cellCount" type="Number">Gets the number of cells in the row. Read-only. [Api set: WordApi 1.3]</field>
 			/// <field name="cells" type="Word.TableCellCollection">Gets cells. Read-only. [Api set: WordApi 1.3]</field>
 			/// <field name="font" type="Word.Font">Gets the font. Use this to get and set font name, size, color, and other properties. Read-only. [Api set: WordApi 1.3]</field>
-			/// <field name="horizontalAlignment" type="String">Gets and sets the horizontal alignment of every cell in the row. The value can be &apos;Left&apos;, &apos;Centered&apos;, &apos;Right&apos;, or &apos;Justified&apos;. [Api set: WordApi 1.3]</field>
+			/// <field name="horizontalAlignment" type="String">Gets and sets the horizontal alignment of every cell in the row. The value can be &apos;left&apos;, &apos;centered&apos;, &apos;right&apos;, or &apos;justified&apos;. [Api set: WordApi 1.3]</field>
 			/// <field name="isHeader" type="Boolean">Checks whether the row is a header row. Read-only. To set the number of header rows, use HeaderRowCount on the Table object. [Api set: WordApi 1.3]</field>
 			/// <field name="parentTable" type="Word.Table">Gets parent table. Read-only. [Api set: WordApi 1.3]</field>
 			/// <field name="preferredHeight" type="Number">Gets and sets the preferred height of the row in points. [Api set: WordApi 1.3]</field>
 			/// <field name="rowIndex" type="Number">Gets the index of the row in its parent table. Read-only. [Api set: WordApi 1.3]</field>
-			/// <field name="shadingColor" type="String">Gets and sets the shading color. Color is specified in &quot;#RRGGBB&quot; format or by using the color name. [Api set: WordApi 1.3]</field>
+			/// <field name="shadingColor" type="String">Gets and sets the shading color. [Api set: WordApi 1.3]</field>
 			/// <field name="values" type="Array" elementType="Array">Gets and sets the text values in the row, as a 2D Javascript array. [Api set: WordApi 1.3]</field>
-			/// <field name="verticalAlignment" type="String">Gets and sets the vertical alignment of the cells in the row. The value can be &apos;Top&apos;, &apos;Center&apos;, or &apos;Bottom&apos;. [Api set: WordApi 1.3]</field>
+			/// <field name="verticalAlignment" type="String">Gets and sets the vertical alignment of the cells in the row. The value can be &apos;top&apos;, &apos;center&apos; or &apos;bottom&apos;. [Api set: WordApi 1.3]</field>
 		}
 
 		TableRow.prototype.load = function(option) {
@@ -21888,7 +22376,7 @@ var Word;
 			/// <summary>
 			/// Gets cell padding in points. [Api set: WordApi 1.3]
 			/// </summary>
-			/// <param name="cellPaddingLocation" type="String">Required. The cell padding location can be &apos;Top&apos;, &apos;Left&apos;, &apos;Bottom&apos;, or &apos;Right&apos;.</param>
+			/// <param name="cellPaddingLocation" type="String">Required. The cell padding location can be &apos;Top&apos;, &apos;Left&apos;, &apos;Bottom&apos; or &apos;Right&apos;.</param>
 			/// <returns type="OfficeExtension.ClientResult&lt;number&gt;"></returns>
 			var result = new OfficeExtension.ClientResult();
 			result.__proto__ = null;
@@ -21930,7 +22418,7 @@ var Word;
 		}
 		TableRow.prototype.search = function(searchText, searchOptions) {
 			/// <summary>
-			/// Performs a search with the specified SearchOptions on the scope of the row. The search results are a collection of range objects. [Api set: WordApi 1.3]
+			/// Performs a search with the specified searchOptions on the scope of the row. The search results are a collection of range objects. [Api set: WordApi 1.3]
 			/// </summary>
 			/// <param name="searchText" type="String">Required. The search text.</param>
 			/// <param name="searchOptions" type="Word.SearchOptions" optional="true">Optional. Options for the search.</param>
@@ -21940,14 +22428,14 @@ var Word;
 			/// <summary>
 			/// Selects the row and navigates the Word UI to it. [Api set: WordApi 1.3]
 			/// </summary>
-			/// <param name="selectionMode" type="String" optional="true">Optional. The selection mode can be &apos;Select&apos;, &apos;Start&apos;, or &apos;End&apos;. &apos;Select&apos; is the default.</param>
+			/// <param name="selectionMode" type="String" optional="true">Optional. The selection mode can be &apos;Select&apos;, &apos;Start&apos; or &apos;End&apos;. &apos;Select&apos; is the default.</param>
 			/// <returns ></returns>
 		}
 		TableRow.prototype.setCellPadding = function(cellPaddingLocation, cellPadding) {
 			/// <summary>
 			/// Sets cell padding in points. [Api set: WordApi 1.3]
 			/// </summary>
-			/// <param name="cellPaddingLocation" type="String">Required. The cell padding location can be &apos;Top&apos;, &apos;Left&apos;, &apos;Bottom&apos;, or &apos;Right&apos;.</param>
+			/// <param name="cellPaddingLocation" type="String">Required. The cell padding location can be &apos;Top&apos;, &apos;Left&apos;, &apos;Bottom&apos; or &apos;Right&apos;.</param>
 			/// <param name="cellPadding" type="Number">Required. The cell padding.</param>
 			/// <returns ></returns>
 		}
@@ -22104,7 +22592,7 @@ var Word;
 			function ContentControlUpdateData() {
 				/// <summary>An interface for updating data on the ContentControl object, for use in "contentControl.set({ ... })".</summary>
 				/// <field name="font" type="Word.Interfaces.FontUpdateData">Gets the text format of the content control. Use this to get and set font name, size, color, and other properties. [Api set: WordApi 1.1]</field>
-				/// <field name="appearance" type="String">Gets or sets the appearance of the content control. The value can be &apos;BoundingBox&apos;, &apos;Tags&apos;, or &apos;Hidden&apos;. [Api set: WordApi 1.1]</field>;
+				/// <field name="appearance" type="String">Gets or sets the appearance of the content control. The value can be &apos;boundingBox&apos;, &apos;tags&apos; or &apos;hidden&apos;. [Api set: WordApi 1.1]</field>;
 				/// <field name="cannotDelete" type="Boolean">Gets or sets a value that indicates whether the user can delete the content control. Mutually exclusive with removeWhenEdited. [Api set: WordApi 1.1]</field>;
 				/// <field name="cannotEdit" type="Boolean">Gets or sets a value that indicates whether the user can edit the contents of the content control. [Api set: WordApi 1.1]</field>;
 				/// <field name="color" type="String">Gets or sets the color of the content control. Color is specified in &apos;#RRGGBB&apos; format or by using the color name. [Api set: WordApi 1.1]</field>;
@@ -22206,12 +22694,12 @@ var Word;
 				/// <summary>An interface for updating data on the Font object, for use in "font.set({ ... })".</summary>
 				/// <field name="bold" type="Boolean">Gets or sets a value that indicates whether the font is bold. True if the font is formatted as bold, otherwise, false. [Api set: WordApi 1.1]</field>;
 				/// <field name="color" type="String">Gets or sets the color for the specified font. You can provide the value in the &apos;#RRGGBB&apos; format or the color name. [Api set: WordApi 1.1]</field>;
-				/// <field name="doubleStrikeThrough" type="Boolean">Gets or sets a value that indicates whether the font has a double strikethrough. True if the font is formatted as double strikethrough text, otherwise, false. [Api set: WordApi 1.1]</field>;
-				/// <field name="highlightColor" type="String">Gets or sets the highlight color. To set it, use a value either in the &apos;#RRGGBB&apos; format or the color name. To remove highlight color, set it to null. The returned highlight color can be in the &apos;#RRGGBB&apos; format, an empty string for mixed highlight colors, or null for no highlight color. [Api set: WordApi 1.1]</field>;
+				/// <field name="doubleStrikeThrough" type="Boolean">Gets or sets a value that indicates whether the font has a double strike through. True if the font is formatted as double strikethrough text, otherwise, false. [Api set: WordApi 1.1]</field>;
+				/// <field name="highlightColor" type="String">Gets or sets the highlight color. To set it, use a value either in the &apos;#RRGGBB&apos; format or the color name. To remove highlight color, set it to null. The returned highlight color can be in the &apos;#RRGGBB&apos; format, or an empty string for mixed highlight colors, or null for no highlight color. [Api set: WordApi 1.1]</field>;
 				/// <field name="italic" type="Boolean">Gets or sets a value that indicates whether the font is italicized. True if the font is italicized, otherwise, false. [Api set: WordApi 1.1]</field>;
 				/// <field name="name" type="String">Gets or sets a value that represents the name of the font. [Api set: WordApi 1.1]</field>;
 				/// <field name="size" type="Number">Gets or sets a value that represents the font size in points. [Api set: WordApi 1.1]</field>;
-				/// <field name="strikeThrough" type="Boolean">Gets or sets a value that indicates whether the font has a strikethrough. True if the font is formatted as strikethrough text, otherwise, false. [Api set: WordApi 1.1]</field>;
+				/// <field name="strikeThrough" type="Boolean">Gets or sets a value that indicates whether the font has a strike through. True if the font is formatted as strikethrough text, otherwise, false. [Api set: WordApi 1.1]</field>;
 				/// <field name="subscript" type="Boolean">Gets or sets a value that indicates whether the font is a subscript. True if the font is formatted as subscript, otherwise, false. [Api set: WordApi 1.1]</field>;
 				/// <field name="superscript" type="Boolean">Gets or sets a value that indicates whether the font is a superscript. True if the font is formatted as superscript, otherwise, false. [Api set: WordApi 1.1]</field>;
 				/// <field name="underline" type="String">Gets or sets a value that indicates the font&apos;s underline type. &apos;None&apos; if the font is not underlined. [Api set: WordApi 1.1]</field>;
@@ -22230,7 +22718,7 @@ var Word;
 		var InlinePictureUpdateData = (function() {
 			function InlinePictureUpdateData() {
 				/// <summary>An interface for updating data on the InlinePicture object, for use in "inlinePicture.set({ ... })".</summary>
-				/// <field name="altTextDescription" type="String">Gets or sets a string that represents the alternative text associated with the inline image. [Api set: WordApi 1.1]</field>;
+				/// <field name="altTextDescription" type="String">Gets or sets a string that represents the alternative text associated with the inline image [Api set: WordApi 1.1]</field>;
 				/// <field name="altTextTitle" type="String">Gets or sets a string that contains the title for the inline image. [Api set: WordApi 1.1]</field>;
 				/// <field name="height" type="Number">Gets or sets a number that describes the height of the inline image. [Api set: WordApi 1.1]</field>;
 				/// <field name="hyperlink" type="String">Gets or sets a hyperlink on the image. Use a &apos;#&apos; to separate the address part from the optional location part. [Api set: WordApi 1.1]</field>;
@@ -22274,7 +22762,7 @@ var Word;
 				/// <field name="firstLineIndent" type="Number">Gets or sets the value, in points, for a first line or hanging indent. Use a positive value to set a first-line indent, and use a negative value to set a hanging indent. [Api set: WordApi 1.1]</field>;
 				/// <field name="leftIndent" type="Number">Gets or sets the left indent value, in points, for the paragraph. [Api set: WordApi 1.1]</field>;
 				/// <field name="lineSpacing" type="Number">Gets or sets the line spacing, in points, for the specified paragraph. In the Word UI, this value is divided by 12. [Api set: WordApi 1.1]</field>;
-				/// <field name="lineUnitAfter" type="Number">Gets or sets the amount of spacing, in grid lines, after the paragraph. [Api set: WordApi 1.1]</field>;
+				/// <field name="lineUnitAfter" type="Number">Gets or sets the amount of spacing, in grid lines. after the paragraph. [Api set: WordApi 1.1]</field>;
 				/// <field name="lineUnitBefore" type="Number">Gets or sets the amount of spacing, in grid lines, before the paragraph. [Api set: WordApi 1.1]</field>;
 				/// <field name="outlineLevel" type="Number">Gets or sets the outline level for the paragraph. [Api set: WordApi 1.1]</field>;
 				/// <field name="rightIndent" type="Number">Gets or sets the right indent value, in points, for the paragraph. [Api set: WordApi 1.1]</field>;
@@ -22318,7 +22806,7 @@ var Word;
 				/// <summary>An interface for updating data on the SearchOptions object, for use in "searchOptions.set({ ... })".</summary>
 				/// <field name="ignorePunct" type="Boolean">Gets or sets a value that indicates whether to ignore all punctuation characters between words. Corresponds to the Ignore punctuation check box in the Find and Replace dialog box. [Api set: WordApi 1.1]</field>;
 				/// <field name="ignoreSpace" type="Boolean">Gets or sets a value that indicates whether to ignore all whitespace between words. Corresponds to the Ignore whitespace characters check box in the Find and Replace dialog box. [Api set: WordApi 1.1]</field>;
-				/// <field name="matchCase" type="Boolean">Gets or sets a value that indicates whether to perform a case sensitive search. Corresponds to the Match case check box in the Find and Replace dialog box. [Api set: WordApi 1.1]</field>;
+				/// <field name="matchCase" type="Boolean">Gets or sets a value that indicates whether to perform a case sensitive search. Corresponds to the Match case check box in the Find and Replace dialog box (Edit menu). [Api set: WordApi 1.1]</field>;
 				/// <field name="matchPrefix" type="Boolean">Gets or sets a value that indicates whether to match words that begin with the search string. Corresponds to the Match prefix check box in the Find and Replace dialog box. [Api set: WordApi 1.1]</field>;
 				/// <field name="matchSuffix" type="Boolean">Gets or sets a value that indicates whether to match words that end with the search string. Corresponds to the Match suffix check box in the Find and Replace dialog box. [Api set: WordApi 1.1]</field>;
 				/// <field name="matchWholeWord" type="Boolean">Gets or sets a value that indicates whether to find operation only entire words, not text that is part of a larger word. Corresponds to the Find whole words only check box in the Find and Replace dialog box. [Api set: WordApi 1.1]</field>;
@@ -22371,10 +22859,10 @@ var Word;
 			function TableUpdateData() {
 				/// <summary>An interface for updating data on the Table object, for use in "table.set({ ... })".</summary>
 				/// <field name="font" type="Word.Interfaces.FontUpdateData">Gets the font. Use this to get and set font name, size, color, and other properties. [Api set: WordApi 1.3]</field>
-				/// <field name="alignment" type="String">Gets or sets the alignment of the table against the page column. The value can be &apos;Left&apos;, &apos;Centered&apos;, or &apos;Right&apos;. [Api set: WordApi 1.3]</field>;
+				/// <field name="alignment" type="String">Gets or sets the alignment of the table against the page column. The value can be &apos;left&apos;, &apos;centered&apos; or &apos;right&apos;. [Api set: WordApi 1.3]</field>;
 				/// <field name="headerRowCount" type="Number">Gets and sets the number of header rows. [Api set: WordApi 1.3]</field>;
-				/// <field name="horizontalAlignment" type="String">Gets and sets the horizontal alignment of every cell in the table. The value can be &apos;Left&apos;, &apos;Centered&apos;, &apos;Right&apos;, or &apos;Justified&apos;. [Api set: WordApi 1.3]</field>;
-				/// <field name="shadingColor" type="String">Gets and sets the shading color. Color is specified in &quot;#RRGGBB&quot; format or by using the color name. [Api set: WordApi 1.3]</field>;
+				/// <field name="horizontalAlignment" type="String">Gets and sets the horizontal alignment of every cell in the table. The value can be &apos;left&apos;, &apos;centered&apos;, &apos;right&apos;, or &apos;justified&apos;. [Api set: WordApi 1.3]</field>;
+				/// <field name="shadingColor" type="String">Gets and sets the shading color. [Api set: WordApi 1.3]</field>;
 				/// <field name="style" type="String">Gets or sets the style name for the table. Use this property for custom styles and localized style names. To use the built-in styles that are portable between locales, see the &quot;styleBuiltIn&quot; property. [Api set: WordApi 1.3]</field>;
 				/// <field name="styleBandedColumns" type="Boolean">Gets and sets whether the table has banded columns. [Api set: WordApi 1.3]</field>;
 				/// <field name="styleBandedRows" type="Boolean">Gets and sets whether the table has banded rows. [Api set: WordApi 1.3]</field>;
@@ -22383,7 +22871,7 @@ var Word;
 				/// <field name="styleLastColumn" type="Boolean">Gets and sets whether the table has a last column with a special style. [Api set: WordApi 1.3]</field>;
 				/// <field name="styleTotalRow" type="Boolean">Gets and sets whether the table has a total (last) row with a special style. [Api set: WordApi 1.3]</field>;
 				/// <field name="values" type="Array" elementType="Array">Gets and sets the text values in the table, as a 2D Javascript array. [Api set: WordApi 1.3]</field>;
-				/// <field name="verticalAlignment" type="String">Gets and sets the vertical alignment of every cell in the table. The value can be &apos;Top&apos;, &apos;Center&apos;, or &apos;Bottom&apos;. [Api set: WordApi 1.3]</field>;
+				/// <field name="verticalAlignment" type="String">Gets and sets the vertical alignment of every cell in the table. The value can be &apos;top&apos;, &apos;center&apos; or &apos;bottom&apos;. [Api set: WordApi 1.3]</field>;
 				/// <field name="width" type="Number">Gets and sets the width of the table in points. [Api set: WordApi 1.3]</field>;
 			}
 			return TableUpdateData;
@@ -22401,11 +22889,11 @@ var Word;
 			function TableRowUpdateData() {
 				/// <summary>An interface for updating data on the TableRow object, for use in "tableRow.set({ ... })".</summary>
 				/// <field name="font" type="Word.Interfaces.FontUpdateData">Gets the font. Use this to get and set font name, size, color, and other properties. [Api set: WordApi 1.3]</field>
-				/// <field name="horizontalAlignment" type="String">Gets and sets the horizontal alignment of every cell in the row. The value can be &apos;Left&apos;, &apos;Centered&apos;, &apos;Right&apos;, or &apos;Justified&apos;. [Api set: WordApi 1.3]</field>;
+				/// <field name="horizontalAlignment" type="String">Gets and sets the horizontal alignment of every cell in the row. The value can be &apos;left&apos;, &apos;centered&apos;, &apos;right&apos;, or &apos;justified&apos;. [Api set: WordApi 1.3]</field>;
 				/// <field name="preferredHeight" type="Number">Gets and sets the preferred height of the row in points. [Api set: WordApi 1.3]</field>;
-				/// <field name="shadingColor" type="String">Gets and sets the shading color. Color is specified in &quot;#RRGGBB&quot; format or by using the color name. [Api set: WordApi 1.3]</field>;
+				/// <field name="shadingColor" type="String">Gets and sets the shading color. [Api set: WordApi 1.3]</field>;
 				/// <field name="values" type="Array" elementType="Array">Gets and sets the text values in the row, as a 2D Javascript array. [Api set: WordApi 1.3]</field>;
-				/// <field name="verticalAlignment" type="String">Gets and sets the vertical alignment of the cells in the row. The value can be &apos;Top&apos;, &apos;Center&apos;, or &apos;Bottom&apos;. [Api set: WordApi 1.3]</field>;
+				/// <field name="verticalAlignment" type="String">Gets and sets the vertical alignment of the cells in the row. The value can be &apos;top&apos;, &apos;center&apos; or &apos;bottom&apos;. [Api set: WordApi 1.3]</field>;
 			}
 			return TableRowUpdateData;
 		})();
@@ -22423,10 +22911,10 @@ var Word;
 				/// <summary>An interface for updating data on the TableCell object, for use in "tableCell.set({ ... })".</summary>
 				/// <field name="body" type="Word.Interfaces.BodyUpdateData">Gets the body object of the cell. [Api set: WordApi 1.3]</field>
 				/// <field name="columnWidth" type="Number">Gets and sets the width of the cell&apos;s column in points. This is applicable to uniform tables. [Api set: WordApi 1.3]</field>;
-				/// <field name="horizontalAlignment" type="String">Gets and sets the horizontal alignment of the cell. The value can be &apos;Left&apos;, &apos;Centered&apos;, &apos;Right&apos;, or &apos;Justified&apos;. [Api set: WordApi 1.3]</field>;
+				/// <field name="horizontalAlignment" type="String">Gets and sets the horizontal alignment of the cell. The value can be &apos;left&apos;, &apos;centered&apos;, &apos;right&apos;, or &apos;justified&apos;. [Api set: WordApi 1.3]</field>;
 				/// <field name="shadingColor" type="String">Gets or sets the shading color of the cell. Color is specified in &quot;#RRGGBB&quot; format or by using the color name. [Api set: WordApi 1.3]</field>;
 				/// <field name="value" type="String">Gets and sets the text of the cell. [Api set: WordApi 1.3]</field>;
-				/// <field name="verticalAlignment" type="String">Gets and sets the vertical alignment of the cell. The value can be &apos;Top&apos;, &apos;Center&apos;, or &apos;Bottom&apos;. [Api set: WordApi 1.3]</field>;
+				/// <field name="verticalAlignment" type="String">Gets and sets the vertical alignment of the cell. The value can be &apos;top&apos;, &apos;center&apos; or &apos;bottom&apos;. [Api set: WordApi 1.3]</field>;
 			}
 			return TableCellUpdateData;
 		})();
@@ -22442,7 +22930,7 @@ var Word;
 		var TableBorderUpdateData = (function() {
 			function TableBorderUpdateData() {
 				/// <summary>An interface for updating data on the TableBorder object, for use in "tableBorder.set({ ... })".</summary>
-				/// <field name="color" type="String">Gets or sets the table border color. [Api set: WordApi 1.3]</field>;
+				/// <field name="color" type="String">Gets or sets the table border color, as a hex value or name. [Api set: WordApi 1.3]</field>;
 				/// <field name="type" type="String">Gets or sets the type of the table border. [Api set: WordApi 1.3]</field>;
 				/// <field name="width" type="Number">Gets or sets the width, in points, of the table border. Not applicable to table border types that have fixed widths. [Api set: WordApi 1.3]</field>;
 			}
