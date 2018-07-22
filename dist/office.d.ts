@@ -14887,6 +14887,12 @@ declare namespace Excel {
      */
     function run<T>(batch: (context: Excel.RequestContext) => Promise<T>): Promise<T>;
     /**
+     * Executes a batch script that performs actions on the Excel object model, using the RequestContext of a previously-created object. When the promise is resolved, any tracked objects that were automatically allocated during execution will be released.
+     * @param contextObject - A previously-created object. The batch will use the same RequestContext as the passed-in object, which means that any changes applied to the object will be picked up by "context.sync()".
+     * @param batch - A function that takes in a RequestContext and returns a promise (typically, just the result of "context.sync()"). The context parameter facilitates requests to the Excel application. Since the Office add-in and the Excel application run in two different processes, the RequestContext is required to get access to the Excel object model from the add-in.
+     */
+    function run<T>(contextObject: OfficeExtension.ClientRequestContext, batch: (context: Excel.RequestContext) => Promise<T>): Promise<T>;
+    /**
      * Executes a batch script that performs actions on the Excel object model, using the RequestContext of a previously-created API object. When the promise is resolved, any tracked objects that were automatically allocated during execution will be released.
      * @param object - A previously-created API object. The batch will use the same RequestContext as the passed-in object, which means that any changes applied to the object will be picked up by "context.sync()".
      * @param batch - A function that takes in a RequestContext and returns a promise (typically, just the result of "context.sync()"). The context parameter facilitates requests to the Excel application. Since the Office add-in and the Excel application run in two different processes, the RequestContext is required to get access to the Excel object model from the add-in.
@@ -14904,26 +14910,6 @@ declare namespace Excel {
     * @param batch - A function that takes in a RequestContext and returns a promise (typically, just the result of "context.sync()"). The context parameter facilitates requests to the Excel application. Since the Office add-in and the Excel application run in two different processes, the RequestContext is required to get access to the Excel object model from the add-in.
     */
     function run<T>(options: Excel.RunOptions, batch: (context: Excel.RequestContext) => Promise<T>): Promise<T>;
-    /**
-     * Executes a batch script that performs actions on the Excel object model, using the RequestContext of a previously-created object. When the promise is resolved, any tracked objects that were automatically allocated during execution will be released.
-     *
-     * @remarks
-     *
-     * In addition to this signature, the method also has the following signatures:
-     *
-     * `run<T>(object: OfficeExtension.ClientObject, batch: (context: Excel.RequestContext) => Promise<T>): Promise<T>;`
-     *
-     * `run<T>(objects: OfficeExtension.ClientObject[], batch: (context: Excel.RequestContext) => Promise<T>): Promise<T>;`
-     *
-     * `run<T>(options: Excel.RunOptions, batch: (context: Excel.RequestContext) => Promise<T>): Promise<T>;`
-     *
-     * `run<T>(batch: (context: Excel.RequestContext) => Promise<T>): Promise<T>;`
-     *
-     * @param context - A previously-created object. The batch will use the same RequestContext as the passed-in object, which means that any changes applied to the object will be picked up by "context.sync()".
-     * @param batch - A function that takes in a RequestContext and returns a promise (typically, just the result of "context.sync()"). The context parameter facilitates requests to the Excel application. Since the Office add-in and the Excel application run in two different processes, the RequestContext is required to get access to the Excel object model from the add-in.
-     */
-    function run<T>(context: OfficeExtension.ClientRequestContext, batch: (context: Excel.RequestContext) => Promise<T>): Promise<T>;
-    function createWorkbook(base64?: string): Promise<object>;
     /**
      *
      * Provides information about the binding that raised the SelectionChanged event.
@@ -15483,6 +15469,42 @@ declare namespace Excel {
     }
     /**
      *
+     * Provides information about the table that raised the OnAdded event.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    interface TableAddedEventArgs {
+        /**
+         *
+         * Gets the source of the event. See Excel.EventSource for details.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        source: Excel.EventSource | "Local" | "Remote";
+        /**
+         *
+         * Gets the id of the table that is added.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        tableId: string;
+        /**
+         *
+         * Gets the type of the event. See Excel.EventType for details.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        type: "TableAdded";
+        /**
+         *
+         * Gets the id of the worksheet in which the table is added.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        worksheetId: string;
+    }
+    /**
+     *
      * Represents the Excel Runtime class.
      *
      * [Api set: ExcelApi 1.5]
@@ -15601,6 +15623,15 @@ declare namespace Excel {
          * @param calculationType Specifies the calculation type to use. See Excel.CalculationType for details.
          */
         calculate(calculationType: "Recalculate" | "Full" | "FullRebuild"): void;
+        /**
+         *
+         * Creates a new hidden workbook by using an optional base64 encoded .xlsx file.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param base64File Optional. The base64 encoded .xlsx file. The default value is null.
+         */
+        createWorkbook(base64File?: string): Excel.WorkbookCreated;
         /**
          *
          * Suspends calculation until the next "context.sync()" is called. Once set, it is the developer's responsibility to re-calc the workbook, to ensure that any dependencies are propagated.
@@ -15876,6 +15907,20 @@ declare namespace Excel {
         getActiveCell(): Excel.Range;
         /**
          *
+         * Gets the currently active chart in the workbook. If there is no active chart, will throw exception when invoke this statement
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getActiveChart(): Excel.Chart;
+        /**
+         *
+         * Gets the currently active chart in the workbook. If there is no active chart, will return null object
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getActiveChartOrNullObject(): Excel.Chart;
+        /**
+         *
          * True if the workbook is being edited by multiple users (co-authoring).
             Please be aware there might be some delay between when the workbook status changes and when the changes are reflected on the result of the method.
          *
@@ -15915,8 +15960,6 @@ declare namespace Excel {
          * Occurs when the selection in the document is changed.
          *
          * [Api set: ExcelApi 1.2]
-         *
-         * @eventproperty
          */
         readonly onSelectionChanged: OfficeExtension.EventHandlers<Excel.SelectionChangedEventArgs>;
         toJSON(): Excel.Interfaces.WorkbookData;
@@ -15932,7 +15975,7 @@ declare namespace Excel {
          *
          * Indicates if the workbook is protected. Read-Only.
          *
-         * [Api set: ExcelApi 1.7]
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         readonly protected: boolean;
         /**
@@ -15984,6 +16027,20 @@ declare namespace Excel {
      */
     class WorkbookCreated extends OfficeExtension.ClientObject {
         /**
+         *
+         * Returns a value that uniquely identifies the WorkbookCreated object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly id: string;
+        /**
+         *
+         * Open the workbook.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        open(): void;
+        /**
          * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
          *
          * @remarks
@@ -15998,6 +16055,7 @@ declare namespace Excel {
          *
          * @param options Provides options for which properties of the object to load.
          */
+        load(option?: Excel.Interfaces.WorkbookCreatedLoadOptions): Excel.WorkbookCreated;
         load(option?: string | string[]): Excel.WorkbookCreated;
         load(option?: {
             select?: string;
@@ -16063,6 +16121,13 @@ declare namespace Excel {
         readonly protection: Excel.WorksheetProtection;
         /**
          *
+         * Returns the collection of all the Shape objects on the worksheet. Read-only.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly shapes: Excel.ShapeCollection;
+        /**
+         *
          * Collection of tables that are part of the worksheet. Read-only.
          *
          * [Api set: ExcelApi 1.1]
@@ -16075,14 +16140,6 @@ declare namespace Excel {
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         readonly verticalPageBreaks: Excel.PageBreakCollection;
-        /**
-         *
-         * Gets or sets the enableCalculation property of the worksheet.
-            True if Excel recalculates the worksheet when necessary. False if Excel doesn't recalculate the sheet.
-         *
-         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-         */
-        enableCalculation: boolean;
         /**
          *
          * Returns a value that uniquely identifies the worksheet in a given workbook. The value of the identifier remains the same even when the worksheet is renamed or moved. Read-only.
@@ -16354,8 +16411,6 @@ declare namespace Excel {
          * Occurs when the worksheet is activated.
          *
          * [Api set: ExcelApi 1.7]
-         *
-         * @eventproperty
          */
         readonly onActivated: OfficeExtension.EventHandlers<Excel.WorksheetActivatedEventArgs>;
         /**
@@ -16363,8 +16418,6 @@ declare namespace Excel {
          * Occurs when the worksheet is calculated.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-         *
-         * @eventproperty
          */
         readonly onCalculated: OfficeExtension.EventHandlers<Excel.WorksheetCalculatedEventArgs>;
         /**
@@ -16372,8 +16425,6 @@ declare namespace Excel {
          * Occurs when data changed on a specific worksheet.
          *
          * [Api set: ExcelApi 1.7]
-         *
-         * @eventproperty
          */
         readonly onChanged: OfficeExtension.EventHandlers<Excel.WorksheetChangedEventArgs>;
         /**
@@ -16381,8 +16432,6 @@ declare namespace Excel {
          * Occurs when the worksheet is deactivated.
          *
          * [Api set: ExcelApi 1.7]
-         *
-         * @eventproperty
          */
         readonly onDeactivated: OfficeExtension.EventHandlers<Excel.WorksheetDeactivatedEventArgs>;
         /**
@@ -16390,8 +16439,6 @@ declare namespace Excel {
          * Occurs when the selection changes on a specific worksheet.
          *
          * [Api set: ExcelApi 1.7]
-         *
-         * @eventproperty
          */
         readonly onSelectionChanged: OfficeExtension.EventHandlers<Excel.WorksheetSelectionChangedEventArgs>;
         toJSON(): Excel.Interfaces.WorksheetData;
@@ -16489,8 +16536,6 @@ declare namespace Excel {
          * Occurs when any worksheet in the workbook is activated.
          *
          * [Api set: ExcelApi 1.7]
-         *
-         * @eventproperty
          */
         readonly onActivated: OfficeExtension.EventHandlers<Excel.WorksheetActivatedEventArgs>;
         /**
@@ -16498,8 +16543,6 @@ declare namespace Excel {
          * Occurs when a new worksheet is added to the workbook.
          *
          * [Api set: ExcelApi 1.7]
-         *
-         * @eventproperty
          */
         readonly onAdded: OfficeExtension.EventHandlers<Excel.WorksheetAddedEventArgs>;
         /**
@@ -16507,17 +16550,20 @@ declare namespace Excel {
          * Occurs when any worksheet in the workbook is calculated.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-         *
-         * @eventproperty
          */
         readonly onCalculated: OfficeExtension.EventHandlers<Excel.WorksheetCalculatedEventArgs>;
+        /**
+         *
+         * Occurs when any worksheet in the workbook is changed.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly onChanged: OfficeExtension.EventHandlers<Excel.WorksheetChangedEventArgs>;
         /**
          *
          * Occurs when any worksheet in the workbook is deactivated.
          *
          * [Api set: ExcelApi 1.7]
-         *
-         * @eventproperty
          */
         readonly onDeactivated: OfficeExtension.EventHandlers<Excel.WorksheetDeactivatedEventArgs>;
         /**
@@ -16525,8 +16571,6 @@ declare namespace Excel {
          * Occurs when a worksheet is deleted from the workbook.
          *
          * [Api set: ExcelApi 1.7]
-         *
-         * @eventproperty
          */
         readonly onDeleted: OfficeExtension.EventHandlers<Excel.WorksheetDeletedEventArgs>;
         toJSON(): Excel.Interfaces.WorksheetCollectionData;
@@ -17157,6 +17201,20 @@ declare namespace Excel {
          * @param count Optional. The number of columns to include in the resulting range. In general, use a positive number to create a range outside the current range. You can also use a negative number to create a range within the current range. The default value is 1.
          */
         getColumnsBefore(count?: number): Excel.Range;
+        /**
+         *
+         * Returns a range with data validation rules. If there is no data validation rules within the range, this function will throw an ItemNotFound error.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getDataValidationRange(): Excel.Range;
+        /**
+         *
+         * Returns a range with data validation rules. If there is no data validation rules within the range, this function will return a null object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getDataValidationRangeOrNullObject(): Excel.Range;
         /**
          *
          * Gets an object that represents the entire column of the range (for example, if the current range represents cells "B4:E11", its `getEntireColumn` is a range that represents columns "B:E").
@@ -17826,8 +17884,6 @@ declare namespace Excel {
          * Occurs when the Settings in the document are changed.
          *
          * [Api set: ExcelApi 1.4]
-         *
-         * @eventproperty
          */
         readonly onSettingsChanged: OfficeExtension.EventHandlers<Excel.SettingsChangedEventArgs>;
         toJSON(): Excel.Interfaces.SettingCollectionData;
@@ -18232,8 +18288,6 @@ declare namespace Excel {
          * Occurs when data or formatting within the binding is changed.
          *
          * [Api set: ExcelApi 1.2]
-         *
-         * @eventproperty
          */
         readonly onDataChanged: OfficeExtension.EventHandlers<Excel.BindingDataChangedEventArgs>;
         /**
@@ -18241,8 +18295,6 @@ declare namespace Excel {
          * Occurs when the selected content in the binding is changed.
          *
          * [Api set: ExcelApi 1.2]
-         *
-         * @eventproperty
          */
         readonly onSelectionChanged: OfficeExtension.EventHandlers<Excel.BindingSelectionChangedEventArgs>;
         toJSON(): Excel.Interfaces.BindingData;
@@ -18465,11 +18517,16 @@ declare namespace Excel {
         load(option?: OfficeExtension.LoadOption): Excel.TableCollection;
         /**
          *
+         * Occurs when new table is added in a workbook.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly onAdded: OfficeExtension.EventHandlers<Excel.TableAddedEventArgs>;
+        /**
+         *
          * Occurs when data changes on any table in a workbook, or a worksheet.
          *
          * [Api set: ExcelApi 1.7]
-         *
-         * @eventproperty
          */
         readonly onChanged: OfficeExtension.EventHandlers<Excel.TableChangedEventArgs>;
         toJSON(): Excel.Interfaces.TableCollectionData;
@@ -18741,8 +18798,6 @@ declare namespace Excel {
          * Occurs when data in cells changes on a specific table.
          *
          * [Api set: ExcelApi 1.7]
-         *
-         * @eventproperty
          */
         readonly onChanged: OfficeExtension.EventHandlers<Excel.TableChangedEventArgs>;
         /**
@@ -18750,8 +18805,6 @@ declare namespace Excel {
          * Occurs when the selection changes on a specific table.
          *
          * [Api set: ExcelApi 1.7]
-         *
-         * @eventproperty
          */
         readonly onSelectionChanged: OfficeExtension.EventHandlers<Excel.TableSelectionChangedEventArgs>;
         toJSON(): Excel.Interfaces.TableData;
@@ -20050,7 +20103,7 @@ declare namespace Excel {
          * @param sourceData The Range object corresponding to the source data.
          * @param seriesBy Optional. Specifies the way columns or rows are used as data series on the chart. See Excel.ChartSeriesBy for details.
          */
-        add(type: "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar" | "Histogram" | "Pareto" | "RegionMap", sourceData: Range | string, seriesBy?: "Auto" | "Columns" | "Rows"): Excel.Chart;
+        add(type: "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar", sourceData: Range | string, seriesBy?: "Auto" | "Columns" | "Rows"): Excel.Chart;
         /**
          *
          * Returns the number of charts in the worksheet.
@@ -20109,8 +20162,6 @@ declare namespace Excel {
          * Occurs when a chart is activated.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-         *
-         * @eventproperty
          */
         readonly onActivated: OfficeExtension.EventHandlers<Excel.ChartActivatedEventArgs>;
         /**
@@ -20118,8 +20169,6 @@ declare namespace Excel {
          * Occurs when a new chart is added to the worksheet.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-         *
-         * @eventproperty
          */
         readonly onAdded: OfficeExtension.EventHandlers<Excel.ChartAddedEventArgs>;
         /**
@@ -20127,8 +20176,6 @@ declare namespace Excel {
          * Occurs when a chart is deactivated.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-         *
-         * @eventproperty
          */
         readonly onDeactivated: OfficeExtension.EventHandlers<Excel.ChartDeactivatedEventArgs>;
         /**
@@ -20136,8 +20183,6 @@ declare namespace Excel {
          * Occurs when a chart is deleted.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-         *
-         * @eventproperty
          */
         readonly onDeleted: OfficeExtension.EventHandlers<Excel.ChartDeletedEventArgs>;
         toJSON(): Excel.Interfaces.ChartCollectionData;
@@ -20219,7 +20264,14 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.7]
          */
-        chartType: Excel.ChartType | "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar" | "Histogram" | "Pareto" | "RegionMap";
+        chartType: Excel.ChartType | "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar";
+        /**
+         *
+         * Returns or sets an integer that represents the color scheme for the chart. Read/Write.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        colorScheme: number;
         /**
          *
          * Returns or sets the way that blank cells are plotted on a chart. Read/Write.
@@ -20271,6 +20323,13 @@ declare namespace Excel {
         plotVisibleOnly: boolean;
         /**
          *
+         * True if the chart area of the chart has rounded corners. Read/Write.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        roundedCorners: boolean;
+        /**
+         *
          * Returns or sets a ChartSeriesNameLevel enumeration constant referring to
             the level of where the series names are being sourced from. Read/Write.
          *
@@ -20286,6 +20345,14 @@ declare namespace Excel {
         showAllFieldButtons: boolean;
         /**
          *
+         * Represents whether to display axis field buttons on a PivotChart.
+            The ShowAxisFieldButtons property corresponds to the Show Axis Field Buttons command on the Field Buttons drop-down list of the Analyze tab, which is available when a PivotChart is selected.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        showAxisFieldButtons: boolean;
+        /**
+         *
          * Represents whether to to show the data labels when the value is greater than the maximum value on the value axis.
             If value axis became smaller than the size of data points, you can use this property to set whether to show the data labels.
             This property applies to 2-D charts only.
@@ -20293,6 +20360,27 @@ declare namespace Excel {
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         showDataLabelsOverMaximum: boolean;
+        /**
+         *
+         * Represents whether to display legend field buttons on a PivotChart.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        showLegendFieldButtons: boolean;
+        /**
+         *
+         * Represents whether to display report filter field buttons on a PivotChart.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        showReportFilterFieldButtons: boolean;
+        /**
+         *
+         * Represents whether to display show value field buttons on a PivotChart.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        showValueFieldButtons: boolean;
         /**
          *
          * Returns or sets the chart style for the chart. Read/Write.
@@ -20328,6 +20416,13 @@ declare namespace Excel {
         set(properties: Interfaces.ChartUpdateData, options?: OfficeExtension.UpdateOptions): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: Excel.Chart): void;
+        /**
+         *
+         * Activate the chart in the Excel UI.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        activate(): void;
         /**
          *
          * Deletes the chart object.
@@ -20415,8 +20510,6 @@ declare namespace Excel {
          * Occurs when the chart is activated.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-         *
-         * @eventproperty
          */
         readonly onActivated: OfficeExtension.EventHandlers<Excel.ChartActivatedEventArgs>;
         /**
@@ -20424,8 +20517,6 @@ declare namespace Excel {
          * Occurs when the chart is deactivated.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-         *
-         * @eventproperty
          */
         readonly onDeactivated: OfficeExtension.EventHandlers<Excel.ChartDeactivatedEventArgs>;
         toJSON(): Excel.Interfaces.ChartData;
@@ -20626,7 +20717,7 @@ declare namespace Excel {
          *
          * [Api set: ExcelApi 1.7]
          */
-        chartType: Excel.ChartType | "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar" | "Histogram" | "Pareto" | "RegionMap";
+        chartType: Excel.ChartType | "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar";
         /**
          *
          * Represents the doughnut hole size of a chart series.  Only valid on doughnut and doughnutExploded charts.
@@ -20671,6 +20762,13 @@ declare namespace Excel {
          * [Api set: ExcelApi 1.7]
          */
         hasDataLabels: boolean;
+        /**
+         *
+         * True if Microsoft Excel show leaderlines for each datalabel in series. Read/Write.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        hasLeaderLines: boolean;
         /**
          *
          * True if Microsoft Excel inverts the pattern in the item when it corresponds to a negative number. Read/Write.
@@ -20762,6 +20860,13 @@ declare namespace Excel {
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         splitValue: number;
+        /**
+         *
+         * Returns the value that represents the series type.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly type: Excel.ChartSeriesType | "Column" | "Bar" | "Bar3D" | "Line" | "Pie" | "XYScatter" | "Area" | "Area3D" | "Doughnut" | "Radar" | "Surface3D" | "Column3D";
         /**
          *
          * True if Microsoft Excel assigns a different color or pattern to each data marker. The chart must contain only one series. Read/Write.
@@ -21370,6 +21475,13 @@ declare namespace Excel {
         numberFormat: string;
         /**
          *
+         * Represents whether the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells).
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        numberFormatLinked: boolean;
+        /**
+         *
          * Represents the distance between the levels of labels, and the distance between the first level and the axis line. The value should be an integer from 0 to 1000.
          *
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
@@ -21772,6 +21884,13 @@ declare namespace Excel {
         numberFormat: string;
         /**
          *
+         * Represents whether the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells).
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        numberFormatLinked: boolean;
+        /**
+         *
          * DataLabelPosition value that represents the position of the data label. See Excel.ChartDataLabelPosition for details.
          *
          * [Api set: ExcelApi 1.1]
@@ -21935,6 +22054,13 @@ declare namespace Excel {
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         numberFormat: string;
+        /**
+         *
+         * Boolean value representing if the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells).
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        numberFormatLinked: boolean;
         /**
          *
          * DataLabelPosition value that represents the position of the data label. See Excel.ChartDataLabelPosition for details.
@@ -23508,6 +23634,13 @@ declare namespace Excel {
          * [Api set: ExcelApi BETA (PREVIEW ONLY)]
          */
         numberFormat: string;
+        /**
+         *
+         * Boolean value representing if the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells).
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        numberFormatLinked: boolean;
         /**
          *
          * String representing the text of the trendline label on a chart.
@@ -27806,27 +27939,27 @@ declare namespace Excel {
          *
          * In addition to this signature, this method has the following signatures:
          *
-         * `load(option?: string | string[]): Excel.CustomFunctionsManager` - Where option is a comma-delimited string or an array of strings that specify the properties/relationships to load.
+         * `load(option?: string | string[]): Excel.CustomFunctionManager` - Where option is a comma-delimited string or an array of strings that specify the properties/relationships to load.
          *
-         * `load(option?: { select?: string; expand?: string; }): Excel.CustomFunctionsManager` - Where option.select is a comma-delimited string that specifies the properties/relationships to load, and options.expand is a comma-delimited string that specifies the relationships to load.
+         * `load(option?: { select?: string; expand?: string; }): Excel.CustomFunctionManager` - Where option.select is a comma-delimited string that specifies the properties/relationships to load, and options.expand is a comma-delimited string that specifies the relationships to load.
          *
-         * `load(option?: { select?: string; expand?: string; top?: number; skip?: number }): Excel.CustomFunctionsManager` - Only available on collection types. It is similar to the preceding signature. Option.top specifies the maximum number of collection items that can be included in the result. Option.skip specifies the number of items that are to be skipped and not included in the result. If option.top is specified, the result set will start after skipping the specified number of items.
+         * `load(option?: { select?: string; expand?: string; top?: number; skip?: number }): Excel.CustomFunctionManager` - Only available on collection types. It is similar to the preceding signature. Option.top specifies the maximum number of collection items that can be included in the result. Option.skip specifies the number of items that are to be skipped and not included in the result. If option.top is specified, the result set will start after skipping the specified number of items.
          *
          * @param options Provides options for which properties of the object to load.
          */
-        load(option?: Excel.Interfaces.CustomFunctionsManagerLoadOptions): Excel.CustomFunctionsManager;
-        load(option?: string | string[]): Excel.CustomFunctionsManager;
+        load(option?: Excel.Interfaces.CustomFunctionManagerLoadOptions): Excel.CustomFunctionManager;
+        load(option?: string | string[]): Excel.CustomFunctionManager;
         load(option?: {
             select?: string;
             expand?: string;
-        }): Excel.CustomFunctionsManager;
+        }): Excel.CustomFunctionManager;
         /**
-         * Create a new instance of Excel.CustomFunctionsManager object
+         * Create a new instance of Excel.CustomFunctionManager object
          */
-        static newObject(context: OfficeExtension.ClientRequestContext): Excel.CustomFunctionsManager;
-        toJSON(): Excel.Interfaces.CustomFunctionsManagerData;
+        static newObject(context: OfficeExtension.ClientRequestContext): Excel.CustomFunctionManager;
+        toJSON(): Excel.Interfaces.CustomFunctionManagerData;
     }
-    var EndFirstPartyOnlyIntelliSenseCustomFunctionsManagerClass: any;
+    var EndFirstPartyOnlyIntelliSenseCustomFunctionManagerClass: any;
     /**
      *
      * An object encapsulating a style's format and other properties.
@@ -28788,6 +28921,331 @@ declare namespace Excel {
         toJSON(): Excel.Interfaces.AreaCollectionData;
     }
     /**
+     *
+     * Represents all the shapes in the worksheet.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class ShapeCollection extends OfficeExtension.ClientObject {
+        /** Gets the loaded child items in this collection. */
+        readonly items: Excel.Shape[];
+        /**
+         *
+         * Adds a geometric shape to worksheet. Returns a Shape object that represents the new shape.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param geometricShapeType Represents the geometric type of the shape. See Excel.GeometricShapeType for details.
+         * @param left The distance, in points, from the left side of the shape to the left side of the worksheet.
+         * @param top The distance, in points, from the top edge of the shape to the top of the worksheet.
+         * @param width The width, in points, of the shape.
+         * @param height The height, in points, of the shape.
+         */
+        addGeometricShape(geometricShapeType: Excel.GeometricShapeType, left: number, top: number, width: number, height: number): Excel.Shape;
+        /**
+         *
+         * Adds a geometric shape to worksheet. Returns a Shape object that represents the new shape.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param geometricShapeType Represents the geometric type of the shape. See Excel.GeometricShapeType for details.
+         * @param left The distance, in points, from the left side of the shape to the left side of the worksheet.
+         * @param top The distance, in points, from the top edge of the shape to the top of the worksheet.
+         * @param width The width, in points, of the shape.
+         * @param height The height, in points, of the shape.
+         */
+        addGeometricShape(geometricShapeType: "LineInverse" | "Triangle" | "RightTriangle" | "Rectangle" | "Diamond" | "Parallelogram" | "Trapezoid" | "NonIsoscelesTrapezoid" | "Pentagon" | "Hexagon" | "Heptagon" | "Octagon" | "Decagon" | "Dodecagon" | "Star4" | "Star5" | "Star6" | "Star7" | "Star8" | "Star10" | "Star12" | "Star16" | "Star24" | "Star32" | "RoundRectangle" | "Round1Rectangle" | "Round2SameRectangle" | "Round2DiagonalRectangle" | "SnipRoundRectangle" | "Snip1Rectangle" | "Snip2SameRectangle" | "Snip2DiagonalRectangle" | "Plaque" | "Ellipse" | "Teardrop" | "HomePlate" | "Chevron" | "PieWedge" | "Pie" | "BlockArc" | "Donut" | "NoSmoking" | "RightArrow" | "LeftArrow" | "UpArrow" | "DownArrow" | "StripedRightArrow" | "NotchedRightArrow" | "BentUpArrow" | "LeftRightArrow" | "UpDownArrow" | "LeftUpArrow" | "LeftRightUpArrow" | "QuadArrow" | "LeftArrowCallout" | "RightArrowCallout" | "UpArrowCallout" | "DownArrowCallout" | "LeftRightArrowCallout" | "UpDownArrowCallout" | "QuadArrowCallout" | "BentArrow" | "UturnArrow" | "CircularArrow" | "LeftCircularArrow" | "LeftRightCircularArrow" | "CurvedRightArrow" | "CurvedLeftArrow" | "CurvedUpArrow" | "CurvedDownArrow" | "SwooshArrow" | "Cube" | "Can" | "LightningBolt" | "Heart" | "Sun" | "Moon" | "SmileyFace" | "IrregularSeal1" | "IrregularSeal2" | "FoldedCorner" | "Bevel" | "Frame" | "HalfFrame" | "Corner" | "DiagonalStripe" | "Chord" | "Arc" | "LeftBracket" | "RightBracket" | "LeftBrace" | "RightBrace" | "BracketPair" | "BracePair" | "Callout1" | "Callout2" | "Callout3" | "AccentCallout1" | "AccentCallout2" | "AccentCallout3" | "BorderCallout1" | "BorderCallout2" | "BorderCallout3" | "AccentBorderCallout1" | "AccentBorderCallout2" | "AccentBorderCallout3" | "WedgeRectCallout" | "WedgeRRectCallout" | "WedgeEllipseCallout" | "CloudCallout" | "Cloud" | "Ribbon" | "Ribbon2" | "EllipseRibbon" | "EllipseRibbon2" | "LeftRightRibbon" | "VerticalScroll" | "HorizontalScroll" | "Wave" | "DoubleWave" | "Plus" | "FlowChartProcess" | "FlowChartDecision" | "FlowChartInputOutput" | "FlowChartPredefinedProcess" | "FlowChartInternalStorage" | "FlowChartDocument" | "FlowChartMultidocument" | "FlowChartTerminator" | "FlowChartPreparation" | "FlowChartManualInput" | "FlowChartManualOperation" | "FlowChartConnector" | "FlowChartPunchedCard" | "FlowChartPunchedTape" | "FlowChartSummingJunction" | "FlowChartOr" | "FlowChartCollate" | "FlowChartSort" | "FlowChartExtract" | "FlowChartMerge" | "FlowChartOfflineStorage" | "FlowChartOnlineStorage" | "FlowChartMagneticTape" | "FlowChartMagneticDisk" | "FlowChartMagneticDrum" | "FlowChartDisplay" | "FlowChartDelay" | "FlowChartAlternateProcess" | "FlowChartOffpageConnector" | "ActionButtonBlank" | "ActionButtonHome" | "ActionButtonHelp" | "ActionButtonInformation" | "ActionButtonForwardNext" | "ActionButtonBackPrevious" | "ActionButtonEnd" | "ActionButtonBeginning" | "ActionButtonReturn" | "ActionButtonDocument" | "ActionButtonSound" | "ActionButtonMovie" | "Gear6" | "Gear9" | "Funnel" | "MathPlus" | "MathMinus" | "MathMultiply" | "MathDivide" | "MathEqual" | "MathNotEqual" | "CornerTabs" | "SquareTabs" | "PlaqueTabs" | "ChartX" | "ChartStar" | "ChartPlus", left: number, top: number, width: number, height: number): Excel.Shape;
+        /**
+         *
+         * Creates an image from a base64 string and adds it to worksheet. Returns the image object that represents the new Image.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param base64ImageString A base64 encoded image in JPEG or PNG formats.
+         */
+        addImage(base64ImageString: string): Excel.Image;
+        /**
+         *
+         * Returns the number of shapes in the worksheet. Read-only.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        getCount(): OfficeExtension.ClientResult<number>;
+        /**
+         *
+         * Returns a shape identified by the shape id. Read-only.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param shapeId The identifier for the shape.
+         */
+        getItem(shapeId: number): Excel.Shape;
+        /**
+         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+         *
+         * @remarks
+         *
+         * In addition to this signature, this method has the following signatures:
+         *
+         * `load(option?: string | string[]): Excel.ShapeCollection` - Where option is a comma-delimited string or an array of strings that specify the properties/relationships to load.
+         *
+         * `load(option?: { select?: string; expand?: string; }): Excel.ShapeCollection` - Where option.select is a comma-delimited string that specifies the properties/relationships to load, and options.expand is a comma-delimited string that specifies the relationships to load.
+         *
+         * `load(option?: { select?: string; expand?: string; top?: number; skip?: number }): Excel.ShapeCollection` - Only available on collection types. It is similar to the preceding signature. Option.top specifies the maximum number of collection items that can be included in the result. Option.skip specifies the number of items that are to be skipped and not included in the result. If option.top is specified, the result set will start after skipping the specified number of items.
+         *
+         * @param options Provides options for which properties of the object to load.
+         */
+        load(option?: Excel.Interfaces.ShapeCollectionLoadOptions & Excel.Interfaces.CollectionLoadOptions): Excel.ShapeCollection;
+        load(option?: string | string[]): Excel.ShapeCollection;
+        load(option?: OfficeExtension.LoadOption): Excel.ShapeCollection;
+        toJSON(): Excel.Interfaces.ShapeCollectionData;
+    }
+    /**
+     *
+     * Represents a generic shape object in the worksheet.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class Shape extends OfficeExtension.ClientObject {
+        /**
+         *
+         * Returns the geometric shape for the shape object. Error will be thrown, if the shape object is other shape type (Like, Image, SmartArt, etc.) rather than GeometricShape.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly geometricShape: Excel.GeometricShape;
+        /**
+         *
+         * Returns the image for the shape object. Error will be thrown, if the shape object is other shape type (Like, GeometricShape, SmartArt, etc.) rather than Image.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly image: Excel.Image;
+        /**
+         *
+         * Returns or sets the alternative descriptive text string for a Shape object when the object is saved to a Web page.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        altTextDescription: string;
+        /**
+         *
+         * Returns or sets the alternative title text string for a Shape object when the object is saved to a Web page.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        altTextTitle: string;
+        /**
+         *
+         * Represents the height, in points, of the shape.
+            Throws an invalid argument exception when set with negative value or zero as input.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        height: number;
+        /**
+         *
+         * Represents the shape identifier. Read-only.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly id: number;
+        /**
+         *
+         * The distance, in points, from the left side of the shape to the left of the worksheet.
+            Throws an invalid argument exception when set with negative value as input.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        left: number;
+        /**
+         *
+         * Represents the name of the shape. Read-only.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly name: string;
+        /**
+         *
+         * Represents the rotation, in degrees, of the shape.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        rotation: number;
+        /**
+         *
+         * The distance, in points, from the top edge of the shape to the top of the worksheet.
+            Throws an invalid argument exception when set with negative value as input.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        top: number;
+        /**
+         *
+         * Returns the type of the specified shape. Read-only. See Excel.ShapeType for detail.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly type: Excel.ShapeType | "Unknown" | "Image" | "GeometricShape";
+        /**
+         *
+         * Represents the width, in points, of the shape.
+            Throws an invalid argument exception when set with negative value or zero as input.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        width: number;
+        /**
+         *
+         * Returns the position of the specified shape in the z-order, the very bottom shape's z-order value is 0. Read-only.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly zorderPosition: number;
+        /** Sets multiple properties of an object at the same time. You can pass either a plain object with the appropriate properties, or another API object of the same type.
+         *
+         * @remarks
+         *
+         * This method has the following additional signature:
+         *
+         * `set(properties: Excel.Shape): void`
+         *
+         * @param properties A JavaScript object with properties that are structured isomorphically to the properties of the object on which the method is called.
+         * @param options Provides an option to suppress errors if the properties object tries to set any read-only properties.
+         */
+        set(properties: Interfaces.ShapeUpdateData, options?: OfficeExtension.UpdateOptions): void;
+        /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
+        set(properties: Excel.Shape): void;
+        /**
+         *
+         * Moves the specified shape in front of or behind other shapes in the collection (that is, changes the shape's position in the z-order).
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param value where to move the specified shape relative to the other shapes. See Excel.ShapeZOrder for detail.
+         */
+        setZOrder(value: Excel.ShapeZOrder): void;
+        /**
+         *
+         * Moves the specified shape in front of or behind other shapes in the collection (that is, changes the shape's position in the z-order).
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         *
+         * @param value where to move the specified shape relative to the other shapes. See Excel.ShapeZOrder for detail.
+         */
+        setZOrder(value: "BringToFront" | "BringForward" | "SendToBack" | "SendBackward"): void;
+        /**
+         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+         *
+         * @remarks
+         *
+         * In addition to this signature, this method has the following signatures:
+         *
+         * `load(option?: string | string[]): Excel.Shape` - Where option is a comma-delimited string or an array of strings that specify the properties/relationships to load.
+         *
+         * `load(option?: { select?: string; expand?: string; }): Excel.Shape` - Where option.select is a comma-delimited string that specifies the properties/relationships to load, and options.expand is a comma-delimited string that specifies the relationships to load.
+         *
+         * `load(option?: { select?: string; expand?: string; top?: number; skip?: number }): Excel.Shape` - Only available on collection types. It is similar to the preceding signature. Option.top specifies the maximum number of collection items that can be included in the result. Option.skip specifies the number of items that are to be skipped and not included in the result. If option.top is specified, the result set will start after skipping the specified number of items.
+         *
+         * @param options Provides options for which properties of the object to load.
+         */
+        load(option?: Excel.Interfaces.ShapeLoadOptions): Excel.Shape;
+        load(option?: string | string[]): Excel.Shape;
+        load(option?: {
+            select?: string;
+            expand?: string;
+        }): Excel.Shape;
+        toJSON(): Excel.Interfaces.ShapeData;
+    }
+    /**
+     *
+     * Represents a geometric shape object inside a worksheet. A geometric shape can be a line, rectangle, block arrow, equation, flowchart, start, banner, callout or basic shape in Excel.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class GeometricShape extends OfficeExtension.ClientObject {
+        /**
+         *
+         * Returns the shape object for the geometric shape. Read-only.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly shape: Excel.Shape;
+        /**
+         *
+         * Represents the shape identifier. Read-only.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly id: number;
+        /**
+         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+         *
+         * @remarks
+         *
+         * In addition to this signature, this method has the following signatures:
+         *
+         * `load(option?: string | string[]): Excel.GeometricShape` - Where option is a comma-delimited string or an array of strings that specify the properties/relationships to load.
+         *
+         * `load(option?: { select?: string; expand?: string; }): Excel.GeometricShape` - Where option.select is a comma-delimited string that specifies the properties/relationships to load, and options.expand is a comma-delimited string that specifies the relationships to load.
+         *
+         * `load(option?: { select?: string; expand?: string; top?: number; skip?: number }): Excel.GeometricShape` - Only available on collection types. It is similar to the preceding signature. Option.top specifies the maximum number of collection items that can be included in the result. Option.skip specifies the number of items that are to be skipped and not included in the result. If option.top is specified, the result set will start after skipping the specified number of items.
+         *
+         * @param options Provides options for which properties of the object to load.
+         */
+        load(option?: Excel.Interfaces.GeometricShapeLoadOptions): Excel.GeometricShape;
+        load(option?: string | string[]): Excel.GeometricShape;
+        load(option?: {
+            select?: string;
+            expand?: string;
+        }): Excel.GeometricShape;
+        toJSON(): Excel.Interfaces.GeometricShapeData;
+    }
+    /**
+     *
+     * Represents an image object in the worksheet.
+     *
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    class Image extends OfficeExtension.ClientObject {
+        /**
+         *
+         * Returns the shape object for the image. Read-only.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly shape: Excel.Shape;
+        /**
+         *
+         * Represents the shape identifier for the image object. Read-only.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        readonly id: number;
+        /**
+         * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
+         *
+         * @remarks
+         *
+         * In addition to this signature, this method has the following signatures:
+         *
+         * `load(option?: string | string[]): Excel.Image` - Where option is a comma-delimited string or an array of strings that specify the properties/relationships to load.
+         *
+         * `load(option?: { select?: string; expand?: string; }): Excel.Image` - Where option.select is a comma-delimited string that specifies the properties/relationships to load, and options.expand is a comma-delimited string that specifies the relationships to load.
+         *
+         * `load(option?: { select?: string; expand?: string; top?: number; skip?: number }): Excel.Image` - Only available on collection types. It is similar to the preceding signature. Option.top specifies the maximum number of collection items that can be included in the result. Option.skip specifies the number of items that are to be skipped and not included in the result. If option.top is specified, the result set will start after skipping the specified number of items.
+         *
+         * @param options Provides options for which properties of the object to load.
+         */
+        load(option?: Excel.Interfaces.ImageLoadOptions): Excel.Image;
+        load(option?: string | string[]): Excel.Image;
+        load(option?: {
+            select?: string;
+            expand?: string;
+        }): Excel.Image;
+        toJSON(): Excel.Interfaces.ImageData;
+    }
+    /**
      * [Api set: ExcelApi 1.7]
      */
     enum ChartAxisType {
@@ -29190,9 +29648,6 @@ declare namespace Excel {
         area = "Area",
         doughnut = "Doughnut",
         radar = "Radar",
-        histogram = "Histogram",
-        pareto = "Pareto",
-        regionMap = "RegionMap",
     }
     /**
      * [Api set: ExcelApi 1.1]
@@ -29228,24 +29683,19 @@ declare namespace Excel {
     /**
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
-    enum ChartColorScheme {
-        colorfulPalette1 = "ColorfulPalette1",
-        colorfulPalette2 = "ColorfulPalette2",
-        colorfulPalette3 = "ColorfulPalette3",
-        colorfulPalette4 = "ColorfulPalette4",
-        monochromaticPalette1 = "MonochromaticPalette1",
-        monochromaticPalette2 = "MonochromaticPalette2",
-        monochromaticPalette3 = "MonochromaticPalette3",
-        monochromaticPalette4 = "MonochromaticPalette4",
-        monochromaticPalette5 = "MonochromaticPalette5",
-        monochromaticPalette6 = "MonochromaticPalette6",
-        monochromaticPalette7 = "MonochromaticPalette7",
-        monochromaticPalette8 = "MonochromaticPalette8",
-        monochromaticPalette9 = "MonochromaticPalette9",
-        monochromaticPalette10 = "MonochromaticPalette10",
-        monochromaticPalette11 = "MonochromaticPalette11",
-        monochromaticPalette12 = "MonochromaticPalette12",
-        monochromaticPalette13 = "MonochromaticPalette13",
+    enum ChartSeriesType {
+        column = "Column",
+        bar = "Bar",
+        bar3D = "Bar3D",
+        line = "Line",
+        pie = "Pie",
+        xyscatter = "XYScatter",
+        area = "Area",
+        area3D = "Area3D",
+        doughnut = "Doughnut",
+        radar = "Radar",
+        surface3D = "Surface3D",
+        column3D = "Column3D",
     }
     /**
      * [Api set: ExcelApi 1.7]
@@ -29257,6 +29707,23 @@ declare namespace Excel {
         movingAverage = "MovingAverage",
         polynomial = "Polynomial",
         power = "Power",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum ShapeZOrder {
+        bringToFront = "BringToFront",
+        bringForward = "BringForward",
+        sendToBack = "SendToBack",
+        sendBackward = "SendBackward",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
+    enum ShapeType {
+        unknown = "Unknown",
+        image = "Image",
+        geometricShape = "GeometricShape",
     }
     /**
      * [Api set: ExcelApi 1.1]
@@ -30012,7 +30479,6 @@ declare namespace Excel {
         tableSelectionChangedEvent = 100,
         tableDataChangedEvent = 101,
         tableAddedEvent = 102,
-        tableDeletedEvent = 103,
         agaveVisualUpdateEvent = 150,
         customFunctionExecutionBeginEvent = 200,
         customFunctionExecutionEndEvent = 201,
@@ -30020,9 +30486,6 @@ declare namespace Excel {
         cancellationMessage = 1001,
         metadataMessage = 1002,
         visualSelectionChangedEvent = 2000,
-        shapeSelectionChangedEvent = 2100,
-        shapeActivatedEvent = 2101,
-        shapeDeactivatedEvent = 2102,
     }
     /**
      * [Api set: ExcelApi 1.7]
@@ -30204,24 +30667,6 @@ declare namespace Excel {
          *
          */
         tableAdded = "TableAdded",
-        /**
-         *
-         * TableDeleted represents the type of event that is registered on TableCollection, and occurs when a table is deleted.
-         *
-         */
-        tableDeleted = "TableDeleted",
-        /**
-         *
-         * ShapeActivated represents the type of event that is registered on Shape, and occurs when shape activates.
-         *
-         */
-        shapeActivated = "ShapeActivated",
-        /**
-         *
-         * ShapeDeactivated represents the type of event that is registered on Shape, and occurs when shape deactivates.
-         *
-         */
-        shapeDeactivated = "ShapeDeactivated",
     }
     /**
      * [Api set: ExcelApi 1.7]
@@ -30581,6 +31026,188 @@ declare namespace Excel {
     /**
      * [Api set: ExcelApi BETA (PREVIEW ONLY)]
      */
+    enum GeometricShapeType {
+        lineInverse = "LineInverse",
+        triangle = "Triangle",
+        rightTriangle = "RightTriangle",
+        rectangle = "Rectangle",
+        diamond = "Diamond",
+        parallelogram = "Parallelogram",
+        trapezoid = "Trapezoid",
+        nonIsoscelesTrapezoid = "NonIsoscelesTrapezoid",
+        pentagon = "Pentagon",
+        hexagon = "Hexagon",
+        heptagon = "Heptagon",
+        octagon = "Octagon",
+        decagon = "Decagon",
+        dodecagon = "Dodecagon",
+        star4 = "Star4",
+        star5 = "Star5",
+        star6 = "Star6",
+        star7 = "Star7",
+        star8 = "Star8",
+        star10 = "Star10",
+        star12 = "Star12",
+        star16 = "Star16",
+        star24 = "Star24",
+        star32 = "Star32",
+        roundRectangle = "RoundRectangle",
+        round1Rectangle = "Round1Rectangle",
+        round2SameRectangle = "Round2SameRectangle",
+        round2DiagonalRectangle = "Round2DiagonalRectangle",
+        snipRoundRectangle = "SnipRoundRectangle",
+        snip1Rectangle = "Snip1Rectangle",
+        snip2SameRectangle = "Snip2SameRectangle",
+        snip2DiagonalRectangle = "Snip2DiagonalRectangle",
+        plaque = "Plaque",
+        ellipse = "Ellipse",
+        teardrop = "Teardrop",
+        homePlate = "HomePlate",
+        chevron = "Chevron",
+        pieWedge = "PieWedge",
+        pie = "Pie",
+        blockArc = "BlockArc",
+        donut = "Donut",
+        noSmoking = "NoSmoking",
+        rightArrow = "RightArrow",
+        leftArrow = "LeftArrow",
+        upArrow = "UpArrow",
+        downArrow = "DownArrow",
+        stripedRightArrow = "StripedRightArrow",
+        notchedRightArrow = "NotchedRightArrow",
+        bentUpArrow = "BentUpArrow",
+        leftRightArrow = "LeftRightArrow",
+        upDownArrow = "UpDownArrow",
+        leftUpArrow = "LeftUpArrow",
+        leftRightUpArrow = "LeftRightUpArrow",
+        quadArrow = "QuadArrow",
+        leftArrowCallout = "LeftArrowCallout",
+        rightArrowCallout = "RightArrowCallout",
+        upArrowCallout = "UpArrowCallout",
+        downArrowCallout = "DownArrowCallout",
+        leftRightArrowCallout = "LeftRightArrowCallout",
+        upDownArrowCallout = "UpDownArrowCallout",
+        quadArrowCallout = "QuadArrowCallout",
+        bentArrow = "BentArrow",
+        uturnArrow = "UturnArrow",
+        circularArrow = "CircularArrow",
+        leftCircularArrow = "LeftCircularArrow",
+        leftRightCircularArrow = "LeftRightCircularArrow",
+        curvedRightArrow = "CurvedRightArrow",
+        curvedLeftArrow = "CurvedLeftArrow",
+        curvedUpArrow = "CurvedUpArrow",
+        curvedDownArrow = "CurvedDownArrow",
+        swooshArrow = "SwooshArrow",
+        cube = "Cube",
+        can = "Can",
+        lightningBolt = "LightningBolt",
+        heart = "Heart",
+        sun = "Sun",
+        moon = "Moon",
+        smileyFace = "SmileyFace",
+        irregularSeal1 = "IrregularSeal1",
+        irregularSeal2 = "IrregularSeal2",
+        foldedCorner = "FoldedCorner",
+        bevel = "Bevel",
+        frame = "Frame",
+        halfFrame = "HalfFrame",
+        corner = "Corner",
+        diagonalStripe = "DiagonalStripe",
+        chord = "Chord",
+        arc = "Arc",
+        leftBracket = "LeftBracket",
+        rightBracket = "RightBracket",
+        leftBrace = "LeftBrace",
+        rightBrace = "RightBrace",
+        bracketPair = "BracketPair",
+        bracePair = "BracePair",
+        callout1 = "Callout1",
+        callout2 = "Callout2",
+        callout3 = "Callout3",
+        accentCallout1 = "AccentCallout1",
+        accentCallout2 = "AccentCallout2",
+        accentCallout3 = "AccentCallout3",
+        borderCallout1 = "BorderCallout1",
+        borderCallout2 = "BorderCallout2",
+        borderCallout3 = "BorderCallout3",
+        accentBorderCallout1 = "AccentBorderCallout1",
+        accentBorderCallout2 = "AccentBorderCallout2",
+        accentBorderCallout3 = "AccentBorderCallout3",
+        wedgeRectCallout = "WedgeRectCallout",
+        wedgeRRectCallout = "WedgeRRectCallout",
+        wedgeEllipseCallout = "WedgeEllipseCallout",
+        cloudCallout = "CloudCallout",
+        cloud = "Cloud",
+        ribbon = "Ribbon",
+        ribbon2 = "Ribbon2",
+        ellipseRibbon = "EllipseRibbon",
+        ellipseRibbon2 = "EllipseRibbon2",
+        leftRightRibbon = "LeftRightRibbon",
+        verticalScroll = "VerticalScroll",
+        horizontalScroll = "HorizontalScroll",
+        wave = "Wave",
+        doubleWave = "DoubleWave",
+        plus = "Plus",
+        flowChartProcess = "FlowChartProcess",
+        flowChartDecision = "FlowChartDecision",
+        flowChartInputOutput = "FlowChartInputOutput",
+        flowChartPredefinedProcess = "FlowChartPredefinedProcess",
+        flowChartInternalStorage = "FlowChartInternalStorage",
+        flowChartDocument = "FlowChartDocument",
+        flowChartMultidocument = "FlowChartMultidocument",
+        flowChartTerminator = "FlowChartTerminator",
+        flowChartPreparation = "FlowChartPreparation",
+        flowChartManualInput = "FlowChartManualInput",
+        flowChartManualOperation = "FlowChartManualOperation",
+        flowChartConnector = "FlowChartConnector",
+        flowChartPunchedCard = "FlowChartPunchedCard",
+        flowChartPunchedTape = "FlowChartPunchedTape",
+        flowChartSummingJunction = "FlowChartSummingJunction",
+        flowChartOr = "FlowChartOr",
+        flowChartCollate = "FlowChartCollate",
+        flowChartSort = "FlowChartSort",
+        flowChartExtract = "FlowChartExtract",
+        flowChartMerge = "FlowChartMerge",
+        flowChartOfflineStorage = "FlowChartOfflineStorage",
+        flowChartOnlineStorage = "FlowChartOnlineStorage",
+        flowChartMagneticTape = "FlowChartMagneticTape",
+        flowChartMagneticDisk = "FlowChartMagneticDisk",
+        flowChartMagneticDrum = "FlowChartMagneticDrum",
+        flowChartDisplay = "FlowChartDisplay",
+        flowChartDelay = "FlowChartDelay",
+        flowChartAlternateProcess = "FlowChartAlternateProcess",
+        flowChartOffpageConnector = "FlowChartOffpageConnector",
+        actionButtonBlank = "ActionButtonBlank",
+        actionButtonHome = "ActionButtonHome",
+        actionButtonHelp = "ActionButtonHelp",
+        actionButtonInformation = "ActionButtonInformation",
+        actionButtonForwardNext = "ActionButtonForwardNext",
+        actionButtonBackPrevious = "ActionButtonBackPrevious",
+        actionButtonEnd = "ActionButtonEnd",
+        actionButtonBeginning = "ActionButtonBeginning",
+        actionButtonReturn = "ActionButtonReturn",
+        actionButtonDocument = "ActionButtonDocument",
+        actionButtonSound = "ActionButtonSound",
+        actionButtonMovie = "ActionButtonMovie",
+        gear6 = "Gear6",
+        gear9 = "Gear9",
+        funnel = "Funnel",
+        mathPlus = "MathPlus",
+        mathMinus = "MathMinus",
+        mathMultiply = "MathMultiply",
+        mathDivide = "MathDivide",
+        mathEqual = "MathEqual",
+        mathNotEqual = "MathNotEqual",
+        cornerTabs = "CornerTabs",
+        squareTabs = "SquareTabs",
+        plaqueTabs = "PlaqueTabs",
+        chartX = "ChartX",
+        chartStar = "ChartStar",
+        chartPlus = "ChartPlus",
+    }
+    /**
+     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+     */
     enum SpecialCellType {
         /**
          *
@@ -30731,14 +31358,6 @@ declare namespace Excel {
          *
          */
         text = "Text",
-    }
-    /**
-     * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-     */
-    enum Placement {
-        twoCell = "TwoCell",
-        oneCell = "OneCell",
-        absolute = "Absolute",
     }
     /**
      *
@@ -34667,14 +35286,6 @@ declare namespace Excel {
             pageLayout?: Excel.Interfaces.PageLayoutUpdateData;
             /**
              *
-             * Gets or sets the enableCalculation property of the worksheet.
-            True if Excel recalculates the worksheet when necessary. False if Excel doesn't recalculate the sheet.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            enableCalculation?: boolean;
-            /**
-             *
              * The display name of the worksheet.
              *
              * [Api set: ExcelApi 1.1]
@@ -35333,7 +35944,14 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.7]
              */
-            chartType?: Excel.ChartType | "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar" | "Histogram" | "Pareto" | "RegionMap";
+            chartType?: Excel.ChartType | "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar";
+            /**
+             *
+             * Returns or sets an integer that represents the color scheme for the chart. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            colorScheme?: number;
             /**
              *
              * Returns or sets the way that blank cells are plotted on a chart. Read/Write.
@@ -35378,6 +35996,13 @@ declare namespace Excel {
             plotVisibleOnly?: boolean;
             /**
              *
+             * True if the chart area of the chart has rounded corners. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            roundedCorners?: boolean;
+            /**
+             *
              * Returns or sets a ChartSeriesNameLevel enumeration constant referring to
             the level of where the series names are being sourced from. Read/Write.
              *
@@ -35393,6 +36018,14 @@ declare namespace Excel {
             showAllFieldButtons?: boolean;
             /**
              *
+             * Represents whether to display axis field buttons on a PivotChart.
+            The ShowAxisFieldButtons property corresponds to the Show Axis Field Buttons command on the Field Buttons drop-down list of the Analyze tab, which is available when a PivotChart is selected.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showAxisFieldButtons?: boolean;
+            /**
+             *
              * Represents whether to to show the data labels when the value is greater than the maximum value on the value axis.
             If value axis became smaller than the size of data points, you can use this property to set whether to show the data labels.
             This property applies to 2-D charts only.
@@ -35400,6 +36033,27 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             showDataLabelsOverMaximum?: boolean;
+            /**
+             *
+             * Represents whether to display legend field buttons on a PivotChart.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showLegendFieldButtons?: boolean;
+            /**
+             *
+             * Represents whether to display report filter field buttons on a PivotChart.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showReportFilterFieldButtons?: boolean;
+            /**
+             *
+             * Represents whether to display show value field buttons on a PivotChart.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showValueFieldButtons?: boolean;
             /**
              *
              * Returns or sets the chart style for the chart. Read/Write.
@@ -35493,7 +36147,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.7]
              */
-            chartType?: Excel.ChartType | "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar" | "Histogram" | "Pareto" | "RegionMap";
+            chartType?: Excel.ChartType | "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar";
             /**
              *
              * Represents the doughnut hole size of a chart series.  Only valid on doughnut and doughnutExploded charts.
@@ -35538,6 +36192,13 @@ declare namespace Excel {
              * [Api set: ExcelApi 1.7]
              */
             hasDataLabels?: boolean;
+            /**
+             *
+             * True if Microsoft Excel show leaderlines for each datalabel in series. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            hasLeaderLines?: boolean;
             /**
              *
              * True if Microsoft Excel inverts the pattern in the item when it corresponds to a negative number. Read/Write.
@@ -35888,6 +36549,13 @@ declare namespace Excel {
             numberFormat?: string;
             /**
              *
+             * Represents whether the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells).
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormatLinked?: boolean;
+            /**
+             *
              * Represents the distance between the levels of labels, and the distance between the first level and the axis line. The value should be an integer from 0 to 1000.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
@@ -36048,6 +36716,13 @@ declare namespace Excel {
             numberFormat?: string;
             /**
              *
+             * Represents whether the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells).
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormatLinked?: boolean;
+            /**
+             *
              * DataLabelPosition value that represents the position of the data label. See Excel.ChartDataLabelPosition for details.
              *
              * [Api set: ExcelApi 1.1]
@@ -36163,6 +36838,13 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             numberFormat?: string;
+            /**
+             *
+             * Boolean value representing if the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells).
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormatLinked?: boolean;
             /**
              *
              * DataLabelPosition value that represents the position of the data label. See Excel.ChartDataLabelPosition for details.
@@ -36777,6 +37459,13 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             numberFormat?: string;
+            /**
+             *
+             * Boolean value representing if the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells).
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormatLinked?: boolean;
             /**
              *
              * String representing the text of the trendline label on a chart.
@@ -38162,6 +38851,66 @@ declare namespace Excel {
         interface AreaCollectionUpdateData {
             items?: Excel.Interfaces.RangeData[];
         }
+        /** An interface for updating data on the ShapeCollection object, for use in "shapeCollection.set({ ... })". */
+        interface ShapeCollectionUpdateData {
+            items?: Excel.Interfaces.ShapeData[];
+        }
+        /** An interface for updating data on the Shape object, for use in "shape.set({ ... })". */
+        interface ShapeUpdateData {
+            /**
+             *
+             * Returns or sets the alternative descriptive text string for a Shape object when the object is saved to a Web page.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            altTextDescription?: string;
+            /**
+             *
+             * Returns or sets the alternative title text string for a Shape object when the object is saved to a Web page.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            altTextTitle?: string;
+            /**
+             *
+             * Represents the height, in points, of the shape.
+            Throws an invalid argument exception when set with negative value or zero as input.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            height?: number;
+            /**
+             *
+             * The distance, in points, from the left side of the shape to the left of the worksheet.
+            Throws an invalid argument exception when set with negative value as input.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            left?: number;
+            /**
+             *
+             * Represents the rotation, in degrees, of the shape.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rotation?: number;
+            /**
+             *
+             * The distance, in points, from the top edge of the shape to the top of the worksheet.
+            Throws an invalid argument exception when set with negative value as input.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            top?: number;
+            /**
+             *
+             * Represents the width, in points, of the shape.
+            Throws an invalid argument exception when set with negative value or zero as input.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            width?: number;
+        }
         /** An interface describing the data returned by calling "runtime.toJSON()". */
         interface RuntimeData {
             /**
@@ -38367,7 +39116,7 @@ declare namespace Excel {
              *
              * Indicates if the workbook is protected. Read-Only.
              *
-             * [Api set: ExcelApi 1.7]
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             protected?: boolean;
         }
@@ -38427,6 +39176,13 @@ declare namespace Excel {
             protection?: Excel.Interfaces.WorksheetProtectionData;
             /**
             *
+            * Returns the collection of all the Shape objects on the worksheet. Read-only.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            shapes?: Excel.Interfaces.ShapeData[];
+            /**
+            *
             * Collection of tables that are part of the worksheet. Read-only.
             *
             * [Api set: ExcelApi 1.1]
@@ -38439,14 +39195,6 @@ declare namespace Excel {
             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
             */
             verticalPageBreaks?: Excel.Interfaces.PageBreakData[];
-            /**
-             *
-             * Gets or sets the enableCalculation property of the worksheet.
-            True if Excel recalculates the worksheet when necessary. False if Excel doesn't recalculate the sheet.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            enableCalculation?: boolean;
             /**
              *
              * Returns a value that uniquely identifies the worksheet in a given workbook. The value of the identifier remains the same even when the worksheet is renamed or moved. Read-only.
@@ -39534,7 +40282,14 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.7]
              */
-            chartType?: Excel.ChartType | "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar" | "Histogram" | "Pareto" | "RegionMap";
+            chartType?: Excel.ChartType | "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar";
+            /**
+             *
+             * Returns or sets an integer that represents the color scheme for the chart. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            colorScheme?: number;
             /**
              *
              * Returns or sets the way that blank cells are plotted on a chart. Read/Write.
@@ -39586,6 +40341,13 @@ declare namespace Excel {
             plotVisibleOnly?: boolean;
             /**
              *
+             * True if the chart area of the chart has rounded corners. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            roundedCorners?: boolean;
+            /**
+             *
              * Returns or sets a ChartSeriesNameLevel enumeration constant referring to
             the level of where the series names are being sourced from. Read/Write.
              *
@@ -39601,6 +40363,14 @@ declare namespace Excel {
             showAllFieldButtons?: boolean;
             /**
              *
+             * Represents whether to display axis field buttons on a PivotChart.
+            The ShowAxisFieldButtons property corresponds to the Show Axis Field Buttons command on the Field Buttons drop-down list of the Analyze tab, which is available when a PivotChart is selected.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showAxisFieldButtons?: boolean;
+            /**
+             *
              * Represents whether to to show the data labels when the value is greater than the maximum value on the value axis.
             If value axis became smaller than the size of data points, you can use this property to set whether to show the data labels.
             This property applies to 2-D charts only.
@@ -39608,6 +40378,27 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             showDataLabelsOverMaximum?: boolean;
+            /**
+             *
+             * Represents whether to display legend field buttons on a PivotChart.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showLegendFieldButtons?: boolean;
+            /**
+             *
+             * Represents whether to display report filter field buttons on a PivotChart.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showReportFilterFieldButtons?: boolean;
+            /**
+             *
+             * Represents whether to display show value field buttons on a PivotChart.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showValueFieldButtons?: boolean;
             /**
              *
              * Returns or sets the chart style for the chart. Read/Write.
@@ -39715,7 +40506,7 @@ declare namespace Excel {
              *
              * [Api set: ExcelApi 1.7]
              */
-            chartType?: Excel.ChartType | "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar" | "Histogram" | "Pareto" | "RegionMap";
+            chartType?: Excel.ChartType | "Invalid" | "ColumnClustered" | "ColumnStacked" | "ColumnStacked100" | "3DColumnClustered" | "3DColumnStacked" | "3DColumnStacked100" | "BarClustered" | "BarStacked" | "BarStacked100" | "3DBarClustered" | "3DBarStacked" | "3DBarStacked100" | "LineStacked" | "LineStacked100" | "LineMarkers" | "LineMarkersStacked" | "LineMarkersStacked100" | "PieOfPie" | "PieExploded" | "3DPieExploded" | "BarOfPie" | "XYScatterSmooth" | "XYScatterSmoothNoMarkers" | "XYScatterLines" | "XYScatterLinesNoMarkers" | "AreaStacked" | "AreaStacked100" | "3DAreaStacked" | "3DAreaStacked100" | "DoughnutExploded" | "RadarMarkers" | "RadarFilled" | "Surface" | "SurfaceWireframe" | "SurfaceTopView" | "SurfaceTopViewWireframe" | "Bubble" | "Bubble3DEffect" | "StockHLC" | "StockOHLC" | "StockVHLC" | "StockVOHLC" | "CylinderColClustered" | "CylinderColStacked" | "CylinderColStacked100" | "CylinderBarClustered" | "CylinderBarStacked" | "CylinderBarStacked100" | "CylinderCol" | "ConeColClustered" | "ConeColStacked" | "ConeColStacked100" | "ConeBarClustered" | "ConeBarStacked" | "ConeBarStacked100" | "ConeCol" | "PyramidColClustered" | "PyramidColStacked" | "PyramidColStacked100" | "PyramidBarClustered" | "PyramidBarStacked" | "PyramidBarStacked100" | "PyramidCol" | "3DColumn" | "Line" | "3DLine" | "3DPie" | "Pie" | "XYScatter" | "3DArea" | "Area" | "Doughnut" | "Radar";
             /**
              *
              * Represents the doughnut hole size of a chart series.  Only valid on doughnut and doughnutExploded charts.
@@ -39760,6 +40551,13 @@ declare namespace Excel {
              * [Api set: ExcelApi 1.7]
              */
             hasDataLabels?: boolean;
+            /**
+             *
+             * True if Microsoft Excel show leaderlines for each datalabel in series. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            hasLeaderLines?: boolean;
             /**
              *
              * True if Microsoft Excel inverts the pattern in the item when it corresponds to a negative number. Read/Write.
@@ -39851,6 +40649,13 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             splitValue?: number;
+            /**
+             *
+             * Returns the value that represents the series type.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            type?: Excel.ChartSeriesType | "Column" | "Bar" | "Bar3D" | "Line" | "Pie" | "XYScatter" | "Area" | "Area3D" | "Doughnut" | "Radar" | "Surface3D" | "Column3D";
             /**
              *
              * True if Microsoft Excel assigns a different color or pattern to each data marker. The chart must contain only one series. Read/Write.
@@ -40152,6 +40957,13 @@ declare namespace Excel {
             numberFormat?: string;
             /**
              *
+             * Represents whether the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells).
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormatLinked?: boolean;
+            /**
+             *
              * Represents the distance between the levels of labels, and the distance between the first level and the axis line. The value should be an integer from 0 to 1000.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
@@ -40340,6 +41152,13 @@ declare namespace Excel {
             numberFormat?: string;
             /**
              *
+             * Represents whether the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells).
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormatLinked?: boolean;
+            /**
+             *
              * DataLabelPosition value that represents the position of the data label. See Excel.ChartDataLabelPosition for details.
              *
              * [Api set: ExcelApi 1.1]
@@ -40462,6 +41281,13 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             numberFormat?: string;
+            /**
+             *
+             * Boolean value representing if the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells).
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormatLinked?: boolean;
             /**
              *
              * DataLabelPosition value that represents the position of the data label. See Excel.ChartDataLabelPosition for details.
@@ -41146,6 +41972,13 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             numberFormat?: string;
+            /**
+             *
+             * Boolean value representing if the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells).
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormatLinked?: boolean;
             /**
              *
              * String representing the text of the trendline label on a chart.
@@ -42349,15 +43182,15 @@ declare namespace Excel {
         interface ConditionalRangeBorderCollectionData {
             items?: Excel.Interfaces.ConditionalRangeBorderData[];
         }
-        /** An interface describing the data returned by calling "customFunctionsManager.toJSON()". */
-        interface CustomFunctionsManagerData {
+        /** An interface describing the data returned by calling "customFunctionManager.toJSON()". */
+        interface CustomFunctionManagerData {
             /**
              *
              * True if streaming Custom Functions are enabled
              *
              * [Api set: CustomFunctions 1.3]
              */
-            status?: Excel.CustomFunctionsEngineStatus;
+            status?: Excel.CustomFunctionEngineStatus;
         }
         /** An interface describing the data returned by calling "style.toJSON()". */
         interface StyleData {
@@ -42798,6 +43631,142 @@ declare namespace Excel {
         interface AreaCollectionData {
             items?: Excel.Interfaces.RangeData[];
         }
+        /** An interface describing the data returned by calling "shapeCollection.toJSON()". */
+        interface ShapeCollectionData {
+            items?: Excel.Interfaces.ShapeData[];
+        }
+        /** An interface describing the data returned by calling "shape.toJSON()". */
+        interface ShapeData {
+            /**
+            *
+            * Returns the geometric shape for the shape object. Error will be thrown, if the shape object is other shape type (Like, Image, SmartArt, etc.) rather than GeometricShape.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            geometricShape?: Excel.Interfaces.GeometricShapeData;
+            /**
+            *
+            * Returns the image for the shape object. Error will be thrown, if the shape object is other shape type (Like, GeometricShape, SmartArt, etc.) rather than Image.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            image?: Excel.Interfaces.ImageData;
+            /**
+             *
+             * Returns or sets the alternative descriptive text string for a Shape object when the object is saved to a Web page.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            altTextDescription?: string;
+            /**
+             *
+             * Returns or sets the alternative title text string for a Shape object when the object is saved to a Web page.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            altTextTitle?: string;
+            /**
+             *
+             * Represents the height, in points, of the shape.
+            Throws an invalid argument exception when set with negative value or zero as input.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            height?: number;
+            /**
+             *
+             * Represents the shape identifier. Read-only.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            id?: number;
+            /**
+             *
+             * The distance, in points, from the left side of the shape to the left of the worksheet.
+            Throws an invalid argument exception when set with negative value as input.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            left?: number;
+            /**
+             *
+             * Represents the name of the shape. Read-only.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            name?: string;
+            /**
+             *
+             * Represents the rotation, in degrees, of the shape.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rotation?: number;
+            /**
+             *
+             * The distance, in points, from the top edge of the shape to the top of the worksheet.
+            Throws an invalid argument exception when set with negative value as input.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            top?: number;
+            /**
+             *
+             * Returns the type of the specified shape. Read-only. See Excel.ShapeType for detail.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            type?: Excel.ShapeType | "Unknown" | "Image" | "GeometricShape";
+            /**
+             *
+             * Represents the width, in points, of the shape.
+            Throws an invalid argument exception when set with negative value or zero as input.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            width?: number;
+            /**
+             *
+             * Returns the position of the specified shape in the z-order, the very bottom shape's z-order value is 0. Read-only.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            zorderPosition?: number;
+        }
+        /** An interface describing the data returned by calling "geometricShape.toJSON()". */
+        interface GeometricShapeData {
+            /**
+            *
+            * Returns the shape object for the geometric shape. Read-only.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            shape?: Excel.Interfaces.ShapeData;
+            /**
+             *
+             * Represents the shape identifier. Read-only.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            id?: number;
+        }
+        /** An interface describing the data returned by calling "image.toJSON()". */
+        interface ImageData {
+            /**
+            *
+            * Returns the shape object for the image. Read-only.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            shape?: Excel.Interfaces.ShapeData;
+            /**
+             *
+             * Represents the shape identifier for the image object. Read-only.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            id?: number;
+        }
         /** An interface describing the data returned by calling "functionResult.toJSON()". */
         interface FunctionResultData<T> {
             /**
@@ -43008,9 +43977,25 @@ declare namespace Excel {
              *
              * Indicates if the workbook is protected. Read-Only.
              *
-             * [Api set: ExcelApi 1.7]
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             protected?: boolean;
+        }
+        /**
+         *
+         * The WorkbookCreated object is the top level object created by Application.CreateWorkbook. A WorkbookCreated object is a special Workbook object.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        interface WorkbookCreatedLoadOptions {
+            $all?: boolean;
+            /**
+             *
+             * Returns a value that uniquely identifies the WorkbookCreated object.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            id?: boolean;
         }
         /**
          *
@@ -43048,14 +44033,6 @@ declare namespace Excel {
             * [Api set: ExcelApi 1.1]
             */
             tables?: Excel.Interfaces.TableCollectionLoadOptions;
-            /**
-             *
-             * Gets or sets the enableCalculation property of the worksheet.
-            True if Excel recalculates the worksheet when necessary. False if Excel doesn't recalculate the sheet.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            enableCalculation?: boolean;
             /**
              *
              * Returns a value that uniquely identifies the worksheet in a given workbook. The value of the identifier remains the same even when the worksheet is renamed or moved. Read-only.
@@ -43161,14 +44138,6 @@ declare namespace Excel {
             * [Api set: ExcelApi 1.1]
             */
             tables?: Excel.Interfaces.TableCollectionLoadOptions;
-            /**
-             *
-             * For EACH ITEM in the collection: Gets or sets the enableCalculation property of the worksheet.
-            True if Excel recalculates the worksheet when necessary. False if Excel doesn't recalculate the sheet.
-             *
-             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
-             */
-            enableCalculation?: boolean;
             /**
              *
              * For EACH ITEM in the collection: Returns a value that uniquely identifies the worksheet in a given workbook. The value of the identifier remains the same even when the worksheet is renamed or moved. Read-only.
@@ -44855,6 +45824,13 @@ declare namespace Excel {
             chartType?: boolean;
             /**
              *
+             * For EACH ITEM in the collection: Returns or sets an integer that represents the color scheme for the chart. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            colorScheme?: boolean;
+            /**
+             *
              * For EACH ITEM in the collection: Returns or sets the way that blank cells are plotted on a chart. Read/Write.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
@@ -44904,6 +45880,13 @@ declare namespace Excel {
             plotVisibleOnly?: boolean;
             /**
              *
+             * For EACH ITEM in the collection: True if the chart area of the chart has rounded corners. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            roundedCorners?: boolean;
+            /**
+             *
              * For EACH ITEM in the collection: Returns or sets a ChartSeriesNameLevel enumeration constant referring to
                 the level of where the series names are being sourced from. Read/Write.
              *
@@ -44919,6 +45902,14 @@ declare namespace Excel {
             showAllFieldButtons?: boolean;
             /**
              *
+             * For EACH ITEM in the collection: Represents whether to display axis field buttons on a PivotChart.
+                The ShowAxisFieldButtons property corresponds to the Show Axis Field Buttons command on the Field Buttons drop-down list of the Analyze tab, which is available when a PivotChart is selected.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showAxisFieldButtons?: boolean;
+            /**
+             *
              * For EACH ITEM in the collection: Represents whether to to show the data labels when the value is greater than the maximum value on the value axis.
                 If value axis became smaller than the size of data points, you can use this property to set whether to show the data labels.
                 This property applies to 2-D charts only.
@@ -44926,6 +45917,27 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             showDataLabelsOverMaximum?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents whether to display legend field buttons on a PivotChart.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showLegendFieldButtons?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents whether to display report filter field buttons on a PivotChart.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showReportFilterFieldButtons?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents whether to display show value field buttons on a PivotChart.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showValueFieldButtons?: boolean;
             /**
              *
              * For EACH ITEM in the collection: Returns or sets the chart style for the chart. Read/Write.
@@ -45029,6 +46041,13 @@ declare namespace Excel {
             chartType?: boolean;
             /**
              *
+             * Returns or sets an integer that represents the color scheme for the chart. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            colorScheme?: boolean;
+            /**
+             *
              * Returns or sets the way that blank cells are plotted on a chart. Read/Write.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
@@ -45078,6 +46097,13 @@ declare namespace Excel {
             plotVisibleOnly?: boolean;
             /**
              *
+             * True if the chart area of the chart has rounded corners. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            roundedCorners?: boolean;
+            /**
+             *
              * Returns or sets a ChartSeriesNameLevel enumeration constant referring to
                 the level of where the series names are being sourced from. Read/Write.
              *
@@ -45093,6 +46119,14 @@ declare namespace Excel {
             showAllFieldButtons?: boolean;
             /**
              *
+             * Represents whether to display axis field buttons on a PivotChart.
+                The ShowAxisFieldButtons property corresponds to the Show Axis Field Buttons command on the Field Buttons drop-down list of the Analyze tab, which is available when a PivotChart is selected.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showAxisFieldButtons?: boolean;
+            /**
+             *
              * Represents whether to to show the data labels when the value is greater than the maximum value on the value axis.
                 If value axis became smaller than the size of data points, you can use this property to set whether to show the data labels.
                 This property applies to 2-D charts only.
@@ -45100,6 +46134,27 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             showDataLabelsOverMaximum?: boolean;
+            /**
+             *
+             * Represents whether to display legend field buttons on a PivotChart.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showLegendFieldButtons?: boolean;
+            /**
+             *
+             * Represents whether to display report filter field buttons on a PivotChart.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showReportFilterFieldButtons?: boolean;
+            /**
+             *
+             * Represents whether to display show value field buttons on a PivotChart.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            showValueFieldButtons?: boolean;
             /**
              *
              * Returns or sets the chart style for the chart. Read/Write.
@@ -45255,6 +46310,13 @@ declare namespace Excel {
             hasDataLabels?: boolean;
             /**
              *
+             * For EACH ITEM in the collection: True if Microsoft Excel show leaderlines for each datalabel in series. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            hasLeaderLines?: boolean;
+            /**
+             *
              * For EACH ITEM in the collection: True if Microsoft Excel inverts the pattern in the item when it corresponds to a negative number. Read/Write.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
@@ -45344,6 +46406,13 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             splitValue?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Returns the value that represents the series type.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            type?: boolean;
             /**
              *
              * For EACH ITEM in the collection: True if Microsoft Excel assigns a different color or pattern to each data marker. The chart must contain only one series. Read/Write.
@@ -45462,6 +46531,13 @@ declare namespace Excel {
             hasDataLabels?: boolean;
             /**
              *
+             * True if Microsoft Excel show leaderlines for each datalabel in series. Read/Write.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            hasLeaderLines?: boolean;
+            /**
+             *
              * True if Microsoft Excel inverts the pattern in the item when it corresponds to a negative number. Read/Write.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
@@ -45551,6 +46627,13 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             splitValue?: boolean;
+            /**
+             *
+             * Returns the value that represents the series type.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            type?: boolean;
             /**
              *
              * True if Microsoft Excel assigns a different color or pattern to each data marker. The chart must contain only one series. Read/Write.
@@ -45943,6 +47026,13 @@ declare namespace Excel {
             numberFormat?: boolean;
             /**
              *
+             * Represents whether the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells).
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormatLinked?: boolean;
+            /**
+             *
              * Represents the distance between the levels of labels, and the distance between the first level and the axis line. The value should be an integer from 0 to 1000.
              *
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
@@ -46155,6 +47245,13 @@ declare namespace Excel {
             numberFormat?: boolean;
             /**
              *
+             * Represents whether the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells).
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormatLinked?: boolean;
+            /**
+             *
              * DataLabelPosition value that represents the position of the data label. See Excel.ChartDataLabelPosition for details.
              *
              * [Api set: ExcelApi 1.1]
@@ -46283,6 +47380,13 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             numberFormat?: boolean;
+            /**
+             *
+             * Boolean value representing if the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells).
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormatLinked?: boolean;
             /**
              *
              * DataLabelPosition value that represents the position of the data label. See Excel.ChartDataLabelPosition for details.
@@ -47191,6 +48295,13 @@ declare namespace Excel {
              * [Api set: ExcelApi BETA (PREVIEW ONLY)]
              */
             numberFormat?: boolean;
+            /**
+             *
+             * Boolean value representing if the number format is linked to the cells (so that the number format changes in the labels when it changes in the cells).
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            numberFormatLinked?: boolean;
             /**
              *
              * String representing the text of the trendline label on a chart.
@@ -49008,7 +50119,7 @@ declare namespace Excel {
          *
          * [Api set: CustomFunctions 1.3]
          */
-        interface CustomFunctionsManagerLoadOptions {
+        interface CustomFunctionManagerLoadOptions {
             $all?: boolean;
             /**
              *
@@ -49851,6 +50962,260 @@ declare namespace Excel {
         }
         /**
          *
+         * Represents all the shapes in the worksheet.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        interface ShapeCollectionLoadOptions {
+            $all?: boolean;
+            /**
+            *
+            * For EACH ITEM in the collection: Returns the geometric shape for the shape object. Error will be thrown, if the shape object is other shape type (Like, Image, SmartArt, etc.) rather than GeometricShape.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            geometricShape?: Excel.Interfaces.GeometricShapeLoadOptions;
+            /**
+            *
+            * For EACH ITEM in the collection: Returns the image for the shape object. Error will be thrown, if the shape object is other shape type (Like, GeometricShape, SmartArt, etc.) rather than Image.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            image?: Excel.Interfaces.ImageLoadOptions;
+            /**
+             *
+             * For EACH ITEM in the collection: Returns or sets the alternative descriptive text string for a Shape object when the object is saved to a Web page.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            altTextDescription?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Returns or sets the alternative title text string for a Shape object when the object is saved to a Web page.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            altTextTitle?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents the height, in points, of the shape.
+                Throws an invalid argument exception when set with negative value or zero as input.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            height?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents the shape identifier. Read-only.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            id?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: The distance, in points, from the left side of the shape to the left of the worksheet.
+                Throws an invalid argument exception when set with negative value as input.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            left?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents the name of the shape. Read-only.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            name?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents the rotation, in degrees, of the shape.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rotation?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: The distance, in points, from the top edge of the shape to the top of the worksheet.
+                Throws an invalid argument exception when set with negative value as input.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            top?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Returns the type of the specified shape. Read-only. See Excel.ShapeType for detail.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            type?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Represents the width, in points, of the shape.
+                Throws an invalid argument exception when set with negative value or zero as input.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            width?: boolean;
+            /**
+             *
+             * For EACH ITEM in the collection: Returns the position of the specified shape in the z-order, the very bottom shape's z-order value is 0. Read-only.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            zorderPosition?: boolean;
+        }
+        /**
+         *
+         * Represents a generic shape object in the worksheet.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        interface ShapeLoadOptions {
+            $all?: boolean;
+            /**
+            *
+            * Returns the geometric shape for the shape object. Error will be thrown, if the shape object is other shape type (Like, Image, SmartArt, etc.) rather than GeometricShape.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            geometricShape?: Excel.Interfaces.GeometricShapeLoadOptions;
+            /**
+            *
+            * Returns the image for the shape object. Error will be thrown, if the shape object is other shape type (Like, GeometricShape, SmartArt, etc.) rather than Image.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            image?: Excel.Interfaces.ImageLoadOptions;
+            /**
+             *
+             * Returns or sets the alternative descriptive text string for a Shape object when the object is saved to a Web page.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            altTextDescription?: boolean;
+            /**
+             *
+             * Returns or sets the alternative title text string for a Shape object when the object is saved to a Web page.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            altTextTitle?: boolean;
+            /**
+             *
+             * Represents the height, in points, of the shape.
+                Throws an invalid argument exception when set with negative value or zero as input.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            height?: boolean;
+            /**
+             *
+             * Represents the shape identifier. Read-only.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            id?: boolean;
+            /**
+             *
+             * The distance, in points, from the left side of the shape to the left of the worksheet.
+                Throws an invalid argument exception when set with negative value as input.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            left?: boolean;
+            /**
+             *
+             * Represents the name of the shape. Read-only.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            name?: boolean;
+            /**
+             *
+             * Represents the rotation, in degrees, of the shape.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            rotation?: boolean;
+            /**
+             *
+             * The distance, in points, from the top edge of the shape to the top of the worksheet.
+                Throws an invalid argument exception when set with negative value as input.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            top?: boolean;
+            /**
+             *
+             * Returns the type of the specified shape. Read-only. See Excel.ShapeType for detail.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            type?: boolean;
+            /**
+             *
+             * Represents the width, in points, of the shape.
+                Throws an invalid argument exception when set with negative value or zero as input.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            width?: boolean;
+            /**
+             *
+             * Returns the position of the specified shape in the z-order, the very bottom shape's z-order value is 0. Read-only.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            zorderPosition?: boolean;
+        }
+        /**
+         *
+         * Represents a geometric shape object inside a worksheet. A geometric shape can be a line, rectangle, block arrow, equation, flowchart, start, banner, callout or basic shape in Excel.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        interface GeometricShapeLoadOptions {
+            $all?: boolean;
+            /**
+            *
+            * Returns the shape object for the geometric shape.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            shape?: Excel.Interfaces.ShapeLoadOptions;
+            /**
+             *
+             * Represents the shape identifier. Read-only.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            id?: boolean;
+        }
+        /**
+         *
+         * Represents an image object in the worksheet.
+         *
+         * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+         */
+        interface ImageLoadOptions {
+            $all?: boolean;
+            /**
+            *
+            * Returns the shape object for the image.
+            *
+            * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+            */
+            shape?: Excel.Interfaces.ShapeLoadOptions;
+            /**
+             *
+             * Represents the shape identifier for the image object. Read-only.
+             *
+             * [Api set: ExcelApi BETA (PREVIEW ONLY)]
+             */
+            id?: boolean;
+        }
+        /**
+         *
          * An object containing the result of a function-evaluation operation
          *
          * [Api set: ExcelApi 1.2]
@@ -49895,14 +51260,14 @@ declare namespace Excel {
 declare namespace Word {
     /**
      *
-     * Represents the application object.
+     * The Application object.
      *
      * [Api set: WordApi 1.3]
      */
     class Application extends OfficeExtension.ClientObject {
         /**
          *
-         * Creates a new document by using an optional base64 encoded .docx file.
+         * Creates a new hidden document by using an optional base64 encoded .docx file.
          *
          * [Api set: WordApi 1.3]
          *
@@ -49940,7 +51305,7 @@ declare namespace Word {
         readonly font: Word.Font;
         /**
          *
-         * Gets the collection of InlinePicture objects in the body. The collection does not include floating images. Read-only.
+         * Gets the collection of inlinePicture objects in the body. The collection does not include floating images. Read-only.
          *
          * [Api set: WordApi 1.1]
          */
@@ -50067,7 +51432,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.3]
          *
-         * @param rangeLocation Optional. The range location can be 'Whole', 'Start', 'End', 'After', or 'Content'.
+         * @param rangeLocation Optional. The range location can be 'Whole', 'Start', 'End', 'After' or 'Content'.
          */
         getRange(rangeLocation?: Word.RangeLocation): Word.Range;
         /**
@@ -50076,7 +51441,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.3]
          *
-         * @param rangeLocation Optional. The range location can be 'Whole', 'Start', 'End', 'After', or 'Content'.
+         * @param rangeLocation Optional. The range location can be 'Whole', 'Start', 'End', 'After' or 'Content'.
          */
         getRange(rangeLocation?: "Whole" | "Start" | "End" | "Before" | "After" | "Content"): Word.Range;
         /**
@@ -50108,42 +51473,42 @@ declare namespace Word {
         insertContentControl(): Word.ContentControl;
         /**
          *
-         * Inserts a document into the body at the specified location. The insertLocation value can be 'Replace', 'Start', or 'End'.
+         * Inserts a document into the body at the specified location. The insertLocation value can be 'Replace', 'Start' or 'End'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param base64File Required. The base64 encoded content of a .docx file.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', or 'End'.
+         * @param insertLocation Required. The value can be 'Replace', 'Start' or 'End'.
          */
         insertFileFromBase64(base64File: string, insertLocation: Word.InsertLocation): Word.Range;
         /**
          *
-         * Inserts a document into the body at the specified location. The insertLocation value can be 'Replace', 'Start', or 'End'.
+         * Inserts a document into the body at the specified location. The insertLocation value can be 'Replace', 'Start' or 'End'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param base64File Required. The base64 encoded content of a .docx file.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', or 'End'.
+         * @param insertLocation Required. The value can be 'Replace', 'Start' or 'End'.
          */
         insertFileFromBase64(base64File: string, insertLocation: "Before" | "After" | "Start" | "End" | "Replace"): Word.Range;
         /**
          *
-         * Inserts HTML at the specified location. The insertLocation value can be 'Replace', 'Start', or 'End'.
+         * Inserts HTML at the specified location. The insertLocation value can be 'Replace', 'Start' or 'End'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param html Required. The HTML to be inserted in the document.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', or 'End'.
+         * @param insertLocation Required. The value can be 'Replace', 'Start' or 'End'.
          */
         insertHtml(html: string, insertLocation: Word.InsertLocation): Word.Range;
         /**
          *
-         * Inserts HTML at the specified location. The insertLocation value can be 'Replace', 'Start', or 'End'.
+         * Inserts HTML at the specified location. The insertLocation value can be 'Replace', 'Start' or 'End'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param html Required. The HTML to be inserted in the document.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', or 'End'.
+         * @param insertLocation Required. The value can be 'Replace', 'Start' or 'End'.
          */
         insertHtml(html: string, insertLocation: "Before" | "After" | "Start" | "End" | "Replace"): Word.Range;
         /**
@@ -50168,22 +51533,22 @@ declare namespace Word {
         insertInlinePictureFromBase64(base64EncodedImage: string, insertLocation: "Before" | "After" | "Start" | "End" | "Replace"): Word.InlinePicture;
         /**
          *
-         * Inserts OOXML at the specified location.  The insertLocation value can be 'Replace', 'Start', or 'End'.
+         * Inserts OOXML at the specified location.  The insertLocation value can be 'Replace', 'Start' or 'End'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param ooxml Required. The OOXML to be inserted.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', or 'End'.
+         * @param insertLocation Required. The value can be 'Replace', 'Start' or 'End'.
          */
         insertOoxml(ooxml: string, insertLocation: Word.InsertLocation): Word.Range;
         /**
          *
-         * Inserts OOXML at the specified location.  The insertLocation value can be 'Replace', 'Start', or 'End'.
+         * Inserts OOXML at the specified location.  The insertLocation value can be 'Replace', 'Start' or 'End'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param ooxml Required. The OOXML to be inserted.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', or 'End'.
+         * @param insertLocation Required. The value can be 'Replace', 'Start' or 'End'.
          */
         insertOoxml(ooxml: string, insertLocation: "Before" | "After" | "Start" | "End" | "Replace"): Word.Range;
         /**
@@ -50232,27 +51597,27 @@ declare namespace Word {
         insertTable(rowCount: number, columnCount: number, insertLocation: "Before" | "After" | "Start" | "End" | "Replace", values?: string[][]): Word.Table;
         /**
          *
-         * Inserts text into the body at the specified location. The insertLocation value can be 'Replace', 'Start', or 'End'.
+         * Inserts text into the body at the specified location. The insertLocation value can be 'Replace', 'Start' or 'End'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param text Required. Text to be inserted.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', or 'End'.
+         * @param insertLocation Required. The value can be 'Replace', 'Start' or 'End'.
          */
         insertText(text: string, insertLocation: Word.InsertLocation): Word.Range;
         /**
          *
-         * Inserts text into the body at the specified location. The insertLocation value can be 'Replace', 'Start', or 'End'.
+         * Inserts text into the body at the specified location. The insertLocation value can be 'Replace', 'Start' or 'End'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param text Required. Text to be inserted.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', or 'End'.
+         * @param insertLocation Required. The value can be 'Replace', 'Start' or 'End'.
          */
         insertText(text: string, insertLocation: "Before" | "After" | "Start" | "End" | "Replace"): Word.Range;
         /**
          *
-         * Performs a search with the specified SearchOptions on the scope of the body object. The search results are a collection of range objects.
+         * Performs a search with the specified searchOptions on the scope of the body object. The search results are a collection of range objects.
          *
          * [Api set: WordApi 1.1]
          *
@@ -50274,7 +51639,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.1]
          *
-         * @param selectionMode Optional. The selection mode can be 'Select', 'Start', or 'End'. 'Select' is the default.
+         * @param selectionMode Optional. The selection mode can be 'Select', 'Start' or 'End'. 'Select' is the default.
          */
         select(selectionMode?: Word.SelectionMode): void;
         /**
@@ -50283,7 +51648,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.1]
          *
-         * @param selectionMode Optional. The selection mode can be 'Select', 'Start', or 'End'. 'Select' is the default.
+         * @param selectionMode Optional. The selection mode can be 'Select', 'Start' or 'End'. 'Select' is the default.
          */
         select(selectionMode?: "Select" | "Start" | "End"): void;
         /**
@@ -50405,7 +51770,7 @@ declare namespace Word {
         readonly tables: Word.TableCollection;
         /**
          *
-         * Gets or sets the appearance of the content control. The value can be 'BoundingBox', 'Tags', or 'Hidden'.
+         * Gets or sets the appearance of the content control. The value can be 'boundingBox', 'tags' or 'hidden'.
          *
          * [Api set: WordApi 1.1]
          */
@@ -50541,7 +51906,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.3]
          *
-         * @param rangeLocation Optional. The range location can be 'Whole', 'Before', 'Start', 'End', 'After', or 'Content'.
+         * @param rangeLocation Optional. The range location can be 'Whole', 'Before', 'Start', 'End', 'After' or 'Content'.
          */
         getRange(rangeLocation?: Word.RangeLocation): Word.Range;
         /**
@@ -50550,7 +51915,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.3]
          *
-         * @param rangeLocation Optional. The range location can be 'Whole', 'Before', 'Start', 'End', 'After', or 'Content'.
+         * @param rangeLocation Optional. The range location can be 'Whole', 'Before', 'Start', 'End', 'After' or 'Content'.
          */
         getRange(rangeLocation?: "Whole" | "Start" | "End" | "Before" | "After" | "Content"): Word.Range;
         /**
@@ -50560,176 +51925,176 @@ declare namespace Word {
          * [Api set: WordApi 1.3]
          *
          * @param endingMarks Required. The punctuation marks and/or other ending marks as an array of strings.
-         * @param trimSpacing Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks, and paragraph end marks) from the start and end of the ranges returned in the range collection. Default is false which indicates that spacing characters at the start and end of the ranges are included in the range collection.
+         * @param trimSpacing Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks and paragraph end marks) from the start and end of the ranges returned in the range collection. Default is false which indicates that spacing characters at the start and end of the ranges are included in the range collection.
          */
         getTextRanges(endingMarks: string[], trimSpacing?: boolean): Word.RangeCollection;
         /**
          *
-         * Inserts a break at the specified location in the main document. The insertLocation value can be 'Start', 'End', 'Before', or 'After'. This method cannot be used with 'RichTextTable', 'RichTextTableRow' and 'RichTextTableCell' content controls.
+         * Inserts a break at the specified location in the main document. The insertLocation value can be 'Start', 'End', 'Before' or 'After'. This method cannot be used with 'RichTextTable', 'RichTextTableRow' and 'RichTextTableCell' content controls.
          *
          * [Api set: WordApi 1.1]
          *
          * @param breakType Required. Type of break.
-         * @param insertLocation Required. The value can be 'Start', 'End', 'Before', or 'After'.
+         * @param insertLocation Required. The value can be 'Start', 'End', 'Before' or 'After'.
          */
         insertBreak(breakType: Word.BreakType, insertLocation: Word.InsertLocation): void;
         /**
          *
-         * Inserts a break at the specified location in the main document. The insertLocation value can be 'Start', 'End', 'Before', or 'After'. This method cannot be used with 'RichTextTable', 'RichTextTableRow' and 'RichTextTableCell' content controls.
+         * Inserts a break at the specified location in the main document. The insertLocation value can be 'Start', 'End', 'Before' or 'After'. This method cannot be used with 'RichTextTable', 'RichTextTableRow' and 'RichTextTableCell' content controls.
          *
          * [Api set: WordApi 1.1]
          *
          * @param breakType Required. Type of break.
-         * @param insertLocation Required. The value can be 'Start', 'End', 'Before', or 'After'.
+         * @param insertLocation Required. The value can be 'Start', 'End', 'Before' or 'After'.
          */
         insertBreak(breakType: "Page" | "Next" | "SectionNext" | "SectionContinuous" | "SectionEven" | "SectionOdd" | "Line", insertLocation: "Before" | "After" | "Start" | "End" | "Replace"): void;
         /**
          *
-         * Inserts a document into the content control at the specified location. The insertLocation value can be 'Replace', 'Start', or 'End'.
+         * Inserts a document into the content control at the specified location. The insertLocation value can be 'Replace', 'Start' or 'End'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param base64File Required. The base64 encoded content of a .docx file.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', or 'End'. 'Replace' cannot be used with 'RichTextTable' and 'RichTextTableRow' content controls.
+         * @param insertLocation Required. The value can be 'Replace', 'Start' or 'End'. 'Replace' cannot be used with 'RichTextTable' and 'RichTextTableRow' content controls.
          */
         insertFileFromBase64(base64File: string, insertLocation: Word.InsertLocation): Word.Range;
         /**
          *
-         * Inserts a document into the content control at the specified location. The insertLocation value can be 'Replace', 'Start', or 'End'.
+         * Inserts a document into the content control at the specified location. The insertLocation value can be 'Replace', 'Start' or 'End'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param base64File Required. The base64 encoded content of a .docx file.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', or 'End'. 'Replace' cannot be used with 'RichTextTable' and 'RichTextTableRow' content controls.
+         * @param insertLocation Required. The value can be 'Replace', 'Start' or 'End'. 'Replace' cannot be used with 'RichTextTable' and 'RichTextTableRow' content controls.
          */
         insertFileFromBase64(base64File: string, insertLocation: "Before" | "After" | "Start" | "End" | "Replace"): Word.Range;
         /**
          *
-         * Inserts HTML into the content control at the specified location. The insertLocation value can be 'Replace', 'Start', or 'End'.
+         * Inserts HTML into the content control at the specified location. The insertLocation value can be 'Replace', 'Start' or 'End'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param html Required. The HTML to be inserted in to the content control.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', or 'End'. 'Replace' cannot be used with 'RichTextTable' and 'RichTextTableRow' content controls.
+         * @param insertLocation Required. The value can be 'Replace', 'Start' or 'End'. 'Replace' cannot be used with 'RichTextTable' and 'RichTextTableRow' content controls.
          */
         insertHtml(html: string, insertLocation: Word.InsertLocation): Word.Range;
         /**
          *
-         * Inserts HTML into the content control at the specified location. The insertLocation value can be 'Replace', 'Start', or 'End'.
+         * Inserts HTML into the content control at the specified location. The insertLocation value can be 'Replace', 'Start' or 'End'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param html Required. The HTML to be inserted in to the content control.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', or 'End'. 'Replace' cannot be used with 'RichTextTable' and 'RichTextTableRow' content controls.
+         * @param insertLocation Required. The value can be 'Replace', 'Start' or 'End'. 'Replace' cannot be used with 'RichTextTable' and 'RichTextTableRow' content controls.
          */
         insertHtml(html: string, insertLocation: "Before" | "After" | "Start" | "End" | "Replace"): Word.Range;
         /**
          *
-         * Inserts an inline picture into the content control at the specified location. The insertLocation value can be 'Replace', 'Start', or 'End'.
+         * Inserts an inline picture into the content control at the specified location. The insertLocation value can be 'Replace', 'Start' or 'End'.
          *
          * [Api set: WordApi 1.2]
          *
          * @param base64EncodedImage Required. The base64 encoded image to be inserted in the content control.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', or 'End'. 'Replace' cannot be used with 'RichTextTable' and 'RichTextTableRow' content controls.
+         * @param insertLocation Required. The value can be 'Replace', 'Start' or 'End'. 'Replace' cannot be used with 'RichTextTable' and 'RichTextTableRow' content controls.
          */
         insertInlinePictureFromBase64(base64EncodedImage: string, insertLocation: Word.InsertLocation): Word.InlinePicture;
         /**
          *
-         * Inserts an inline picture into the content control at the specified location. The insertLocation value can be 'Replace', 'Start', or 'End'.
+         * Inserts an inline picture into the content control at the specified location. The insertLocation value can be 'Replace', 'Start' or 'End'.
          *
          * [Api set: WordApi 1.2]
          *
          * @param base64EncodedImage Required. The base64 encoded image to be inserted in the content control.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', or 'End'. 'Replace' cannot be used with 'RichTextTable' and 'RichTextTableRow' content controls.
+         * @param insertLocation Required. The value can be 'Replace', 'Start' or 'End'. 'Replace' cannot be used with 'RichTextTable' and 'RichTextTableRow' content controls.
          */
         insertInlinePictureFromBase64(base64EncodedImage: string, insertLocation: "Before" | "After" | "Start" | "End" | "Replace"): Word.InlinePicture;
         /**
          *
-         * Inserts OOXML into the content control at the specified location.  The insertLocation value can be 'Replace', 'Start', or 'End'.
+         * Inserts OOXML into the content control at the specified location.  The insertLocation value can be 'Replace', 'Start' or 'End'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param ooxml Required. The OOXML to be inserted in to the content control.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', or 'End'. 'Replace' cannot be used with 'RichTextTable' and 'RichTextTableRow' content controls.
+         * @param insertLocation Required. The value can be 'Replace', 'Start' or 'End'. 'Replace' cannot be used with 'RichTextTable' and 'RichTextTableRow' content controls.
          */
         insertOoxml(ooxml: string, insertLocation: Word.InsertLocation): Word.Range;
         /**
          *
-         * Inserts OOXML into the content control at the specified location.  The insertLocation value can be 'Replace', 'Start', or 'End'.
+         * Inserts OOXML into the content control at the specified location.  The insertLocation value can be 'Replace', 'Start' or 'End'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param ooxml Required. The OOXML to be inserted in to the content control.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', or 'End'. 'Replace' cannot be used with 'RichTextTable' and 'RichTextTableRow' content controls.
+         * @param insertLocation Required. The value can be 'Replace', 'Start' or 'End'. 'Replace' cannot be used with 'RichTextTable' and 'RichTextTableRow' content controls.
          */
         insertOoxml(ooxml: string, insertLocation: "Before" | "After" | "Start" | "End" | "Replace"): Word.Range;
         /**
          *
-         * Inserts a paragraph at the specified location. The insertLocation value can be 'Start', 'End', 'Before', or 'After'.
+         * Inserts a paragraph at the specified location. The insertLocation value can be 'Start', 'End', 'Before' or 'After'.
          *
          * [Api set: WordApi 1.1]
          *
-         * @param paragraphText Required. The paragraph text to be inserted.
-         * @param insertLocation Required. The value can be 'Start', 'End', 'Before', or 'After'. 'Before' and 'After' cannot be used with 'RichTextTable', 'RichTextTableRow' and 'RichTextTableCell' content controls.
+         * @param paragraphText Required. The paragrph text to be inserted.
+         * @param insertLocation Required. The value can be 'Start', 'End', 'Before' or 'After'. 'Before' and 'After' cannot be used with 'RichTextTable', 'RichTextTableRow' and 'RichTextTableCell' content controls.
          */
         insertParagraph(paragraphText: string, insertLocation: Word.InsertLocation): Word.Paragraph;
         /**
          *
-         * Inserts a paragraph at the specified location. The insertLocation value can be 'Start', 'End', 'Before', or 'After'.
+         * Inserts a paragraph at the specified location. The insertLocation value can be 'Start', 'End', 'Before' or 'After'.
          *
          * [Api set: WordApi 1.1]
          *
-         * @param paragraphText Required. The paragraph text to be inserted.
-         * @param insertLocation Required. The value can be 'Start', 'End', 'Before', or 'After'. 'Before' and 'After' cannot be used with 'RichTextTable', 'RichTextTableRow' and 'RichTextTableCell' content controls.
+         * @param paragraphText Required. The paragrph text to be inserted.
+         * @param insertLocation Required. The value can be 'Start', 'End', 'Before' or 'After'. 'Before' and 'After' cannot be used with 'RichTextTable', 'RichTextTableRow' and 'RichTextTableCell' content controls.
          */
         insertParagraph(paragraphText: string, insertLocation: "Before" | "After" | "Start" | "End" | "Replace"): Word.Paragraph;
         /**
          *
-         * Inserts a table with the specified number of rows and columns into, or next to, a content control. The insertLocation value can be 'Start', 'End', 'Before', or 'After'.
+         * Inserts a table with the specified number of rows and columns into, or next to, a content control. The insertLocation value can be 'Start', 'End', 'Before' or 'After'.
          *
          * [Api set: WordApi 1.3]
          *
          * @param rowCount Required. The number of rows in the table.
          * @param columnCount Required. The number of columns in the table.
-         * @param insertLocation Required. The value can be 'Start', 'End', 'Before', or 'After'. 'Before' and 'After' cannot be used with 'RichTextTable', 'RichTextTableRow' and 'RichTextTableCell' content controls.
+         * @param insertLocation Required. The value can be 'Start', 'End', 'Before' or 'After'. 'Before' and 'After' cannot be used with 'RichTextTable', 'RichTextTableRow' and 'RichTextTableCell' content controls.
          * @param values Optional 2D array. Cells are filled if the corresponding strings are specified in the array.
          */
         insertTable(rowCount: number, columnCount: number, insertLocation: Word.InsertLocation, values?: string[][]): Word.Table;
         /**
          *
-         * Inserts a table with the specified number of rows and columns into, or next to, a content control. The insertLocation value can be 'Start', 'End', 'Before', or 'After'.
+         * Inserts a table with the specified number of rows and columns into, or next to, a content control. The insertLocation value can be 'Start', 'End', 'Before' or 'After'.
          *
          * [Api set: WordApi 1.3]
          *
          * @param rowCount Required. The number of rows in the table.
          * @param columnCount Required. The number of columns in the table.
-         * @param insertLocation Required. The value can be 'Start', 'End', 'Before', or 'After'. 'Before' and 'After' cannot be used with 'RichTextTable', 'RichTextTableRow' and 'RichTextTableCell' content controls.
+         * @param insertLocation Required. The value can be 'Start', 'End', 'Before' or 'After'. 'Before' and 'After' cannot be used with 'RichTextTable', 'RichTextTableRow' and 'RichTextTableCell' content controls.
          * @param values Optional 2D array. Cells are filled if the corresponding strings are specified in the array.
          */
         insertTable(rowCount: number, columnCount: number, insertLocation: "Before" | "After" | "Start" | "End" | "Replace", values?: string[][]): Word.Table;
         /**
          *
-         * Inserts text into the content control at the specified location. The insertLocation value can be 'Replace', 'Start', or 'End'.
+         * Inserts text into the content control at the specified location. The insertLocation value can be 'Replace', 'Start' or 'End'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param text Required. The text to be inserted in to the content control.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', or 'End'. 'Replace' cannot be used with 'RichTextTable' and 'RichTextTableRow' content controls.
+         * @param insertLocation Required. The value can be 'Replace', 'Start' or 'End'. 'Replace' cannot be used with 'RichTextTable' and 'RichTextTableRow' content controls.
          */
         insertText(text: string, insertLocation: Word.InsertLocation): Word.Range;
         /**
          *
-         * Inserts text into the content control at the specified location. The insertLocation value can be 'Replace', 'Start', or 'End'.
+         * Inserts text into the content control at the specified location. The insertLocation value can be 'Replace', 'Start' or 'End'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param text Required. The text to be inserted in to the content control.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', or 'End'. 'Replace' cannot be used with 'RichTextTable' and 'RichTextTableRow' content controls.
+         * @param insertLocation Required. The value can be 'Replace', 'Start' or 'End'. 'Replace' cannot be used with 'RichTextTable' and 'RichTextTableRow' content controls.
          */
         insertText(text: string, insertLocation: "Before" | "After" | "Start" | "End" | "Replace"): Word.Range;
         /**
          *
-         * Performs a search with the specified SearchOptions on the scope of the content control object. The search results are a collection of range objects.
+         * Performs a search with the specified searchOptions on the scope of the content control object. The search results are a collection of range objects.
          *
          * [Api set: WordApi 1.1]
          *
@@ -50751,7 +52116,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.1]
          *
-         * @param selectionMode Optional. The selection mode can be 'Select', 'Start', or 'End'. 'Select' is the default.
+         * @param selectionMode Optional. The selection mode can be 'Select', 'Start' or 'End'. 'Select' is the default.
          */
         select(selectionMode?: Word.SelectionMode): void;
         /**
@@ -50760,7 +52125,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.1]
          *
-         * @param selectionMode Optional. The selection mode can be 'Select', 'Start', or 'End'. 'Select' is the default.
+         * @param selectionMode Optional. The selection mode can be 'Select', 'Start' or 'End'. 'Select' is the default.
          */
         select(selectionMode?: "Select" | "Start" | "End"): void;
         /**
@@ -50772,7 +52137,7 @@ declare namespace Word {
          * @param delimiters Required. The delimiters as an array of strings.
          * @param multiParagraphs Optional. Indicates whether a returned child range can cover multiple paragraphs. Default is false which indicates that the paragraph boundaries are also used as delimiters.
          * @param trimDelimiters Optional. Indicates whether to trim delimiters from the ranges in the range collection. Default is false which indicates that the delimiters are included in the ranges returned in the range collection.
-         * @param trimSpacing Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks, and paragraph end marks) from the start and end of the ranges returned in the range collection. Default is false which indicates that spacing characters at the start and end of the ranges are included in the range collection.
+         * @param trimSpacing Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks and paragraph end marks) from the start and end of the ranges returned in the range collection. Default is false which indicates that spacing characters at the start and end of the ranges are included in the range collection.
          */
         split(delimiters: string[], multiParagraphs?: boolean, trimDelimiters?: boolean, trimSpacing?: boolean): Word.RangeCollection;
         /**
@@ -51733,14 +53098,14 @@ declare namespace Word {
         color: string;
         /**
          *
-         * Gets or sets a value that indicates whether the font has a double strikethrough. True if the font is formatted as double strikethrough text, otherwise, false.
+         * Gets or sets a value that indicates whether the font has a double strike through. True if the font is formatted as double strikethrough text, otherwise, false.
          *
          * [Api set: WordApi 1.1]
          */
         doubleStrikeThrough: boolean;
         /**
          *
-         * Gets or sets the highlight color. To set it, use a value either in the '#RRGGBB' format or the color name. To remove highlight color, set it to null. The returned highlight color can be in the '#RRGGBB' format, an empty string for mixed highlight colors, or null for no highlight color.
+         * Gets or sets the highlight color. To set it, use a value either in the '#RRGGBB' format or the color name. To remove highlight color, set it to null. The returned highlight color can be in the '#RRGGBB' format, or an empty string for mixed highlight colors, or null for no highlight color.
          *
          * [Api set: WordApi 1.1]
          */
@@ -51768,7 +53133,7 @@ declare namespace Word {
         size: number;
         /**
          *
-         * Gets or sets a value that indicates whether the font has a strikethrough. True if the font is formatted as strikethrough text, otherwise, false.
+         * Gets or sets a value that indicates whether the font has a strike through. True if the font is formatted as strikethrough text, otherwise, false.
          *
          * [Api set: WordApi 1.1]
          */
@@ -51875,7 +53240,7 @@ declare namespace Word {
         readonly parentTableOrNullObject: Word.Table;
         /**
          *
-         * Gets or sets a string that represents the alternative text associated with the inline image.
+         * Gets or sets a string that represents the alternative text associated with the inline image
          *
          * [Api set: WordApi 1.1]
          */
@@ -51960,7 +53325,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.3]
          *
-         * @param rangeLocation Optional. The range location can be 'Whole', 'Start', or 'End'.
+         * @param rangeLocation Optional. The range location can be 'Whole', 'Start' or 'End'.
          */
         getRange(rangeLocation?: Word.RangeLocation): Word.Range;
         /**
@@ -51969,7 +53334,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.3]
          *
-         * @param rangeLocation Optional. The range location can be 'Whole', 'Start', or 'End'.
+         * @param rangeLocation Optional. The range location can be 'Whole', 'Start' or 'End'.
          */
         getRange(rangeLocation?: "Whole" | "Start" | "End" | "Before" | "After" | "Content"): Word.Range;
         /**
@@ -52041,22 +53406,22 @@ declare namespace Word {
         insertHtml(html: string, insertLocation: "Before" | "After" | "Start" | "End" | "Replace"): Word.Range;
         /**
          *
-         * Inserts an inline picture at the specified location. The insertLocation value can be 'Replace', 'Before', or 'After'.
+         * Inserts an inline picture at the specified location. The insertLocation value can be 'Replace', 'Before' or 'After'.
          *
          * [Api set: WordApi 1.2]
          *
          * @param base64EncodedImage Required. The base64 encoded image to be inserted.
-         * @param insertLocation Required. The value can be 'Replace', 'Before', or 'After'.
+         * @param insertLocation Required. The value can be 'Replace', 'Before' or 'After'.
          */
         insertInlinePictureFromBase64(base64EncodedImage: string, insertLocation: Word.InsertLocation): Word.InlinePicture;
         /**
          *
-         * Inserts an inline picture at the specified location. The insertLocation value can be 'Replace', 'Before', or 'After'.
+         * Inserts an inline picture at the specified location. The insertLocation value can be 'Replace', 'Before' or 'After'.
          *
          * [Api set: WordApi 1.2]
          *
          * @param base64EncodedImage Required. The base64 encoded image to be inserted.
-         * @param insertLocation Required. The value can be 'Replace', 'Before', or 'After'.
+         * @param insertLocation Required. The value can be 'Replace', 'Before' or 'After'.
          */
         insertInlinePictureFromBase64(base64EncodedImage: string, insertLocation: "Before" | "After" | "Start" | "End" | "Replace"): Word.InlinePicture;
         /**
@@ -52125,7 +53490,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.2]
          *
-         * @param selectionMode Optional. The selection mode can be 'Select', 'Start', or 'End'. 'Select' is the default.
+         * @param selectionMode Optional. The selection mode can be 'Select', 'Start' or 'End'. 'Select' is the default.
          */
         select(selectionMode?: Word.SelectionMode): void;
         /**
@@ -52134,7 +53499,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.2]
          *
-         * @param selectionMode Optional. The selection mode can be 'Select', 'Start', or 'End'. 'Select' is the default.
+         * @param selectionMode Optional. The selection mode can be 'Select', 'Start' or 'End'. 'Select' is the default.
          */
         select(selectionMode?: "Select" | "Start" | "End"): void;
         /**
@@ -52225,7 +53590,7 @@ declare namespace Word {
         readonly levelExistences: boolean[];
         /**
          *
-         * Gets all 9 level types in the list. Each type can be 'Bullet', 'Number', or 'Picture'. Read-only.
+         * Gets all 9 level types in the list. Each type can be 'Bullet', 'Number' or 'Picture'. Read-only.
          *
          * [Api set: WordApi 1.3]
          */
@@ -52268,22 +53633,22 @@ declare namespace Word {
         getLevelString(level: number): OfficeExtension.ClientResult<string>;
         /**
          *
-         * Inserts a paragraph at the specified location. The insertLocation value can be 'Start', 'End', 'Before', or 'After'.
+         * Inserts a paragraph at the specified location. The insertLocation value can be 'Start', 'End', 'Before' or 'After'.
          *
          * [Api set: WordApi 1.3]
          *
          * @param paragraphText Required. The paragraph text to be inserted.
-         * @param insertLocation Required. The value can be 'Start', 'End', 'Before', or 'After'.
+         * @param insertLocation Required. The value can be 'Start', 'End', 'Before' or 'After'.
          */
         insertParagraph(paragraphText: string, insertLocation: Word.InsertLocation): Word.Paragraph;
         /**
          *
-         * Inserts a paragraph at the specified location. The insertLocation value can be 'Start', 'End', 'Before', or 'After'.
+         * Inserts a paragraph at the specified location. The insertLocation value can be 'Start', 'End', 'Before' or 'After'.
          *
          * [Api set: WordApi 1.3]
          *
          * @param paragraphText Required. The paragraph text to be inserted.
-         * @param insertLocation Required. The value can be 'Start', 'End', 'Before', or 'After'.
+         * @param insertLocation Required. The value can be 'Start', 'End', 'Before' or 'After'.
          */
         insertParagraph(paragraphText: string, insertLocation: "Before" | "After" | "Start" | "End" | "Replace"): Word.Paragraph;
         /**
@@ -52303,7 +53668,7 @@ declare namespace Word {
          * [Api set: WordApi 1.3]
          *
          * @param level Required. The level in the list.
-         * @param alignment Required. The level alignment that can be 'Left', 'Centered', or 'Right'.
+         * @param alignment Required. The level alignment that can be 'left', 'centered' or 'right'.
          */
         setLevelAlignment(level: number, alignment: Word.Alignment): void;
         /**
@@ -52313,7 +53678,7 @@ declare namespace Word {
          * [Api set: WordApi 1.3]
          *
          * @param level Required. The level in the list.
-         * @param alignment Required. The level alignment that can be 'Left', 'Centered', or 'Right'.
+         * @param alignment Required. The level alignment that can be 'left', 'centered' or 'right'.
          */
         setLevelAlignment(level: number, alignment: "Mixed" | "Unknown" | "Left" | "Centered" | "Right" | "Justified"): void;
         /**
@@ -52494,7 +53859,7 @@ declare namespace Word {
         level: number;
         /**
          *
-         * Gets the list item bullet, number, or picture as a string. Read-only.
+         * Gets the list item bullet, number or picture as a string. Read-only.
          *
          * [Api set: WordApi 1.3]
          */
@@ -52512,20 +53877,20 @@ declare namespace Word {
         set(properties: ListItem): void;
         /**
          *
-         * Gets the list item parent, or the closest ancestor if the parent does not exist. Throws if the list item has no ancestor.
+         * Gets the list item parent, or the closest ancestor if the parent does not exist. Throws if the list item has no ancester.
          *
          * [Api set: WordApi 1.3]
          *
-         * @param parentOnly Optional. Specifies only the list item's parent will be returned. The default is false that specifies to get the lowest ancestor.
+         * @param parentOnly Optional. Specified only the list item's parent will be returned. The default is false that specifies to get the lowest ancestor.
          */
         getAncestor(parentOnly?: boolean): Word.Paragraph;
         /**
          *
-         * Gets the list item parent, or the closest ancestor if the parent does not exist. Returns a null object if the list item has no ancestor.
+         * Gets the list item parent, or the closest ancestor if the parent does not exist. Returns a null object if the list item has no ancester.
          *
          * [Api set: WordApi 1.3]
          *
-         * @param parentOnly Optional. Specifies only the list item's parent will be returned. The default is false that specifies to get the lowest ancestor.
+         * @param parentOnly Optional. Specified only the list item's parent will be returned. The default is false that specifies to get the lowest ancestor.
          */
         getAncestorOrNullObject(parentOnly?: boolean): Word.Paragraph;
         /**
@@ -52534,7 +53899,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.3]
          *
-         * @param directChildrenOnly Optional. Specifies only the list item's direct children will be returned. The default is false that indicates to get all descendant items.
+         * @param directChildrenOnly Optional. Specified only the list item's direct children will be returned. The default is false that indicates to get all descendant items.
          */
         getDescendants(directChildrenOnly?: boolean): Word.ParagraphCollection;
         /**
@@ -52579,7 +53944,7 @@ declare namespace Word {
         readonly font: Word.Font;
         /**
          *
-         * Gets the collection of InlinePicture objects in the paragraph. The collection does not include floating images. Read-only.
+         * Gets the collection of inlinePicture objects in the paragraph. The collection does not include floating images. Read-only.
          *
          * [Api set: WordApi 1.1]
          */
@@ -52705,7 +54070,7 @@ declare namespace Word {
         lineSpacing: number;
         /**
          *
-         * Gets or sets the amount of spacing, in grid lines, after the paragraph.
+         * Gets or sets the amount of spacing, in grid lines. after the paragraph.
          *
          * [Api set: WordApi 1.1]
          */
@@ -52856,7 +54221,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.3]
          *
-         * @param rangeLocation Optional. The range location can be 'Whole', 'Start', 'End', 'After', or 'Content'.
+         * @param rangeLocation Optional. The range location can be 'Whole', 'Start', 'End', 'After' or 'Content'.
          */
         getRange(rangeLocation?: Word.RangeLocation): Word.Range;
         /**
@@ -52865,7 +54230,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.3]
          *
-         * @param rangeLocation Optional. The range location can be 'Whole', 'Start', 'End', 'After', or 'Content'.
+         * @param rangeLocation Optional. The range location can be 'Whole', 'Start', 'End', 'After' or 'Content'.
          */
         getRange(rangeLocation?: "Whole" | "Start" | "End" | "Before" | "After" | "Content"): Word.Range;
         /**
@@ -52875,7 +54240,7 @@ declare namespace Word {
          * [Api set: WordApi 1.3]
          *
          * @param endingMarks Required. The punctuation marks and/or other ending marks as an array of strings.
-         * @param trimSpacing Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks, and paragraph end marks) from the start and end of the ranges returned in the range collection. Default is false which indicates that spacing characters at the start and end of the ranges are included in the range collection.
+         * @param trimSpacing Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks and paragraph end marks) from the start and end of the ranges returned in the range collection. Default is false which indicates that spacing characters at the start and end of the ranges are included in the range collection.
          */
         getTextRanges(endingMarks: string[], trimSpacing?: boolean): Word.RangeCollection;
         /**
@@ -52907,82 +54272,82 @@ declare namespace Word {
         insertContentControl(): Word.ContentControl;
         /**
          *
-         * Inserts a document into the paragraph at the specified location. The insertLocation value can be 'Replace', 'Start', or 'End'.
+         * Inserts a document into the paragraph at the specified location. The insertLocation value can be 'Replace', 'Start' or 'End'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param base64File Required. The base64 encoded content of a .docx file.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', or 'End'.
+         * @param insertLocation Required. The value can be 'Replace', 'Start' or 'End'.
          */
         insertFileFromBase64(base64File: string, insertLocation: Word.InsertLocation): Word.Range;
         /**
          *
-         * Inserts a document into the paragraph at the specified location. The insertLocation value can be 'Replace', 'Start', or 'End'.
+         * Inserts a document into the paragraph at the specified location. The insertLocation value can be 'Replace', 'Start' or 'End'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param base64File Required. The base64 encoded content of a .docx file.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', or 'End'.
+         * @param insertLocation Required. The value can be 'Replace', 'Start' or 'End'.
          */
         insertFileFromBase64(base64File: string, insertLocation: "Before" | "After" | "Start" | "End" | "Replace"): Word.Range;
         /**
          *
-         * Inserts HTML into the paragraph at the specified location. The insertLocation value can be 'Replace', 'Start', or 'End'.
+         * Inserts HTML into the paragraph at the specified location. The insertLocation value can be 'Replace', 'Start' or 'End'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param html Required. The HTML to be inserted in the paragraph.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', or 'End'.
+         * @param insertLocation Required. The value can be 'Replace', 'Start' or 'End'.
          */
         insertHtml(html: string, insertLocation: Word.InsertLocation): Word.Range;
         /**
          *
-         * Inserts HTML into the paragraph at the specified location. The insertLocation value can be 'Replace', 'Start', or 'End'.
+         * Inserts HTML into the paragraph at the specified location. The insertLocation value can be 'Replace', 'Start' or 'End'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param html Required. The HTML to be inserted in the paragraph.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', or 'End'.
+         * @param insertLocation Required. The value can be 'Replace', 'Start' or 'End'.
          */
         insertHtml(html: string, insertLocation: "Before" | "After" | "Start" | "End" | "Replace"): Word.Range;
         /**
          *
-         * Inserts a picture into the paragraph at the specified location. The insertLocation value can be 'Replace', 'Start', or 'End'.
+         * Inserts a picture into the paragraph at the specified location. The insertLocation value can be 'Replace', 'Start' or 'End'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param base64EncodedImage Required. The base64 encoded image to be inserted.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', or 'End'.
+         * @param insertLocation Required. The value can be 'Replace', 'Start' or 'End'.
          */
         insertInlinePictureFromBase64(base64EncodedImage: string, insertLocation: Word.InsertLocation): Word.InlinePicture;
         /**
          *
-         * Inserts a picture into the paragraph at the specified location. The insertLocation value can be 'Replace', 'Start', or 'End'.
+         * Inserts a picture into the paragraph at the specified location. The insertLocation value can be 'Replace', 'Start' or 'End'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param base64EncodedImage Required. The base64 encoded image to be inserted.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', or 'End'.
+         * @param insertLocation Required. The value can be 'Replace', 'Start' or 'End'.
          */
         insertInlinePictureFromBase64(base64EncodedImage: string, insertLocation: "Before" | "After" | "Start" | "End" | "Replace"): Word.InlinePicture;
         /**
          *
-         * Inserts OOXML into the paragraph at the specified location. The insertLocation value can be 'Replace', 'Start', or 'End'.
+         * Inserts OOXML into the paragraph at the specified location. The insertLocation value can be 'Replace', 'Start' or 'End'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param ooxml Required. The OOXML to be inserted in the paragraph.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', or 'End'.
+         * @param insertLocation Required. The value can be 'Replace', 'Start' or 'End'.
          */
         insertOoxml(ooxml: string, insertLocation: Word.InsertLocation): Word.Range;
         /**
          *
-         * Inserts OOXML into the paragraph at the specified location. The insertLocation value can be 'Replace', 'Start', or 'End'.
+         * Inserts OOXML into the paragraph at the specified location. The insertLocation value can be 'Replace', 'Start' or 'End'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param ooxml Required. The OOXML to be inserted in the paragraph.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', or 'End'.
+         * @param insertLocation Required. The value can be 'Replace', 'Start' or 'End'.
          */
         insertOoxml(ooxml: string, insertLocation: "Before" | "After" | "Start" | "End" | "Replace"): Word.Range;
         /**
@@ -53031,27 +54396,27 @@ declare namespace Word {
         insertTable(rowCount: number, columnCount: number, insertLocation: "Before" | "After" | "Start" | "End" | "Replace", values?: string[][]): Word.Table;
         /**
          *
-         * Inserts text into the paragraph at the specified location. The insertLocation value can be 'Replace', 'Start', or 'End'.
+         * Inserts text into the paragraph at the specified location. The insertLocation value can be 'Replace', 'Start' or 'End'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param text Required. Text to be inserted.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', or 'End'.
+         * @param insertLocation Required. The value can be 'Replace', 'Start' or 'End'.
          */
         insertText(text: string, insertLocation: Word.InsertLocation): Word.Range;
         /**
          *
-         * Inserts text into the paragraph at the specified location. The insertLocation value can be 'Replace', 'Start', or 'End'.
+         * Inserts text into the paragraph at the specified location. The insertLocation value can be 'Replace', 'Start' or 'End'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param text Required. Text to be inserted.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', or 'End'.
+         * @param insertLocation Required. The value can be 'Replace', 'Start' or 'End'.
          */
         insertText(text: string, insertLocation: "Before" | "After" | "Start" | "End" | "Replace"): Word.Range;
         /**
          *
-         * Performs a search with the specified SearchOptions on the scope of the paragraph object. The search results are a collection of range objects.
+         * Performs a search with the specified searchOptions on the scope of the paragraph object. The search results are a collection of range objects.
          *
          * [Api set: WordApi 1.1]
          *
@@ -53073,7 +54438,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.1]
          *
-         * @param selectionMode Optional. The selection mode can be 'Select', 'Start', or 'End'. 'Select' is the default.
+         * @param selectionMode Optional. The selection mode can be 'Select', 'Start' or 'End'. 'Select' is the default.
          */
         select(selectionMode?: Word.SelectionMode): void;
         /**
@@ -53082,7 +54447,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.1]
          *
-         * @param selectionMode Optional. The selection mode can be 'Select', 'Start', or 'End'. 'Select' is the default.
+         * @param selectionMode Optional. The selection mode can be 'Select', 'Start' or 'End'. 'Select' is the default.
          */
         select(selectionMode?: "Select" | "Start" | "End"): void;
         /**
@@ -53093,7 +54458,7 @@ declare namespace Word {
          *
          * @param delimiters Required. The delimiters as an array of strings.
          * @param trimDelimiters Optional. Indicates whether to trim delimiters from the ranges in the range collection. Default is false which indicates that the delimiters are included in the ranges returned in the range collection.
-         * @param trimSpacing Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks, and paragraph end marks) from the start and end of the ranges returned in the range collection. Default is false which indicates that spacing characters at the start and end of the ranges are included in the range collection.
+         * @param trimSpacing Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks and paragraph end marks) from the start and end of the ranges returned in the range collection. Default is false which indicates that spacing characters at the start and end of the ranges are included in the range collection.
          */
         split(delimiters: string[], trimDelimiters?: boolean, trimSpacing?: boolean): Word.RangeCollection;
         /**
@@ -53384,7 +54749,7 @@ declare namespace Word {
          * [Api set: WordApi 1.3]
          *
          * @param endingMarks Required. The punctuation marks and/or other ending marks as an array of strings.
-         * @param trimSpacing Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks, and paragraph end marks) from the start and end of the returned range. Default is false which indicates that spacing characters at the start and end of the range are included.
+         * @param trimSpacing Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks and paragraph end marks) from the start and end of the returned range. Default is false which indicates that spacing characters at the start and end of the range are included.
          */
         getNextTextRange(endingMarks: string[], trimSpacing?: boolean): Word.Range;
         /**
@@ -53394,7 +54759,7 @@ declare namespace Word {
          * [Api set: WordApi 1.3]
          *
          * @param endingMarks Required. The punctuation marks and/or other ending marks as an array of strings.
-         * @param trimSpacing Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks, and paragraph end marks) from the start and end of the returned range. Default is false which indicates that spacing characters at the start and end of the range are included.
+         * @param trimSpacing Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks and paragraph end marks) from the start and end of the returned range. Default is false which indicates that spacing characters at the start and end of the range are included.
          */
         getNextTextRangeOrNullObject(endingMarks: string[], trimSpacing?: boolean): Word.Range;
         /**
@@ -53410,7 +54775,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.3]
          *
-         * @param rangeLocation Optional. The range location can be 'Whole', 'Start', 'End', 'After', or 'Content'.
+         * @param rangeLocation Optional. The range location can be 'Whole', 'Start', 'End', 'After' or 'Content'.
          */
         getRange(rangeLocation?: Word.RangeLocation): Word.Range;
         /**
@@ -53419,7 +54784,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.3]
          *
-         * @param rangeLocation Optional. The range location can be 'Whole', 'Start', 'End', 'After', or 'Content'.
+         * @param rangeLocation Optional. The range location can be 'Whole', 'Start', 'End', 'After' or 'Content'.
          */
         getRange(rangeLocation?: "Whole" | "Start" | "End" | "Before" | "After" | "Content"): Word.Range;
         /**
@@ -53429,7 +54794,7 @@ declare namespace Word {
          * [Api set: WordApi 1.3]
          *
          * @param endingMarks Required. The punctuation marks and/or other ending marks as an array of strings.
-         * @param trimSpacing Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks, and paragraph end marks) from the start and end of the ranges returned in the range collection. Default is false which indicates that spacing characters at the start and end of the ranges are included in the range collection.
+         * @param trimSpacing Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks and paragraph end marks) from the start and end of the ranges returned in the range collection. Default is false which indicates that spacing characters at the start and end of the ranges are included in the range collection.
          */
         getTextRanges(endingMarks: string[], trimSpacing?: boolean): Word.RangeCollection;
         /**
@@ -53470,82 +54835,82 @@ declare namespace Word {
         insertContentControl(): Word.ContentControl;
         /**
          *
-         * Inserts a document at the specified location. The insertLocation value can be 'Replace', 'Start', 'End', 'Before', or 'After'.
+         * Inserts a document at the specified location. The insertLocation value can be 'Replace', 'Start', 'End', 'Before' or 'After'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param base64File Required. The base64 encoded content of a .docx file.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', 'End', 'Before', or 'After'.
+         * @param insertLocation Required. The value can be 'Replace', 'Start', 'End', 'Before' or 'After'.
          */
         insertFileFromBase64(base64File: string, insertLocation: Word.InsertLocation): Word.Range;
         /**
          *
-         * Inserts a document at the specified location. The insertLocation value can be 'Replace', 'Start', 'End', 'Before', or 'After'.
+         * Inserts a document at the specified location. The insertLocation value can be 'Replace', 'Start', 'End', 'Before' or 'After'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param base64File Required. The base64 encoded content of a .docx file.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', 'End', 'Before', or 'After'.
+         * @param insertLocation Required. The value can be 'Replace', 'Start', 'End', 'Before' or 'After'.
          */
         insertFileFromBase64(base64File: string, insertLocation: "Before" | "After" | "Start" | "End" | "Replace"): Word.Range;
         /**
          *
-         * Inserts HTML at the specified location. The insertLocation value can be 'Replace', 'Start', 'End', 'Before', or 'After'.
+         * Inserts HTML at the specified location. The insertLocation value can be 'Replace', 'Start', 'End', 'Before' or 'After'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param html Required. The HTML to be inserted.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', 'End', 'Before', or 'After'.
+         * @param insertLocation Required. The value can be 'Replace', 'Start', 'End', 'Before' or 'After'.
          */
         insertHtml(html: string, insertLocation: Word.InsertLocation): Word.Range;
         /**
          *
-         * Inserts HTML at the specified location. The insertLocation value can be 'Replace', 'Start', 'End', 'Before', or 'After'.
+         * Inserts HTML at the specified location. The insertLocation value can be 'Replace', 'Start', 'End', 'Before' or 'After'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param html Required. The HTML to be inserted.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', 'End', 'Before', or 'After'.
+         * @param insertLocation Required. The value can be 'Replace', 'Start', 'End', 'Before' or 'After'.
          */
         insertHtml(html: string, insertLocation: "Before" | "After" | "Start" | "End" | "Replace"): Word.Range;
         /**
          *
-         * Inserts a picture at the specified location. The insertLocation value can be 'Replace', 'Start', 'End', 'Before', or 'After'.
+         * Inserts a picture at the specified location. The insertLocation value can be 'Replace', 'Start', 'End', 'Before' or 'After'.
          *
          * [Api set: WordApi 1.2]
          *
          * @param base64EncodedImage Required. The base64 encoded image to be inserted.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', 'End', 'Before', or 'After'.
+         * @param insertLocation Required. The value can be 'Replace', 'Start', 'End', 'Before' or 'After'.
          */
         insertInlinePictureFromBase64(base64EncodedImage: string, insertLocation: Word.InsertLocation): Word.InlinePicture;
         /**
          *
-         * Inserts a picture at the specified location. The insertLocation value can be 'Replace', 'Start', 'End', 'Before', or 'After'.
+         * Inserts a picture at the specified location. The insertLocation value can be 'Replace', 'Start', 'End', 'Before' or 'After'.
          *
          * [Api set: WordApi 1.2]
          *
          * @param base64EncodedImage Required. The base64 encoded image to be inserted.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', 'End', 'Before', or 'After'.
+         * @param insertLocation Required. The value can be 'Replace', 'Start', 'End', 'Before' or 'After'.
          */
         insertInlinePictureFromBase64(base64EncodedImage: string, insertLocation: "Before" | "After" | "Start" | "End" | "Replace"): Word.InlinePicture;
         /**
          *
-         * Inserts OOXML at the specified location.  The insertLocation value can be 'Replace', 'Start', 'End', 'Before', or 'After'.
+         * Inserts OOXML at the specified location.  The insertLocation value can be 'Replace', 'Start', 'End', 'Before' or 'After'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param ooxml Required. The OOXML to be inserted.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', 'End', 'Before', or 'After'.
+         * @param insertLocation Required. The value can be 'Replace', 'Start', 'End', 'Before' or 'After'.
          */
         insertOoxml(ooxml: string, insertLocation: Word.InsertLocation): Word.Range;
         /**
          *
-         * Inserts OOXML at the specified location.  The insertLocation value can be 'Replace', 'Start', 'End', 'Before', or 'After'.
+         * Inserts OOXML at the specified location.  The insertLocation value can be 'Replace', 'Start', 'End', 'Before' or 'After'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param ooxml Required. The OOXML to be inserted.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', 'End', 'Before', or 'After'.
+         * @param insertLocation Required. The value can be 'Replace', 'Start', 'End', 'Before' or 'After'.
          */
         insertOoxml(ooxml: string, insertLocation: "Before" | "After" | "Start" | "End" | "Replace"): Word.Range;
         /**
@@ -53594,22 +54959,22 @@ declare namespace Word {
         insertTable(rowCount: number, columnCount: number, insertLocation: "Before" | "After" | "Start" | "End" | "Replace", values?: string[][]): Word.Table;
         /**
          *
-         * Inserts text at the specified location. The insertLocation value can be 'Replace', 'Start', 'End', 'Before', or 'After'.
+         * Inserts text at the specified location. The insertLocation value can be 'Replace', 'Start', 'End', 'Before' or 'After'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param text Required. Text to be inserted.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', 'End', 'Before', or 'After'.
+         * @param insertLocation Required. The value can be 'Replace', 'Start', 'End', 'Before' or 'After'.
          */
         insertText(text: string, insertLocation: Word.InsertLocation): Word.Range;
         /**
          *
-         * Inserts text at the specified location. The insertLocation value can be 'Replace', 'Start', 'End', 'Before', or 'After'.
+         * Inserts text at the specified location. The insertLocation value can be 'Replace', 'Start', 'End', 'Before' or 'After'.
          *
          * [Api set: WordApi 1.1]
          *
          * @param text Required. Text to be inserted.
-         * @param insertLocation Required. The value can be 'Replace', 'Start', 'End', 'Before', or 'After'.
+         * @param insertLocation Required. The value can be 'Replace', 'Start', 'End', 'Before' or 'After'.
          */
         insertText(text: string, insertLocation: "Before" | "After" | "Start" | "End" | "Replace"): Word.Range;
         /**
@@ -53632,7 +54997,7 @@ declare namespace Word {
         intersectWithOrNullObject(range: Word.Range): Word.Range;
         /**
          *
-         * Performs a search with the specified SearchOptions on the scope of the range object. The search results are a collection of range objects.
+         * Performs a search with the specified searchOptions on the scope of the range object. The search results are a collection of range objects.
          *
          * [Api set: WordApi 1.1]
          *
@@ -53654,7 +55019,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.1]
          *
-         * @param selectionMode Optional. The selection mode can be 'Select', 'Start', or 'End'. 'Select' is the default.
+         * @param selectionMode Optional. The selection mode can be 'Select', 'Start' or 'End'. 'Select' is the default.
          */
         select(selectionMode?: Word.SelectionMode): void;
         /**
@@ -53663,7 +55028,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.1]
          *
-         * @param selectionMode Optional. The selection mode can be 'Select', 'Start', or 'End'. 'Select' is the default.
+         * @param selectionMode Optional. The selection mode can be 'Select', 'Start' or 'End'. 'Select' is the default.
          */
         select(selectionMode?: "Select" | "Start" | "End"): void;
         /**
@@ -53675,7 +55040,7 @@ declare namespace Word {
          * @param delimiters Required. The delimiters as an array of strings.
          * @param multiParagraphs Optional. Indicates whether a returned child range can cover multiple paragraphs. Default is false which indicates that the paragraph boundaries are also used as delimiters.
          * @param trimDelimiters Optional. Indicates whether to trim delimiters from the ranges in the range collection. Default is false which indicates that the delimiters are included in the ranges returned in the range collection.
-         * @param trimSpacing Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks, and paragraph end marks) from the start and end of the ranges returned in the range collection. Default is false which indicates that spacing characters at the start and end of the ranges are included in the range collection.
+         * @param trimSpacing Optional. Indicates whether to trim spacing characters (spaces, tabs, column breaks and paragraph end marks) from the start and end of the ranges returned in the range collection. Default is false which indicates that spacing characters at the start and end of the ranges are included in the range collection.
          */
         split(delimiters: string[], multiParagraphs?: boolean, trimDelimiters?: boolean, trimSpacing?: boolean): Word.RangeCollection;
         /**
@@ -53760,7 +55125,7 @@ declare namespace Word {
         ignoreSpace: boolean;
         /**
          *
-         * Gets or sets a value that indicates whether to perform a case sensitive search. Corresponds to the Match case check box in the Find and Replace dialog box.
+         * Gets or sets a value that indicates whether to perform a case sensitive search. Corresponds to the Match case check box in the Find and Replace dialog box (Edit menu).
          *
          * [Api set: WordApi 1.1]
          */
@@ -53836,7 +55201,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.1]
          *
-         * @param type Required. The type of footer to return. This value can be: 'Primary', 'FirstPage', or 'EvenPages'.
+         * @param type Required. The type of footer to return. This value can be: 'primary', 'firstPage' or 'evenPages'.
          */
         getFooter(type: Word.HeaderFooterType): Word.Body;
         /**
@@ -53845,7 +55210,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.1]
          *
-         * @param type Required. The type of footer to return. This value can be: 'Primary', 'FirstPage', or 'EvenPages'.
+         * @param type Required. The type of footer to return. This value can be: 'primary', 'firstPage' or 'evenPages'.
          */
         getFooter(type: "Primary" | "FirstPage" | "EvenPages"): Word.Body;
         /**
@@ -53854,7 +55219,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.1]
          *
-         * @param type Required. The type of header to return. This value can be: 'Primary', 'FirstPage', or 'EvenPages'.
+         * @param type Required. The type of header to return. This value can be: 'primary', 'firstPage' or 'evenPages'.
          */
         getHeader(type: Word.HeaderFooterType): Word.Body;
         /**
@@ -53863,7 +55228,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.1]
          *
-         * @param type Required. The type of header to return. This value can be: 'Primary', 'FirstPage', or 'EvenPages'.
+         * @param type Required. The type of header to return. This value can be: 'primary', 'firstPage' or 'evenPages'.
          */
         getHeader(type: "Primary" | "FirstPage" | "EvenPages"): Word.Body;
         /**
@@ -54139,7 +55504,7 @@ declare namespace Word {
         readonly tables: Word.TableCollection;
         /**
          *
-         * Gets or sets the alignment of the table against the page column. The value can be 'Left', 'Centered', or 'Right'.
+         * Gets or sets the alignment of the table against the page column. The value can be 'left', 'centered' or 'right'.
          *
          * [Api set: WordApi 1.3]
          */
@@ -54153,7 +55518,7 @@ declare namespace Word {
         headerRowCount: number;
         /**
          *
-         * Gets and sets the horizontal alignment of every cell in the table. The value can be 'Left', 'Centered', 'Right', or 'Justified'.
+         * Gets and sets the horizontal alignment of every cell in the table. The value can be 'left', 'centered', 'right', or 'justified'.
          *
          * [Api set: WordApi 1.3]
          */
@@ -54181,7 +55546,7 @@ declare namespace Word {
         readonly rowCount: number;
         /**
          *
-         * Gets and sets the shading color. Color is specified in "#RRGGBB" format or by using the color name.
+         * Gets and sets the shading color.
          *
          * [Api set: WordApi 1.3]
          */
@@ -54244,7 +55609,7 @@ declare namespace Word {
         values: string[][];
         /**
          *
-         * Gets and sets the vertical alignment of every cell in the table. The value can be 'Top', 'Center', or 'Bottom'.
+         * Gets and sets the vertical alignment of every cell in the table. The value can be 'top', 'center' or 'bottom'.
          *
          * [Api set: WordApi 1.3]
          */
@@ -54396,7 +55761,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.3]
          *
-         * @param cellPaddingLocation Required. The cell padding location can be 'Top', 'Left', 'Bottom', or 'Right'.
+         * @param cellPaddingLocation Required. The cell padding location can be 'Top', 'Left', 'Bottom' or 'Right'.
          */
         getCellPadding(cellPaddingLocation: Word.CellPaddingLocation): OfficeExtension.ClientResult<number>;
         /**
@@ -54405,7 +55770,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.3]
          *
-         * @param cellPaddingLocation Required. The cell padding location can be 'Top', 'Left', 'Bottom', or 'Right'.
+         * @param cellPaddingLocation Required. The cell padding location can be 'Top', 'Left', 'Bottom' or 'Right'.
          */
         getCellPadding(cellPaddingLocation: "Top" | "Left" | "Bottom" | "Right"): OfficeExtension.ClientResult<number>;
         /**
@@ -54456,7 +55821,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.3]
          *
-         * @param rangeLocation Optional. The range location can be 'Whole', 'Start', 'End', or 'After'.
+         * @param rangeLocation Optional. The range location can be 'Whole', 'Start', 'End' or 'After'.
          */
         getRange(rangeLocation?: Word.RangeLocation): Word.Range;
         /**
@@ -54465,7 +55830,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.3]
          *
-         * @param rangeLocation Optional. The range location can be 'Whole', 'Start', 'End', or 'After'.
+         * @param rangeLocation Optional. The range location can be 'Whole', 'Start', 'End' or 'After'.
          */
         getRange(rangeLocation?: "Whole" | "Start" | "End" | "Before" | "After" | "Content"): Word.Range;
         /**
@@ -54533,7 +55898,7 @@ declare namespace Word {
         mergeCells(topRow: number, firstCell: number, bottomRow: number, lastCell: number): Word.TableCell;
         /**
          *
-         * Performs a search with the specified SearchOptions on the scope of the table object. The search results are a collection of range objects.
+         * Performs a search with the specified searchOptions on the scope of the table object. The search results are a collection of range objects.
          *
          * [Api set: WordApi 1.3]
          *
@@ -54555,7 +55920,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.3]
          *
-         * @param selectionMode Optional. The selection mode can be 'Select', 'Start', or 'End'. 'Select' is the default.
+         * @param selectionMode Optional. The selection mode can be 'Select', 'Start' or 'End'. 'Select' is the default.
          */
         select(selectionMode?: Word.SelectionMode): void;
         /**
@@ -54564,7 +55929,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.3]
          *
-         * @param selectionMode Optional. The selection mode can be 'Select', 'Start', or 'End'. 'Select' is the default.
+         * @param selectionMode Optional. The selection mode can be 'Select', 'Start' or 'End'. 'Select' is the default.
          */
         select(selectionMode?: "Select" | "Start" | "End"): void;
         /**
@@ -54573,7 +55938,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.3]
          *
-         * @param cellPaddingLocation Required. The cell padding location can be 'Top', 'Left', 'Bottom', or 'Right'.
+         * @param cellPaddingLocation Required. The cell padding location can be 'Top', 'Left', 'Bottom' or 'Right'.
          * @param cellPadding Required. The cell padding.
          */
         setCellPadding(cellPaddingLocation: Word.CellPaddingLocation, cellPadding: number): void;
@@ -54583,7 +55948,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.3]
          *
-         * @param cellPaddingLocation Required. The cell padding location can be 'Top', 'Left', 'Bottom', or 'Right'.
+         * @param cellPaddingLocation Required. The cell padding location can be 'Top', 'Left', 'Bottom' or 'Right'.
          * @param cellPadding Required. The cell padding.
          */
         setCellPadding(cellPaddingLocation: "Top" | "Left" | "Bottom" | "Right", cellPadding: number): void;
@@ -54682,7 +56047,7 @@ declare namespace Word {
         readonly cellCount: number;
         /**
          *
-         * Gets and sets the horizontal alignment of every cell in the row. The value can be 'Left', 'Centered', 'Right', or 'Justified'.
+         * Gets and sets the horizontal alignment of every cell in the row. The value can be 'left', 'centered', 'right', or 'justified'.
          *
          * [Api set: WordApi 1.3]
          */
@@ -54710,7 +56075,7 @@ declare namespace Word {
         readonly rowIndex: number;
         /**
          *
-         * Gets and sets the shading color. Color is specified in "#RRGGBB" format or by using the color name.
+         * Gets and sets the shading color.
          *
          * [Api set: WordApi 1.3]
          */
@@ -54724,7 +56089,7 @@ declare namespace Word {
         values: string[][];
         /**
          *
-         * Gets and sets the vertical alignment of the cells in the row. The value can be 'Top', 'Center', or 'Bottom'.
+         * Gets and sets the vertical alignment of the cells in the row. The value can be 'top', 'center' or 'bottom'.
          *
          * [Api set: WordApi 1.3]
          */
@@ -54771,7 +56136,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.3]
          *
-         * @param cellPaddingLocation Required. The cell padding location can be 'Top', 'Left', 'Bottom', or 'Right'.
+         * @param cellPaddingLocation Required. The cell padding location can be 'Top', 'Left', 'Bottom' or 'Right'.
          */
         getCellPadding(cellPaddingLocation: Word.CellPaddingLocation): OfficeExtension.ClientResult<number>;
         /**
@@ -54780,7 +56145,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.3]
          *
-         * @param cellPaddingLocation Required. The cell padding location can be 'Top', 'Left', 'Bottom', or 'Right'.
+         * @param cellPaddingLocation Required. The cell padding location can be 'Top', 'Left', 'Bottom' or 'Right'.
          */
         getCellPadding(cellPaddingLocation: "Top" | "Left" | "Bottom" | "Right"): OfficeExtension.ClientResult<number>;
         /**
@@ -54835,7 +56200,7 @@ declare namespace Word {
         merge(): Word.TableCell;
         /**
          *
-         * Performs a search with the specified SearchOptions on the scope of the row. The search results are a collection of range objects.
+         * Performs a search with the specified searchOptions on the scope of the row. The search results are a collection of range objects.
          *
          * [Api set: WordApi 1.3]
          *
@@ -54857,7 +56222,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.3]
          *
-         * @param selectionMode Optional. The selection mode can be 'Select', 'Start', or 'End'. 'Select' is the default.
+         * @param selectionMode Optional. The selection mode can be 'Select', 'Start' or 'End'. 'Select' is the default.
          */
         select(selectionMode?: Word.SelectionMode): void;
         /**
@@ -54866,7 +56231,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.3]
          *
-         * @param selectionMode Optional. The selection mode can be 'Select', 'Start', or 'End'. 'Select' is the default.
+         * @param selectionMode Optional. The selection mode can be 'Select', 'Start' or 'End'. 'Select' is the default.
          */
         select(selectionMode?: "Select" | "Start" | "End"): void;
         /**
@@ -54875,7 +56240,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.3]
          *
-         * @param cellPaddingLocation Required. The cell padding location can be 'Top', 'Left', 'Bottom', or 'Right'.
+         * @param cellPaddingLocation Required. The cell padding location can be 'Top', 'Left', 'Bottom' or 'Right'.
          * @param cellPadding Required. The cell padding.
          */
         setCellPadding(cellPaddingLocation: Word.CellPaddingLocation, cellPadding: number): void;
@@ -54885,7 +56250,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.3]
          *
-         * @param cellPaddingLocation Required. The cell padding location can be 'Top', 'Left', 'Bottom', or 'Right'.
+         * @param cellPaddingLocation Required. The cell padding location can be 'Top', 'Left', 'Bottom' or 'Right'.
          * @param cellPadding Required. The cell padding.
          */
         setCellPadding(cellPaddingLocation: "Top" | "Left" | "Bottom" | "Right", cellPadding: number): void;
@@ -54991,7 +56356,7 @@ declare namespace Word {
         columnWidth: number;
         /**
          *
-         * Gets and sets the horizontal alignment of the cell. The value can be 'Left', 'Centered', 'Right', or 'Justified'.
+         * Gets and sets the horizontal alignment of the cell. The value can be 'left', 'centered', 'right', or 'justified'.
          *
          * [Api set: WordApi 1.3]
          */
@@ -55019,7 +56384,7 @@ declare namespace Word {
         value: string;
         /**
          *
-         * Gets and sets the vertical alignment of the cell. The value can be 'Top', 'Center', or 'Bottom'.
+         * Gets and sets the vertical alignment of the cell. The value can be 'top', 'center' or 'bottom'.
          *
          * [Api set: WordApi 1.3]
          */
@@ -55073,7 +56438,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.3]
          *
-         * @param cellPaddingLocation Required. The cell padding location can be 'Top', 'Left', 'Bottom', or 'Right'.
+         * @param cellPaddingLocation Required. The cell padding location can be 'Top', 'Left', 'Bottom' or 'Right'.
          */
         getCellPadding(cellPaddingLocation: Word.CellPaddingLocation): OfficeExtension.ClientResult<number>;
         /**
@@ -55082,7 +56447,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.3]
          *
-         * @param cellPaddingLocation Required. The cell padding location can be 'Top', 'Left', 'Bottom', or 'Right'.
+         * @param cellPaddingLocation Required. The cell padding location can be 'Top', 'Left', 'Bottom' or 'Right'.
          */
         getCellPadding(cellPaddingLocation: "Top" | "Left" | "Bottom" | "Right"): OfficeExtension.ClientResult<number>;
         /**
@@ -55106,7 +56471,7 @@ declare namespace Word {
          * [Api set: WordApi 1.3]
          *
          * @param insertLocation Required. It can be 'Before' or 'After'.
-         * @param columnCount Required. Number of columns to add.
+         * @param columnCount Required. Number of columns to add
          * @param values Optional 2D array. Cells are filled if the corresponding strings are specified in the array.
          */
         insertColumns(insertLocation: Word.InsertLocation, columnCount: number, values?: string[][]): void;
@@ -55117,7 +56482,7 @@ declare namespace Word {
          * [Api set: WordApi 1.3]
          *
          * @param insertLocation Required. It can be 'Before' or 'After'.
-         * @param columnCount Required. Number of columns to add.
+         * @param columnCount Required. Number of columns to add
          * @param values Optional 2D array. Cells are filled if the corresponding strings are specified in the array.
          */
         insertColumns(insertLocation: "Before" | "After" | "Start" | "End" | "Replace", columnCount: number, values?: string[][]): void;
@@ -55149,7 +56514,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.3]
          *
-         * @param cellPaddingLocation Required. The cell padding location can be 'Top', 'Left', 'Bottom', or 'Right'.
+         * @param cellPaddingLocation Required. The cell padding location can be 'Top', 'Left', 'Bottom' or 'Right'.
          * @param cellPadding Required. The cell padding.
          */
         setCellPadding(cellPaddingLocation: Word.CellPaddingLocation, cellPadding: number): void;
@@ -55159,7 +56524,7 @@ declare namespace Word {
          *
          * [Api set: WordApi 1.3]
          *
-         * @param cellPaddingLocation Required. The cell padding location can be 'Top', 'Left', 'Bottom', or 'Right'.
+         * @param cellPaddingLocation Required. The cell padding location can be 'Top', 'Left', 'Bottom' or 'Right'.
          * @param cellPadding Required. The cell padding.
          */
         setCellPadding(cellPaddingLocation: "Top" | "Left" | "Bottom" | "Right", cellPadding: number): void;
@@ -55233,14 +56598,14 @@ declare namespace Word {
     }
     /**
      *
-     * Specifies the border style.
+     * Specifies the border style
      *
      * [Api set: WordApi 1.3]
      */
     class TableBorder extends OfficeExtension.ClientObject {
         /**
          *
-         * Gets or sets the table border color.
+         * Gets or sets the table border color, as a hex value or name.
          *
          * [Api set: WordApi 1.3]
          */
@@ -55314,23 +56679,8 @@ declare namespace Word {
         unknown = "Unknown",
         richTextInline = "RichTextInline",
         richTextParagraphs = "RichTextParagraphs",
-        /**
-         *
-         * Contains a whole cell.
-         *
-         */
         richTextTableCell = "RichTextTableCell",
-        /**
-         *
-         * Contains a whole row.
-         *
-         */
         richTextTableRow = "RichTextTableRow",
-        /**
-         *
-         * Contains a whole table.
-         *
-         */
         richTextTable = "RichTextTable",
         plainTextInline = "PlainTextInline",
         plainTextParagraph = "PlainTextParagraph",
@@ -55341,11 +56691,6 @@ declare namespace Word {
         dropDownList = "DropDownList",
         datePicker = "DatePicker",
         repeatingSection = "RepeatingSection",
-        /**
-         *
-         * Identifies a rich text content control.
-         *
-         */
         richText = "RichText",
         plainText = "PlainText",
     }
@@ -55356,23 +56701,8 @@ declare namespace Word {
      * [Api set: WordApi]
      */
     enum ContentControlAppearance {
-        /**
-         *
-         * Represents a content control shown as a shaded rectangle or bounding box (with optional title).
-         *
-         */
         boundingBox = "BoundingBox",
-        /**
-         *
-         * Represents a content control shown as start and end markers.
-         *
-         */
         tags = "Tags",
-        /**
-         *
-         * Represents a content control that is not shown.
-         *
-         */
         hidden = "Hidden",
     }
     /**
@@ -55383,11 +56713,6 @@ declare namespace Word {
      */
     enum UnderlineType {
         mixed = "Mixed",
-        /**
-         *
-         * No underline.
-         *
-         */
         none = "None",
         /**
          *
@@ -55399,79 +56724,34 @@ declare namespace Word {
          * @deprecated DotLine is no longer supported.
          */
         dotLine = "DotLine",
-        /**
-         *
-         * A single underline. This is the default value.
-         *
-         */
         single = "Single",
-        /**
-         *
-         * Only underline individual words.
-         *
-         */
         word = "Word",
-        /**
-         *
-         * A double underline.
-         *
-         */
         double = "Double",
-        /**
-         *
-         * A single thick underline.
-         *
-         */
         thick = "Thick",
-        /**
-         *
-         * A dotted underline.
-         *
-         */
         dotted = "Dotted",
         dottedHeavy = "DottedHeavy",
-        /**
-         *
-         * A single dash underline.
-         *
-         */
         dashLine = "DashLine",
         dashLineHeavy = "DashLineHeavy",
         dashLineLong = "DashLineLong",
         dashLineLongHeavy = "DashLineLongHeavy",
-        /**
-         *
-         * An alternating dot-dash underline.
-         *
-         */
         dotDashLine = "DotDashLine",
         dotDashLineHeavy = "DotDashLineHeavy",
-        /**
-         *
-         * An alternating dot-dot-dash underline.
-         *
-         */
         twoDotDashLine = "TwoDotDashLine",
         twoDotDashLineHeavy = "TwoDotDashLineHeavy",
-        /**
-         *
-         * A single wavy underline.
-         *
-         */
         wave = "Wave",
         waveHeavy = "WaveHeavy",
         waveDouble = "WaveDouble",
     }
     /**
      *
-     * Specifies the form of a break.
+     * Page break, line break, and four section breaks
      *
      * [Api set: WordApi]
      */
     enum BreakType {
         /**
          *
-         * Page break at the insertion point.
+         * Page break.
          *
          */
         page = "Page",
@@ -55482,25 +56762,25 @@ declare namespace Word {
         next = "Next",
         /**
          *
-         * Section break on next page.
+         * Section break, with the new section starting on the next page.
          *
          */
         sectionNext = "SectionNext",
         /**
          *
-         * New section without a corresponding page break.
+         * Section break, with the new section starting on the same page.
          *
          */
         sectionContinuous = "SectionContinuous",
         /**
          *
-         * Section break with the next section beginning on the next even-numbered page. If the section break falls on an even-numbered page, Word leaves the next odd-numbered page blank.
+         * Section break, with the new section starting on the next even-numbered page.
          *
          */
         sectionEven = "SectionEven",
         /**
          *
-         * Section break with the next section beginning on the next odd-numbered page. If the section break falls on an odd-numbered page, Word leaves the next even-numbered page blank.
+         * Section break, with the new section starting on the next odd-numbered page.
          *
          */
         sectionOdd = "SectionOdd",
@@ -55518,35 +56798,10 @@ declare namespace Word {
      * [Api set: WordApi]
      */
     enum InsertLocation {
-        /**
-         *
-         * Add content before the contents of the calling object.
-         *
-         */
         before = "Before",
-        /**
-         *
-         * Add content after the contents of the calling object.
-         *
-         */
         after = "After",
-        /**
-         *
-         * Prepend content to the contents of the calling object.
-         *
-         */
         start = "Start",
-        /**
-         *
-         * Append content to the contents of the calling object.
-         *
-         */
         end = "End",
-        /**
-         *
-         * Replace the contents of the current object.
-         *
-         */
         replace = "Replace",
     }
     /**
@@ -55554,58 +56809,18 @@ declare namespace Word {
      */
     enum Alignment {
         mixed = "Mixed",
-        /**
-         *
-         * Unknown alignment.
-         *
-         */
         unknown = "Unknown",
-        /**
-         *
-         * Alignment to the left.
-         *
-         */
         left = "Left",
-        /**
-         *
-         * Alignment to the center.
-         *
-         */
         centered = "Centered",
-        /**
-         *
-         * Alignment to the right.
-         *
-         */
         right = "Right",
-        /**
-         *
-         * Fully justified alignment.
-         *
-         */
         justified = "Justified",
     }
     /**
      * [Api set: WordApi]
      */
     enum HeaderFooterType {
-        /**
-         *
-         * Returns the header or footer on all pages of a section, with the first page or odd pages excluded if they are different.
-         *
-         */
         primary = "Primary",
-        /**
-         *
-         * Returns the header or footer on the first page of a section.
-         *
-         */
         firstPage = "FirstPage",
-        /**
-         *
-         * Returns all headers or footers on even-numbered pages of a section.
-         *
-         */
         evenPages = "EvenPages",
     }
     /**
@@ -55650,130 +56865,30 @@ declare namespace Word {
      * [Api set: WordApi]
      */
     enum RangeLocation {
-        /**
-         *
-         * The object's whole range. If the object is a paragraph content control or table content control, the EOP or Table characters after the content control are also included.
-         *
-         */
         whole = "Whole",
-        /**
-         *
-         * The starting point of the object. For content control, it is the point after the opening tag.
-         *
-         */
         start = "Start",
-        /**
-         *
-         * The ending point of the object. For paragraph, it is the point before the EOP. For content control, it is the point before the closing tag.
-         *
-         */
         end = "End",
-        /**
-         *
-         * For content control only. It is the point before the opening tag.
-         *
-         */
         before = "Before",
-        /**
-         *
-         * The point after the object. If the object is a paragraph content control or table content control, it is the point after the EOP or Table characters.
-         *
-         */
         after = "After",
-        /**
-         *
-         * The range between 'Start' and 'End'.
-         *
-         */
         content = "Content",
     }
     /**
      * [Api set: WordApi]
      */
     enum LocationRelation {
-        /**
-         *
-         * Indicates that this instance and the range are in different sub-documents.
-         *
-         */
         unrelated = "Unrelated",
-        /**
-         *
-         * Indicates that this instance and the range represent the same range.
-         *
-         */
         equal = "Equal",
-        /**
-         *
-         * Indicates that this instance contains the range and that it shares the same start character. The range does not share the same end character as this instance.
-         *
-         */
         containsStart = "ContainsStart",
-        /**
-         *
-         * Indicates that this instance contains the range and that it shares the same end character. The range does not share the same start character as this instance.
-         *
-         */
         containsEnd = "ContainsEnd",
-        /**
-         *
-         * Indicates that this instance contains the range, with the exception of the start and end character of this instance.
-         *
-         */
         contains = "Contains",
-        /**
-         *
-         * Indicates that this instance is inside the range and that it shares the same start character. The range does not share the same end character as this instance.
-         *
-         */
         insideStart = "InsideStart",
-        /**
-         *
-         * Indicates that this instance is inside the range and that it shares the same end character. The range does not share the same start character as this instance.
-         *
-         */
         insideEnd = "InsideEnd",
-        /**
-         *
-         * Indicates that this instance is inside the range. The range does not share the same start and end characters as this instance.
-         *
-         */
         inside = "Inside",
-        /**
-         *
-         * Indicates that this instance occurs before, and is adjacent to, the range.
-         *
-         */
         adjacentBefore = "AdjacentBefore",
-        /**
-         *
-         * Indicates that this instance starts before the range and overlaps the range’s first character.
-         *
-         */
         overlapsBefore = "OverlapsBefore",
-        /**
-         *
-         * Indicates that this instance occurs before the range.
-         *
-         */
         before = "Before",
-        /**
-         *
-         * Indicates that this instance occurs after, and is adjacent to, the range.
-         *
-         */
         adjacentAfter = "AdjacentAfter",
-        /**
-         *
-         * Indicates that this instance starts inside the range and overlaps the range’s last character.
-         *
-         */
         overlapsAfter = "OverlapsAfter",
-        /**
-         *
-         * Indicates that this instance occurs after the range.
-         *
-         */
         after = "After",
     }
     /**
@@ -56157,7 +57272,7 @@ declare namespace Word {
             font?: Word.Interfaces.FontUpdateData;
             /**
              *
-             * Gets or sets the appearance of the content control. The value can be 'BoundingBox', 'Tags', or 'Hidden'.
+             * Gets or sets the appearance of the content control. The value can be 'boundingBox', 'tags' or 'hidden'.
              *
              * [Api set: WordApi 1.1]
              */
@@ -56377,14 +57492,14 @@ declare namespace Word {
             color?: string;
             /**
              *
-             * Gets or sets a value that indicates whether the font has a double strikethrough. True if the font is formatted as double strikethrough text, otherwise, false.
+             * Gets or sets a value that indicates whether the font has a double strike through. True if the font is formatted as double strikethrough text, otherwise, false.
              *
              * [Api set: WordApi 1.1]
              */
             doubleStrikeThrough?: boolean;
             /**
              *
-             * Gets or sets the highlight color. To set it, use a value either in the '#RRGGBB' format or the color name. To remove highlight color, set it to null. The returned highlight color can be in the '#RRGGBB' format, an empty string for mixed highlight colors, or null for no highlight color.
+             * Gets or sets the highlight color. To set it, use a value either in the '#RRGGBB' format or the color name. To remove highlight color, set it to null. The returned highlight color can be in the '#RRGGBB' format, or an empty string for mixed highlight colors, or null for no highlight color.
              *
              * [Api set: WordApi 1.1]
              */
@@ -56412,7 +57527,7 @@ declare namespace Word {
             size?: number;
             /**
              *
-             * Gets or sets a value that indicates whether the font has a strikethrough. True if the font is formatted as strikethrough text, otherwise, false.
+             * Gets or sets a value that indicates whether the font has a strike through. True if the font is formatted as strikethrough text, otherwise, false.
              *
              * [Api set: WordApi 1.1]
              */
@@ -56443,7 +57558,7 @@ declare namespace Word {
         interface InlinePictureUpdateData {
             /**
              *
-             * Gets or sets a string that represents the alternative text associated with the inline image.
+             * Gets or sets a string that represents the alternative text associated with the inline image
              *
              * [Api set: WordApi 1.1]
              */
@@ -56555,7 +57670,7 @@ declare namespace Word {
             lineSpacing?: number;
             /**
              *
-             * Gets or sets the amount of spacing, in grid lines, after the paragraph.
+             * Gets or sets the amount of spacing, in grid lines. after the paragraph.
              *
              * [Api set: WordApi 1.1]
              */
@@ -56667,7 +57782,7 @@ declare namespace Word {
             ignoreSpace?: boolean;
             /**
              *
-             * Gets or sets a value that indicates whether to perform a case sensitive search. Corresponds to the Match case check box in the Find and Replace dialog box.
+             * Gets or sets a value that indicates whether to perform a case sensitive search. Corresponds to the Match case check box in the Find and Replace dialog box (Edit menu).
              *
              * [Api set: WordApi 1.1]
              */
@@ -56740,7 +57855,7 @@ declare namespace Word {
             font?: Word.Interfaces.FontUpdateData;
             /**
              *
-             * Gets or sets the alignment of the table against the page column. The value can be 'Left', 'Centered', or 'Right'.
+             * Gets or sets the alignment of the table against the page column. The value can be 'left', 'centered' or 'right'.
              *
              * [Api set: WordApi 1.3]
              */
@@ -56754,14 +57869,14 @@ declare namespace Word {
             headerRowCount?: number;
             /**
              *
-             * Gets and sets the horizontal alignment of every cell in the table. The value can be 'Left', 'Centered', 'Right', or 'Justified'.
+             * Gets and sets the horizontal alignment of every cell in the table. The value can be 'left', 'centered', 'right', or 'justified'.
              *
              * [Api set: WordApi 1.3]
              */
             horizontalAlignment?: Word.Alignment | "Mixed" | "Unknown" | "Left" | "Centered" | "Right" | "Justified";
             /**
              *
-             * Gets and sets the shading color. Color is specified in "#RRGGBB" format or by using the color name.
+             * Gets and sets the shading color.
              *
              * [Api set: WordApi 1.3]
              */
@@ -56824,7 +57939,7 @@ declare namespace Word {
             values?: string[][];
             /**
              *
-             * Gets and sets the vertical alignment of every cell in the table. The value can be 'Top', 'Center', or 'Bottom'.
+             * Gets and sets the vertical alignment of every cell in the table. The value can be 'top', 'center' or 'bottom'.
              *
              * [Api set: WordApi 1.3]
              */
@@ -56852,7 +57967,7 @@ declare namespace Word {
             font?: Word.Interfaces.FontUpdateData;
             /**
              *
-             * Gets and sets the horizontal alignment of every cell in the row. The value can be 'Left', 'Centered', 'Right', or 'Justified'.
+             * Gets and sets the horizontal alignment of every cell in the row. The value can be 'left', 'centered', 'right', or 'justified'.
              *
              * [Api set: WordApi 1.3]
              */
@@ -56866,7 +57981,7 @@ declare namespace Word {
             preferredHeight?: number;
             /**
              *
-             * Gets and sets the shading color. Color is specified in "#RRGGBB" format or by using the color name.
+             * Gets and sets the shading color.
              *
              * [Api set: WordApi 1.3]
              */
@@ -56880,7 +57995,7 @@ declare namespace Word {
             values?: string[][];
             /**
              *
-             * Gets and sets the vertical alignment of the cells in the row. The value can be 'Top', 'Center', or 'Bottom'.
+             * Gets and sets the vertical alignment of the cells in the row. The value can be 'top', 'center' or 'bottom'.
              *
              * [Api set: WordApi 1.3]
              */
@@ -56908,7 +58023,7 @@ declare namespace Word {
             columnWidth?: number;
             /**
              *
-             * Gets and sets the horizontal alignment of the cell. The value can be 'Left', 'Centered', 'Right', or 'Justified'.
+             * Gets and sets the horizontal alignment of the cell. The value can be 'left', 'centered', 'right', or 'justified'.
              *
              * [Api set: WordApi 1.3]
              */
@@ -56929,7 +58044,7 @@ declare namespace Word {
             value?: string;
             /**
              *
-             * Gets and sets the vertical alignment of the cell. The value can be 'Top', 'Center', or 'Bottom'.
+             * Gets and sets the vertical alignment of the cell. The value can be 'top', 'center' or 'bottom'.
              *
              * [Api set: WordApi 1.3]
              */
@@ -56943,7 +58058,7 @@ declare namespace Word {
         interface TableBorderUpdateData {
             /**
              *
-             * Gets or sets the table border color.
+             * Gets or sets the table border color, as a hex value or name.
              *
              * [Api set: WordApi 1.3]
              */
@@ -56981,7 +58096,7 @@ declare namespace Word {
             font?: Word.Interfaces.FontData;
             /**
             *
-            * Gets the collection of InlinePicture objects in the body. The collection does not include floating images. Read-only.
+            * Gets the collection of inlinePicture objects in the body. The collection does not include floating images. Read-only.
             *
             * [Api set: WordApi 1.1]
             */
@@ -57173,7 +58288,7 @@ declare namespace Word {
             tables?: Word.Interfaces.TableData[];
             /**
              *
-             * Gets or sets the appearance of the content control. The value can be 'BoundingBox', 'Tags', or 'Hidden'.
+             * Gets or sets the appearance of the content control. The value can be 'boundingBox', 'tags' or 'hidden'.
              *
              * [Api set: WordApi 1.1]
              */
@@ -57585,14 +58700,14 @@ declare namespace Word {
             color?: string;
             /**
              *
-             * Gets or sets a value that indicates whether the font has a double strikethrough. True if the font is formatted as double strikethrough text, otherwise, false.
+             * Gets or sets a value that indicates whether the font has a double strike through. True if the font is formatted as double strikethrough text, otherwise, false.
              *
              * [Api set: WordApi 1.1]
              */
             doubleStrikeThrough?: boolean;
             /**
              *
-             * Gets or sets the highlight color. To set it, use a value either in the '#RRGGBB' format or the color name. To remove highlight color, set it to null. The returned highlight color can be in the '#RRGGBB' format, an empty string for mixed highlight colors, or null for no highlight color.
+             * Gets or sets the highlight color. To set it, use a value either in the '#RRGGBB' format or the color name. To remove highlight color, set it to null. The returned highlight color can be in the '#RRGGBB' format, or an empty string for mixed highlight colors, or null for no highlight color.
              *
              * [Api set: WordApi 1.1]
              */
@@ -57620,7 +58735,7 @@ declare namespace Word {
             size?: number;
             /**
              *
-             * Gets or sets a value that indicates whether the font has a strikethrough. True if the font is formatted as strikethrough text, otherwise, false.
+             * Gets or sets a value that indicates whether the font has a strike through. True if the font is formatted as strikethrough text, otherwise, false.
              *
              * [Api set: WordApi 1.1]
              */
@@ -57700,7 +58815,7 @@ declare namespace Word {
             parentTableOrNullObject?: Word.Interfaces.TableData;
             /**
              *
-             * Gets or sets a string that represents the alternative text associated with the inline image.
+             * Gets or sets a string that represents the alternative text associated with the inline image
              *
              * [Api set: WordApi 1.1]
              */
@@ -57777,7 +58892,7 @@ declare namespace Word {
             levelExistences?: boolean[];
             /**
              *
-             * Gets all 9 level types in the list. Each type can be 'Bullet', 'Number', or 'Picture'. Read-only.
+             * Gets all 9 level types in the list. Each type can be 'Bullet', 'Number' or 'Picture'. Read-only.
              *
              * [Api set: WordApi 1.3]
              */
@@ -57798,7 +58913,7 @@ declare namespace Word {
             level?: number;
             /**
              *
-             * Gets the list item bullet, number, or picture as a string. Read-only.
+             * Gets the list item bullet, number or picture as a string. Read-only.
              *
              * [Api set: WordApi 1.3]
              */
@@ -57829,7 +58944,7 @@ declare namespace Word {
             font?: Word.Interfaces.FontData;
             /**
             *
-            * Gets the collection of InlinePicture objects in the paragraph. The collection does not include floating images. Read-only.
+            * Gets the collection of inlinePicture objects in the paragraph. The collection does not include floating images. Read-only.
             *
             * [Api set: WordApi 1.1]
             */
@@ -57955,7 +59070,7 @@ declare namespace Word {
             lineSpacing?: number;
             /**
              *
-             * Gets or sets the amount of spacing, in grid lines, after the paragraph.
+             * Gets or sets the amount of spacing, in grid lines. after the paragraph.
              *
              * [Api set: WordApi 1.1]
              */
@@ -58179,7 +59294,7 @@ declare namespace Word {
             ignoreSpace?: boolean;
             /**
              *
-             * Gets or sets a value that indicates whether to perform a case sensitive search. Corresponds to the Match case check box in the Find and Replace dialog box.
+             * Gets or sets a value that indicates whether to perform a case sensitive search. Corresponds to the Match case check box in the Find and Replace dialog box (Edit menu).
              *
              * [Api set: WordApi 1.1]
              */
@@ -58322,7 +59437,7 @@ declare namespace Word {
             tables?: Word.Interfaces.TableData[];
             /**
              *
-             * Gets or sets the alignment of the table against the page column. The value can be 'Left', 'Centered', or 'Right'.
+             * Gets or sets the alignment of the table against the page column. The value can be 'left', 'centered' or 'right'.
              *
              * [Api set: WordApi 1.3]
              */
@@ -58336,7 +59451,7 @@ declare namespace Word {
             headerRowCount?: number;
             /**
              *
-             * Gets and sets the horizontal alignment of every cell in the table. The value can be 'Left', 'Centered', 'Right', or 'Justified'.
+             * Gets and sets the horizontal alignment of every cell in the table. The value can be 'left', 'centered', 'right', or 'justified'.
              *
              * [Api set: WordApi 1.3]
              */
@@ -58364,7 +59479,7 @@ declare namespace Word {
             rowCount?: number;
             /**
              *
-             * Gets and sets the shading color. Color is specified in "#RRGGBB" format or by using the color name.
+             * Gets and sets the shading color.
              *
              * [Api set: WordApi 1.3]
              */
@@ -58427,7 +59542,7 @@ declare namespace Word {
             values?: string[][];
             /**
              *
-             * Gets and sets the vertical alignment of every cell in the table. The value can be 'Top', 'Center', or 'Bottom'.
+             * Gets and sets the vertical alignment of every cell in the table. The value can be 'top', 'center' or 'bottom'.
              *
              * [Api set: WordApi 1.3]
              */
@@ -58476,7 +59591,7 @@ declare namespace Word {
             cellCount?: number;
             /**
              *
-             * Gets and sets the horizontal alignment of every cell in the row. The value can be 'Left', 'Centered', 'Right', or 'Justified'.
+             * Gets and sets the horizontal alignment of every cell in the row. The value can be 'left', 'centered', 'right', or 'justified'.
              *
              * [Api set: WordApi 1.3]
              */
@@ -58504,7 +59619,7 @@ declare namespace Word {
             rowIndex?: number;
             /**
              *
-             * Gets and sets the shading color. Color is specified in "#RRGGBB" format or by using the color name.
+             * Gets and sets the shading color.
              *
              * [Api set: WordApi 1.3]
              */
@@ -58518,7 +59633,7 @@ declare namespace Word {
             values?: string[][];
             /**
              *
-             * Gets and sets the vertical alignment of the cells in the row. The value can be 'Top', 'Center', or 'Bottom'.
+             * Gets and sets the vertical alignment of the cells in the row. The value can be 'top', 'center' or 'bottom'.
              *
              * [Api set: WordApi 1.3]
              */
@@ -58567,7 +59682,7 @@ declare namespace Word {
             columnWidth?: number;
             /**
              *
-             * Gets and sets the horizontal alignment of the cell. The value can be 'Left', 'Centered', 'Right', or 'Justified'.
+             * Gets and sets the horizontal alignment of the cell. The value can be 'left', 'centered', 'right', or 'justified'.
              *
              * [Api set: WordApi 1.3]
              */
@@ -58595,7 +59710,7 @@ declare namespace Word {
             value?: string;
             /**
              *
-             * Gets and sets the vertical alignment of the cell. The value can be 'Top', 'Center', or 'Bottom'.
+             * Gets and sets the vertical alignment of the cell. The value can be 'top', 'center' or 'bottom'.
              *
              * [Api set: WordApi 1.3]
              */
@@ -58616,7 +59731,7 @@ declare namespace Word {
         interface TableBorderData {
             /**
              *
-             * Gets or sets the table border color.
+             * Gets or sets the table border color, as a hex value or name.
              *
              * [Api set: WordApi 1.3]
              */
@@ -58788,7 +59903,7 @@ declare namespace Word {
             parentTableOrNullObject?: Word.Interfaces.TableLoadOptions;
             /**
              *
-             * Gets or sets the appearance of the content control. The value can be 'BoundingBox', 'Tags', or 'Hidden'.
+             * Gets or sets the appearance of the content control. The value can be 'boundingBox', 'tags' or 'hidden'.
              *
              * [Api set: WordApi 1.1]
              */
@@ -58951,7 +60066,7 @@ declare namespace Word {
             parentTableOrNullObject?: Word.Interfaces.TableLoadOptions;
             /**
              *
-             * For EACH ITEM in the collection: Gets or sets the appearance of the content control. The value can be 'BoundingBox', 'Tags', or 'Hidden'.
+             * For EACH ITEM in the collection: Gets or sets the appearance of the content control. The value can be 'boundingBox', 'tags' or 'hidden'.
              *
              * [Api set: WordApi 1.1]
              */
@@ -59396,14 +60511,14 @@ declare namespace Word {
             color?: boolean;
             /**
              *
-             * Gets or sets a value that indicates whether the font has a double strikethrough. True if the font is formatted as double strikethrough text, otherwise, false.
+             * Gets or sets a value that indicates whether the font has a double strike through. True if the font is formatted as double strikethrough text, otherwise, false.
              *
              * [Api set: WordApi 1.1]
              */
             doubleStrikeThrough?: boolean;
             /**
              *
-             * Gets or sets the highlight color. To set it, use a value either in the '#RRGGBB' format or the color name. To remove highlight color, set it to null. The returned highlight color can be in the '#RRGGBB' format, an empty string for mixed highlight colors, or null for no highlight color.
+             * Gets or sets the highlight color. To set it, use a value either in the '#RRGGBB' format or the color name. To remove highlight color, set it to null. The returned highlight color can be in the '#RRGGBB' format, or an empty string for mixed highlight colors, or null for no highlight color.
              *
              * [Api set: WordApi 1.1]
              */
@@ -59431,7 +60546,7 @@ declare namespace Word {
             size?: boolean;
             /**
              *
-             * Gets or sets a value that indicates whether the font has a strikethrough. True if the font is formatted as strikethrough text, otherwise, false.
+             * Gets or sets a value that indicates whether the font has a strike through. True if the font is formatted as strikethrough text, otherwise, false.
              *
              * [Api set: WordApi 1.1]
              */
@@ -59517,7 +60632,7 @@ declare namespace Word {
             parentTableOrNullObject?: Word.Interfaces.TableLoadOptions;
             /**
              *
-             * Gets or sets a string that represents the alternative text associated with the inline image.
+             * Gets or sets a string that represents the alternative text associated with the inline image
              *
              * [Api set: WordApi 1.1]
              */
@@ -59624,7 +60739,7 @@ declare namespace Word {
             parentTableOrNullObject?: Word.Interfaces.TableLoadOptions;
             /**
              *
-             * For EACH ITEM in the collection: Gets or sets a string that represents the alternative text associated with the inline image.
+             * For EACH ITEM in the collection: Gets or sets a string that represents the alternative text associated with the inline image
              *
              * [Api set: WordApi 1.1]
              */
@@ -59696,7 +60811,7 @@ declare namespace Word {
             levelExistences?: boolean;
             /**
              *
-             * Gets all 9 level types in the list. Each type can be 'Bullet', 'Number', or 'Picture'. Read-only.
+             * Gets all 9 level types in the list. Each type can be 'Bullet', 'Number' or 'Picture'. Read-only.
              *
              * [Api set: WordApi 1.3]
              */
@@ -59726,7 +60841,7 @@ declare namespace Word {
             levelExistences?: boolean;
             /**
              *
-             * For EACH ITEM in the collection: Gets all 9 level types in the list. Each type can be 'Bullet', 'Number', or 'Picture'. Read-only.
+             * For EACH ITEM in the collection: Gets all 9 level types in the list. Each type can be 'Bullet', 'Number' or 'Picture'. Read-only.
              *
              * [Api set: WordApi 1.3]
              */
@@ -59749,7 +60864,7 @@ declare namespace Word {
             level?: boolean;
             /**
              *
-             * Gets the list item bullet, number, or picture as a string. Read-only.
+             * Gets the list item bullet, number or picture as a string. Read-only.
              *
              * [Api set: WordApi 1.3]
              */
@@ -59898,7 +61013,7 @@ declare namespace Word {
             lineSpacing?: boolean;
             /**
              *
-             * Gets or sets the amount of spacing, in grid lines, after the paragraph.
+             * Gets or sets the amount of spacing, in grid lines. after the paragraph.
              *
              * [Api set: WordApi 1.1]
              */
@@ -60103,7 +61218,7 @@ declare namespace Word {
             lineSpacing?: boolean;
             /**
              *
-             * For EACH ITEM in the collection: Gets or sets the amount of spacing, in grid lines, after the paragraph.
+             * For EACH ITEM in the collection: Gets or sets the amount of spacing, in grid lines. after the paragraph.
              *
              * [Api set: WordApi 1.1]
              */
@@ -60396,7 +61511,7 @@ declare namespace Word {
             ignoreSpace?: boolean;
             /**
              *
-             * Gets or sets a value that indicates whether to perform a case sensitive search. Corresponds to the Match case check box in the Find and Replace dialog box.
+             * Gets or sets a value that indicates whether to perform a case sensitive search. Corresponds to the Match case check box in the Find and Replace dialog box (Edit menu).
              *
              * [Api set: WordApi 1.1]
              */
@@ -60574,7 +61689,7 @@ declare namespace Word {
             parentTableOrNullObject?: Word.Interfaces.TableLoadOptions;
             /**
              *
-             * Gets or sets the alignment of the table against the page column. The value can be 'Left', 'Centered', or 'Right'.
+             * Gets or sets the alignment of the table against the page column. The value can be 'left', 'centered' or 'right'.
              *
              * [Api set: WordApi 1.3]
              */
@@ -60588,7 +61703,7 @@ declare namespace Word {
             headerRowCount?: boolean;
             /**
              *
-             * Gets and sets the horizontal alignment of every cell in the table. The value can be 'Left', 'Centered', 'Right', or 'Justified'.
+             * Gets and sets the horizontal alignment of every cell in the table. The value can be 'left', 'centered', 'right', or 'justified'.
              *
              * [Api set: WordApi 1.3]
              */
@@ -60616,7 +61731,7 @@ declare namespace Word {
             rowCount?: boolean;
             /**
              *
-             * Gets and sets the shading color. Color is specified in "#RRGGBB" format or by using the color name.
+             * Gets and sets the shading color.
              *
              * [Api set: WordApi 1.3]
              */
@@ -60679,7 +61794,7 @@ declare namespace Word {
             values?: boolean;
             /**
              *
-             * Gets and sets the vertical alignment of every cell in the table. The value can be 'Top', 'Center', or 'Bottom'.
+             * Gets and sets the vertical alignment of every cell in the table. The value can be 'top', 'center' or 'bottom'.
              *
              * [Api set: WordApi 1.3]
              */
@@ -60758,7 +61873,7 @@ declare namespace Word {
             parentTableOrNullObject?: Word.Interfaces.TableLoadOptions;
             /**
              *
-             * For EACH ITEM in the collection: Gets or sets the alignment of the table against the page column. The value can be 'Left', 'Centered', or 'Right'.
+             * For EACH ITEM in the collection: Gets or sets the alignment of the table against the page column. The value can be 'left', 'centered' or 'right'.
              *
              * [Api set: WordApi 1.3]
              */
@@ -60772,7 +61887,7 @@ declare namespace Word {
             headerRowCount?: boolean;
             /**
              *
-             * For EACH ITEM in the collection: Gets and sets the horizontal alignment of every cell in the table. The value can be 'Left', 'Centered', 'Right', or 'Justified'.
+             * For EACH ITEM in the collection: Gets and sets the horizontal alignment of every cell in the table. The value can be 'left', 'centered', 'right', or 'justified'.
              *
              * [Api set: WordApi 1.3]
              */
@@ -60800,7 +61915,7 @@ declare namespace Word {
             rowCount?: boolean;
             /**
              *
-             * For EACH ITEM in the collection: Gets and sets the shading color. Color is specified in "#RRGGBB" format or by using the color name.
+             * For EACH ITEM in the collection: Gets and sets the shading color.
              *
              * [Api set: WordApi 1.3]
              */
@@ -60863,7 +61978,7 @@ declare namespace Word {
             values?: boolean;
             /**
              *
-             * For EACH ITEM in the collection: Gets and sets the vertical alignment of every cell in the table. The value can be 'Top', 'Center', or 'Bottom'.
+             * For EACH ITEM in the collection: Gets and sets the vertical alignment of every cell in the table. The value can be 'top', 'center' or 'bottom'.
              *
              * [Api set: WordApi 1.3]
              */
@@ -60907,7 +62022,7 @@ declare namespace Word {
             cellCount?: boolean;
             /**
              *
-             * Gets and sets the horizontal alignment of every cell in the row. The value can be 'Left', 'Centered', 'Right', or 'Justified'.
+             * Gets and sets the horizontal alignment of every cell in the row. The value can be 'left', 'centered', 'right', or 'justified'.
              *
              * [Api set: WordApi 1.3]
              */
@@ -60935,7 +62050,7 @@ declare namespace Word {
             rowIndex?: boolean;
             /**
              *
-             * Gets and sets the shading color. Color is specified in "#RRGGBB" format or by using the color name.
+             * Gets and sets the shading color.
              *
              * [Api set: WordApi 1.3]
              */
@@ -60949,7 +62064,7 @@ declare namespace Word {
             values?: boolean;
             /**
              *
-             * Gets and sets the vertical alignment of the cells in the row. The value can be 'Top', 'Center', or 'Bottom'.
+             * Gets and sets the vertical alignment of the cells in the row. The value can be 'top', 'center' or 'bottom'.
              *
              * [Api set: WordApi 1.3]
              */
@@ -60986,7 +62101,7 @@ declare namespace Word {
             cellCount?: boolean;
             /**
              *
-             * For EACH ITEM in the collection: Gets and sets the horizontal alignment of every cell in the row. The value can be 'Left', 'Centered', 'Right', or 'Justified'.
+             * For EACH ITEM in the collection: Gets and sets the horizontal alignment of every cell in the row. The value can be 'left', 'centered', 'right', or 'justified'.
              *
              * [Api set: WordApi 1.3]
              */
@@ -61014,7 +62129,7 @@ declare namespace Word {
             rowIndex?: boolean;
             /**
              *
-             * For EACH ITEM in the collection: Gets and sets the shading color. Color is specified in "#RRGGBB" format or by using the color name.
+             * For EACH ITEM in the collection: Gets and sets the shading color.
              *
              * [Api set: WordApi 1.3]
              */
@@ -61028,7 +62143,7 @@ declare namespace Word {
             values?: boolean;
             /**
              *
-             * For EACH ITEM in the collection: Gets and sets the vertical alignment of the cells in the row. The value can be 'Top', 'Center', or 'Bottom'.
+             * For EACH ITEM in the collection: Gets and sets the vertical alignment of the cells in the row. The value can be 'top', 'center' or 'bottom'.
              *
              * [Api set: WordApi 1.3]
              */
@@ -61079,7 +62194,7 @@ declare namespace Word {
             columnWidth?: boolean;
             /**
              *
-             * Gets and sets the horizontal alignment of the cell. The value can be 'Left', 'Centered', 'Right', or 'Justified'.
+             * Gets and sets the horizontal alignment of the cell. The value can be 'left', 'centered', 'right', or 'justified'.
              *
              * [Api set: WordApi 1.3]
              */
@@ -61107,7 +62222,7 @@ declare namespace Word {
             value?: boolean;
             /**
              *
-             * Gets and sets the vertical alignment of the cell. The value can be 'Top', 'Center', or 'Bottom'.
+             * Gets and sets the vertical alignment of the cell. The value can be 'top', 'center' or 'bottom'.
              *
              * [Api set: WordApi 1.3]
              */
@@ -61165,7 +62280,7 @@ declare namespace Word {
             columnWidth?: boolean;
             /**
              *
-             * For EACH ITEM in the collection: Gets and sets the horizontal alignment of the cell. The value can be 'Left', 'Centered', 'Right', or 'Justified'.
+             * For EACH ITEM in the collection: Gets and sets the horizontal alignment of the cell. The value can be 'left', 'centered', 'right', or 'justified'.
              *
              * [Api set: WordApi 1.3]
              */
@@ -61193,7 +62308,7 @@ declare namespace Word {
             value?: boolean;
             /**
              *
-             * For EACH ITEM in the collection: Gets and sets the vertical alignment of the cell. The value can be 'Top', 'Center', or 'Bottom'.
+             * For EACH ITEM in the collection: Gets and sets the vertical alignment of the cell. The value can be 'top', 'center' or 'bottom'.
              *
              * [Api set: WordApi 1.3]
              */
@@ -61208,7 +62323,7 @@ declare namespace Word {
         }
         /**
          *
-         * Specifies the border style.
+         * Specifies the border style
          *
          * [Api set: WordApi 1.3]
          */
@@ -61216,7 +62331,7 @@ declare namespace Word {
             $all?: boolean;
             /**
              *
-             * Gets or sets the table border color.
+             * Gets or sets the table border color, as a hex value or name.
              *
              * [Api set: WordApi 1.3]
              */
@@ -61238,7 +62353,7 @@ declare namespace Word {
         }
     }
 }
-declare namespace Word {
+declare module Word {
     /**
      * The RequestContext object facilitates requests to the Word application. Since the Office add-in and the Word application run in two different processes, the request context is required to get access to the Word object model from the add-in.
      */
@@ -61251,19 +62366,19 @@ declare namespace Word {
      * Executes a batch script that performs actions on the Word object model, using a new RequestContext. When the promise is resolved, any tracked objects that were automatically allocated during execution will be released.
      * @param batch - A function that takes in a RequestContext and returns a promise (typically, just the result of "context.sync()"). The context parameter facilitates requests to the Word application. Since the Office add-in and the Word application run in two different processes, the RequestContext is required to get access to the Word object model from the add-in.
      */
-    function run<T>(batch: (context: Word.RequestContext) => Promise<T>): Promise<T>;
+    function run<T>(batch: (context: Word.RequestContext) => OfficeExtension.IPromise<T>): OfficeExtension.IPromise<T>;
     /**
      * Executes a batch script that performs actions on the Word object model, using the RequestContext of a previously-created API object. When the promise is resolved, any tracked objects that were automatically allocated during execution will be released.
      * @param object - A previously-created API object. The batch will use the same RequestContext as the passed-in object, which means that any changes applied to the object will be picked up by "context.sync()".
      * @param batch - A function that takes in a RequestContext and returns a promise (typically, just the result of "context.sync()"). The context parameter facilitates requests to the Word application. Since the Office add-in and the Word application run in two different processes, the RequestContext is required to get access to the Word object model from the add-in.
      */
-    function run<T>(object: OfficeExtension.ClientObject, batch: (context: Word.RequestContext) => Promise<T>): Promise<T>;
+    function run<T>(object: OfficeExtension.ClientObject, batch: (context: Word.RequestContext) => OfficeExtension.IPromise<T>): OfficeExtension.IPromise<T>;
     /**
      * Executes a batch script that performs actions on the Word object model, using the RequestContext of previously-created API objects.
      * @param objects - An array of previously-created API objects. The array will be validated to make sure that all of the objects share the same context. The batch will use this shared RequestContext, which means that any changes applied to these objects will be picked up by "context.sync()".
      * @param batch - A function that takes in a RequestContext and returns a promise (typically, just the result of "context.sync()"). The context parameter facilitates requests to the Word application. Since the Office add-in and the Word application run in two different processes, the RequestContext is required to get access to the Word object model from the add-in.
      */
-    function run<T>(objects: OfficeExtension.ClientObject[], batch: (context: Word.RequestContext) => Promise<T>): Promise<T>;
+    function run<T>(objects: OfficeExtension.ClientObject[], batch: (context: Word.RequestContext) => OfficeExtension.IPromise<T>): OfficeExtension.IPromise<T>;
 }
 
 
@@ -61375,7 +62490,7 @@ declare namespace OneNote {
          * [Api set: OneNoteApi 1.1]
          */
         getSelectedPages(): OneNote.PageCollection;
-        getWindowSize(): OfficeExtension.ClientResult<number[]>;
+        getWindowSize(): OfficeExtension.ClientResult<Array<number>>;
         insertHtmlAtCurrentPosition(html: string): void;
         /**
          *
@@ -61435,7 +62550,12 @@ declare namespace OneNote {
          */
         readonly id: string;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.InkAnalysisUpdateData, options?: OfficeExtension.UpdateOptions): void;
+        set(properties: Interfaces.InkAnalysisUpdateData, options?: {
+            /**
+             * Throw an error if the passed-in property list includes read-only properties (default = true).
+             */
+            throwOnReadOnly?: boolean;
+        }): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: InkAnalysis): void;
         /**
@@ -61486,7 +62606,12 @@ declare namespace OneNote {
          */
         readonly id: string;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.InkAnalysisParagraphUpdateData, options?: OfficeExtension.UpdateOptions): void;
+        set(properties: Interfaces.InkAnalysisParagraphUpdateData, options?: {
+            /**
+             * Throw an error if the passed-in property list includes read-only properties (default = true).
+             */
+            throwOnReadOnly?: boolean;
+        }): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: InkAnalysisParagraph): void;
         /**
@@ -61516,7 +62641,7 @@ declare namespace OneNote {
      */
     class InkAnalysisParagraphCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: OneNote.InkAnalysisParagraph[];
+        readonly items: Array<OneNote.InkAnalysisParagraph>;
         /**
          *
          * Returns the number of InkAnalysisParagraphs in the page. Read-only.
@@ -61587,7 +62712,12 @@ declare namespace OneNote {
          */
         readonly id: string;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.InkAnalysisLineUpdateData, options?: OfficeExtension.UpdateOptions): void;
+        set(properties: Interfaces.InkAnalysisLineUpdateData, options?: {
+            /**
+             * Throw an error if the passed-in property list includes read-only properties (default = true).
+             */
+            throwOnReadOnly?: boolean;
+        }): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: InkAnalysisLine): void;
         /**
@@ -61617,7 +62747,7 @@ declare namespace OneNote {
      */
     class InkAnalysisLineCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: OneNote.InkAnalysisLine[];
+        readonly items: Array<OneNote.InkAnalysisLine>;
         /**
          *
          * Returns the number of InkAnalysisLines in the page. Read-only.
@@ -61693,16 +62823,21 @@ declare namespace OneNote {
          *
          * [Api set: OneNoteApi 1.1]
          */
-        readonly strokePointers: OneNote.InkStrokePointer[];
+        readonly strokePointers: Array<OneNote.InkStrokePointer>;
         /**
          *
          * The words that were recognized in this ink word, in order of likelihood. Read-only.
          *
          * [Api set: OneNoteApi 1.1]
          */
-        readonly wordAlternates: string[];
+        readonly wordAlternates: Array<string>;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.InkAnalysisWordUpdateData, options?: OfficeExtension.UpdateOptions): void;
+        set(properties: Interfaces.InkAnalysisWordUpdateData, options?: {
+            /**
+             * Throw an error if the passed-in property list includes read-only properties (default = true).
+             */
+            throwOnReadOnly?: boolean;
+        }): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: InkAnalysisWord): void;
         /**
@@ -61732,7 +62867,7 @@ declare namespace OneNote {
      */
     class InkAnalysisWordCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: OneNote.InkAnalysisWord[];
+        readonly items: Array<OneNote.InkAnalysisWord>;
         /**
          *
          * Returns the number of InkAnalysisWords in the page. Read-only.
@@ -61869,7 +63004,7 @@ declare namespace OneNote {
      */
     class InkStrokeCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: OneNote.InkStroke[];
+        readonly items: Array<OneNote.InkStroke>;
         /**
          *
          * Returns the number of InkStrokes in the page. Read-only.
@@ -61945,7 +63080,7 @@ declare namespace OneNote {
          *
          * [Api set: OneNoteApi]
          */
-        readonly wordAlternates: string[];
+        readonly wordAlternates: Array<string>;
         /**
          * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
          */
@@ -61973,7 +63108,7 @@ declare namespace OneNote {
      */
     class InkWordCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: OneNote.InkWord[];
+        readonly items: Array<OneNote.InkWord>;
         /**
          *
          * Returns the number of InkWords in the page. Read-only.
@@ -62116,7 +63251,7 @@ declare namespace OneNote {
      */
     class NotebookCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: OneNote.Notebook[];
+        readonly items: Array<OneNote.Notebook>;
         /**
          *
          * Returns the number of notebooks in the collection. Read-only.
@@ -62282,7 +63417,7 @@ declare namespace OneNote {
      */
     class SectionGroupCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: OneNote.SectionGroup[];
+        readonly items: Array<OneNote.SectionGroup>;
         /**
          *
          * Returns the number of section groups in the collection. Read-only.
@@ -62439,17 +63574,7 @@ declare namespace OneNote {
          * @param location The location of the new section relative to the current section.
          * @param title The name of the new section.
          */
-        insertSectionAsSibling(location: OneNote.InsertLocation, title: string): OneNote.Section;
-        /**
-         *
-         * Inserts a new section before or after the current section.
-         *
-         * [Api set: OneNoteApi 1.1]
-         *
-         * @param location The location of the new section relative to the current section.
-         * @param title The name of the new section.
-         */
-        insertSectionAsSibling(location: "Before" | "After", title: string): OneNote.Section;
+        insertSectionAsSibling(location: string, title: string): OneNote.Section;
         /**
          * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
          */
@@ -62477,7 +63602,7 @@ declare namespace OneNote {
      */
     class SectionCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: OneNote.Section[];
+        readonly items: Array<OneNote.Section>;
         /**
          *
          * Returns the number of sections in the collection. Read-only.
@@ -62599,7 +63724,12 @@ declare namespace OneNote {
          */
         readonly webUrl: string;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.PageUpdateData, options?: OfficeExtension.UpdateOptions): void;
+        set(properties: Interfaces.PageUpdateData, options?: {
+            /**
+             * Throw an error if the passed-in property list includes read-only properties (default = true).
+             */
+            throwOnReadOnly?: boolean;
+        }): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: Page): void;
         /**
@@ -62668,17 +63798,7 @@ declare namespace OneNote {
          * @param location The location of the new page relative to the current page.
          * @param title The title of the new page.
          */
-        insertPageAsSibling(location: OneNote.InsertLocation, title: string): OneNote.Page;
-        /**
-         *
-         * Inserts a new page before or after the current page.
-         *
-         * [Api set: OneNoteApi 1.1]
-         *
-         * @param location The location of the new page relative to the current page.
-         * @param title The title of the new page.
-         */
-        insertPageAsSibling(location: "Before" | "After", title: string): OneNote.Page;
+        insertPageAsSibling(location: string, title: string): OneNote.Page;
         /**
          * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
          */
@@ -62706,7 +63826,7 @@ declare namespace OneNote {
      */
     class PageCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: OneNote.Page[];
+        readonly items: Array<OneNote.Page>;
         /**
          *
          * Returns the number of pages in the collection. Read-only.
@@ -62819,9 +63939,14 @@ declare namespace OneNote {
          *
          * [Api set: OneNoteApi 1.1]
          */
-        readonly type: OneNote.PageContentType | "Outline" | "Image" | "Ink" | "Other";
+        readonly type: string;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.PageContentUpdateData, options?: OfficeExtension.UpdateOptions): void;
+        set(properties: Interfaces.PageContentUpdateData, options?: {
+            /**
+             * Throw an error if the passed-in property list includes read-only properties (default = true).
+             */
+            throwOnReadOnly?: boolean;
+        }): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: PageContent): void;
         /**
@@ -62858,7 +63983,7 @@ declare namespace OneNote {
      */
     class PageContentCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: OneNote.PageContent[];
+        readonly items: Array<OneNote.PageContent>;
         /**
          *
          * Returns the number of page contents in the collection. Read-only.
@@ -62967,7 +64092,7 @@ declare namespace OneNote {
          * @param columnCount Required. The number of columns in the table.
          * @param values Optional 2D array. Cells are filled if the corresponding strings are specified in the array.
          */
-        appendTable(rowCount: number, columnCount: number, values?: string[][]): OneNote.Table;
+        appendTable(rowCount: number, columnCount: number, values?: Array<Array<string>>): OneNote.Table;
         /**
          *
          * Check if the outline is title outline.
@@ -63084,9 +64209,14 @@ declare namespace OneNote {
          *
          * [Api set: OneNoteApi 1.1]
          */
-        readonly type: OneNote.ParagraphType | "RichText" | "Image" | "Table" | "Ink" | "Other";
+        readonly type: string;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ParagraphUpdateData, options?: OfficeExtension.UpdateOptions): void;
+        set(properties: Interfaces.ParagraphUpdateData, options?: {
+            /**
+             * Throw an error if the passed-in property list includes read-only properties (default = true).
+             */
+            throwOnReadOnly?: boolean;
+        }): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: Paragraph): void;
         /**
@@ -63098,17 +64228,7 @@ declare namespace OneNote {
          * @param type The type of the NoteTag.
          * @param status The status of the NoteTag.
          */
-        addNoteTag(type: OneNote.NoteTagType, status: OneNote.NoteTagStatus): OneNote.NoteTag;
-        /**
-         *
-         * Add NoteTag to the paragraph.
-         *
-         * [Api set: OneNoteApi 1.1]
-         *
-         * @param type The type of the NoteTag.
-         * @param status The status of the NoteTag.
-         */
-        addNoteTag(type: "Unknown" | "ToDo" | "Important" | "Question" | "Contact" | "Address" | "PhoneNumber" | "Website" | "Idea" | "Critical" | "ToDoPriority1" | "ToDoPriority2", status: "Unknown" | "Normal" | "Completed" | "Disabled" | "OutlookTask" | "TaskNotSyncedYet" | "TaskRemoved"): OneNote.NoteTag;
+        addNoteTag(type: string, status: string): OneNote.NoteTag;
         /**
          *
          * Deletes the paragraph
@@ -63132,17 +64252,7 @@ declare namespace OneNote {
          * @param insertLocation The location of new contents relative to the current Paragraph.
          * @param html An HTML string that describes the visual presentation of the content. See [supported HTML](../../docs/onenote/onenote-add-ins-page-content.md#supported-html) for the OneNote add-ins JavaScript API.
          */
-        insertHtmlAsSibling(insertLocation: OneNote.InsertLocation, html: string): void;
-        /**
-         *
-         * Inserts the specified HTML content
-         *
-         * [Api set: OneNoteApi 1.1]
-         *
-         * @param insertLocation The location of new contents relative to the current Paragraph.
-         * @param html An HTML string that describes the visual presentation of the content. See [supported HTML](../../docs/onenote/onenote-add-ins-page-content.md#supported-html) for the OneNote add-ins JavaScript API.
-         */
-        insertHtmlAsSibling(insertLocation: "Before" | "After", html: string): void;
+        insertHtmlAsSibling(insertLocation: string, html: string): void;
         /**
          *
          * Inserts the image at the specified insert location..
@@ -63154,19 +64264,7 @@ declare namespace OneNote {
          * @param width Optional. Width in the unit of Points. The default value is null and image width will be respected.
          * @param height Optional. Height in the unit of Points. The default value is null and image height will be respected.
          */
-        insertImageAsSibling(insertLocation: OneNote.InsertLocation, base64EncodedImage: string, width: number, height: number): OneNote.Image;
-        /**
-         *
-         * Inserts the image at the specified insert location..
-         *
-         * [Api set: OneNoteApi 1.1]
-         *
-         * @param insertLocation The location of the table relative to the current Paragraph.
-         * @param base64EncodedImage HTML string to append.
-         * @param width Optional. Width in the unit of Points. The default value is null and image width will be respected.
-         * @param height Optional. Height in the unit of Points. The default value is null and image height will be respected.
-         */
-        insertImageAsSibling(insertLocation: "Before" | "After", base64EncodedImage: string, width: number, height: number): OneNote.Image;
+        insertImageAsSibling(insertLocation: string, base64EncodedImage: string, width: number, height: number): OneNote.Image;
         /**
          *
          * Inserts the paragraph text at the specifiec insert location.
@@ -63176,17 +64274,7 @@ declare namespace OneNote {
          * @param insertLocation The location of the table relative to the current Paragraph.
          * @param paragraphText HTML string to append.
          */
-        insertRichTextAsSibling(insertLocation: OneNote.InsertLocation, paragraphText: string): OneNote.RichText;
-        /**
-         *
-         * Inserts the paragraph text at the specifiec insert location.
-         *
-         * [Api set: OneNoteApi 1.1]
-         *
-         * @param insertLocation The location of the table relative to the current Paragraph.
-         * @param paragraphText HTML string to append.
-         */
-        insertRichTextAsSibling(insertLocation: "Before" | "After", paragraphText: string): OneNote.RichText;
+        insertRichTextAsSibling(insertLocation: string, paragraphText: string): OneNote.RichText;
         /**
          *
          * Adds a table with the specified number of rows and columns before or after the current paragraph.
@@ -63198,19 +64286,7 @@ declare namespace OneNote {
          * @param columnCount The number of columns in the table.
          * @param values Optional 2D array. Cells are filled if the corresponding strings are specified in the array.
          */
-        insertTableAsSibling(insertLocation: OneNote.InsertLocation, rowCount: number, columnCount: number, values?: string[][]): OneNote.Table;
-        /**
-         *
-         * Adds a table with the specified number of rows and columns before or after the current paragraph.
-         *
-         * [Api set: OneNoteApi 1.1]
-         *
-         * @param insertLocation The location of the table relative to the current Paragraph.
-         * @param rowCount The number of rows in the table.
-         * @param columnCount The number of columns in the table.
-         * @param values Optional 2D array. Cells are filled if the corresponding strings are specified in the array.
-         */
-        insertTableAsSibling(insertLocation: "Before" | "After", rowCount: number, columnCount: number, values?: string[][]): OneNote.Table;
+        insertTableAsSibling(insertLocation: string, rowCount: number, columnCount: number, values?: Array<Array<string>>): OneNote.Table;
         /**
          * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
          */
@@ -63238,7 +64314,7 @@ declare namespace OneNote {
      */
     class ParagraphCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: OneNote.Paragraph[];
+        readonly items: Array<OneNote.Paragraph>;
         /**
          *
          * Returns the number of paragraphs in the page. Read-only.
@@ -63300,14 +64376,14 @@ declare namespace OneNote {
          *
          * [Api set: OneNoteApi 1.1]
          */
-        readonly status: OneNote.NoteTagStatus | "Unknown" | "Normal" | "Completed" | "Disabled" | "OutlookTask" | "TaskNotSyncedYet" | "TaskRemoved";
+        readonly status: string;
         /**
          *
          * Gets the type of the NoteTag object. Read-only.
          *
          * [Api set: OneNoteApi 1.1]
          */
-        readonly type: OneNote.NoteTagType | "Unknown" | "ToDo" | "Important" | "Question" | "Contact" | "Address" | "PhoneNumber" | "Website" | "Idea" | "Critical" | "ToDoPriority1" | "ToDoPriority2";
+        readonly type: string;
         /**
          * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
          */
@@ -63453,7 +64529,12 @@ declare namespace OneNote {
          */
         width: number;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ImageUpdateData, options?: OfficeExtension.UpdateOptions): void;
+        set(properties: Interfaces.ImageUpdateData, options?: {
+            /**
+             * Throw an error if the passed-in property list includes read-only properties (default = true).
+             */
+            throwOnReadOnly?: boolean;
+        }): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: Image): void;
         /**
@@ -63533,7 +64614,12 @@ declare namespace OneNote {
          */
         readonly rowCount: number;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.TableUpdateData, options?: OfficeExtension.UpdateOptions): void;
+        set(properties: Interfaces.TableUpdateData, options?: {
+            /**
+             * Throw an error if the passed-in property list includes read-only properties (default = true).
+             */
+            throwOnReadOnly?: boolean;
+        }): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: Table): void;
         /**
@@ -63544,7 +64630,7 @@ declare namespace OneNote {
          *
          * @param values Optional. Strings to insert in the new column, specified as an array. Must not have more values than rows in the table.
          */
-        appendColumn(values?: string[]): void;
+        appendColumn(values?: Array<string>): void;
         /**
          *
          * Adds a row to the end of the table. Values, if specified, are set in the new row. Otherwise the row is empty.
@@ -63553,7 +64639,7 @@ declare namespace OneNote {
          *
          * @param values Optional. Strings to insert in the new row, specified as an array. Must not have more values than columns in the table.
          */
-        appendRow(values?: string[]): OneNote.TableRow;
+        appendRow(values?: Array<string>): OneNote.TableRow;
         /**
          *
          * Clears the contents of the table.
@@ -63580,7 +64666,7 @@ declare namespace OneNote {
          * @param index Index where the column will be inserted in the table.
          * @param values Optional. Strings to insert in the new column, specified as an array. Must not have more values than rows in the table.
          */
-        insertColumn(index: number, values?: string[]): void;
+        insertColumn(index: number, values?: Array<string>): void;
         /**
          *
          * Inserts a row at the given index in the table. Values, if specified, are set in the new row. Otherwise the row is empty.
@@ -63590,14 +64676,7 @@ declare namespace OneNote {
          * @param index Index where the row will be inserted in the table.
          * @param values Optional. Strings to insert in the new row, specified as an array. Must not have more values than columns in the table.
          */
-        insertRow(index: number, values?: string[]): OneNote.TableRow;
-        /**
-         *
-         * Sets the shading color of all cells in the table.
-            The color code to set the cells to.
-         *
-         * [Api set: OneNoteApi 1.1]
-         */
+        insertRow(index: number, values?: Array<string>): OneNote.TableRow;
         setShadingColor(colorCode: string): void;
         /**
          * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
@@ -63676,24 +64755,7 @@ declare namespace OneNote {
          * @param insertLocation Where the new rows should be inserted relative to the current row.
          * @param values Strings to insert in the new row, specified as an array. Must not have more cells than in the current row. Optional.
          */
-        insertRowAsSibling(insertLocation: OneNote.InsertLocation, values?: string[]): OneNote.TableRow;
-        /**
-         *
-         * Inserts a row before or after the current row.
-         *
-         * [Api set: OneNoteApi 1.1]
-         *
-         * @param insertLocation Where the new rows should be inserted relative to the current row.
-         * @param values Strings to insert in the new row, specified as an array. Must not have more cells than in the current row. Optional.
-         */
-        insertRowAsSibling(insertLocation: "Before" | "After", values?: string[]): OneNote.TableRow;
-        /**
-         *
-         * Sets the shading color of all cells in the row.
-            The color code to set the cells to.
-         *
-         * [Api set: OneNoteApi 1.1]
-         */
+        insertRowAsSibling(insertLocation: string, values?: Array<string>): OneNote.TableRow;
         setShadingColor(colorCode: string): void;
         /**
          * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
@@ -63722,7 +64784,7 @@ declare namespace OneNote {
      */
     class TableRowCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: OneNote.TableRow[];
+        readonly items: Array<OneNote.TableRow>;
         /**
          *
          * Returns the number of table rows in this collection. Read-only.
@@ -63814,7 +64876,12 @@ declare namespace OneNote {
          */
         shadingColor: string;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.TableCellUpdateData, options?: OfficeExtension.UpdateOptions): void;
+        set(properties: Interfaces.TableCellUpdateData, options?: {
+            /**
+             * Throw an error if the passed-in property list includes read-only properties (default = true).
+             */
+            throwOnReadOnly?: boolean;
+        }): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: TableCell): void;
         /**
@@ -63856,7 +64923,7 @@ declare namespace OneNote {
          * @param columnCount Required. The number of columns in the table.
          * @param values Optional 2D array. Cells are filled if the corresponding strings are specified in the array.
          */
-        appendTable(rowCount: number, columnCount: number, values?: string[][]): OneNote.Table;
+        appendTable(rowCount: number, columnCount: number, values?: Array<Array<string>>): OneNote.Table;
         /**
          *
          * Clears the contents of the cell.
@@ -63891,7 +64958,7 @@ declare namespace OneNote {
      */
     class TableCellCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: OneNote.TableCell[];
+        readonly items: Array<OneNote.TableCell>;
         /**
          *
          * Returns the number of tablecells in this collection. Read-only.
@@ -63990,7 +65057,7 @@ declare namespace OneNote {
          *
          * [Api set: OneNoteApi 1.1]
          */
-        accountType: OneNote.AccountType | "Other" | "LiveId" | "OrgId" | "ADAL";
+        accountType: string;
         /**
          *
          * //
@@ -64020,7 +65087,7 @@ declare namespace OneNote {
          *
          * [Api set: OneNoteApi 1.1]
          */
-        accountType: OneNote.AccountType | "Other" | "LiveId" | "OrgId" | "ADAL";
+        accountType: string;
         /**
          *
          * Account email
@@ -64067,7 +65134,7 @@ declare namespace OneNote {
          *
          * [Api set: OneNoteApi 1.1]
          */
-        listType: OneNote.ListType | "None" | "Number" | "Bullet";
+        listType: string;
         /**
          *
          * //
@@ -64075,7 +65142,7 @@ declare namespace OneNote {
          *
          * [Api set: OneNoteApi 1.1]
          */
-        numberType: OneNote.NumberType | "None" | "Arabic" | "UCRoman" | "LCRoman" | "UCLetter" | "LCLetter" | "Ordinal" | "Cardtext" | "Ordtext" | "Hex" | "ChiManSty" | "DbNum1" | "DbNum2" | "Aiueo" | "Iroha" | "DbChar" | "SbChar" | "DbNum3" | "DbNum4" | "Circlenum" | "DArabic" | "DAiueo" | "DIroha" | "ArabicLZ" | "Bullet" | "Ganada" | "Chosung" | "GB1" | "GB2" | "GB3" | "GB4" | "Zodiac1" | "Zodiac2" | "Zodiac3" | "TpeDbNum1" | "TpeDbNum2" | "TpeDbNum3" | "TpeDbNum4" | "ChnDbNum1" | "ChnDbNum2" | "ChnDbNum3" | "ChnDbNum4" | "KorDbNum1" | "KorDbNum2" | "KorDbNum3" | "KorDbNum4" | "Hebrew1" | "Arabic1" | "Hebrew2" | "Arabic2" | "Hindi1" | "Hindi2" | "Hindi3" | "Thai1" | "Thai2" | "NumInDash" | "LCRus" | "UCRus" | "LCGreek" | "UCGreek" | "Lim" | "Custom";
+        numberType: string;
     }
     /**
      *
@@ -64160,291 +65227,249 @@ declare namespace OneNote {
     /**
      * [Api set: OneNoteApi]
      */
-    enum EntityType {
-        notebook = "Notebook",
-        sectionGroup = "SectionGroup",
-        section = "Section",
-        page = "Page",
+    namespace InsertLocation {
+        var before: string;
+        var after: string;
     }
     /**
      * [Api set: OneNoteApi]
      */
-    enum InsertLocation {
-        before = "Before",
-        after = "After",
+    namespace Platform {
+        var other: string;
+        var web: string;
+        var uwp: string;
+        var win32: string;
+        var mac: string;
+        var ios: string;
     }
     /**
      * [Api set: OneNoteApi]
      */
-    enum Platform {
-        other = "Other",
-        web = "Web",
-        uwp = "UWP",
-        win32 = "Win32",
-        mac = "Mac",
-        ios = "IOS",
+    namespace Alignment {
+        var left: string;
+        var centered: string;
+        var right: string;
+        var justified: string;
     }
     /**
      * [Api set: OneNoteApi]
      */
-    enum Alignment {
-        left = "Left",
-        centered = "Centered",
-        right = "Right",
-        justified = "Justified",
+    namespace Selected {
+        var notSelected: string;
+        var partialSelected: string;
+        var selected: string;
     }
     /**
      * [Api set: OneNoteApi]
      */
-    enum Selected {
-        notSelected = "NotSelected",
-        partialSelected = "PartialSelected",
-        selected = "Selected",
+    namespace PageContentType {
+        var outline: string;
+        var image: string;
+        var ink: string;
+        var other: string;
     }
     /**
      * [Api set: OneNoteApi]
      */
-    enum PageContentType {
-        outline = "Outline",
-        image = "Image",
-        ink = "Ink",
-        other = "Other",
+    namespace ParagraphType {
+        var richText: string;
+        var image: string;
+        var table: string;
+        var ink: string;
+        var other: string;
     }
     /**
      * [Api set: OneNoteApi]
      */
-    enum ParagraphType {
-        richText = "RichText",
-        image = "Image",
-        table = "Table",
-        ink = "Ink",
-        other = "Other",
+    namespace NoteTagType {
+        var unknown: string;
+        var toDo: string;
+        var important: string;
+        var question: string;
+        var contact: string;
+        var address: string;
+        var phoneNumber: string;
+        var website: string;
+        var idea: string;
+        var critical: string;
+        var toDoPriority1: string;
+        var toDoPriority2: string;
     }
     /**
      * [Api set: OneNoteApi]
      */
-    enum NoteTagType {
-        unknown = "Unknown",
-        toDo = "ToDo",
-        important = "Important",
-        question = "Question",
-        contact = "Contact",
-        address = "Address",
-        phoneNumber = "PhoneNumber",
-        website = "Website",
-        idea = "Idea",
-        critical = "Critical",
-        toDoPriority1 = "ToDoPriority1",
-        toDoPriority2 = "ToDoPriority2",
+    namespace NoteTagStatus {
+        var unknown: string;
+        var normal: string;
+        var completed: string;
+        var disabled: string;
+        var outlookTask: string;
+        var taskNotSyncedYet: string;
+        var taskRemoved: string;
     }
     /**
      * [Api set: OneNoteApi]
      */
-    enum NoteTagStatus {
-        unknown = "Unknown",
-        normal = "Normal",
-        completed = "Completed",
-        disabled = "Disabled",
-        outlookTask = "OutlookTask",
-        taskNotSyncedYet = "TaskNotSyncedYet",
-        taskRemoved = "TaskRemoved",
+    namespace ServiceId {
+        var form: string;
+        var entity: string;
+        var graph: string;
+        var oneService: string;
     }
     /**
      * [Api set: OneNoteApi]
      */
-    enum ServiceId {
-        form = "Form",
-        entity = "Entity",
-        graph = "Graph",
-        oneService = "OneService",
+    namespace IdentityFilter {
+        var selection: string;
+        var activeProfile: string;
+        var liveId: string;
+        var orgId: string;
+        var adal: string;
+        var notebook: string;
     }
     /**
      * [Api set: OneNoteApi]
      */
-    enum IdentityFilter {
-        selection = "Selection",
-        activeProfile = "ActiveProfile",
-        liveId = "LiveId",
-        orgId = "OrgId",
-        adal = "ADAL",
-        notebook = "Notebook",
+    namespace ListType {
+        var none: string;
+        var number: string;
+        var bullet: string;
     }
     /**
      * [Api set: OneNoteApi]
      */
-    enum ListType {
-        none = "None",
-        number = "Number",
-        bullet = "Bullet",
+    namespace AccountType {
+        var other: string;
+        var liveId: string;
+        var orgId: string;
+        var adal: string;
     }
     /**
      * [Api set: OneNoteApi]
      */
-    enum AccountType {
-        other = "Other",
-        liveId = "LiveId",
-        orgId = "OrgId",
-        adal = "ADAL",
+    namespace LogLevel {
+        var trace: string;
+        var data: string;
+        var exception: string;
+        var warning: string;
     }
     /**
      * [Api set: OneNoteApi]
      */
-    enum LogLevel {
-        trace = "Trace",
-        data = "Data",
-        exception = "Exception",
-        warning = "Warning",
-    }
-    /**
-     * [Api set: OneNoteApi]
-     */
-    enum EventFlag {
+    namespace EventFlag {
         /**
          *
          * DefaultEventFlags
          *
          */
-        defaultFlag = "DefaultFlag",
+        var defaultFlag: string;
         /**
          *
          * CriticalDataEventFlags
          *
          */
-        criticalFlag = "CriticalFlag",
+        var criticalFlag: string;
         /**
          *
          * MeasureDataEventFlags
          *
          */
-        measureFlag = "MeasureFlag",
+        var measureFlag: string;
     }
     /**
      * [Api set: OneNoteApi]
      */
-    enum NumberType {
-        none = "None",
-        arabic = "Arabic",
-        ucroman = "UCRoman",
-        lcroman = "LCRoman",
-        ucletter = "UCLetter",
-        lcletter = "LCLetter",
-        ordinal = "Ordinal",
-        cardtext = "Cardtext",
-        ordtext = "Ordtext",
-        hex = "Hex",
-        chiManSty = "ChiManSty",
-        dbNum1 = "DbNum1",
-        dbNum2 = "DbNum2",
-        aiueo = "Aiueo",
-        iroha = "Iroha",
-        dbChar = "DbChar",
-        sbChar = "SbChar",
-        dbNum3 = "DbNum3",
-        dbNum4 = "DbNum4",
-        circlenum = "Circlenum",
-        darabic = "DArabic",
-        daiueo = "DAiueo",
-        diroha = "DIroha",
-        arabicLZ = "ArabicLZ",
-        bullet = "Bullet",
-        ganada = "Ganada",
-        chosung = "Chosung",
-        gb1 = "GB1",
-        gb2 = "GB2",
-        gb3 = "GB3",
-        gb4 = "GB4",
-        zodiac1 = "Zodiac1",
-        zodiac2 = "Zodiac2",
-        zodiac3 = "Zodiac3",
-        tpeDbNum1 = "TpeDbNum1",
-        tpeDbNum2 = "TpeDbNum2",
-        tpeDbNum3 = "TpeDbNum3",
-        tpeDbNum4 = "TpeDbNum4",
-        chnDbNum1 = "ChnDbNum1",
-        chnDbNum2 = "ChnDbNum2",
-        chnDbNum3 = "ChnDbNum3",
-        chnDbNum4 = "ChnDbNum4",
-        korDbNum1 = "KorDbNum1",
-        korDbNum2 = "KorDbNum2",
-        korDbNum3 = "KorDbNum3",
-        korDbNum4 = "KorDbNum4",
-        hebrew1 = "Hebrew1",
-        arabic1 = "Arabic1",
-        hebrew2 = "Hebrew2",
-        arabic2 = "Arabic2",
-        hindi1 = "Hindi1",
-        hindi2 = "Hindi2",
-        hindi3 = "Hindi3",
-        thai1 = "Thai1",
-        thai2 = "Thai2",
-        numInDash = "NumInDash",
-        lcrus = "LCRus",
-        ucrus = "UCRus",
-        lcgreek = "LCGreek",
-        ucgreek = "UCGreek",
-        lim = "Lim",
-        custom = "Custom",
+    namespace NumberType {
+        var none: string;
+        var arabic: string;
+        var ucroman: string;
+        var lcroman: string;
+        var ucletter: string;
+        var lcletter: string;
+        var ordinal: string;
+        var cardtext: string;
+        var ordtext: string;
+        var hex: string;
+        var chiManSty: string;
+        var dbNum1: string;
+        var dbNum2: string;
+        var aiueo: string;
+        var iroha: string;
+        var dbChar: string;
+        var sbChar: string;
+        var dbNum3: string;
+        var dbNum4: string;
+        var circlenum: string;
+        var darabic: string;
+        var daiueo: string;
+        var diroha: string;
+        var arabicLZ: string;
+        var bullet: string;
+        var ganada: string;
+        var chosung: string;
+        var gb1: string;
+        var gb2: string;
+        var gb3: string;
+        var gb4: string;
+        var zodiac1: string;
+        var zodiac2: string;
+        var zodiac3: string;
+        var tpeDbNum1: string;
+        var tpeDbNum2: string;
+        var tpeDbNum3: string;
+        var tpeDbNum4: string;
+        var chnDbNum1: string;
+        var chnDbNum2: string;
+        var chnDbNum3: string;
+        var chnDbNum4: string;
+        var korDbNum1: string;
+        var korDbNum2: string;
+        var korDbNum3: string;
+        var korDbNum4: string;
+        var hebrew1: string;
+        var arabic1: string;
+        var hebrew2: string;
+        var arabic2: string;
+        var hindi1: string;
+        var hindi2: string;
+        var hindi3: string;
+        var thai1: string;
+        var thai2: string;
+        var numInDash: string;
+        var lcrus: string;
+        var ucrus: string;
+        var lcgreek: string;
+        var ucgreek: string;
+        var lim: string;
+        var custom: string;
     }
     /**
      * [Api set: OneNoteApi]
      */
-    enum ControlId {
-        preinstallClassNotebook = "PreinstallClassNotebook",
-        distributePageId = "DistributePageId",
-        distributeSection = "DistributeSection",
-        reviewStudentWork = "ReviewStudentWork",
-        openTabForCreateClassNotebook = "OpenTabForCreateClassNotebook",
-        openTabForManageStudent = "OpenTabForManageStudent",
-        openTabForManageTeacher = "OpenTabForManageTeacher",
-        openTabForGetNotebookLink = "OpenTabForGetNotebookLink",
-        openTabForTeacherTraining = "OpenTabForTeacherTraining",
-        openTabForAddinGuide = "OpenTabForAddinGuide",
-        openTabForEducationBlog = "OpenTabForEducationBlog",
-        openTabForEducatorCommunity = "OpenTabForEducatorCommunity",
-        openTabToSendFeedback = "OpenTabToSendFeedback",
-        openTabForViewKnowledgeBase = "OpenTabForViewKnowledgeBase",
-        openTabForSuggestingFeature = "OpenTabForSuggestingFeature",
-        createAssignment = "CreateAssignment",
-        connections = "Connections",
-        mapClassNotebooks = "MapClassNotebooks",
-        mapStudents = "MapStudents",
-        manageClasses = "ManageClasses",
+    namespace ControlId {
+        var preinstallClassNotebook: string;
+        var distributePageId: string;
+        var distributeSection: string;
+        var reviewStudentWork: string;
+        var openTabForCreateClassNotebook: string;
+        var openTabForManageStudent: string;
+        var openTabForManageTeacher: string;
+        var openTabForGetNotebookLink: string;
+        var openTabForTeacherTraining: string;
+        var openTabForAddinGuide: string;
+        var openTabForEducationBlog: string;
+        var openTabForEducatorCommunity: string;
+        var openTabToSendFeedback: string;
+        var openTabForViewKnowledgeBase: string;
+        var openTabForSuggestingFeature: string;
+        var createAssignment: string;
+        var connections: string;
+        var mapClassNotebooks: string;
+        var mapStudents: string;
+        var manageClasses: string;
     }
-    /**
-     * [Api set: OneNoteApi]
-     */
-    enum AccessibilityViolationType {
-        none = "None",
-        missingAltText = "MissingAltText",
-        tableWithNoHeaderRow = "TableWithNoHeaderRow",
-        untitledPage = "UntitledPage",
-        unnamedSection = "UnnamedSection",
-        unnamedSectionGroup = "UnnamedSectionGroup",
-        nonDescriptiveAltText = "NonDescriptiveAltText",
-        nestedTable = "NestedTable",
-        headingOutOfOrder = "HeadingOutOfOrder",
-        extraOutline = "ExtraOutline",
-        extraWhitespace = "ExtraWhitespace",
-        noHeadingsInALongDocument = "NoHeadingsInALongDocument",
-        insufficientTextContrast = "InsufficientTextContrast",
-    }
-    /**
-     * [Api set: OneNoteApi]
-     */
-    enum AccessibilityViolationLocation {
-        none = "None",
-        onHighlight = "OnHighlight",
-        onMultipleParagraphs = "OnMultipleParagraphs",
-        onOutline = "OnOutline",
-        onPage = "OnPage",
-        onParagraph = "OnParagraph",
-        onParagraphBegin = "OnParagraphBegin",
-        onParagraphEnd = "OnParagraphEnd",
-        onTable = "OnTable",
-        withinParagraph = "WithinParagraph",
-    }
-    enum ErrorCodes {
-        generalException = "GeneralException",
+    namespace ErrorCodes {
+        var generalException: string;
     }
     module Interfaces {
         interface CollectionLoadOptions {
@@ -64659,14 +65684,6 @@ declare namespace OneNote {
         interface TableCellCollectionUpdateData {
             items?: OneNote.Interfaces.TableCellData[];
         }
-        /** An interface for updating data on the AccessibilityViolationCollection object, for use in "accessibilityViolationCollection.set({ ... })". */
-        interface AccessibilityViolationCollectionUpdateData {
-            items?: OneNote.Interfaces.AccessibilityViolationData[];
-        }
-        /** An interface for updating data on the AccessibilityViolationsByEntityCollection object, for use in "accessibilityViolationsByEntityCollection.set({ ... })". */
-        interface AccessibilityViolationsByEntityCollectionUpdateData {
-            items?: OneNote.Interfaces.AccessibilityViolationsByEntityData[];
-        }
         /** An interface describing the data returned by calling "application.toJSON()". */
         interface ApplicationData {
             /**
@@ -64786,14 +65803,14 @@ declare namespace OneNote {
              *
              * [Api set: OneNoteApi 1.1]
              */
-            strokePointers?: OneNote.InkStrokePointer[];
+            strokePointers?: Array<OneNote.InkStrokePointer>;
             /**
              *
              * The words that were recognized in this ink word, in order of likelihood. Read-only.
              *
              * [Api set: OneNoteApi 1.1]
              */
-            wordAlternates?: string[];
+            wordAlternates?: Array<string>;
         }
         /** An interface describing the data returned by calling "inkAnalysisWordCollection.toJSON()". */
         interface InkAnalysisWordCollectionData {
@@ -64873,7 +65890,7 @@ declare namespace OneNote {
              *
              * [Api set: OneNoteApi]
              */
-            wordAlternates?: string[];
+            wordAlternates?: Array<string>;
         }
         /** An interface describing the data returned by calling "inkWordCollection.toJSON()". */
         interface InkWordCollectionData {
@@ -64881,13 +65898,6 @@ declare namespace OneNote {
         }
         /** An interface describing the data returned by calling "notebook.toJSON()". */
         interface NotebookData {
-            /**
-            *
-            * The accessibility violations in the notebook. Read only
-            *
-            * [Api set: OneNoteApi 1.1]
-            */
-            accessibilityViolations?: OneNote.Interfaces.AccessibilityViolationsByEntityData[];
             /**
             *
             * The section groups in the notebook. Read only
@@ -65065,13 +66075,6 @@ declare namespace OneNote {
         interface PageData {
             /**
             *
-            * The accessibility violations in the page. Read only
-            *
-            * [Api set: OneNoteApi 1.1]
-            */
-            accessibilityViolations?: OneNote.Interfaces.AccessibilityViolationData[];
-            /**
-            *
             * The collection of PageContent objects on the page. Read only
             *
             * [Api set: OneNoteApi 1.1]
@@ -65195,7 +66198,7 @@ declare namespace OneNote {
              *
              * [Api set: OneNoteApi 1.1]
              */
-            type?: OneNote.PageContentType | "Outline" | "Image" | "Ink" | "Other";
+            type?: string;
         }
         /** An interface describing the data returned by calling "pageContentCollection.toJSON()". */
         interface PageContentCollectionData {
@@ -65310,7 +66313,7 @@ declare namespace OneNote {
              *
              * [Api set: OneNoteApi 1.1]
              */
-            type?: OneNote.ParagraphType | "RichText" | "Image" | "Table" | "Ink" | "Other";
+            type?: string;
         }
         /** An interface describing the data returned by calling "paragraphCollection.toJSON()". */
         interface ParagraphCollectionData {
@@ -65331,14 +66334,14 @@ declare namespace OneNote {
              *
              * [Api set: OneNoteApi 1.1]
              */
-            status?: OneNote.NoteTagStatus | "Unknown" | "Normal" | "Completed" | "Disabled" | "OutlookTask" | "TaskNotSyncedYet" | "TaskRemoved";
+            status?: string;
             /**
              *
              * Gets the type of the NoteTag object. Read-only.
              *
              * [Api set: OneNoteApi 1.1]
              */
-            type?: OneNote.NoteTagType | "Unknown" | "ToDo" | "Important" | "Question" | "Contact" | "Address" | "PhoneNumber" | "Website" | "Idea" | "Critical" | "ToDoPriority1" | "ToDoPriority2";
+            type?: string;
         }
         /** An interface describing the data returned by calling "richText.toJSON()". */
         interface RichTextData {
@@ -65565,90 +66568,6 @@ declare namespace OneNote {
         /** An interface describing the data returned by calling "tableCellCollection.toJSON()". */
         interface TableCellCollectionData {
             items?: OneNote.Interfaces.TableCellData[];
-        }
-        /** An interface describing the data returned by calling "accessibilityViolation.toJSON()". */
-        interface AccessibilityViolationData {
-            /**
-             *
-             * Gets the ID of the accessibility violation. Read-only.
-             *
-             * [Api set: OneNoteApi 1.1]
-             */
-            id?: string;
-            /**
-             *
-             * Gets the location of the accessibility violation. Read-only.
-             *
-             * [Api set: OneNoteApi 1.1]
-             */
-            location?: OneNote.AccessibilityViolationLocation | "None" | "OnHighlight" | "OnMultipleParagraphs" | "OnOutline" | "OnPage" | "OnParagraph" | "OnParagraphBegin" | "OnParagraphEnd" | "OnTable" | "WithinParagraph";
-            /**
-             *
-             * Gets the name of the accessibility violation. Read-only.
-             *
-             * [Api set: OneNoteApi 1.1]
-             */
-            name?: string;
-            /**
-             *
-             * Gets the type of the accessibility violation. Read-only.
-             *
-             * [Api set: OneNoteApi 1.1]
-             */
-            type?: OneNote.AccessibilityViolationType | "None" | "MissingAltText" | "TableWithNoHeaderRow" | "UntitledPage" | "UnnamedSection" | "UnnamedSectionGroup" | "NonDescriptiveAltText" | "NestedTable" | "HeadingOutOfOrder" | "ExtraOutline" | "ExtraWhitespace" | "NoHeadingsInALongDocument" | "InsufficientTextContrast";
-        }
-        /** An interface describing the data returned by calling "accessibilityViolationCollection.toJSON()". */
-        interface AccessibilityViolationCollectionData {
-            items?: OneNote.Interfaces.AccessibilityViolationData[];
-        }
-        /** An interface describing the data returned by calling "accessibilityViolationsByEntity.toJSON()". */
-        interface AccessibilityViolationsByEntityData {
-            /**
-            *
-            * Gets the parent section section group (if any) of the entity. Read-only.
-            *
-            * [Api set: OneNoteApi 1.1]
-            */
-            parentSectionGroupOrNull?: OneNote.Interfaces.SectionGroupData;
-            /**
-            *
-            * Gets the parent section (if any) of the entity. Read-only.
-            *
-            * [Api set: OneNoteApi 1.1]
-            */
-            parentSectionOrNull?: OneNote.Interfaces.SectionData;
-            /**
-             *
-             * Gets the name of the entity for which this structure holds metadata. Read-only.
-             *
-             * [Api set: OneNoteApi 1.1]
-             */
-            entityName?: string;
-            /**
-             *
-             * Gets the type of the entity for which this structure holds metadata. Read-only.
-             *
-             * [Api set: OneNoteApi 1.1]
-             */
-            entityType?: OneNote.EntityType | "Notebook" | "SectionGroup" | "Section" | "Page";
-            /**
-             *
-             * Gets the ID of the AccessibilityViolationsByEntity. Read-only.
-             *
-             * [Api set: OneNoteApi 1.1]
-             */
-            id?: string;
-            /**
-             *
-             * Gets the count of accessibility violations for the entity. Read-only.
-             *
-             * [Api set: OneNoteApi 1.1]
-             */
-            violationsCount?: number;
-        }
-        /** An interface describing the data returned by calling "accessibilityViolationsByEntityCollection.toJSON()". */
-        interface AccessibilityViolationsByEntityCollectionData {
-            items?: OneNote.Interfaces.AccessibilityViolationsByEntityData[];
         }
         /**
          *
@@ -67279,186 +68198,10 @@ declare namespace OneNote {
              */
             shadingColor?: boolean;
         }
-        /**
-         *
-         * Represents a OneNote accessibility violation.
-         *
-         * [Api set: OneNoteApi 1.1]
-         */
-        interface AccessibilityViolationLoadOptions {
-            $all?: boolean;
-            /**
-             *
-             * Gets the ID of the accessibility violation. Read-only.
-             *
-             * [Api set: OneNoteApi 1.1]
-             */
-            id?: boolean;
-            /**
-             *
-             * Gets the location of the accessibility violation. Read-only.
-             *
-             * [Api set: OneNoteApi 1.1]
-             */
-            location?: boolean;
-            /**
-             *
-             * Gets the name of the accessibility violation. Read-only.
-             *
-             * [Api set: OneNoteApi 1.1]
-             */
-            name?: boolean;
-            /**
-             *
-             * Gets the type of the accessibility violation. Read-only.
-             *
-             * [Api set: OneNoteApi 1.1]
-             */
-            type?: boolean;
-        }
-        /**
-         *
-         * Represents the collection of AccessibilityViolations
-         *
-         * [Api set: OneNoteApi 1.1]
-         */
-        interface AccessibilityViolationCollectionLoadOptions {
-            $all?: boolean;
-            /**
-             *
-             * For EACH ITEM in the collection: Gets the ID of the accessibility violation. Read-only.
-             *
-             * [Api set: OneNoteApi 1.1]
-             */
-            id?: boolean;
-            /**
-             *
-             * For EACH ITEM in the collection: Gets the location of the accessibility violation. Read-only.
-             *
-             * [Api set: OneNoteApi 1.1]
-             */
-            location?: boolean;
-            /**
-             *
-             * For EACH ITEM in the collection: Gets the name of the accessibility violation. Read-only.
-             *
-             * [Api set: OneNoteApi 1.1]
-             */
-            name?: boolean;
-            /**
-             *
-             * For EACH ITEM in the collection: Gets the type of the accessibility violation. Read-only.
-             *
-             * [Api set: OneNoteApi 1.1]
-             */
-            type?: boolean;
-        }
-        /**
-         *
-         * A OneNote structure that stores metadata about accessibility violations for an entity.
-         *
-         * [Api set: OneNoteApi 1.1]
-         */
-        interface AccessibilityViolationsByEntityLoadOptions {
-            $all?: boolean;
-            /**
-            *
-            * Gets the parent section section group (if any) of the entity.
-            *
-            * [Api set: OneNoteApi 1.1]
-            */
-            parentSectionGroupOrNull?: OneNote.Interfaces.SectionGroupLoadOptions;
-            /**
-            *
-            * Gets the parent section (if any) of the entity.
-            *
-            * [Api set: OneNoteApi 1.1]
-            */
-            parentSectionOrNull?: OneNote.Interfaces.SectionLoadOptions;
-            /**
-             *
-             * Gets the name of the entity for which this structure holds metadata. Read-only.
-             *
-             * [Api set: OneNoteApi 1.1]
-             */
-            entityName?: boolean;
-            /**
-             *
-             * Gets the type of the entity for which this structure holds metadata. Read-only.
-             *
-             * [Api set: OneNoteApi 1.1]
-             */
-            entityType?: boolean;
-            /**
-             *
-             * Gets the ID of the AccessibilityViolationsByEntity. Read-only.
-             *
-             * [Api set: OneNoteApi 1.1]
-             */
-            id?: boolean;
-            /**
-             *
-             * Gets the count of accessibility violations for the entity. Read-only.
-             *
-             * [Api set: OneNoteApi 1.1]
-             */
-            violationsCount?: boolean;
-        }
-        /**
-         *
-         * Represents the collection of AccessibilityViolationsByEntity
-         *
-         * [Api set: OneNoteApi 1.1]
-         */
-        interface AccessibilityViolationsByEntityCollectionLoadOptions {
-            $all?: boolean;
-            /**
-            *
-            * For EACH ITEM in the collection: Gets the parent section section group (if any) of the entity.
-            *
-            * [Api set: OneNoteApi 1.1]
-            */
-            parentSectionGroupOrNull?: OneNote.Interfaces.SectionGroupLoadOptions;
-            /**
-            *
-            * For EACH ITEM in the collection: Gets the parent section (if any) of the entity.
-            *
-            * [Api set: OneNoteApi 1.1]
-            */
-            parentSectionOrNull?: OneNote.Interfaces.SectionLoadOptions;
-            /**
-             *
-             * For EACH ITEM in the collection: Gets the name of the entity for which this structure holds metadata. Read-only.
-             *
-             * [Api set: OneNoteApi 1.1]
-             */
-            entityName?: boolean;
-            /**
-             *
-             * For EACH ITEM in the collection: Gets the type of the entity for which this structure holds metadata. Read-only.
-             *
-             * [Api set: OneNoteApi 1.1]
-             */
-            entityType?: boolean;
-            /**
-             *
-             * For EACH ITEM in the collection: Gets the ID of the AccessibilityViolationsByEntity. Read-only.
-             *
-             * [Api set: OneNoteApi 1.1]
-             */
-            id?: boolean;
-            /**
-             *
-             * For EACH ITEM in the collection: Gets the count of accessibility violations for the entity. Read-only.
-             *
-             * [Api set: OneNoteApi 1.1]
-             */
-            violationsCount?: boolean;
-        }
     }
 }
 declare module OneNote {
-    class RequestContext extends OfficeCore.RequestContext {
+    class RequestContext extends OfficeExtension.ClientRequestContext {
         constructor(url?: string);
         readonly application: Application;
     }
@@ -67605,7 +68348,7 @@ declare namespace Visio {
          *
          * [Api set:  1.1]
          */
-        shapeNames: string[];
+        shapeNames: Array<string>;
     }
     /**
      *
@@ -67617,28 +68360,6 @@ declare namespace Visio {
         /**
          *
          * Gets the success/failure of the DocumentLoadComplete event.
-         *
-         * [Api set:  1.1]
-         */
-        success: boolean;
-    }
-    /**
-     *
-     * Provides information about the page that raised the PageRenderComplete event.
-     *
-     * [Api set:  1.1]
-     */
-    interface PageRenderCompleteEventArgs {
-        /**
-         *
-         * Gets the name of the page that raised the PageLoad event.
-         *
-         * [Api set:  1.1]
-         */
-        pageName: string;
-        /**
-         *
-         * Gets the success/failure of the PageRender event.
          *
          * [Api set:  1.1]
          */
@@ -67666,7 +68387,12 @@ declare namespace Visio {
          */
         showToolbars: boolean;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ApplicationUpdateData, options?: OfficeExtension.UpdateOptions): void;
+        set(properties: Interfaces.ApplicationUpdateData, options?: {
+            /**
+             * Throw an error if the passed-in property list includes read-only properties (default = true).
+             */
+            throwOnReadOnly?: boolean;
+        }): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: Application): void;
         /**
@@ -67675,14 +68401,7 @@ declare namespace Visio {
          *
          * [Api set:  1.1]
          */
-        showToolbar(id: Visio.ToolBarType, show: boolean): void;
-        /**
-         *
-         * Show or Hide a particular toolbar.
-         *
-         * [Api set:  1.1]
-         */
-        showToolbar(id: "CommandBar" | "PageNavigationBar" | "StatusBar", show: boolean): void;
+        showToolbar(id: string, show: boolean): void;
         /**
          * Queues up a command to load the specified properties of the object. You must call "context.sync()" before reading the properties.
          */
@@ -67723,7 +68442,12 @@ declare namespace Visio {
          */
         readonly view: Visio.DocumentView;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.DocumentUpdateData, options?: OfficeExtension.UpdateOptions): void;
+        set(properties: Interfaces.DocumentUpdateData, options?: {
+            /**
+             * Throw an error if the passed-in property list includes read-only properties (default = true).
+             */
+            throwOnReadOnly?: boolean;
+        }): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: Document): void;
         /**
@@ -67779,13 +68503,6 @@ declare namespace Visio {
          * [Api set:  1.1]
          */
         readonly onPageLoadComplete: OfficeExtension.EventHandlers<Visio.PageLoadCompleteEventArgs>;
-        /**
-         *
-         * Occurs when the page is completely rendered.
-         *
-         * [Api set:  1.1]
-         */
-        readonly onPageRenderComplete: OfficeExtension.EventHandlers<Visio.PageRenderCompleteEventArgs>;
         /**
          *
          * Occurs when the current selection of shapes changes.
@@ -67845,7 +68562,12 @@ declare namespace Visio {
          */
         hideDiagramBoundary: boolean;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.DocumentViewUpdateData, options?: OfficeExtension.UpdateOptions): void;
+        set(properties: Interfaces.DocumentViewUpdateData, options?: {
+            /**
+             * Throw an error if the passed-in property list includes read-only properties (default = true).
+             */
+            throwOnReadOnly?: boolean;
+        }): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: DocumentView): void;
         /**
@@ -67930,7 +68652,12 @@ declare namespace Visio {
          */
         readonly width: number;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.PageUpdateData, options?: OfficeExtension.UpdateOptions): void;
+        set(properties: Interfaces.PageUpdateData, options?: {
+            /**
+             * Throw an error if the passed-in property list includes read-only properties (default = true).
+             */
+            throwOnReadOnly?: boolean;
+        }): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: Page): void;
         /**
@@ -67966,7 +68693,12 @@ declare namespace Visio {
          */
         zoom: number;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.PageViewUpdateData, options?: OfficeExtension.UpdateOptions): void;
+        set(properties: Interfaces.PageViewUpdateData, options?: {
+            /**
+             * Throw an error if the passed-in property list includes read-only properties (default = true).
+             */
+            throwOnReadOnly?: boolean;
+        }): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: PageView): void;
         /**
@@ -68036,7 +68768,7 @@ declare namespace Visio {
      */
     class PageCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: Visio.Page[];
+        readonly items: Array<Visio.Page>;
         /**
          *
          * Gets the number of pages in the collection.
@@ -68069,7 +68801,7 @@ declare namespace Visio {
      */
     class ShapeCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: Visio.Shape[];
+        readonly items: Array<Visio.Shape>;
         /**
          *
          * Gets the number of Shapes in the collection.
@@ -68165,7 +68897,12 @@ declare namespace Visio {
          */
         readonly text: string;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ShapeUpdateData, options?: OfficeExtension.UpdateOptions): void;
+        set(properties: Interfaces.ShapeUpdateData, options?: {
+            /**
+             * Throw an error if the passed-in property list includes read-only properties (default = true).
+             */
+            throwOnReadOnly?: boolean;
+        }): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: Shape): void;
         /**
@@ -68201,7 +68938,12 @@ declare namespace Visio {
          */
         highlight: Visio.Highlight;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.ShapeViewUpdateData, options?: OfficeExtension.UpdateOptions): void;
+        set(properties: Interfaces.ShapeViewUpdateData, options?: {
+            /**
+             * Throw an error if the passed-in property list includes read-only properties (default = true).
+             */
+            throwOnReadOnly?: boolean;
+        }): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: ShapeView): void;
         /**
@@ -68217,21 +68959,7 @@ declare namespace Visio {
          * @param Width Overlay Width.
          * @param Height Overlay Height.
          */
-        addOverlay(OverlayType: Visio.OverlayType, Content: string, OverlayHorizontalAlignment: Visio.OverlayHorizontalAlignment, OverlayVerticalAlignment: Visio.OverlayVerticalAlignment, Width: number, Height: number): OfficeExtension.ClientResult<number>;
-        /**
-         *
-         * Adds an overlay on top of the shape.
-         *
-         * [Api set:  1.1]
-         *
-         * @param OverlayType An Overlay Type -Text, Image.
-         * @param Content Content of Overlay.
-         * @param OverlayHorizontalAlignment Horizontal Alignment of Overlay - Left, Center, Right
-         * @param OverlayVerticalAlignment Vertical Alignment of Overlay - Top, Middle, Bottom
-         * @param Width Overlay Width.
-         * @param Height Overlay Height.
-         */
-        addOverlay(OverlayType: "Text" | "Image", Content: string, OverlayHorizontalAlignment: "Left" | "Center" | "Right", OverlayVerticalAlignment: "Top" | "Middle" | "Bottom", Width: number, Height: number): OfficeExtension.ClientResult<number>;
+        addOverlay(OverlayType: string, Content: string, OverlayHorizontalAlignment: string, OverlayVerticalAlignment: string, Width: number, Height: number): OfficeExtension.ClientResult<number>;
         /**
          *
          * Removes particular overlay or all overlays on the Shape.
@@ -68340,7 +69068,7 @@ declare namespace Visio {
      */
     class ShapeDataItemCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: Visio.ShapeDataItem[];
+        readonly items: Array<Visio.ShapeDataItem>;
         /**
          *
          * Gets the number of Shape Data Items.
@@ -68419,7 +69147,7 @@ declare namespace Visio {
      */
     class HyperlinkCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: Visio.Hyperlink[];
+        readonly items: Array<Visio.Hyperlink>;
         /**
          *
          * Gets the number of hyperlinks.
@@ -68498,7 +69226,7 @@ declare namespace Visio {
      */
     class CommentCollection extends OfficeExtension.ClientObject {
         /** Gets the loaded child items in this collection. */
-        readonly items: Visio.Comment[];
+        readonly items: Array<Visio.Comment>;
         /**
          *
          * Gets the number of Shape Data Items.
@@ -68552,7 +69280,12 @@ declare namespace Visio {
          */
         text: string;
         /** Sets multiple properties on the object at the same time, based on JSON input. */
-        set(properties: Interfaces.CommentUpdateData, options?: OfficeExtension.UpdateOptions): void;
+        set(properties: Interfaces.CommentUpdateData, options?: {
+            /**
+             * Throw an error if the passed-in property list includes read-only properties (default = true).
+             */
+            throwOnReadOnly?: boolean;
+        }): void;
         /** Sets multiple properties on the object at the same time, based on an existing loaded object. */
         set(properties: Comment): void;
         /**
@@ -68596,25 +69329,25 @@ declare namespace Visio {
      *
      * [Api set:  1.1]
      */
-    enum OverlayHorizontalAlignment {
+    namespace OverlayHorizontalAlignment {
         /**
          *
          * left
          *
          */
-        left = "Left",
+        var left: string;
         /**
          *
          * center
          *
          */
-        center = "Center",
+        var center: string;
         /**
          *
          * right
          *
          */
-        right = "Right",
+        var right: string;
     }
     /**
      *
@@ -68622,25 +69355,25 @@ declare namespace Visio {
      *
      * [Api set:  1.1]
      */
-    enum OverlayVerticalAlignment {
+    namespace OverlayVerticalAlignment {
         /**
          *
          * top
          *
          */
-        top = "Top",
+        var top: string;
         /**
          *
          * middle
          *
          */
-        middle = "Middle",
+        var middle: string;
         /**
          *
          * bottom
          *
          */
-        bottom = "Bottom",
+        var bottom: string;
     }
     /**
      *
@@ -68648,19 +69381,19 @@ declare namespace Visio {
      *
      * [Api set:  1.1]
      */
-    enum OverlayType {
+    namespace OverlayType {
         /**
          *
          * text
          *
          */
-        text = "Text",
+        var text: string;
         /**
          *
          * image
          *
          */
-        image = "Image",
+        var image: string;
     }
     /**
      *
@@ -68668,33 +69401,33 @@ declare namespace Visio {
      *
      * [Api set:  1.1]
      */
-    enum ToolBarType {
+    namespace ToolBarType {
         /**
          *
          * CommandBar
          *
          */
-        commandBar = "CommandBar",
+        var commandBar: string;
         /**
          *
          * PageNavigationBar
          *
          */
-        pageNavigationBar = "PageNavigationBar",
+        var pageNavigationBar: string;
         /**
          *
          * StatusBar
          *
          */
-        statusBar = "StatusBar",
+        var statusBar: string;
     }
-    enum ErrorCodes {
-        accessDenied = "AccessDenied",
-        generalException = "GeneralException",
-        invalidArgument = "InvalidArgument",
-        itemNotFound = "ItemNotFound",
-        notImplemented = "NotImplemented",
-        unsupportedOperation = "UnsupportedOperation",
+    namespace ErrorCodes {
+        var accessDenied: string;
+        var generalException: string;
+        var invalidArgument: string;
+        var itemNotFound: string;
+        var notImplemented: string;
+        var unsupportedOperation: string;
     }
     module Interfaces {
         interface CollectionLoadOptions {
