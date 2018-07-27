@@ -1,46 +1,49 @@
-version: 1.1.9-adhoc.11
-tag: adhoc
-githubReleaseUrl: https://github.com/OfficeDev/office-js/releases/tag/v1.1.9-adhoc.11
-githubViewUrl: https://github.com/OfficeDev/office-js/tree/v1.1.9-adhoc.11
-deployedAt: 2018-07-26 12:19 am UTC  (2018-07-25 5:19 pm Pacific Time)
+version: 1.1.8
+tag: release
+githubReleaseUrl: https://github.com/OfficeDev/office-js/releases/tag/v1.1.8
+githubViewUrl: https://github.com/OfficeDev/office-js/tree/v1.1.8
+deployedAt: 2018-05-02 9:44 pm UTC  (2018-05-02 2:44 pm Pacific Time)
 
 history:
-    adhocBranchName: __adhoc--beta--local-enlistment--2018-07-25--5.14pm
-    commitMessage: __adhoc--beta--local-enlistment--2018-07-25--5.14pm
+    adhocBranchName: __for_merging--release--16.0.9318.5450--2018-05-02--1.50pm
+    commitMessage: __for_merging--release--16.0.9318.5450--2018-05-02--1.50pm
     fullCommitHistory:
         - 
             sha: >-
-                https://github.com/OfficeDev/office-js/commits/1ccb8eac8ceaf84a5b0d4ad9a8954a7c333df9bb
+                https://github.com/OfficeDev/office-js/commits/96f2bd91eb5f19e75b3dc71b1ad063d14d169cee
             message: >-
                 JS dist files --
-                __adhoc--beta--local-enlistment--2018-07-25--5.14pm
+                __for_merging--release--16.0.9318.5450--2018-05-02--1.50pm
         - 
             sha: >-
-                https://github.com/OfficeDev/office-js/commits/2290cabbeacdbc17b7904a5461e03cc90710eaae
+                https://github.com/OfficeDev/office-js/commits/1488f90a8e067a5e035b4ad28bc63de29febe724
             message: >-
                 Localized strings --
-                __adhoc--beta--local-enlistment--2018-07-25--5.14pm
+                __for_merging--release--16.0.9318.5450--2018-05-02--1.50pm
         - 
             sha: >-
-                https://github.com/OfficeDev/office-js/commits/2b150ad13f23eac73e74e5864932c3e4ddae9d85
+                https://github.com/OfficeDev/office-js/commits/bf086552c06225498d171fd836f150da37f920ce
             message: Copying other assets from the release branch of the repo
         - 
             sha: >-
-                https://github.com/OfficeDev/office-js/commits/6a9a2b700dfcbe2d01e3ab775f6df9978fbef083
+                https://github.com/OfficeDev/office-js/commits/3e2dda0085a862ddd261cd6247567e00b9070a90
             message: >-
                 [PUBLISH TOOL] Add deployment infrastructure for adhoc NPM
                 publish
         - 
             sha: >-
-                https://github.com/OfficeDev/office-js/commits/aa263529a40b4f11bf3dcbe300cfb285a42307e2
+                https://github.com/OfficeDev/office-js/commits/45091d4ee0c7d91b76da7bb2cc9ece83758bfc1c
             message: >-
                 [BEGIN PUBLISH UPDATES] --
-                __adhoc--beta--local-enlistment--2018-07-25--5.14pm
+                __for_merging--release--16.0.9318.5450--2018-05-02--1.50pm
 
 
 unpkgUrls: |-
     this specific build number:
-        https://unpkg.com/@microsoft/office-js@1.1.9-adhoc.11/dist/office.js
-        https://unpkg.com/@microsoft/office-js@1.1.9-adhoc.11/dist/office.d.ts
+        https://unpkg.com/@microsoft/office-js@1.1.8/dist/office.js
+        https://unpkg.com/@microsoft/office-js@1.1.8/dist/office.d.ts
+    builds using this same tag ("release"):
+        https://unpkg.com/@microsoft/office-js@release/dist/office.js
+        https://unpkg.com/@microsoft/office-js@release/dist/office.d.ts
 
-buildLog: https://travis-ci.org/OfficeDev/office-js/builds/408302615
+buildLog: https://travis-ci.org/OfficeDev/office-js/builds/374156710
