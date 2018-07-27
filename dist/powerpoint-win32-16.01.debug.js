@@ -15029,7 +15029,7 @@ var PowerPoint;
 (function (PowerPoint) {
 	function createPresentation(base64) {
 		return new Office.Promise(function (resolve, reject) {
-			Office.context.application.createDocumentAsync({ base64: base64 }, function (asyncResult) {
+			var callback=function (asyncResult) {
 				if (asyncResult.status==Office.AsyncResultStatus.Failed) {
 					reject(new OfficeExtension.Error({
 						code: OfficeExtension.ErrorCodes.generalException,
@@ -15040,7 +15040,14 @@ var PowerPoint;
 				else {
 					resolve();
 				}
-			});
+			};
+			var func=Office.context.application.createDocumentAsync;
+			if (base64) {
+				func({ base64: base64 }, callback);
+			}
+			else {
+				func(callback);
+			}
 		});
 	}
 	PowerPoint.createPresentation=createPresentation;
